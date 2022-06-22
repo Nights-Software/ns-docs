@@ -1,0 +1,23 @@
+remote_theme: pmarsceill/just-the-docs
+title: "EA-RP Documentation"
+description: "A documentation explaining the installation process of FiveM resources sold by Police Interceptors by EA-RP."
+baseurl: "/"
+url: "https://docs.ea-rp.com"
+
+permalink: pretty
+exclude: ["LICENSE.txt", "README.md"]
+
+heading_anchors: true
+
+aux_links:
+  "Our Website":
+    - "//ea-rp.com/"
+aux_links_new_tab: true
+
+back_to_top: true
+back_to_top_text: "Back to top"
+
+footer_content: "Copyright &copy; 2022 Police Interceptors by EA-RP"
+
+last_edit_timestamp: true
+last_edit_time_format: "%b %e %Y at %I:%M %p"
