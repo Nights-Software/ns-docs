@@ -7,7 +7,7 @@ has_toc: true
 last_modified_date: "2022-06-22 21:20:00"
 ---
 
-<img class="cover-img" src="/assets/img/naturalDisasters.gif" alt="Natural Disasters Resource" draggable="false">
+<img class="cover-img" src="/earp-docs/assets/img/naturalDisasters.gif" alt="Natural Disasters Resource" draggable="false">
 
 # Natural Disasters (Normal / DLC)
 {: .no_toc }

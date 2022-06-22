@@ -9,7 +9,7 @@ has_toc: true
 last_modified_date: "2022-06-22 21:20:00"
 ---
 
-<img class="cover-img" src="/assets/img/banner.png" alt="Police Interceptors by EA-RP Banner" draggable="false">
+<img class="cover-img" src="/earp-docs/assets/img/banner.png" alt="Police Interceptors by EA-RP Banner" draggable="false">
 
 # Police Interceptors Resource Documentation
 {: .no_toc }
