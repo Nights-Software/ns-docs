@@ -6,13 +6,16 @@ description: "A documentation explaining the installation process of FiveM resou
 permalink: /
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-22 20:15:00"
+last_modified_date: "2022-06-22 21:20:00"
 ---
+
+<img class="cover-img" src="/assets/img/banner.png" alt="Police Interceptors by EA-RP Banner" draggable="false">
 
 # Police Interceptors Resource Documentation
 {: .no_toc }
 
-*Welcome to our documentation page. Read all you need to know about installing and using our resources!*
+Welcome to our documentation page. Read all you need to know about installing and using our resources!
+{: .fs-5 .fw-300 }
 
 ---
 
@@ -35,6 +38,6 @@ last_modified_date: "2022-06-22 20:15:00"
 
 ## Our Store
 
-Explore our resource in our Store:
+Explore offered resources in our Store:
 
 [Tebex Store](https://store.ea-rp.com){: .btn .btn-blue}
