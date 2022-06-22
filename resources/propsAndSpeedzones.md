@@ -1,18 +1,18 @@
 ---
 layout: default
-title: "Props & Speedzones"
+title: "Props & Speed Zones"
 nav_order: 5
 has_children: false
 has_toc: true
 last_modified_date: "2022-06-22 22:15:00"
 ---
 
-<img class="cover-img" src="/earp-docs/assets/img/propsAndSpeedzones.png" alt="Props & Speedzones Resource" draggable="false">
+<img class="cover-img" src="/earp-docs/assets/img/propsAndSpeedZones.png" alt="Props & Speed Zones Resource" draggable="false">
 
-# Props & Speedzones
+# Props & Speed Zones
 {: .no_toc }
 
-A guide to install Props & Speedzones for FiveM
+A guide to install Props & Speed Zones for FiveM
 {: .fs-5 .fw-300 }
 
 ---
