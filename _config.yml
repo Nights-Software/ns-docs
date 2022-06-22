@@ -2,7 +2,7 @@ remote_theme: pmarsceill/just-the-docs
 title: "EA-RP Documentation"
 description: "A documentation explaining the installation process of FiveM resources sold by Police Interceptors by EA-RP."
 baseurl: "/"
-url: "https://docs.ea-rp.com"
+url: "https://1p0d.github.io/earp-docs/"
 
 permalink: pretty
 exclude: ["LICENSE.txt", "README.md"]
