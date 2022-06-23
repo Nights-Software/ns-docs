@@ -32,7 +32,7 @@ A guide to install Discord Allowlist! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5054917](https://store.ea-rp.com/package/5054917)
+Base: [https://store.ea-rp.com/package/5035752](https://store.ea-rp.com/package/5035752)
 
 ## Downloading the resource
 
@@ -50,7 +50,7 @@ Example:
 ensure night_admins
 ```
 
-1. Configure /config/config.lua.
+1. Configure /config/config.lua and set the roles you desire allowlisted or blacklisted.
 
 ## Support
 
