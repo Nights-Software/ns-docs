@@ -1,18 +1,18 @@
 ---
 layout: default
-title: "Smoke Generator"
-nav_order: 4
+title: "Discord Linked Admin System"
+nav_order: 8
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-22 22:10:00"
+last_modified_date: "2022-06-22 23:10:00"
 ---
 
-<img class="cover-img" src="/assets/img/smokeGenerator.png" alt="Smoke Generator Resource" draggable="false">
+<img class="cover-img" src="/assets/img/discordAdmin.png" alt="Discord Linked Admin System! Resource" draggable="false">
 
-# Smoke Generator
+# Discord Linked Admin System!
 {: .no_toc }
 
-A guide to install Smoke Generator for FiveM
+A guide to install Discord Linked Admin System! for FiveM
 {: .fs-5 .fw-300 }
 
 ---
@@ -32,7 +32,7 @@ A guide to install Smoke Generator for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5100834](https://store.ea-rp.com/package/5100834)
+Base: [https://store.ea-rp.com/package/5054917](https://store.ea-rp.com/package/5054917)
 
 ## Downloading the resource
 
@@ -42,16 +42,13 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 
 1. Drag the resource into your resources folder.
 
-1. Ensure or start all resources in server.cfg. 
+1. Ensure or start the resource in server.cfg. 
 Example:
 ```lua
-ensure night_handheld_smoke_gen
+ensure night_admins
 ```
 
 1. Configure /config/config.lua.
-
-1. Make sure to enable or disable permissions for night_discordapi in /config/config.lua. You require this script to utilize permissions! [https://store.ea-rp.com/package/5035729](https://store.ea-rp.com/package/5035729) 
-    - *Visit -LINK TO BE ADDED- to read documentation about night_discordapi.*
 
 ## Support
 

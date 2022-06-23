@@ -71,6 +71,8 @@ Example of a comment: `-- dependency 'xsound'`
 
 1. xSound CAN cause (syntax) issues, to fix it: Download a fresh install ->  (Sometimes with ESX servers)
 
+1. Carefully read the instructions given in natural_disasters/config/config.lua, it offers you all kinds of customisation options!
+
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can't get it to work still?

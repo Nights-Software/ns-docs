@@ -1,18 +1,18 @@
 ---
 layout: default
-title: "Smoke Generator"
-nav_order: 4
+title: "Discord Playerlist"
+nav_order: 9
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-22 22:10:00"
+last_modified_date: "2022-06-22 23:15:00"
 ---
 
-<img class="cover-img" src="/assets/img/smokeGenerator.png" alt="Smoke Generator Resource" draggable="false">
+<img class="cover-img" src="/assets/img/discordPlayerlist.png" alt="Discord Playerlist! Resource" draggable="false">
 
-# Smoke Generator
+# Discord Playerlist!
 {: .no_toc }
 
-A guide to install Smoke Generator for FiveM
+A guide to install Discord Playerlist! for FiveM
 {: .fs-5 .fw-300 }
 
 ---
@@ -32,7 +32,7 @@ A guide to install Smoke Generator for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5100834](https://store.ea-rp.com/package/5100834)
+Base: [https://store.ea-rp.com/package/5035743](https://store.ea-rp.com/package/5035743)
 
 ## Downloading the resource
 
@@ -40,18 +40,17 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 
 ## Installing the resource
 
+1. Install night_discordapi first and configure the resource. When you're done with that continue installing this resource.
+
 1. Drag the resource into your resources folder.
 
-1. Ensure or start all resources in server.cfg. 
+1. Ensure or start the resource in server.cfg. 
 Example:
 ```lua
-ensure night_handheld_smoke_gen
+ensure night_playerlist
 ```
 
-1. Configure /config/config.lua.
-
-1. Make sure to enable or disable permissions for night_discordapi in /config/config.lua. You require this script to utilize permissions! [https://store.ea-rp.com/package/5035729](https://store.ea-rp.com/package/5035729) 
-    - *Visit -LINK TO BE ADDED- to read documentation about night_discordapi.*
+1. Configure /config/config.lua, you are able to insert a link to replace your playerlist title image.
 
 ## Support
 

@@ -1,18 +1,18 @@
 ---
 layout: default
-title: "Smoke Generator"
-nav_order: 4
+title: "Vehicle Lift"
+nav_order: 7
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-22 22:10:00"
+last_modified_date: "2022-06-22 23:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/smokeGenerator.png" alt="Smoke Generator Resource" draggable="false">
+<img class="cover-img" src="/assets/img/vehicleLift.png" alt="Vehicle Lift! Resource" draggable="false">
 
-# Smoke Generator
+# Vehicle Lift!
 {: .no_toc }
 
-A guide to install Smoke Generator for FiveM
+A guide to install Vehicle Lift! for FiveM
 {: .fs-5 .fw-300 }
 
 ---
@@ -32,7 +32,7 @@ A guide to install Smoke Generator for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5100834](https://store.ea-rp.com/package/5100834)
+Base: [https://store.ea-rp.com/package/5071628](https://store.ea-rp.com/package/5071628)
 
 ## Downloading the resource
 
@@ -45,13 +45,10 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 1. Ensure or start all resources in server.cfg. 
 Example:
 ```lua
-ensure night_handheld_smoke_gen
+ensure night_vehicle_lift
 ```
 
 1. Configure /config/config.lua.
-
-1. Make sure to enable or disable permissions for night_discordapi in /config/config.lua. You require this script to utilize permissions! [https://store.ea-rp.com/package/5035729](https://store.ea-rp.com/package/5035729) 
-    - *Visit -LINK TO BE ADDED- to read documentation about night_discordapi.*
 
 ## Support
 
