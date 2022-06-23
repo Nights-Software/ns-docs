@@ -2,16 +2,16 @@
 layout: default
 title: Home
 nav_order: 1
-description: "A documentation explaining the installation process of FiveM resources sold by Police Interceptors by EA-RP."
+description: "A documentation explaining the installation process of FiveM resources sold by Nights Software by EA-RP."
 permalink: /
 has_children: false
 has_toc: false
-last_modified_date: "2022-06-22 21:20:00"
+last_modified_date: "2022-06-23 23:17:00"
 ---
 
-<img class="cover-img" src="/assets/img/banner.png" alt="Police Interceptors by EA-RP Banner" draggable="false">
+<img class="cover-img" src="/assets/img/banner.png" alt="Nights Software by EA-RP Banner" draggable="false">
 
-# Police Interceptors Resource Documentation
+# Nights Software Resource Documentation
 
 Welcome to our documentation page. Read all you need to know about installing and using our resources!
 {: .fs-5 .fw-300 }
@@ -28,4 +28,4 @@ Welcome to our documentation page. Read all you need to know about installing an
 
 Explore offered resources in our Store:
 
-[Tebex Store](https://store.ea-rp.com){: .btn .btn-blue}
+[Nights Software Tebex Store](https://store.ea-rp.com){: .btn .btn-blue}
