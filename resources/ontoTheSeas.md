@@ -7,7 +7,7 @@ has_toc: true
 last_modified_date: "2022-06-22 22:00:00"
 ---
 
-<img class="cover-img" src="/earp-docs/assets/img/ontoTheSeas.png" alt="Onto the Seas! Resource" draggable="false">
+<img class="cover-img" src="/assets/img/ontoTheSeas.png" alt="Onto the Seas! Resource" draggable="false">
 
 # Onto the seas!
 {: .no_toc }

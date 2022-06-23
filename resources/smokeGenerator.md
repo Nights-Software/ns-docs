@@ -7,7 +7,7 @@ has_toc: true
 last_modified_date: "2022-06-22 22:10:00"
 ---
 
-<img class="cover-img" src="/earp-docs/assets/img/smokeGenerator.png" alt="Smoke Generator Resource" draggable="false">
+<img class="cover-img" src="/assets/img/smokeGenerator.png" alt="Smoke Generator Resource" draggable="false">
 
 # Smoke Generator
 {: .no_toc }

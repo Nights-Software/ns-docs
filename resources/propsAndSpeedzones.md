@@ -7,7 +7,7 @@ has_toc: true
 last_modified_date: "2022-06-22 22:15:00"
 ---
 
-<img class="cover-img" src="/earp-docs/assets/img/propsAndSpeedZones.png" alt="Props & Speed Zones Resource" draggable="false">
+<img class="cover-img" src="/assets/img/propsAndSpeedZones.png" alt="Props & Speed Zones Resource" draggable="false">
 
 # Props & Speed Zones
 {: .no_toc }

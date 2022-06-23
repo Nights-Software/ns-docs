@@ -7,7 +7,7 @@ has_toc: true
 last_modified_date: "2022-06-22 22:19:00"
 ---
 
-<img class="cover-img" src="/earp-docs/assets/img/mechanicAndRecovery.png" alt="Mechanic & Recovery Resource" draggable="false">
+<img class="cover-img" src="/assets/img/mechanicAndRecovery.png" alt="Mechanic & Recovery Resource" draggable="false">
 
 # Mechanic & Recovery
 {: .no_toc }
