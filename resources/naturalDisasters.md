@@ -48,6 +48,7 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 ## Installing the resource
 
 1. Drag the resource into your resources folder.
+    - NOTE: If you are installing the DLC, replace the base resource! Overwrite it with the DLC!
 
 1. Drag "PlayCustomSounds" and/or "xsound" in your /resources/ folder. Download these from the creators. Using integrations? You will require both resources if you use Air Raid Sirens 
 Integration: [https://store.ea-rp.com/package/5030134](https://store.ea-rp.com/package/5030134)
