@@ -1,18 +1,18 @@
 ---
 layout: default
-title: "Discord Allowlist"
+title: "Discord API"
 nav_order: 10
 has_children: false
 has_toc: true
 last_modified_date: "2022-06-22 23:20:00"
 ---
 
-<img class="cover-img" src="/assets/img/discordAllowlist.png" alt="Discord Allowlist! Resource" draggable="false">
+<img class="cover-img" src="/assets/img/discordAPI.png" alt="Discord API! Resource" draggable="false">
 
-# Discord Allowlist!
+# Discord API!
 {: .no_toc }
 
-A guide to install Discord Allowlist! for FiveM
+A guide to install Discord API! for FiveM
 {: .fs-5 .fw-300 }
 
 ---
@@ -32,7 +32,7 @@ A guide to install Discord Allowlist! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5035752](https://store.ea-rp.com/package/5035752)
+Base: [https://store.ea-rp.com/package/5035729](https://store.ea-rp.com/package/5035729)
 
 ## Downloading the resource
 
@@ -40,17 +40,15 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 
 ## Installing the resource
 
-1. Install night_discordapi first and configure the resource. When you're done with that continue installing this resource.
-
 1. Drag the resource into your resources folder.
 
 1. Ensure or start the resource in server.cfg. 
 Example:
 ```lua
-ensure night_discordallowlist
+ensure night_discordapi
 ```
 
-1. Configure /config/config.lua and set the roles you desire allowlisted or blacklisted.
+1. Configure /config/config.lua with the help of the in the resource folder included documentation.pdf file.
 
 ## Support
 
