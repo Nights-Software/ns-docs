@@ -56,4 +56,4 @@ ensure night_handheld_smoke_gen
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can't get it to work still? 
-Create a ticket through our dedicated support system in Discord: [https://dc.ea-rp.com](https://dc.ea-rp.com)
+Create a ticket through our dedicated support system in Discord: [https://ns.ea-rp.com](https://ns.ea-rp.com)
