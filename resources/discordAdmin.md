@@ -4,7 +4,7 @@ title: "Discord Linked Admin System"
 nav_order: 8
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-22 23:10:00"
+last_modified_date: "2022-06-25 00:31:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordAdmin.png" alt="Discord Linked Admin System! Resource" draggable="false">
@@ -53,4 +53,4 @@ ensure night_admins
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can't get it to work still? 
-Create a ticket through our dedicated support system in Discord: [https://ns.ea-rp.com](https://ns.ea-rp.com)
+Create a ticket through our dedicated support system in Discord: [Nights Software Discord](https://ns.ea-rp.com){: .btn .btn-discord}

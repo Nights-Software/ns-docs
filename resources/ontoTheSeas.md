@@ -4,7 +4,7 @@ title: "Onto the seas!"
 nav_order: 3
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-22 22:00:00"
+last_modified_date: "2022-06-25 00:31:00"
 ---
 
 <img class="cover-img" src="/assets/img/ontoTheSeas.png" alt="Onto the Seas! Resource" draggable="false">
@@ -61,4 +61,4 @@ Example of a comment: `-- dependency 'xsound'`
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can't get it to work still? 
-Create a ticket through our dedicated support system in Discord: [https://ns.ea-rp.com](https://ns.ea-rp.com)
+Create a ticket through our dedicated support system in Discord: [Nights Software Discord](https://ns.ea-rp.com){: .btn .btn-discord}

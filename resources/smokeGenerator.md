@@ -4,7 +4,7 @@ title: "Smoke Generator"
 nav_order: 4
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-22 22:10:00"
+last_modified_date: "2022-06-25 00:31:00"
 ---
 
 <img class="cover-img" src="/assets/img/smokeGenerator.png" alt="Smoke Generator Resource" draggable="false">
@@ -51,9 +51,9 @@ ensure night_handheld_smoke_gen
 1. Configure /config/config.lua.
 
 1. Make sure to enable or disable permissions for night_discordapi in /config/config.lua. You require this script to utilize permissions! [https://store.ea-rp.com/package/5035729](https://store.ea-rp.com/package/5035729) 
-    - *Visit -LINK TO BE ADDED- to read documentation about night_discordapi.*
+    - *Visit [https://docs.ea-rp.com/resources/discordAPI/](/resources/discordAPI) to read documentation about night_discordapi.*
 
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can't get it to work still? 
-Create a ticket through our dedicated support system in Discord: [https://ns.ea-rp.com](https://ns.ea-rp.com)
+Create a ticket through our dedicated support system in Discord: [Nights Software Discord](https://ns.ea-rp.com){: .btn .btn-discord}
