@@ -73,7 +73,11 @@ Example of a comment: `-- dependency 'xsound'`
 
 1. Carefully read the instructions given in natural_disasters/config/config.lua, it offers you all kinds of customisation options!
 
+1. Weather script compatibility is found in 2 resources: qb-weathersync and vSyncR. We have made edits of these open source assets and offer you these for free. Claim them via our discord in a channel called #free-files! Click the button below this page to join the discord.
+
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can't get it to work still?
-Create a ticket through our dedicated support system in Discord: [Nights Software Discord](https://ns.ea-rp.com){: .btn .btn-discord}
+Create a ticket through our dedicated support system in Discord: 
+
+[Nights Software Discord](https://ns.ea-rp.com){: .btn .btn-discord}
