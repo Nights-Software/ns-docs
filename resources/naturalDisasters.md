@@ -60,6 +60,8 @@ Example:
 ensure xsound
 ```
 xSound must be somewhere on top of server.cfg and preferably downloaded fresh from: [https://github.com/Xogy/xsound](https://github.com/Xogy/xsound)
+PlayCustomSounds can be downloaded fresh from: [https://github.com/LondonStudios/PlayCustomSounds](https://github.com/LondonStudios/PlayCustomSounds)
+* Note: Don't forget to add SoundFiles (found in your purchased resource for Air Raid Sirens & Natural Disasters) into the sound folders of the sound resources.
 
 1. Configure natural_disasters/config/config.lua and set the sound resource you are using to **true** and the other to **false**.
 
