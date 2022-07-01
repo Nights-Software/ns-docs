@@ -75,6 +75,12 @@ Example of a comment: `-- dependency 'xsound'`
 
 1. Weather script compatibility is found in 2 resources: qb-weathersync and vSyncR. We have made edits of these open source assets and offer you these for free. Claim them via our discord in a channel called #free-files! Click the button below this page to join the discord.
 
+## Recommended!
+
+* https://store.ea-rp.com/package/5131340 - Natural Disasters (Purchase this one, do not install, you need this one to buy the DLC, but can install just the DLC for it all to work )
+* https://store.ea-rp.com/package/5154004 - Natural Disasters DLC 1 (Install this one)
+* https://store.ea-rp.com/package/5030134 - Air Raid Sirens, for the nice integration. (Install this one) 
+
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can't get it to work still?
