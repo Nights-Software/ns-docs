@@ -9,13 +9,13 @@ last_modified_date: "2022-06-25 00:31:00"
 
 <img class="cover-img" src="/assets/img/naturalDisasters.gif" alt="Natural Disasters Resource" draggable="false">
 
-# Natural Disasters (Normal / DLC)
+# Natural Disasters (Normal / DLC 1 & 2)
 {: .no_toc }
 
 A guide to install Natural Disasters for FiveM
 {: .fs-5 .fw-300 }
 
-Just released: DLC 1!
+Just released: DLC 2!
 {: .label .label-purple }
 
 ---
