@@ -79,9 +79,10 @@ Example of a comment: `-- dependency 'xsound'`
 
 ## Recommended!
 
-* https://store.ea-rp.com/package/5131340 - Natural Disasters (Purchase this one, do not install, you need this one to buy the DLC, but can install just the DLC for it all to work )
-* https://store.ea-rp.com/package/5154004 - Natural Disasters DLC 1 (Install this one)
-* https://store.ea-rp.com/package/5030134 - Air Raid Sirens, for the nice integration. (Install this one) 
+* [https://store.ea-rp.com/package/5131340](https://store.ea-rp.com/package/5131340) - Natural Disasters (Purchase this one, do not install, you need this one to buy the DLC, but can install just the DLC for it all to work )
+* [https://store.ea-rp.com/package/5154004](https://store.ea-rp.com/package/5154004) - Natural Disasters DLC 1 (Install this one as an overwrite for base.)
+* [https://store.ea-rp.com/package/5183358](https://store.ea-rp.com/package/5183358) - Natural Disasters DLC 2 (Install this one as an overwrite for base AND DLC 1.)
+* [https://store.ea-rp.com/package/5030134](https://store.ea-rp.com/package/5030134) - Air Raid Sirens, for the nice integration. (Install this one as well as the selected above.) 
 
 ## Support
 
