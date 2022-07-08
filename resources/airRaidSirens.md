@@ -52,8 +52,9 @@ ensure night_air_raid_sirens
 
 ## Exports
 
-Use this export function to trigger the Air Raid Sirens from another (server side) script.
+1. Use this export function to trigger the Air Raid Sirens from another (server side) script.
 
+1. Example:
 ```lua
 exports['night_air_raid_sirens']:TriggerAirRaidSirens(src)
 ```

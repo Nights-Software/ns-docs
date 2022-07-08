@@ -54,9 +54,9 @@ ensure night_prop_system
 
 ## Export functions
 
-Use this export function to open the menu from a different script, like a boot script or such.
+1. Use this export function to open the menu from a different script, like a boot script or such.
 
-Example:
+1. Example:
 ```lua
 exports['night_prop_system']:OpenPropMenu(src)
 ```
