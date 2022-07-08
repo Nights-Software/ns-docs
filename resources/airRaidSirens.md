@@ -50,7 +50,7 @@ ensure night_air_raid_sirens
 
 1. Configure /config/config.lua.
 
-# Exports
+## Exports
 
 Use this export function to trigger the Air Raid Sirens from another (server side) script.
 

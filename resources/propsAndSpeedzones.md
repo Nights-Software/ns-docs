@@ -52,7 +52,7 @@ ensure night_prop_system
 
 1. Note: Custom props are not included. The ones used in the video showcase is obtainable at Cell 1 Modding: [https://discord.gg/59yamPENYn](https://discord.gg/59yamPENYn) (Partner).
 
-# Export functions
+## Export functions
 
 Use this export function to open the menu from a different script, like a boot script or such.
 
