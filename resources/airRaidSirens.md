@@ -1,18 +1,18 @@
 ---
 layout: default
-title: "Props & Speed Zones"
-nav_order: 5
+title: "Air Raid Sirens"
+nav_order: 13
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-25 00:31:00"
+last_modified_date: "2022-07-08 00:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/propsAndSpeedZones.png" alt="Props & Speed Zones Resource" draggable="false">
+<img class="cover-img" src="/assets/img/airRaidSirens.png" alt="Air Raid Sirens Resource" draggable="false">
 
-# Props & Speed Zones
+# Air Raid Sirens!
 {: .no_toc }
 
-A guide to install Props & Speed Zones for FiveM
+A guide to install Air Raid Sirens! for FiveM
 {: .fs-5 .fw-300 }
 
 ---
@@ -32,7 +32,7 @@ A guide to install Props & Speed Zones for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5087747](https://store.ea-rp.com/package/5087747)
+Base: [https://store.ea-rp.com/package/5071628](https://store.ea-rp.com/package/5071628)
 
 ## Downloading the resource
 
@@ -45,20 +45,17 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 1. Ensure or start all resources in server.cfg. 
 Example:
 ```lua
-ensure night_prop_system
+ensure night_air_raid_sirens
 ```
 
 1. Configure /config/config.lua.
 
-1. Note: Custom props are not included. The ones used in the video showcase is obtainable at Cell 1 Modding: [https://discord.gg/59yamPENYn](https://discord.gg/59yamPENYn) (Partner).
+# Exports
 
-# Export functions
+Use this export function to trigger the Air Raid Sirens from another (server side) script.
 
-Use this export function to open the menu from a different script, like a boot script or such.
-
-Example:
 ```lua
-exports['night_prop_system']:OpenPropMenu(src)
+exports['night_air_raid_sirens']:TriggerAirRaidSirens(src)
 ```
 
 ## Support
