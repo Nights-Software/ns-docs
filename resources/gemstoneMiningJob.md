@@ -13,14 +13,15 @@ last_modified_date: "2022-07-11 00:25:00"
 {: .no_toc}
 
 A guide to install Gemstone Mining Job! for FiveM
+
 {: .fs-5 .fw-300 }
 
 ---
 <details open markdown="block">
-    <summary>
-        table of contents
-    </summary>
-    {: .text-delta }
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
 1. TOC
 {:toc}
 </details>
