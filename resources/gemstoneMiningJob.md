@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Gemstone mining job"
-nav_order: 14
+nav_order: 15
 has_children: false
 has_toc: true
 last_modified_date: "2022-07-11 00:25:00"
