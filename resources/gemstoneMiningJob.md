@@ -43,7 +43,7 @@ Download this resource via [https://keymaster.fivem.net/asset-grants.](https://k
 
 1. Ensure or start all resources in server.cfg. Example:
 ```lua
-ensure night_gemstone_mining_job
+ensure night_gemstone_mining
 ```
 
 1. Configure /config/config.lua.
