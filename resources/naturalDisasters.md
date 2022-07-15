@@ -40,6 +40,10 @@ Base: [https://store.ea-rp.com/package/5131340](https://store.ea-rp.com/package/
 DLC 1: [https://store.ea-rp.com/package/5154004](https://store.ea-rp.com/package/5154004)
 
 *You require the base resource to be able to purchase the DLC(s).*
+*You require DLC1 resource to be able to purchase the DLC2.*
+
+## Installation Notice
+*Got all packs? Install just DLC2, this contains all code required.*
 
 ## Downloading the resource
 
