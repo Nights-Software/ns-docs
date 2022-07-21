@@ -47,6 +47,7 @@ ensure night_garage_system
 ```
 
 1. Configure /config/config.lua.
+
 *Use the example below to understand the configuration of this resource!*
 
 * Set the LocationVehicleShowcase coordinates and heading first, this will show the marker and/or label for the garages. This is also the point where the camera points at. You can change these to your liking.
@@ -54,15 +55,18 @@ ensure night_garage_system
 * Set the LocationVehicleSpawn coordinates where the vehicle should eventually spawn.
 
 1. Using [Discord API?](https://docs.ea-rp.com/resources/discordAPI/)
+
 * Set up the Discord API by following the included documentation.pdf file in the resource.
 * Match GarageRolePermissions & SectionRolePermissions role names (this config.lua) to the ones configured in config.lua (night_discordapi).
 * List the vehicles according to the given format. Only the people with the role can SPAWN the vehicles. They can see it regardless of the permission. The reason for having 2 permission variables is because some vehicles can be listed in the same section, but some sections and it's vehicles are to be used by different roles. (Example: Police Officer & Sergeant)
 
 1. Want to add another garage or section?
+
 * Compare Police Garage (GarageSections = ) to Ambulance garage (GarageSections). You can see police has 2 sections. Follow that format to add a section to a garage. 
 * If you desire to add a whole garage somewhere. Use the same format, but in this case copy the whole garage code. You can look at how I added 3 garages as examples.
 
 1. Want to add vehicles?
+
 * Simply add "yourvehicle", in the given format under SectionVehicles of the garage you want to add it to. Don't forget the comma!
 
 ```lua
