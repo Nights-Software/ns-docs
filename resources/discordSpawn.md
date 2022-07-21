@@ -48,6 +48,56 @@ ensure night_discord_spawn
 
 1. Configure /config/config.lua.
 
+*Read the instructions below to understand the configuration*
+
+1. Make sure night_discordapi is working before you install this resource. It comes with a documentation.pdf file on how to install it.
+
+* To define what roles can spawn at a certain location, you can use the variable RequiredDiscordRoles.
+* To define what roles can spawn in a certain outfit, you can use the variable requiredDiscordRolesForThisEUP.
+* To add multiple roles, follow the example format: (RequiredDiscordRoles = {"rolename1", "rolename2"}). The same goes for weapons.
+
+1. Props and components?
+
+* {0, 40, 1} is a weird listing. What it basically means is that the first number represents the prop/component type (helmet, shoe, shirt). The second number represents the prop ID. A usefull way to figure this out is vMenu. You will learn that MP Peds differ in numbers (by 1) compared to editing player appearance (in vMenu). Play around with it and see the result. The third number represents the texture type. So a green, yellow or red helmet, shoe or shirt for example.
+
+```lua
+[1] = {
+    SpawnLocationName = "Vespucci Police Station",
+    GroupSpawningHereName = "Police",
+    RequiredDiscordRoles = {"Manager", "Senior_Admin", "Admin", "Allowlisted"},     -- Used when discord API is enabled, match these to your role names in night_discordapi.
+    SpawnPoint = {x = -1113.6825, y = -822.6157, z = 19.3160},      -- Location where the player will spawn.
+    CameraPoint = {x = -1117.2706, y = -818.3685, z = 21.2160},     -- Location from where the camera will face the spawnpoint.
+    SpawnWeapons = {"WEAPON_FLASHLIGHT"},                           -- Weapons which the player of this section will spawn with.
+    SpawnHP = 200,                                                  -- Health ,,
+    SpawnArmour = 200,                                              -- Armour ,,
+    EUPData = {                                                     -- EUPData defines the player clothing, props and textures.
+        [1] = {                    -- This is a default uniform, you will have to change this.
+            requiredDiscordRolesForThisEUP = {"Manager", "Senior_Admin", "Admin", "PCSO", "Essex_Police_Force"},
+            outfitname = 'Response PCSO Uniform',
+            ped = 'mp_m_freemode_01', 
+            props = {
+                { 0, 40, 1 },   -- Hats / Helments
+                { 1, 0, 0 },    -- Glasses
+                { 2, 0, 0 },
+                { 3, 0, 0 },
+            },
+            components = {
+                { 1, 121, 1 },  -- Mask
+                { 3, 31, 1 },   -- Upper body
+                { 4, 53, 1 },   -- Legs / Pants
+                { 5, 53, 1 },   -- Bags / Parachutes
+                { 6, 52, 1 },   -- Shoes
+                { 7, 4, 1 },    -- Neck / Scarfs
+                { 8, 16, 1 },   -- Shirt / Accessory
+                { 9, 15, 1 },   -- Body Armor
+                { 10, 1, 1 },   -- Badges / Logos
+                { 11, 209, 1 }, -- Jackets
+            },
+        },
+    }
+},
+```
+
 ## Export Functions
 
 1. Use this export to force the player into spawn selection.
