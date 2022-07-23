@@ -50,8 +50,8 @@ ensure night_garage_system
 
 *Use the example below to understand the configuration of this resource!*
 
-* Set the LocationVehicleShowcase coordinates and heading first, this will show the marker and/or label for the garages. This is also the point where the camera points at. You can change these to your liking.
-* Set the LocationVehicleCamPos coordinates somewhere close to the LocationVehicleShowcase coordinates. LocationVehicleCamPos is the coordinate where the vehicle will be showcased only for the local player.
+* Set the LocationVehicleShowcase coordinates and heading first, this will show the marker and/or label for the garages. This is also the point where the camera "looks" at.
+* Set the LocationVehicleCamPos coordinates somewhere close to the LocationVehicleShowcase coordinates. LocationVehicleCamPos is the coordinate where the vehicle will be showcased only for the player in vehicle preview.
 * Set the LocationVehicleSpawn coordinates where the vehicle should eventually spawn.
 
 ## Using [Discord API?](https://docs.ea-rp.com/resources/discordAPI/)
