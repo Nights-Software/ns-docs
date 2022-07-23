@@ -65,7 +65,7 @@ ensure night_garage_system
 * Compare Police Garage (GarageSections = ) to Ambulance garage (GarageSections). You can see police has 2 sections. Follow that format to add a section to a garage. 
 * If you desire to add a whole garage somewhere. Use the same format, but in this case copy the whole garage code. You can look at how I added 3 garages as examples.
 
-# Want to add vehicles?
+## Want to add vehicles?
 
 * Simply add "yourvehicle", in the given format under SectionVehicles of the garage you want to add it to. Don't forget the comma!
 
