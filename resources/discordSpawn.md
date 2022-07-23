@@ -49,14 +49,15 @@ ensure night_discord_spawn
 1. Configure /config/config.lua.
 
 *Read the instructions below to understand the configuration*
+*Make sure night_discordapi is working before you install this resource. night_discordapi comes with a documentation.pdf file on how to install it.*
 
-1. Make sure night_discordapi is working before you install this resource. It comes with a documentation.pdf file on how to install it.
+## Configuration example
 
 * To define what roles can spawn at a certain location, you can use the variable RequiredDiscordRoles.
 * To define what roles can spawn in a certain outfit, you can use the variable requiredDiscordRolesForThisEUP.
 * To add multiple roles, follow the example format: (RequiredDiscordRoles = {"rolename1", "rolename2"}). The same goes for weapons.
 
-1. Props and components?
+## Props and components?
 
 * {0, 40, 1} is a weird listing. What it basically means is that the first number represents the prop/component type (helmet, shoe, shirt). The second number represents the prop ID. A usefull way to figure this out is vMenu. You will learn that MP Peds differ in numbers (by 1) compared to editing player appearance (in vMenu). Play around with it and see the result. The third number represents the texture type. So a green, yellow or red helmet, shoe or shirt for example.
 
