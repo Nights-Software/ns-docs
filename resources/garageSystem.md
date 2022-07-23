@@ -31,7 +31,7 @@ A guide to install Garage System! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/](https://store.ea-rp.com/)
+Base: [https://store.ea-rp.com/package/5208515](https://store.ea-rp.com/package/5208515)
 
 ## Downloading the resource
 
