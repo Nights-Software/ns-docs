@@ -58,7 +58,8 @@ ensure night_prop_system
 
 1. Example:
 ```lua
-exports['night_prop_system']:OpenPropMenu(src)
+exports['night_prop_system']:OpenPropMenu(src, toggle) -- toggle means wether you want to open it (true) or -force- close it (false).
+exports['night_prop_system']:OpenSpeedZoneMenu(src, toggle) -- toggle means wether you want to open it (true) or -force- close it (false).
 ```
 
 ## Support
