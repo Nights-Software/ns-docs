@@ -31,7 +31,7 @@ A guide to install Ace permissions! for FiveM
 
 1. Create a perms.cfg file in the same folder as your server.cfg file.
 
-1. Insert the code below into the perms.cfg file and edit the steam64 ID's.
+1. Insert the code below into the perms.cfg file and edit the steam HEX ID's: How to find those? Check this youtube video: https://youtu.be/hyW9aFJI5_Q
 
 ```
 add_ace Admin administrator allow
