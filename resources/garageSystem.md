@@ -39,6 +39,12 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 
 ## Installing the resource
 
+*Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
+
+```
+ZIP Package -> Unpack in a folder on your local machine -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
+```
+
 1. Drag the resource into your resources folder.
 
 1. Ensure or start this resource in your server.cfg. Example:
