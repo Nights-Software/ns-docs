@@ -90,6 +90,13 @@ Example of a comment: `-- dependency 'xsound'`
 
 1. Weather script compatibility is found in 3 resources: qb-weathersync, cd_easytime and vSyncR. We have made edits of these open source assets and offer you these for free. Claim them via our discord in a channel called #free-files! Click the button below this page to join the discord.
 
+## Exports
+
+1. We provide a configuration option for the following export (config.lua -> CustomSoundResource = "ResName" & s_functions.lua -> Server event = Accessible code):
+```lua
+exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords --[[Vector 3]], disasterID --[[index nr]], soundFileName --[[File name]], soundFileVolume --[[Volume]])
+```
+
 ## Recommended!
 
 * [https://store.ea-rp.com/package/5131340](https://store.ea-rp.com/package/5131340) - Natural Disasters (Purchase this one, do not install, you need this one to buy the DLC, but can install just the DLC for it all to work )
