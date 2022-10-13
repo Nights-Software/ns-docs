@@ -61,6 +61,7 @@ ensure night_coma_down_system
 ```lua
 exports['night_coma_down_system']:RevivePlayer(source)
 exports['night_coma_down_system']:RespawnPlayer(source)
+exports['night_coma_down_system']:GetPlayerComaType(source)
 ```
 
 ## Compatibility
