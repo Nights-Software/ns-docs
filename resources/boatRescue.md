@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Discord Lockers"
+title: "Boat Rescue (Tow) for FiveM!"
 nav_order: 27
 has_children: false
 has_toc: true
