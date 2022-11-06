@@ -38,6 +38,10 @@ Base: [https://store.ea-rp.com/package/5035729](https://store.ea-rp.com/package/
 
 Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants).
 
+## Video Installation Tutorial
+
+[https://youtu.be/Q5vxVyVqu7o](https://youtu.be/Q5vxVyVqu7o)
+
 ## Installing the resource
 
 *Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
