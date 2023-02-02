@@ -1,18 +1,18 @@
 ---
 layout: default
-title: "Ammobox & Crates"
-nav_order: 29
+title: "Ambilight Loading Screen"
+nav_order: 31
 has_children: false
 has_toc: true
-last_modified_date: "2022-10-17 17:25:00"
+last_modified_date: "2023-02-02 22:14:00"
 ---
 
-<img class="cover-img" src="/assets/img/ammoboxes_and_crates.png" alt="Ammobox & Crates! Resource" draggable="false">
+<img class="cover-img" src="/assets/img/loadingScreen.png" alt="Ambilight Loading Screen Resource" draggable="false">
 
-# Ammobox & Crates!
+# Ambilight Loading Screen
 {: .no_toc}
 
-A guide to install Ammobox & Crates! for FiveM
+A guide to install Loading Screen for FiveM
 
 {: .fs-5 .fw-300 }
 
@@ -31,7 +31,7 @@ A guide to install Ammobox & Crates! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5416619](https://store.ea-rp.com/package/5416619)
+Base: [https://store.ea-rp.com/package/5504509](https://store.ea-rp.com/package/5504509)
 
 ## Downloading the resource
 
@@ -49,7 +49,7 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 1. Ensure or start this resource in your server.cfg. Example:
 ```lua
-ensure night_ammobox
+ensure night_loading_screen
 ```
 
 1. Configure /config/config.lua. You will notice there is explanation in green text and variables for you to edit in this configuration file.
