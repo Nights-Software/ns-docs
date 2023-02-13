@@ -1,18 +1,18 @@
 ---
 layout: default
-title: "Air Raid Sirens"
+title: "Air Raid Sirens V3"
 nav_order: 13
 has_children: false
 has_toc: true
-last_modified_date: "2022-07-08 00:00:00"
+last_modified_date: "2022-02-16 18:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/airRaidSirens.png" alt="Air Raid Sirens Resource" draggable="false">
+<img class="cover-img" src="/assets/img/airRaidSirens.png" alt="Air Raid Sirens V3" draggable="false">
 
 # Air Raid Sirens!
 {: .no_toc }
 
-A guide to install Air Raid Sirens! for FiveM
+A guide to install Air Raid Sirens v3! for FiveM
 {: .fs-5 .fw-300 }
 
 ---
@@ -37,10 +37,6 @@ Base: [https://store.ea-rp.com/package/5030134](https://store.ea-rp.com/package/
 ## Downloading the resource
 
 Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants).
-
-## Video Installation Tutorial
-
-[https://youtu.be/OBzDBxGT0qM](https://youtu.be/OBzDBxGT0qM)
 
 ## Installing the resource
 
