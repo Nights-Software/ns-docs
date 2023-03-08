@@ -62,8 +62,11 @@ ensure night_air_raid_sirens
 
 1. Example:
 ```lua
-exports['night_air_raid_sirens']:TriggerAirRaidSirens(src)
+exports['night_air_raid_sirens']:TriggerAirRaidSirens(src, soundFileName) 
+
+- Example of a soundFileName:  "air-raid-siren"
 ```
+
 
 ## Support
 
