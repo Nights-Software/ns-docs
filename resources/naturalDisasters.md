@@ -46,7 +46,7 @@ DLC 3: [https://store.ea-rp.com/package/5314042](https://store.ea-rp.com/package
 *You require DLC2 resource to be able to purchase the DLC3.*
 
 ## Installation Notice
-*Got all packs? Install just DLC3, this contains all code required. The latest resource is the one you install.*
+*Got all of the Natural Disasters? Install just DLC3, this contains all code required. The latest resource is the one you install!*
 
 ## Downloading the resource
 
@@ -88,7 +88,7 @@ Example of a comment: `-- dependency 'xsound'`
 
 1. Carefully read the instructions given in natural_disasters/config/config.lua, it offers you all kinds of customization options!
 
-1. Weather script compatibility is found in 3 resources: qb-weathersync, cd_easytime and vSyncR. We have made edits of these open source assets and offer you these for free. Claim them via our discord in a channel called #free-files! Click the button below this page to join the discord.
+1. Weather script compatibility is found in 3 resources: qb-weathersync, cd_easytime (No longer supported) and vSyncR. We have made edits of these open source assets and offer you these for free. Claim them via our discord in a channel called #free-files! Click the button below this page to join the discord.
 
 ## Exports
 
