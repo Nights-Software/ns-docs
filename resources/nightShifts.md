@@ -103,6 +103,10 @@ Are you not familiar with code? Then skip this section.
 
 1. We have provided 2 open script files containing functions you can edit to your desire. Feel free to take a look.
 
+## Editing styling
+
+You can edit some styling in NUI/styles.css. It is not recommended if you don't know what you're doing. It wasn't specifically made to be edited, but if you're handy you'll find your way!
+
 ## Exports (Developers only)
 
 GetUserShiftData is used to get all the data related to their shift stored clientside for the given players' server ID. Print out the result to see what keys and values you get to use.
