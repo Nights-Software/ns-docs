@@ -41,13 +41,13 @@ Base: [https://store.ea-rp.com/package/todo](https://store.ea-rp.com/package/tod
 ZIP Package -> Unpack in a folder on your local machine -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
 ```
 
-*IMPORTANT: Follow this guide step by step. If you're stuck at a step, please ask for support in our Discord and provide the step number, do not skip steps. Click the button to join discord at the bottom of this page.*
+*IMPORTANT: Follow this guide step by step. If you're stuck at a step, please ask for support in our Discord and provide the step name, do not skip steps. Click the button to join discord at the bottom of this page.*
 
 ## Setting up your database tables (Dependency)
 
 We assume you have a database for your FiveM server. If you do not have one, contact your providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
 
-Example for ZAP-Hosting: https://zap-hosting.com/guides/docs/en/fivem_sql_file_import/#import-the-sql-file-into-the-fivem-database
+Example for ZAP-Hosting: [SQL File Import into FiveM Database - ZAP Hosting](https://zap-hosting.com/guides/docs/en/fivem_sql_file_import/#import-the-sql-file-into-the-fivem-database)
 *Note: This example shows how to run an SQL file. We want you to create the tables from our .sql file (in the night shifts) folder in your database. If running the .sql file does not work, insert the SQL table queries manually into your database.*
 
 ## Installing oxmysql (Dependency)
@@ -60,7 +60,11 @@ If you have questions about oxmysql, head over to their documentation page: [oxm
 
 ## Testing your database & oxmysql
 
-Once you've installed your database with tables, installed oxmysql and configured your server.cfg, your server should be ready to run. Start and test whether oxmysql works. In some cases you can get print-outs in your server console, like this one: `[script:oxmysql] Database server connection established!`. This will let you know your installation has worked. You can also check whether there are errors to solve in your server console.
+Once you've installed your database with tables, installed oxmysql and configured your server.cfg, your server should be ready to run. Start and test whether oxmysql works. In some cases you can get print-outs in your server console, like this one: 
+
+`[script:oxmysql] Database server connection established!` 
+
+This will let you know your installation has worked. You can also check whether there are errors to solve in your server console.
 
 ## Downloading & Installing Night Discord API (Dependency)
 
@@ -76,9 +80,11 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 
 1. Unpack the files into a folder onto your server. Please keep in mind you need to unpack it either on your servers' desktop before installing it, or do that locally on your own desktop and then drag over the files manually, to prevent parsing errors. Do not rename the resource.
 
-1. Make sure you put 'night_shifts' into your resources folder of your server.
+1. Make sure you put the 'night_shifts' folder into your resources folder of your server.
 
-1. Ensure or start this resource in your server.cfg. Example:
+1. Ensure or start this resource in your server.cfg. 
+
+Example:
 ```lua
 ensure night_shifts
 ```
@@ -91,25 +97,21 @@ There are loads of options to configure. It is recommended you test the resource
 
 1. Open /config/config.lua in VS Code. To read this file we recommend Visual Studio Code: [Download VS Code](https://code.visualstudio.com/download).
 
-1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like config/config.lua | client/c_functions.lua | server/server.lua.
+1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like config/config.lua, client/c_functions.lua, server/server.lua.
 
 1. When configuring the resource you will see that each line has explanation behind it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
 
 1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Read it all to understand it.
 
-## Editing c_functions.lua / s_functions.lua (Developers only)
+## Editing c_functions.lua / s_functions.lua
 
-Are you not familiar with code? Then skip this section.
+Are you not familiar with code? Then skip this section or take on the challenge!
 
-1. We have provided 2 open script files containing functions you can edit to your desire. Feel free to take a look.
+We have provided 2 open script files containing functions you can edit to your desire. Feel free to take a look.
 
-## Editing styling
+## Exports
 
-You can edit some styling in NUI/styles.css. It is not recommended if you don't know what you're doing. It wasn't specifically made to be edited, but if you're handy you'll find your way!
-
-## Exports (Developers only)
-
-GetUserShiftData is used to get all the data related to their shift stored clientside for the given players' server ID. Print out the result to see what keys and values you get to use.
+GetUserShiftData is used to get all the data related to their shift stored clientside for the given players' server ID. It will auto-print out the result to see what keys and values you get to use.
 ```lua
     local src = source
     local shiftDataResults = exports['night_shifts']:GetUserShiftData(src)
@@ -121,6 +123,9 @@ GetUserShiftData is used to get all the data related to their shift stored clien
         print("User is not on a shift.")
     end
 ```
+## Editing styling
+
+You can edit some styling in NUI/styles.css. It is not recommended if you don't know what you're doing. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way!
 
 ## Feedback
 
