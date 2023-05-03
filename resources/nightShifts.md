@@ -80,11 +80,44 @@ Once you've installed your database with tables, installed oxmysql and configure
 
 This will let you know your installation has worked. You can also check whether there are errors to solve in your server console.
 
+## Installing nearest-postal (Optional - Recommended)
+[CFX Forum Release](https://forum.cfx.re/t/release-nearest-postal-script/293511)
+
+This is an optional resource, but fits well within the purpose of the NS - MDT. We recommend you install this. If you choose an alternative, re-write the getPostal(x, y) function in c_functions.lua to your desire at a later stage.
+
+1. Download the resource from [nearest-postal Direct download link](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip)
+
+1. Rename the 'nearest-postal-master' to 'nearest-postal' and drag this folder to your resources folder.
+
+1. Ensure or start this resource in your server.cfg. 
+
+Example:
+```lua
+ensure nearest-postal
+```
+
+1. Configure config.lua to your desire.
+
+1. Download: [Download the newest postal map directly](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0) and install it. Forum link: [CFX Release - Postal map](https://forum.cfx.re/t/release-postal-code-map-minimap-new-improved-v1-3/147458) 
+
+1. Open the 'Server Resource' folder and extract the resource 'map' from the archive onto your server desktop or local desktop. Place 'map' into your resources folder.
+
+1. Ensure or start this resource in your server.cfg. 
+
+Example:
+```lua
+ensure map
+```
+
+1. Restart your server and check your server console to see whether the nearest-postal and map resources have started.
+
 ## Downloading & Installing Night Discord API (Dependency)
 
 Download our free Discord API, which has been integrated in the NS - MDT resource as a permission system: [NS Discord API Free](https://store.ea-rp.com/package/5035729)  
 
 1. Install the Discord API, using the documentation.pdf file provided with the resource.
+
+1. You will need the role names you have defined in the Discord API config.lua later, when configuring night_shifts.
 
 ## Downloading & Installing Night Shifts - Mobile Data Terminal
 
@@ -119,11 +152,17 @@ There are loads of options to configure. It is recommended you test the resource
 
 1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Read it all to understand it.
 
+1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom: 
+
+*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. The MDT will only work for those Discord Roles which have been set up. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
+
 ## Editing c_functions.lua / s_functions.lua
 
 Are you not familiar with code? Then skip this section or take on the challenge!
 
-We have provided 2 open script files containing functions you can edit to your desire. Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can ofcourse ask us any question and we will try to see if our knowledge can help you.
+We have provided 2 open script files containing functions you can edit to your desire. A client side functions script (c_functions.lua) and a server side functions script (s_functions.lua). You can also write events or new functions in them if you need to for your custom add-ons or edits.
+
+Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can ofcourse ask us any question and we will try to see if our knowledge can help you.
 
 ## Exports
 
