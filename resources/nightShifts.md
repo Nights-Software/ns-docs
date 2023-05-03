@@ -72,7 +72,6 @@ Example:
 ensure oxmysql
 ```
 
-
 ## Testing your database & oxmysql
 
 Once you've installed your database with tables, installed oxmysql and configured your server.cfg, your server should be ready to run. Start and test whether oxmysql works. In some cases you can get print-outs in your server console, like this one: 
@@ -99,12 +98,12 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 
 1. Ensure or start this resource in your server.cfg. 
 
-1. Start your server to see whether both oxmysql (must start first) and 
-
 Example:
 ```lua
 ensure night_shifts
 ```
+
+1. Start your server and look at your server console to see whether both oxmysql (must start first) and night_shifts (must start after oxmysql) have started. Do not continue until you confirm this to be true.
 
 ## Configuring the config.lua file
 
