@@ -134,10 +134,10 @@ You can edit styling in NUI/styles.css. It is not recommended if you don't know 
 
 ## Feedback
 
-Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the button at the bottom of this page.
+Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the Discord button at the bottom of this page to visit our ticket & review channels.
 
 ## Support
 
-Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord:
+Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord.
 
 [Nights Software Discord](https://ns.ea-rp.com){: .btn .btn-discord}
