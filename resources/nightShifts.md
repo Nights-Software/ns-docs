@@ -96,15 +96,15 @@ ensure night_shifts
 
 ## Configuring the config.lua file
 
-There are loads of options to configure. It is recommended you test the resource before editing it. So you are sure it works. If you start editing it, frequently test what you've changed to prevent errors you can not trace. If you ask for support, we will recommend you to re-install it if you've edited it. There are many ways to break code and many reasons why code will not work sometimes. Follow the steps below!
+There are loads of options to configure. It is recommended you test the resource before editing it. So you are sure it works. If you start editing it, frequently test what you've changed to prevent getting errors you can not trace. If you ask for support, we will recommend you to re-install it if you've edited it. There are many ways to break code and many reasons why code will not work sometimes. Follow the steps below!
 
-*Note: Always check your FiveM server console and F8 client console for errors, you need these to find your issue if you have one*
+*Note: Always check your FiveM server console and F8 client console for errors, you need these errors to locate your issue if you have one.*
 
 1. Open /config/config.lua in VS Code. To read this file we recommend Visual Studio Code: [Download VS Code](https://code.visualstudio.com/download).
 
-1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like config/config.lua, client/c_functions.lua, server/server.lua.
+1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like config/config.lua, client/c_functions.lua, server/s_functions.lua.
 
-1. When configuring the resource you will see that each line has explanation behind it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
+1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
 
 1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Read it all to understand it.
 
@@ -112,7 +112,7 @@ There are loads of options to configure. It is recommended you test the resource
 
 Are you not familiar with code? Then skip this section or take on the challenge!
 
-We have provided 2 open script files containing functions you can edit to your desire. Feel free to take a look.
+We have provided 2 open script files containing functions you can edit to your desire. Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can ofcourse ask us any question and we will try to see if our knowledge can help you.
 
 ## Exports
 
@@ -130,7 +130,7 @@ GetUserShiftData is used to get all the data related to their shift stored clien
 ```
 ## Editing styling
 
-You can edit some styling in NUI/styles.css. It is not recommended if you don't know what you're doing. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way!
+You can edit styling in NUI/styles.css. It is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
 
 ## Feedback
 
