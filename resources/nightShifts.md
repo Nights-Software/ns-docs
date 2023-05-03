@@ -48,7 +48,12 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 We assume you have a database for your FiveM server. If you do not have one, contact your providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
 
 Example for ZAP-Hosting: [SQL File Import into FiveM Database - ZAP Hosting](https://zap-hosting.com/guides/docs/en/fivem_sql_file_import/#import-the-sql-file-into-the-fivem-database)
-*Note: This example shows how to run an SQL file. We want you to create the tables from our .sql file (in the night shifts) folder in your database. If running the .sql file does not work, insert the SQL table queries manually into your database.*
+
+{: .note-title }
+> Note
+>
+> This example shows how to run an SQL file. We want you to create the tables from our .sql file (in the night shifts) folder in your database. If running the .sql file does not work, insert the SQL table queries manually into your database
+
 
 ## Installing oxmysql (Dependency)
 
