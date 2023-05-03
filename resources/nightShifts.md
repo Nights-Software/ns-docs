@@ -49,7 +49,7 @@ We assume you have a database for your FiveM server. If you do not have one, con
 
 Example for ZAP-Hosting: [SQL File Import into FiveM Database - ZAP Hosting](https://zap-hosting.com/guides/docs/en/fivem_sql_file_import/#import-the-sql-file-into-the-fivem-database)
 
-{: .note-title }
+{: .note }
 > Note
 >
 > This example shows how to run an SQL file. We want you to create the tables from our .sql file (in the night shifts) folder in your database. If running the .sql file does not work, insert the SQL table queries manually into your database
