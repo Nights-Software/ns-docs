@@ -89,13 +89,13 @@ There are loads of options to configure. It is recommended you test the resource
 
 *Note: Always check your FiveM server console and F8 client console for errors, you need these to find your issue if you have one*
 
-1. Configure /config/config.lua. You will notice there is explanation in green text and variables for you to edit in this configuration file. To read this file we recommend Visual Studio Code: https://code.visualstudio.com/download.
+1. Open /config/config.lua in VS Code. To read this file we recommend Visual Studio Code: https://code.visualstudio.com/download.
 
 1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like config/config.lua | client/c_functions.lua | server/server.lua.
 
 1. When configuring the resource you will see that each line has explanation behind it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
 
-1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove.
+1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Read it all to understand it.
 
 ## Editing c_functions.lua / s_functions.lua (Developers only)
 
