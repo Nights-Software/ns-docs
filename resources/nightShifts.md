@@ -118,6 +118,10 @@ GetUserShiftData is used to get all the data related to their shift stored clien
     end
 ```
 
+## Feedback
+
+Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the button at the bottom of this page.
+
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord:
