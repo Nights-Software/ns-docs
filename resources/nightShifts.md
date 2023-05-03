@@ -63,6 +63,16 @@ If you do not have oxmysql as your primary API for using a database. Find the do
 
 If you have questions about oxmysql, head over to their documentation page: [oxmysql Documentation](https://overextended.github.io/docs/oxmysql/)
 
+1. Place 'oxmysql' into your resources folder.
+
+2. Ensure / start 'oxmysql' in your server.cfg somewhere in the top of your server.cfg, to make sure it starts before the 'night_shifts' resource, which we install later in this documentation.
+
+Example:
+```lua
+ensure oxmysql
+```
+
+
 ## Testing your database & oxmysql
 
 Once you've installed your database with tables, installed oxmysql and configured your server.cfg, your server should be ready to run. Start and test whether oxmysql works. In some cases you can get print-outs in your server console, like this one: 
@@ -88,6 +98,8 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 1. Make sure you put the 'night_shifts' folder into your resources folder of your server.
 
 1. Ensure or start this resource in your server.cfg. 
+
+1. Start your server to see whether both oxmysql (must start first) and 
 
 Example:
 ```lua
