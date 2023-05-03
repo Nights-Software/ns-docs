@@ -54,9 +54,9 @@ Example for ZAP-Hosting: https://zap-hosting.com/guides/docs/en/fivem_sql_file_i
 
 We assume you have oxmysql installed, this is a dependency for NS - MDT to work.
 
-If you do not have oxmysql as your primary API for using a database. Find the download here: https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip and install it (https://overextended.github.io/docs/oxmysql/#installation).
+If you do not have oxmysql as your primary API for using a database. Find the download here: [Download oxmysql](https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip) &  [Install oxmysql](https://overextended.github.io/docs/oxmysql/#installation).
 
-If you have questions about oxmysql, head over to their documentation page: https://overextended.github.io/docs/oxmysql/
+If you have questions about oxmysql, head over to their documentation page: [oxmysql Documentation](https://overextended.github.io/docs/oxmysql/)
 
 ## Testing your database & oxmysql
 
@@ -64,7 +64,7 @@ Once you've installed your database with tables, installed oxmysql and configure
 
 ## Downloading & Installing Night Discord API (Dependency)
 
-Download our free Discord API, which has been integrated in the NS - MDT resource as a permission system: https://store.ea-rp.com/package/5035729 
+Download our free Discord API, which has been integrated in the NS - MDT resource as a permission system: [NS Discord API Free](https://store.ea-rp.com/package/5035729)  
 
 1. Install the Discord API, using the documentation.pdf file provided with the resource.
 
@@ -89,7 +89,7 @@ There are loads of options to configure. It is recommended you test the resource
 
 *Note: Always check your FiveM server console and F8 client console for errors, you need these to find your issue if you have one*
 
-1. Open /config/config.lua in VS Code. To read this file we recommend Visual Studio Code: https://code.visualstudio.com/download.
+1. Open /config/config.lua in VS Code. To read this file we recommend Visual Studio Code: [Download VS Code](https://code.visualstudio.com/download).
 
 1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like config/config.lua | client/c_functions.lua | server/server.lua.
 
