@@ -31,7 +31,7 @@ A guide to install Night Shifts - Mobile Data Terminal for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/todo](https://store.ea-rp.com/package/todo)
+Base: [https://store.ea-rp.com/package/5667103](https://store.ea-rp.com/package/5667103)
 
 # Read before installing
 
@@ -202,9 +202,9 @@ In short, Night Shifts is a powerful tool for managing your emergency services o
 
 This is a basic approach to how to play Night Shifts. You can create your own kind of documentation for your own community to make it fit! The server owner can make the MDT fit any country.
 
-### There are three sides to the MDT:
+## There are three sides to the MDT:
 
-1. Civilian Side:
+### Civilian Side:
 
 Features:
 ```
@@ -222,7 +222,7 @@ DVLA / DMV
 - Add a custom vehicle picture to your vehicle registry
 ```
 
-1. Emergency Services Side
+### Emergency Services Side
 
 Features:
 ```
@@ -272,7 +272,7 @@ Statistics
 - View statistics
 ```
 
-1. Server owner side
+### Server owner side
 
 ```
 - Configurable ANPR camera locations (Fictive, you can find a camera object script or MLO at third parties)
