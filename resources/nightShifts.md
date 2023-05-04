@@ -59,9 +59,9 @@ Example for ZAP-Hosting: [SQL File Import into FiveM Database - ZAP Hosting](htt
 
 We assume you have oxmysql installed, this is a dependency for NS - MDT to work.
 
-If you do not have oxmysql as your primary API for using a database. Find the download here: [Download oxmysql](https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip) &  [Install oxmysql](https://overextended.github.io/docs/oxmysql/#installation).
+If you do not have oxmysql as your primary API for using a database. Find the download here: [Download Oxmysql](https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip) &  [Install Oxmysql](https://overextended.github.io/docs/oxmysql/#installation).
 
-If you have questions about oxmysql, head over to their documentation page: [oxmysql Documentation](https://overextended.github.io/docs/oxmysql/)
+If you have questions about oxmysql, head over to their documentation page: [Oxmysql documentation](https://overextended.github.io/docs/oxmysql/)
 
 1. Place 'oxmysql' into your resources folder.
 
@@ -85,7 +85,9 @@ This will let you know your installation has worked. You can also check whether 
 
 This is an optional resource, but fits well within the purpose of the NS - MDT. We recommend you install this. If you choose an alternative, re-write the getPostal(x, y) function in c_functions.lua to your desire at a later stage.
 
-1. Download the resource from [nearest-postal Direct download link](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip)
+1. Download the resource from [Nearest-Postal direct download link](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip)
+
+1. Unarchive the master folder onto your server or local desktop.
 
 1. Rename the 'nearest-postal-master' to 'nearest-postal' and drag this folder to your resources folder.
 
@@ -109,7 +111,7 @@ Example:
 ensure map
 ```
 
-1. Restart your server and check your server console to see whether the nearest-postal and map resources have started.
+1. Restart your server and check your server console to see whether the nearest-postal and map resource have started.
 
 ## Downloading & Installing Night Discord API (Dependency)
 
@@ -136,21 +138,23 @@ Example:
 ensure night_shifts
 ```
 
-1. Start your server and look at your server console to see whether both oxmysql (must start first) and night_shifts (must start after oxmysql) have started. Do not continue until you confirm this to be true.
+1. Start your server and look at your server console to see whether both oxmysql (must start first) and night_shifts (must start after oxmysql) have started. Do not continue until you confirm this to be true and without errors. If you have any errors, read them and use them to solve your issue. They guide you!
 
 ## Configuring the config.lua file
 
-There are loads of options to configure. It is recommended you test the resource before editing it. So you are sure it works. If you start editing it, frequently test what you've changed to prevent getting errors you can not trace. If you ask for support, we will recommend you to re-install it if you've edited it. There are many ways to break code and many reasons why code will not work sometimes. Follow the steps below!
+There are loads of options to configure. It is recommended you test the resource before editing it. So you are sure it works by default. If you start editing it, frequently test what you've changed to prevent getting errors you can not trace. If you ask for support, we will recommend you to re-install it if you've edited it. There are many ways to break code and many reasons why code will not work sometimes. Lets move on by following the steps below!
 
 *Note: Always check your FiveM server console and F8 client console for errors, you need these errors to locate your issue if you have one.*
 
-1. Open /config/config.lua in VS Code. To read this file we recommend Visual Studio Code: [Download VS Code](https://code.visualstudio.com/download).
+1. We recommend downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
 
-1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like config/config.lua, client/c_functions.lua, server/s_functions.lua.
+1. Open /config/config.lua in VS Code. 
+
+1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
 
 1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
 
-1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Read it all to understand it.
+1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Relax mode on and read it all to understand it.
 
 1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom: 
 
@@ -160,7 +164,7 @@ There are loads of options to configure. It is recommended you test the resource
 
 Are you not familiar with code? Then skip this section or take on the challenge!
 
-We have provided 2 open script files containing functions you can edit to your desire. A client side functions script (c_functions.lua) and a server side functions script (s_functions.lua). You can also write events or new functions in them if you need to for your custom add-ons or edits.
+We have provided 2 open script files containing functions you can edit to your desire. A client side functions script `c_functions.lua` and a server side functions script `s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits.
 
 Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can ofcourse ask us any question and we will try to see if our knowledge can help you.
 
@@ -175,7 +179,7 @@ GetUserShiftData is used to get all the data related to their shift stored clien
             print("Key: "..k.." | Value: "..v)
         end
     else
-        print("User is not on a shift.")
+        print("No shift data found for server ID "..src)
     end
 ```
 ## Editing styling
@@ -218,7 +222,7 @@ DVLA / DMV
 - Add a custom vehicle picture to your vehicle registry
 ```
 
-2. Emergency Services Side
+1. Emergency Services Side
 
 Features:
 ```
@@ -268,7 +272,7 @@ Statistics
 - View statistics
 ```
 
-3. Server owner side
+1. Server owner side
 
 ```
 - Configurable ANPR camera locations (Fictive, you can find a camera object script or MLO at third parties)
