@@ -192,7 +192,7 @@ GetUserShiftData is used to get all the data related to their shift stored clien
 You can edit styling in NUI/styles.css. It is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
 
 # How to play Night Shifts - MDT?
-Welcome to Night Shifts - MDT, a customizable MDT system for your community. Whether you're running a police, fire, or EMS department, Night Shifts provides a range of features to help you manage your operations.
+Welcome to Night Shifts - MDT, a customizable MDT system for your community. Whether you're running a police, fire, or EMS department, Night Shifts provides a range of features to help you manage your operations. Our MDT is configurable to fit the needs of emergency services in any country.
 
 ## Civilian Side
 The civilian side of the MDT includes features such as an emergency services hotline, a council/city hall registry for managing civilians, and a DVLA/DMV registry for managing vehicles. You can edit your civilians and vehicles, and even add custom profile pictures for each one.
@@ -209,7 +209,7 @@ This is a basic approach to how to play Night Shifts. You can create your own ki
 
 ## There are three sides to the MDT:
 
-### Civilian Side:
+### Civilian Side
 
 Features:
 ```
