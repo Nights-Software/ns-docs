@@ -301,6 +301,20 @@ Statistics
 
 ---
 
+## Troubleshoot
+
+A list of tips and tricks:
+
+1. Start the resource before you or any other player joins. This will prevent errors in relation to your database.
+
+1. Do not delete department sections or change index numbers in the config.lua. Some parts of the code require the setup and the MDT is made to have 4 sections. To disable one, just permission lock and rename it or get creative otherwise.
+
+1. Always order index numbers. Correct: [1], [2], [3] | Wrong: [1], [3], [4]
+
+1. Always read the commentry in the scripts you're editing. There is logic in them.
+
+---
+
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
 
