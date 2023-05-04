@@ -43,6 +43,8 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 *IMPORTANT: Follow this guide step by step. If you're stuck at a step, please ask for support in our Discord and provide the step name, do not skip steps. Click the button to join discord at the bottom of this page.*
 
+---
+
 ## Setting up your database tables (Dependency)
 
 We assume you have a database for your FiveM server. If you do not have one, contact your providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
@@ -182,6 +184,9 @@ GetUserShiftData is used to get all the data related to their shift stored clien
         print("No shift data found for server ID "..src)
     end
 ```
+
+---
+
 ## Editing styling
 
 You can edit styling in NUI/styles.css. It is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
@@ -291,6 +296,11 @@ Statistics
 - Configurable departments, sub-departments, ranks, roles and access levels
 - Every word displayed is editable in the config file for the MDT, to provide for everyone in the world.
 ```
+
+---
+
+# Help us or let us help you
+Get in touch for feedback or support, join our Discord and make use of our ticket system!
 
 ## Feedback
 
