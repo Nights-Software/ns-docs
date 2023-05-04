@@ -183,6 +183,18 @@ GetUserShiftData is used to get all the data related to their shift stored clien
 You can edit styling in NUI/styles.css. It is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
 
 ## How to play Night Shifts?
+Welcome to Night Shifts, a customizable MDT system for your community. Whether you're running a police, fire, or EMS department, Night Shifts provides a range of features to help you manage your operations.
+
+# Civilian Side
+The civilian side of the MDT includes features such as an emergency services hotline, a council/city hall registry for managing civilians, and a DVLA/DMV registry for managing vehicles. You can edit your civilians and vehicles, and even add custom profile pictures for each one.
+
+# Emergency Services Side
+On the emergency services side, you can manage your shift and status, select your department and sub-department, and trigger a panic button in case of an emergency. The emergency hotline allows you to receive and locate emergency calls, while the Police National Computer (PNC) lets you search for people, vehicles, and records. You can also create reports for police, fire, and ambulance services, and view statistics for your department.
+
+# Server Owner Features
+If you're a server owner, Night Shifts gives you even more control over your MDT system. You can configure ANPR camera locations, fire station alarms, images and sounds in the NUI folder, language settings, and more. You can also customize menu names, MDT title, and text settings, and even adjust cooldowns for blips and calls. Night Shifts also allows you to create configurable departments, sub-departments, ranks, roles, and access levels, ensuring that your MDT system is tailored to your community's needs.
+
+In short, Night Shifts is a powerful tool for managing your emergency services operations. With its customizable features and easy-to-use interface, Night Shifts makes it easier than ever to keep your community safe and secure.
 
 This is a basic approach to how to play Night Shifts. You can create your own kind of documentation for your own community to make it fit! The server owner can make the MDT fit any country.
 
@@ -254,6 +266,26 @@ Operations
 
 Statistics
 - View statistics
+```
+
+3. Server owner features
+
+```
+- Configurable ANPR camera locations (Fictive, you can find a camera object script or MLO at third parties)
+- Configurable fire station alarms, triggered upon each call for the fire service
+- Configurable images in the NUI images folder, each with a different purpose
+- Configurable sounds in the NUI sounds folder, each with a different purpose
+- Configurable language in the config folder
+- Configurable handbooks in the config folder
+- Configurable and self-writable inventory item checks in c_functions.lua
+- Configurable postal script in c_functions.lua or use our recommendation nearest-postal
+- Configurable commands & hotkeys
+- Configurable menu names, MDT title and loads more text settings
+- Configurable cooldowns for blips, calls and loads more settings
+- Configurable statusses
+- Configurable styles in styles.css
+- Configurable departments, sub-departments, ranks, roles and access levels
+- Every word displayed is editable in the config file for the MDT, to provide for everyone in the world.
 ```
 
 ## Feedback
