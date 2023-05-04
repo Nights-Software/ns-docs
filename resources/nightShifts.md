@@ -198,7 +198,7 @@ In short, Night Shifts is a powerful tool for managing your emergency services o
 
 This is a basic approach to how to play Night Shifts. You can create your own kind of documentation for your own community to make it fit! The server owner can make the MDT fit any country.
 
-There are two sides to the MDT:
+### There are three sides to the MDT:
 
 1. Civilian Side:
 
@@ -268,7 +268,7 @@ Statistics
 - View statistics
 ```
 
-3. Server owner features
+3. Server owner side
 
 ```
 - Configurable ANPR camera locations (Fictive, you can find a camera object script or MLO at third parties)
