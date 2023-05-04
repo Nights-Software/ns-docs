@@ -182,6 +182,80 @@ GetUserShiftData is used to get all the data related to their shift stored clien
 
 You can edit styling in NUI/styles.css. It is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
 
+## How to play Night Shifts?
+
+This is a basic approach to how to play Night Shifts. You can create your own kind of documentation for your own community to make it fit! The server owner can make the MDT fit any country.
+
+There are two sides to the MDT:
+
+1. Civilian Side:
+
+Features:
+```
+Emergency Services Hotline
+- Call 999/911/112 and provide detailed information about what you require.
+
+Council / City Hall
+- Register your civilians
+- Edit your civilians
+- Add a custom profile picture to your civilian registry
+
+DVLA / DMV
+- Register your vehicles, which is connected to one of your civilians
+- Edit your vehicles
+- Add a custom vehicle picture to your vehicle registry
+```
+
+2. Emergency Services Side
+
+Features:
+```
+Battery & Signal
+- Charge your MDT battery in vehicles or interiors
+- Signal based on your ping
+
+Shift & status
+- Select your department, with access based on Discord roles
+- Select your sub-department
+- Toggle your shift
+- Select your status
+- Trigger panic button
+
+Emergency Hotline
+- Receive emergency calls
+- View (archived) calls
+- Locate and track calls with a regular waypoint
+
+Police National Computer (PNC)
+- Person Search
+- Vehicle Search
+- Record Search
+- Fine Search
+- Add records via Person Search
+- Add fines via Person Search
+- Edit markers via Person Search
+- Edit BOLO via vehicle Search
+- View active person warrants
+- Locate active person warrants
+- View active ANPR registrations
+- Locate active ANPR registrations
+- Report sightings for wanted people or ANPR registered vehicles
+
+Unit overview (Control / Dispatch)
+- Overview units (See a table of rows with all kinds of shift data, location data and more of each user on shift)
+- Track units
+- Request backup
+- Send dispatch messages
+
+Operations
+- Create reports for police, fire and ambulance
+- Search & view reports by query or date
+- Read police, fire and ambulance guidelines
+
+Statistics
+- View statistics
+```
+
 ## Feedback
 
 Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the Discord button at the bottom of this page to visit our ticket & review channels.
