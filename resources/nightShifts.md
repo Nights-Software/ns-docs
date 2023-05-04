@@ -49,6 +49,8 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 We assume you have a database for your FiveM server. If you do not have one, contact your providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
 
+1. You want to run the datatables.sql file from top to bottom as an SQL query. Not all databases allow a direct import. Make sure when you manually import the tables, to work from top-to-bottom.
+
 Example for ZAP-Hosting: [SQL File Import into FiveM Database - ZAP Hosting](https://zap-hosting.com/guides/docs/en/fivem_sql_file_import/#import-the-sql-file-into-the-fivem-database)
 
 {: .note }
