@@ -313,6 +313,20 @@ A list of tips and tricks:
 
 1. Always read the commentry in the scripts you're editing. There is logic in them.
 
+1. Got players who can not connect due to their steam license? There are solutions for this: 
+
+- Make sure the server has the steam webapi key in it's server.cfg, otherwise it will not be able to make use of steam services: 
+[Generate a steam web api key](https://steamcommunity.com/dev/apikey)
+
+Choose a domain, can be any.
+
+In your server.cfg:
+```
+set steam_webApiKey "your_key"
+```
+
+- Re-log into steam and discord, don't just restart it. THEN connect to FiveM. 
+
 ---
 
 # Help us or let us help you
