@@ -9,13 +9,13 @@ last_modified_date: "2022-06-25 00:31:00"
 
 <img class="cover-img" src="/assets/img/naturalDisasters.gif" alt="Natural Disasters Resource" draggable="false">
 
-# Natural Disasters (Normal / DLC 1, 2 & 3)
+# Natural Disasters (Normal / DLC 1, 2, 3 & 4)
 {: .no_toc }
 
 A guide to install Natural Disasters for FiveM
 {: .fs-5 .fw-300 }
 
-Just released: DLC 2!
+Just released: DLC 4!
 {: .label .label-purple }
 
 ---
@@ -40,13 +40,15 @@ Base: [https://store.ea-rp.com/package/5131340](https://store.ea-rp.com/package/
 DLC 1: [https://store.ea-rp.com/package/5154004](https://store.ea-rp.com/package/5154004)
 DLC 2: [https://store.ea-rp.com/package/5183358](https://store.ea-rp.com/package/5183358)
 DLC 3: [https://store.ea-rp.com/package/5314042](https://store.ea-rp.com/package/5314042)
+DLC 4: [https://store.ea-rp.com/package/5673677](https://store.ea-rp.com/package/5673677)
 
 *You require the base resource to be able to purchase the DLC(s).*
 *You require DLC1 resource to be able to purchase the DLC2.*
 *You require DLC2 resource to be able to purchase the DLC3.*
+*You require DLC3 resource to be able to purchase the DLC4.*
 
 ## Installation Notice
-*Got all of the Natural Disasters? Install just DLC3, this contains all code required. The latest resource is the one you install!*
+*Got all of the Natural Disasters? Install just DLC4, this contains all code required. The latest resource is the one you install! The pack includes Air Raid Sirens which you can seperately install.*
 
 ## Downloading the resource
 
