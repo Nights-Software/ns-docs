@@ -125,6 +125,13 @@ Download our free Discord API, which has been integrated in the NS - MDT resourc
 
 1. You will need the role names you have defined in the Discord API config.lua later, when configuring night_shifts.
 
+1. Ensure or start this resource, after setting it up, in your server.cfg. 
+
+Example:
+```lua
+ensure night_discordapi
+```
+
 ## Downloading & Installing Night Shifts - Mobile Data Terminal
 
 Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants) after purchasing it. It can take a few minutes for the resource to appear in keymaster after purchase.
