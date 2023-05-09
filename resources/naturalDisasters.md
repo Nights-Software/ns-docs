@@ -91,6 +91,22 @@ Example of a comment: `-- dependency 'xsound'`
 
 1. Weather script compatibility is found in 3 resources: qb-weathersync, cd_easytime (No longer supported) and vSyncR. We have made edits of these open source assets and offer you these for free. Claim them via our discord in a channel called #free-files! Click the button below this page to join the discord.
 
+## Permissions
+
+You have 3 options:
+
+1. Discord Admin System, supported by our Discord API: [Discord linked admin system](https://store.ea-rp.com/package/5054917) & [Discord API ](https://store.ea-rp.com/package/5035729)
+
+2. Ace Permissions: (Ace Permissions Documentation)[https://docs.ea-rp.com/resources/acePerms/]
+
+3. Set both to false in the config.lua and use no permissions.
+
+## Weather Compatibility
+
+*You need @Customer roles in our Discord to see the channel link below: Claim your purchase or create a ticket in our Discord!* 
+
+In our Discord we provide free weather script edits [#free-files](https://discord.com/channels/989438923925229598/989479452209733662) which in most cases you require to prevent flickering lights on your screen. This is due to your current weather file overwriting the weather the disaster is trying to set. The same goes for blackouts.
+
 ## Exports
 
 1. We provide a configuration option for the following export (config.lua -> CustomSoundResource = "ResName" & s_functions.lua -> Server event = Accessible code):
