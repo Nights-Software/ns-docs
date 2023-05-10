@@ -119,7 +119,7 @@ So weather script compatibility is found in 3 resources: qb-weathersync or cd_ea
 
 ## How to add sound files for the Air Raid Sirens?
 
-1. Enter the night_air_raid_sirens folder and head to the NUI/sounds/ folder. Drag the sound file in there. Head back to night_natural_disasters and place the sound file name without .ogg in the `SoundFileNameForAirRaidSirens = "yourfilename",` variable.
+1. Enter the night_air_raid_sirens folder and head to the NUI/sounds/ folder. Drag the sound file in there. Head back to night_natural_disasters and place the sound file name without .ogg in the `SoundFileNameForAirRaidSirens = "yourfilename",` variable. 
 
 ## Exports
 
