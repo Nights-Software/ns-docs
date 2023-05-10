@@ -33,7 +33,7 @@ Just released: DLC 4!
 
 ## Purchasing the resource
 
-Find this product at:
+Find this product and it's DLC's at:
 
 * Base: [https://store.ea-rp.com/package/5131340](https://store.ea-rp.com/package/5131340)
 * DLC 1: [https://store.ea-rp.com/package/5154004](https://store.ea-rp.com/package/5154004)
