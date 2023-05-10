@@ -113,6 +113,14 @@ In our Discord we provide free weather script edits [#free-files](https://discor
 
 So weather script compatibility is found in 3 resources: qb-weathersync or cd_easytime (No longer supported) or vSyncR.
 
+## How to add sound files for disasters?
+
+1. Enter the NUI/sounds/ folder and drag your soundfile into this folder. After you've done that, head to config/config.lua and assign the file name without .ogg in the designated area.
+
+## How to add sound files for the Air Raid Sirens?
+
+1. Enter the night_air_raid_sirens folder and head to the NUI/sounds/ folder. Drag the sound file in there. Head back to night_natural_disasters and place the sound file name without .ogg in the `SoundFileNameForAirRaidSirens = "yourfilename",` variable.
+
 ## Exports
 
 1. We provide a configuration option for the following export (config.lua -> CustomSoundResource = "ResName" & s_functions.lua -> Server event = Accessible code):
