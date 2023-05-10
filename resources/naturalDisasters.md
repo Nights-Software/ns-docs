@@ -53,6 +53,29 @@ Find this product at:
 
 Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants).
 
+## Optional: Built in or external sound resources.
+
+1. If you are using the built in sound system, skip this whole step and move on to 'Installing the resource'.
+
+1. Drag "PlayCustomSounds" and/or "xsound" in your /resources/ folder. Download these from the creators. Using integrations? You will require both resources if you use Air Raid Sirens 
+Integration: [https://store.ea-rp.com/package/5030134](https://store.ea-rp.com/package/5030134)
+
+1. Ensure or start the resource in server.cfg. 
+Example:
+```lua
+ensure xsound
+```
+xSound must be somewhere on top of server.cfg and preferably downloaded fresh from: [https://github.com/Xogy/xsound](https://github.com/Xogy/xsound)
+PlayCustomSounds can be downloaded fresh from: [https://github.com/LondonStudios/PlayCustomSounds](https://github.com/LondonStudios/PlayCustomSounds)
+* Note: Don't forget to add the .ogg sound files, located in folder: SoundFiles (found in your purchased resource for Air Raid Sirens & Natural Disasters) to the sound resource (PlayCustomSounds). If you use xSound make sure to update c_functions.lua with your desired sound URL.
+
+1. Configure natural_disasters/config/config.lua in the next step and set the sound resource you are using to **true** and the other to **false**.
+
+1. Note: If you use xsound, use the `dependency 'xsound'` in fxmanifest.lua, otherwise comment it or leave it out.
+Example of a comment: `-- dependency 'xsound'`
+
+1. xSound must be installed fresh from [https://github.com/Xogy/xsound](https://github.com/Xogy/xsound)
+
 ## Installing the resource
 
 *Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
@@ -64,48 +87,31 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 1. Drag the resource into your resources folder.
     - NOTE: If you are installing the DLC, replace the base resource! Overwrite it with the DLC!
 
-1. Drag "PlayCustomSounds" and/or "xsound" in your /resources/ folder. Download these from the creators. Using integrations? You will require both resources if you use Air Raid Sirens 
-Integration: [https://store.ea-rp.com/package/5030134](https://store.ea-rp.com/package/5030134)
-
-1. Ensure or start all resources in server.cfg. 
-Example:
-```lua
-# xSound
-ensure xsound
-```
-xSound must be somewhere on top of server.cfg and preferably downloaded fresh from: [https://github.com/Xogy/xsound](https://github.com/Xogy/xsound)
-PlayCustomSounds can be downloaded fresh from: [https://github.com/LondonStudios/PlayCustomSounds](https://github.com/LondonStudios/PlayCustomSounds)
-* Note: Don't forget to add the .ogg sound files, located in folder: SoundFiles (found in your purchased resource for Air Raid Sirens & Natural Disasters) to the sound resource (PlayCustomSounds). If you use xSound make sure to update c_functions.lua with your desired sound URL.
-
-1. Configure natural_disasters/config/config.lua and set the sound resource you are using to **true** and the other to **false**.
-
-1. Set up Ace permissions in natural_disasters/config/config.lua & natural_disasters/server/s_functions.lua OR choose to use the paid discord linked admin system integration: 
-[https://store.ea-rp.com/package/5054917](https://store.ea-rp.com/package/5054917)
-
-1. Note: If you use xsound, use the `dependency 'xsound'` in fxmanifest.lua, otherwise comment it.
-Example of a comment: `-- dependency 'xsound'`
-
-1. xSound must be installed fresh from [https://github.com/Xogy/xsound](https://github.com/Xogy/xsound)
-
 1. Carefully read the instructions given in natural_disasters/config/config.lua, it offers you all kinds of customization options!
 
-1. Weather script compatibility is found in 3 resources: qb-weathersync, cd_easytime (No longer supported) and vSyncR. We have made edits of these open source assets and offer you these for free. Claim them via our discord in a channel called #free-files! Click the button below this page to join the discord.
+1. Ensure or start the resource in server.cfg. 
+Example:
+```lua
+ensure night_natural_disasters
+```
 
 ## Permissions
 
-You have 3 options:
+You have 3 options in config.lua:
 
 1. Discord Admin System, supported by our Discord API: [Discord linked admin system](https://store.ea-rp.com/package/5054917) & [Discord API ](https://store.ea-rp.com/package/5035729)
 
 2. Ace Permissions: (Ace Permissions Documentation)[https://docs.ea-rp.com/resources/acePerms/]
 
-3. Set both to false in the config.lua and use no permissions.
+3. Set both to false in the config.lua to use no permissions.
 
 ## Weather Compatibility
 
 *You need @Customer roles in our Discord to see the channel link below: Claim your purchase or create a ticket in our Discord!* 
 
 In our Discord we provide free weather script edits [#free-files](https://discord.com/channels/989438923925229598/989479452209733662) which in most cases you require to prevent flickering lights on your screen. This is due to your current weather file overwriting the weather the disaster is trying to set. The same goes for blackouts.
+
+So weather script compatibility is found in 3 resources: qb-weathersync or cd_easytime (No longer supported) or vSyncR.
 
 ## Exports
 
