@@ -64,9 +64,8 @@ ensure night_air_raid_sirens
 ```lua
 exports['night_air_raid_sirens']:TriggerAirRaidSirens(src, soundFileName) -- Toggle automatically -> So on when off. Off when on.
 exports['night_air_raid_sirens']:ToggleAirRaidSirens(soundFileName, true) -- Force on or off.
-
-- Example of a soundFileName:  "air-raid-siren"
 ```
+Example of a soundFileName:  `"air-raid-siren"`
 
 ## Support
 
