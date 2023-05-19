@@ -58,7 +58,7 @@ ensure night_discord_teams
 
 ```lua
 exports['night_discord_teams']:ShowTeams(src)
-exports['night_discord_teams']:GetPlayerTeamName(src)
+exports['night_discord_teams']:GetPlayerTeamName(src, targetSrc)
 exports['night_discord_teams']:SwitchTeam(src, teamId)
 ```
 
