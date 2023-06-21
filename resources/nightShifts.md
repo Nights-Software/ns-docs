@@ -47,9 +47,9 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 ## Setting up your database tables (Dependency)
 
-We assume you have a database for your FiveM server. If you do not have one, contact your providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
+We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
 
-1. You want to run the datatables.sql file from top to bottom as an SQL query. Not all databases allow a direct import. Make sure when you manually import the tables, to work from top-to-bottom.
+1. You want to run the datatables.sql file from top to bottom as an SQL query in your database. Not all databases allow a direct import. Make sure when you manually import the tables, to work from top-to-bottom.
 
 Example for ZAP-Hosting: [SQL File Import into FiveM Database - ZAP Hosting](https://zap-hosting.com/guides/docs/en/fivem_sql_file_import/#import-the-sql-file-into-the-fivem-database)
 
@@ -131,6 +131,22 @@ Example:
 ```lua
 ensure night_discordapi
 ```
+
+## Setting up your Steam webApiKey in your FiveM server
+
+1. Make sure the server has the steam webapi key in it's server.cfg, otherwise it will not be able to make use of steam services: 
+[Generate a steam web api key](https://steamcommunity.com/dev/apikey)
+
+Choose a domain, can be any.
+
+In your server.cfg:
+```
+set steam_webApiKey "your_key"
+```
+
+- Also set this key in your servers hosting company web dashboard (if applicable).
+
+- Still experiencing issues? Re-log into steam and discord, don't just restart it. Then connect to FiveM. 
 
 ## Downloading & Installing Night Shifts - Mobile Data Terminal
 
@@ -332,7 +348,11 @@ In your server.cfg:
 set steam_webApiKey "your_key"
 ```
 
+- Also set this key in your servers hosting company web dashboard (if applicable).
+
 - Re-log into steam and discord, don't just restart it. THEN connect to FiveM. 
+
+1. Check whether your script is still named `night_shifts`, this is required for it to work. Do NOT rename it.
 
 ---
 
