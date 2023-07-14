@@ -49,14 +49,12 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
 
-1. You want to run the datatables.sql file from top to bottom as an SQL query in your database. Not all databases allow a direct import. Make sure when you manually import the tables, to work from top-to-bottom.
-
-Example for ZAP-Hosting: [SQL File Import into FiveM Database - ZAP Hosting](https://zap-hosting.com/guides/docs/en/fivem_sql_file_import/#import-the-sql-file-into-the-fivem-database)
+1. When you boot up the server, the code will run a query which installs the required tables into your database.
 
 {: .note }
 > Note
 >
-> This example shows how to run an SQL file. We want you to create the tables from our .sql file (in the night shifts) folder in your database. If running the .sql file does not work, insert the SQL table queries manually into your database
+> The files include a datatables.sql file. If you are eager to manually install the tables in your database, go ahead.
 
 
 ## Installing oxmysql (Dependency)
@@ -184,6 +182,8 @@ There are loads of options to configure. It is recommended you test the resource
 1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Relax mode on and read it all to understand it.
 
 1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom: 
+
+1. Set up the matching Discord API roles for: MDT Access, Departments, Sub-Departments and Ranks. This will allow you access to the departments in the MDT without errors.
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. The MDT will only work for those Discord Roles which have been set up. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
 
