@@ -54,6 +54,13 @@ ensure night_discord_vperms
 
 1. Configure /config/config.lua.
 
+## Troubleshoot
+
+1. Are you being kicked out of the vehicle, but do have the requires roles for it? 
+
+- There are 2 options: Discord API is not working (Check it's config and server console printouts)
+- You have defined the wrong vehicle model name. Turn on debug in the config.lua, restart the script, enter the vehicle, check F8 console logs for it's actual name. Is it a weird number? Fix your vehicles.meta file for that vehicle. We do not provide support for this.
+
 ## Support
 
 Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord:
