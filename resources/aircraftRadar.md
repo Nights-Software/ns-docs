@@ -9,7 +9,7 @@ last_modified_date: "2023-11-08 16:00:00"
 
 <img class="cover-img" src="/assets/img/aircraftRadar.png" alt="Aircraft Radar" draggable="false">
 
-# Night Shifts - Mobile Data Terminal
+# Aircraft Radar for FiveM
 {: .no_toc}
 
 A guide to install Aircraft Radar for FiveM
@@ -29,9 +29,7 @@ A guide to install Aircraft Radar for FiveM
 
 ## Purchasing the resource
 
-Find this product at:
-
-Base: [https://store.ea-rp.com/package/5851372](https://store.ea-rp.com/package/5851372)
+Find this product at: [https://store.ea-rp.com/package/5851372](https://store.ea-rp.com/package/5851372)
 
 # Read before installing
 
