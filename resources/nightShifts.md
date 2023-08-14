@@ -49,6 +49,13 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
 
+1. If you don't have one, connect to your database by using it's credentials (Find these on your host dashboard) in the following line, which you will put in your server.cfg.
+
+In your server.cfg:
+```
+set mysql_connection_string "user=userName;password=YourPassword;host=YourHost;port=3306;database=YourDatabase;charset=utf8mb4_general_ci" 
+```
+
 1. When you boot up the server, the code will run a query which installs the required tables into your database.
 
 {: .note }
