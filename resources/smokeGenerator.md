@@ -32,7 +32,7 @@ A guide to install Smoke Generator for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5100834](https://store.ea-rp.com/package/5100834)
+Base: [https://store.nights-software.com/package/5100834](https://store.nights-software.com/package/5100834)
 
 ## Downloading the resource
 
@@ -50,8 +50,8 @@ ensure night_handheld_smoke_gen
 
 1. Configure /config/config.lua.
 
-1. Make sure to enable or disable permissions for night_discordapi in /config/config.lua. You require this script to utilize permissions! [https://store.ea-rp.com/package/5035729](https://store.ea-rp.com/package/5035729) 
-    - *Visit [https://docs.ea-rp.com/resources/discordAPI/](/resources/discordAPI) to read documentation about night_discordapi.*
+1. Make sure to enable or disable permissions for night_discordapi in /config/config.lua. You require this script to utilize permissions! [https://store.nights-software.com/package/5035729](https://store.nights-software.com/package/5035729) 
+    - *Visit [https://docs.nights-software.com/resources/discordAPI/](/resources/discordAPI) to read documentation about night_discordapi.*
 
 ## Support
 

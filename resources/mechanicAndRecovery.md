@@ -32,7 +32,7 @@ A guide to install Mechanic & Recovery for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5070230](https://store.ea-rp.com/package/5070230)
+Base: [https://store.nights-software.com/package/5070230](https://store.nights-software.com/package/5070230)
 
 ## Downloading the resource
 
@@ -56,7 +56,7 @@ ensure night_vehicle_recovery
 
 1. Configure /config/config.lua.
 
-1. Make use of Ace permissions or choose to use our Discord API permission system: [https://store.ea-rp.com/package/5035729](https://store.ea-rp.com/package/5035729)
+1. Make use of Ace permissions or choose to use our Discord API permission system: [https://store.nights-software.com/package/5035729](https://store.nights-software.com/package/5035729)
 
 ## Support
 

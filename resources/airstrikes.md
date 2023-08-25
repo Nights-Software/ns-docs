@@ -32,7 +32,7 @@ A guide to install Airstrikes for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/](https://store.ea-rp.com/package/)
+Base: [https://store.nights-software.com/package/](https://store.nights-software.com/package/)
 
 ## Downloading the resource
 

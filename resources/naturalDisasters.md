@@ -35,11 +35,11 @@ Just released: DLC 4!
 
 Find this product and it's DLC's at:
 
-* Base: [https://store.ea-rp.com/package/5131340](https://store.ea-rp.com/package/5131340)
-* DLC 1: [https://store.ea-rp.com/package/5154004](https://store.ea-rp.com/package/5154004)
-* DLC 2: [https://store.ea-rp.com/package/5183358](https://store.ea-rp.com/package/5183358)
-* DLC 3: [https://store.ea-rp.com/package/5314042](https://store.ea-rp.com/package/5314042)
-* DLC 4: [https://store.ea-rp.com/package/5673677](https://store.ea-rp.com/package/5673677)
+* Base: [https://store.nights-software.com/package/5131340](https://store.nights-software.com/package/5131340)
+* DLC 1: [https://store.nights-software.com/package/5154004](https://store.nights-software.com/package/5154004)
+* DLC 2: [https://store.nights-software.com/package/5183358](https://store.nights-software.com/package/5183358)
+* DLC 3: [https://store.nights-software.com/package/5314042](https://store.nights-software.com/package/5314042)
+* DLC 4: [https://store.nights-software.com/package/5673677](https://store.nights-software.com/package/5673677)
 
 *You require the base resource to be able to purchase the DLC(s).*
 *You require DLC1 resource to be able to purchase the DLC2.*
@@ -58,7 +58,7 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 1. If you are using the built in sound system, skip this whole step and move on to 'Installing the resource'.
 
 1. Drag "PlayCustomSounds" and/or "xsound" in your /resources/ folder. Download these from the creators. Using integrations? You will require both resources if you use Air Raid Sirens 
-Integration: [https://store.ea-rp.com/package/5030134](https://store.ea-rp.com/package/5030134)
+Integration: [https://store.nights-software.com/package/5030134](https://store.nights-software.com/package/5030134)
 
 1. Ensure or start the resource in server.cfg. 
 Example:
@@ -99,9 +99,9 @@ ensure night_natural_disasters
 
 You have 3 options in config.lua:
 
-1. Discord Admin System, supported by our Discord API: [Discord linked admin system](https://store.ea-rp.com/package/5054917) & [Discord API ](https://store.ea-rp.com/package/5035729)
+1. Discord Admin System, supported by our Discord API: [Discord linked admin system](https://store.nights-software.com/package/5054917) & [Discord API ](https://store.nights-software.com/package/5035729)
 
-2. Ace Permissions: (Ace Permissions Documentation)[https://docs.ea-rp.com/resources/acePerms/]
+2. Ace Permissions: (Ace Permissions Documentation)[https://docs.nights-software.com/resources/acePerms/]
 
 3. Set both to false in the config.lua to use no permissions.
 
@@ -130,12 +130,12 @@ exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords --[[V
 
 ## Recommended!
 
-* [https://store.ea-rp.com/package/5131340](https://store.ea-rp.com/package/5131340) - Natural Disasters base (Purchase this one, do not install, you need this one to be able to buy DLC 1)
-* [https://store.ea-rp.com/package/5154004](https://store.ea-rp.com/package/5154004) - Natural Disasters DLC 1 (Install this one and remove the older versions: base.)
-* [https://store.ea-rp.com/package/5183358](https://store.ea-rp.com/package/5183358) - Natural Disasters DLC 2 (Install this one and remove the older versions: base AND DLC 1.)
-* [https://store.ea-rp.com/package/5314042](https://store.ea-rp.com/package/5314042) - Natural Disasters DLC 3 (Install this one and remove the older versions: base, DLC 1 AND DLC 2)
-* [https://store.ea-rp.com/package/5673677](https://store.ea-rp.com/package/5673677) - Natural Disasters DLC 4 (Install this one and remove the older versions: Base, DLC 1, DLC2 AND DLC3)
-* [https://store.ea-rp.com/package/5030134](https://store.ea-rp.com/package/5030134) - Air Raid Sirens, for the nice integration. (Install this one as well as the selected above.) 
+* [https://store.nights-software.com/package/5131340](https://store.nights-software.com/package/5131340) - Natural Disasters base (Purchase this one, do not install, you need this one to be able to buy DLC 1)
+* [https://store.nights-software.com/package/5154004](https://store.nights-software.com/package/5154004) - Natural Disasters DLC 1 (Install this one and remove the older versions: base.)
+* [https://store.nights-software.com/package/5183358](https://store.nights-software.com/package/5183358) - Natural Disasters DLC 2 (Install this one and remove the older versions: base AND DLC 1.)
+* [https://store.nights-software.com/package/5314042](https://store.nights-software.com/package/5314042) - Natural Disasters DLC 3 (Install this one and remove the older versions: base, DLC 1 AND DLC 2)
+* [https://store.nights-software.com/package/5673677](https://store.nights-software.com/package/5673677) - Natural Disasters DLC 4 (Install this one and remove the older versions: Base, DLC 1, DLC2 AND DLC3)
+* [https://store.nights-software.com/package/5030134](https://store.nights-software.com/package/5030134) - Air Raid Sirens, for the nice integration. (Install this one as well as the selected above.) 
 
 ## Support
 

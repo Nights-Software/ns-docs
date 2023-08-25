@@ -31,7 +31,7 @@ A guide to install Ammobox & Crates! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5416619](https://store.ea-rp.com/package/5416619)
+Base: [https://store.nights-software.com/package/5416619](https://store.nights-software.com/package/5416619)
 
 ## Downloading the resource
 

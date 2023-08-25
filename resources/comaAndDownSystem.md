@@ -31,7 +31,7 @@ A guide to install Coma & Down System! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5009962](https://store.ea-rp.com/package/5009962)
+Base: [https://store.nights-software.com/package/5009962](https://store.nights-software.com/package/5009962)
 
 ## Downloading the resource
 
@@ -66,7 +66,7 @@ exports['night_coma_down_system']:GetPlayerComaType(source)
 
 ## Compatibility
 
-1. Compatible with night_discord_spawn -> [https://store.ea-rp.com/package/5197594](https://store.ea-rp.com/package/5197594)
+1. Compatible with night_discord_spawn -> [https://store.nights-software.com/package/5197594](https://store.nights-software.com/package/5197594)
 
 ## Support
 

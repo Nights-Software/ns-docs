@@ -31,7 +31,7 @@ A guide to install Discord Linked Weapon Crates! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5242785](https://store.ea-rp.com/package/5242785)
+Base: [https://store.nights-software.com/package/5242785](https://store.nights-software.com/package/5242785)
 
 ## Downloading the resource
 

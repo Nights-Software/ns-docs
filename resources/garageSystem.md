@@ -31,7 +31,7 @@ A guide to install Garage System! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5208515](https://store.ea-rp.com/package/5208515)
+Base: [https://store.nights-software.com/package/5208515](https://store.nights-software.com/package/5208515)
 
 ## Downloading the resource
 
@@ -60,7 +60,7 @@ ensure night_garage_system
 * Set the LocationVehicleCamPos coordinates somewhere close to the LocationVehicleShowcase coordinates. LocationVehicleCamPos is the coordinate where the vehicle will be showcased only for the player in vehicle preview.
 * Set the LocationVehicleSpawn coordinates where the vehicle should eventually spawn.
 
-## Using [Discord API?](https://docs.ea-rp.com/resources/discordAPI/)
+## Using [Discord API?](https://docs.nights-software.com/resources/discordAPI/)
 
 * Set up the Discord API by following the included documentation.pdf file in the resource.
 * Match GarageRolePermissions & SectionRolePermissions role names (this config.lua) to the ones configured in config.lua (night_discordapi).

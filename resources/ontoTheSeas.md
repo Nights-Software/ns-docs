@@ -32,7 +32,7 @@ A guide to install Onto the seas! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5117650](https://store.ea-rp.com/package/5117650)
+Base: [https://store.nights-software.com/package/5117650](https://store.nights-software.com/package/5117650)
 
 ## Downloading the resource
 
@@ -57,7 +57,7 @@ ensure night_onto_the_sea
 1. Configure /config/config.lua.
 
 1. Set up Ace permissions in natural_disasters/config/config.lua & natural_disasters/server/s_functions.lua OR choose the discord linked admin system integration: 
-[https://store.ea-rp.com/package/5054917](https://store.ea-rp.com/package/5054917)
+[https://store.nights-software.com/package/5054917](https://store.nights-software.com/package/5054917)
 
 1. Note: If you use xsound, use the `dependency 'xsound'` in fxmanifest.lua, otherwise comment it. 
 Example of a comment: `-- dependency 'xsound'`

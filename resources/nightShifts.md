@@ -31,7 +31,7 @@ A guide to install Night Shifts - Mobile Data Terminal for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5667103](https://store.ea-rp.com/package/5667103)
+Base: [https://store.nights-software.com/package/5667103](https://store.nights-software.com/package/5667103)
 
 # Read before installing
 
@@ -124,7 +124,7 @@ ensure map
 
 ## Downloading & Installing Night Discord API (Dependency)
 
-Download our free Discord API, which has been integrated in the NS - MDT resource as a permission system: [NS Discord API Free](https://store.ea-rp.com/package/5035729)  
+Download our free Discord API, which has been integrated in the NS - MDT resource as a permission system: [NS Discord API Free](https://store.nights-software.com/package/5035729)  
 
 1. Install the Discord API, using the documentation.pdf file provided with the resource.
 

@@ -29,7 +29,7 @@ A guide to install Aircraft Radar for FiveM
 
 ## Purchasing the resource
 
-Find this product at: [https://store.ea-rp.com/package/5851372](https://store.ea-rp.com/package/5851372)
+Find this product at: [https://store.nights-software.com/package/5851372](https://store.nights-software.com/package/5851372)
 
 # Read before installing
 

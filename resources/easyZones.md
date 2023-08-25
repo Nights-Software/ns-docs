@@ -31,7 +31,7 @@ A guide to install Easy Zones! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5047155](https://store.ea-rp.com/package/5047155)
+Base: [https://store.nights-software.com/package/5047155](https://store.nights-software.com/package/5047155)
 
 ## Downloading the resource
 

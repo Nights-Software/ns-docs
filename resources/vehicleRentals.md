@@ -31,7 +31,7 @@ A guide to install Vehicle Rentals! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5009931](https://store.ea-rp.com/package/5009931)
+Base: [https://store.nights-software.com/package/5009931](https://store.nights-software.com/package/5009931)
 
 ## Downloading the resource
 

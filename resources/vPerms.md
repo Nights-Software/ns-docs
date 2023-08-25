@@ -31,7 +31,7 @@ A guide to install Discord vPerms (Vehicle allowlist)! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5205763](https://store.ea-rp.com/package/5205763)
+Base: [https://store.nights-software.com/package/5205763](https://store.nights-software.com/package/5205763)
 
 ## Downloading the resource
 

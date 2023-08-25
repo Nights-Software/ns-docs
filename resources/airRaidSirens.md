@@ -32,7 +32,7 @@ A guide to install Air Raid Sirens v3! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5030134](https://store.ea-rp.com/package/5030134)
+Base: [https://store.nights-software.com/package/5030134](https://store.nights-software.com/package/5030134)
 
 ## Downloading the resource
 

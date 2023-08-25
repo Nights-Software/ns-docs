@@ -31,7 +31,7 @@ A guide to install Discord wPerms! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5336351](https://store.ea-rp.com/package/5336351)
+Base: [https://store.nights-software.com/package/5336351](https://store.nights-software.com/package/5336351)
 
 ## Downloading the resource
 

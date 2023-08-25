@@ -31,7 +31,7 @@ A guide to install Landing Zone Alarm! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5020551](https://store.ea-rp.com/package/5020551)
+Base: [https://store.nights-software.com/package/5020551](https://store.nights-software.com/package/5020551)
 
 ## Downloading the resource
 

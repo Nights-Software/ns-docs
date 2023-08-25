@@ -32,7 +32,7 @@ A guide to install Props & Speed Zones for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5087747](https://store.ea-rp.com/package/5087747)
+Base: [https://store.nights-software.com/package/5087747](https://store.nights-software.com/package/5087747)
 
 ## Downloading the resource
 

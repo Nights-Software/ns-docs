@@ -29,7 +29,7 @@ A guide to install Vehicle Spawns for FiveM
 
 ## Purchasing the resource
 
-Find this product at: [https://store.ea-rp.com/package/5862293](https://store.ea-rp.com/package/5862293)
+Find this product at: [https://store.nights-software.com/package/5862293](https://store.nights-software.com/package/5862293)
 
 # Read before installing
 

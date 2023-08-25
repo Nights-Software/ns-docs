@@ -32,7 +32,7 @@ A guide to install Ped & Player CPR (Animated)! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5009947](https://store.ea-rp.com/package/5009947)
+Base: [https://store.nights-software.com/package/5009947](https://store.nights-software.com/package/5009947)
 
 ## Downloading the resource
 

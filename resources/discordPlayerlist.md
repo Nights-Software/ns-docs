@@ -32,7 +32,7 @@ A guide to install Discord Playerlist! for FiveM
 
 Find this product at:
 
-Base: [https://store.ea-rp.com/package/5035743](https://store.ea-rp.com/package/5035743)
+Base: [https://store.nights-software.com/package/5035743](https://store.nights-software.com/package/5035743)
 
 ## Downloading the resource
 
