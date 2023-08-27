@@ -1,8 +1,8 @@
 remote_theme: pmarsceill/just-the-docs
 title: "Nights Software Documentation"
-description: "A documentation explaining the installation process of FiveM resources sold by Nights Software by EA-RP."
+description: "A documentation explaining the installation process of FiveM resources sold by Nights Software."
 baseurl: "/"
-url: "https://docs.ea-rp.com"
+url: "https://docs.nights-software.com"
 
 permalink: pretty
 exclude: ["LICENSE.txt", "README.md"]
@@ -10,14 +10,14 @@ exclude: ["LICENSE.txt", "README.md"]
 heading_anchors: true
 
 aux_links:
-  "EA-RP Website":
-    - "//ea-rp.com/"
+  "Nights Software Website":
+    - "//nights-software.com/"
 aux_links_new_tab: true
 
 back_to_top: true
 back_to_top_text: "Back to top"
 
-footer_content: "Copyright &copy; 2023 Nights Software by EA-RP"
+footer_content: "Copyright &copy; 2023 Nights Software"
 
 last_edit_timestamp: true
 last_edit_time_format: "%b %e %Y at %I:%M %p"

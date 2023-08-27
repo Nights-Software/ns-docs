@@ -142,4 +142,4 @@ exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords --[[V
 Read through the instructions again if you have not managed to install the resource. Can't get it to work still?
 Create a ticket through our dedicated support system in Discord: 
 
-[Nights Software Discord](https://ns.ea-rp.com){: .btn .btn-discord}
+[Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}
