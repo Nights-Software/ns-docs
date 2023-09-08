@@ -182,6 +182,8 @@ There are loads of options to configure. It is recommended you test the resource
 
 1. Open /config/config.lua in VS Code. 
 
+1. Important: Set up your night_discordapi roles to match the ones configured in the MDT. You can find all required variables to match by searching: (CNTL+F) `RoleName`.
+
 1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
 
 1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
