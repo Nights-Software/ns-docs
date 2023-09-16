@@ -20,9 +20,13 @@ Welcome to our documentation page. Read all you need to know about installing an
 
 ## Showcases of our Resources
 
-**Youtube!** Check out all our videos regarding our products:
+**Youtube!** Check out all our showcase videos regarding our products:
 
-[Nights Software Youtube Channel](https://www.youtube.com/channel/UC7DWPjF5daoykiD-q6SvYRA){: .btn .btn-red}
+[Nights Software Showcase Youtube Channel](https://www.youtube.com/channel/UC7DWPjF5daoykiD-q6SvYRA){: .btn .btn-red}
+
+**Discord!** Check out all our community provided installation videos regarding our products:
+
+[Nights Software Discord](https://discord.com/channels/989438923925229598/1152361824554061824){: .btn .btn-purple}
 
 ## Our Store
 
