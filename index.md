@@ -26,7 +26,7 @@ Welcome to our documentation page. Read all you need to know about installing an
 
 **Discord!** Check out all our community provided installation videos regarding our products:
 
-[Nights Software Discord](https://discord.com/channels/989438923925229598/1152361824554061824){: .btn .btn-purple}
+[Nights Software Discord](https://discord.com/channels/989438923925229598/1152361824554061824){: .btn .btn-discord}
 
 ## Our Store
 
