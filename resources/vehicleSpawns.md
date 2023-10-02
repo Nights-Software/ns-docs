@@ -27,6 +27,12 @@ A guide to install Vehicle Spawns for FiveM
 </details>
 ---
 
+## Installation Tutorial
+
+**Youtube!** Watch this installation tutorial video:
+
+[Installation Tutorial](https://youtu.be/-THDTV8KzMc?si=C3G4RatT8YB78-fJ){: .btn .btn-red}
+
 ## Purchasing the resource
 
 Find this product at: [https://store.nights-software.com/package/5862293](https://store.nights-software.com/package/5862293)

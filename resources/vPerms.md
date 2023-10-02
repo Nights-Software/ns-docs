@@ -27,6 +27,12 @@ A guide to install Discord vPerms (Vehicle allowlist)! for FiveM
 </details>
 ---
 
+## Installation Tutorial
+
+**Youtube!** Watch this installation tutorial video:
+
+[Installation Tutorial](https://youtu.be/DhWaT_NqNiM?si=xDJcUQ5wcD-oaXdj){: .btn .btn-red}
+
 ## Purchasing the resource
 
 Find this product at:

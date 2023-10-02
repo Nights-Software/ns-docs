@@ -27,6 +27,12 @@ A guide to install Discord Linked Lockers! for FiveM
 </details>
 ---
 
+## Installation Tutorial
+
+**Youtube!** Watch this installation tutorial video:
+
+[Installation Tutorial](https://youtu.be/TiMOOGHnCuA?si=Aolxym0gbiY-qUEg){: .btn .btn-red}
+
 ## Purchasing the resource
 
 Find this product at:

@@ -27,6 +27,12 @@ A guide to install Loading Screen for FiveM
 </details>
 ---
 
+## Installation Tutorial
+
+**Youtube!** Watch this installation tutorial video:
+
+[Installation Tutorial](https://youtu.be/5-EXTiUWMpQ?si=joLzlkm6f1s6Bv-N){: .btn .btn-red}
+
 ## Purchasing the resource
 
 Find this product at:

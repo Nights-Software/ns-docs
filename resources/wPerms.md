@@ -27,6 +27,12 @@ A guide to install Discord wPerms! for FiveM
 </details>
 ---
 
+## Installation Tutorial
+
+**Youtube!** Watch this installation tutorial video:
+
+[Installation Tutorial](https://youtu.be/xwEWLrmzz84?si=dxEOsX9lZipAzJj1){: .btn .btn-red}
+
 ## Purchasing the resource
 
 Find this product at:
@@ -56,7 +62,7 @@ ensure night_discord_wperms
 
 1. List each weapon seperately if you want multiple roles to be able to wield this particular weapon. So Pistol -> Roles. The logic is that you list the weapon and then the roles. If you have duplicate weapons in lists it might go wrong!
 
-A right Example:
+A functional Example:
 
 ```lua
 [1] = {

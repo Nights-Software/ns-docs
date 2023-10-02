@@ -28,6 +28,12 @@ A guide to install Smoke Generator for FiveM
 
 ---
 
+## Installation Tutorial
+
+**Youtube!** Watch this installation tutorial video:
+
+[Installation Tutorial](https://youtu.be/mLWDlb6fdT4?si=Tue97e4vFtuV7IGZ){: .btn .btn-red}
+
 ## Purchasing the resource
 
 Find this product at:

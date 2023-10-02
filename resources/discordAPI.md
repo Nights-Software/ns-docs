@@ -28,6 +28,12 @@ A guide to install Discord API! for FiveM
 
 ---
 
+## Installation Tutorial
+
+**Youtube!** Watch this installation tutorial video:
+
+[Installation Tutorial](https://youtu.be/l1NtpnA-jhc?si=CXq1Uq7HiXQpEJ58){: .btn .btn-red}
+
 ## Purchasing the resource
 
 Find this product at:
@@ -40,7 +46,7 @@ Download this resource via [https://keymaster.fivem.net/asset-grants](https://ke
 
 ## Video Installation Tutorial
 
-[https://youtu.be/Q5vxVyVqu7o](https://youtu.be/Q5vxVyVqu7o)
+
 
 ## Installing the resource
 

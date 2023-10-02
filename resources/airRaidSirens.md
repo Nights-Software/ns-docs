@@ -27,6 +27,11 @@ A guide to install Air Raid Sirens v3! for FiveM
 </details>
 
 ---
+## Installation Tutorial
+
+**Youtube!** Watch this installation tutorial video:
+
+[Installation Tutorial](https://youtu.be/DBj3zOOxIIk?si=c5Y5S5ld9V4InAgd){: .btn .btn-red}
 
 ## Purchasing the resource
 
