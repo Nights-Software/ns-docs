@@ -31,7 +31,7 @@ A guide to install Smokescreen for FiveM
 
 **Youtube!** Watch this installation tutorial video:
 
-[Coming soon](https://store.nights-software.com){: .btn .btn-red}
+[Installation tutorial](https://www.youtube.com/watch?v=RomSyYCcOmI){: .btn .btn-red}
 
 ## Purchasing the resource
 
