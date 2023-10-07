@@ -78,7 +78,7 @@ Example (using our bot):
 Discord_Bot_Token = ""
 ```
 
-Invite link for our bot: https://discord.com/oauth2/authorize?client_id=956690799385522237&permissions=1024&scope=bot
+Invite link for our bot: <https://discord.com/oauth2/authorize?client_id=956690799385522237&permissions=1024&scope=bot>
 
 *Notice: Please keep in mind that our bot will probably be used by multiple communities and/or FiveM servers and that resources using this API may require a longer loading time to get data from Discord!*
 
@@ -147,7 +147,7 @@ For creating your own Discord bot, we made a little tutorial. You need to have a
 
 ### Step 1: Registering your own Discord application
 
-Please access the Discord Developer Portal on https://discord.com/developers/applications. You should see a page with the heading "Applications", and you probably will have no applications created yet.
+Please access the Discord Developer Portal on <https://discord.com/developers/applications>. You should see a page with the heading "Applications", and you probably will have no applications created yet.
 
 <img src="/assets/img/discordAPI/1DiscordApplications.png" alt="Discord Applications Page">
 
