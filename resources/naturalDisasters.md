@@ -9,7 +9,7 @@ last_modified_date: "2022-06-25 00:31:00"
 
 <img class="cover-img" src="/assets/img/naturalDisasters.gif" alt="Natural Disasters Resource" draggable="false">
 
-# Natural Disasters (Normal / DLC 1, 2, 3 & 4)
+# Natural Disasters (Normal / DLC 1, 2, 3, 4 & 5)
 {: .no_toc }
 
 A guide to install Natural Disasters for FiveM
@@ -40,11 +40,13 @@ Find this product and it's DLC's at:
 * DLC 2: [https://store.nights-software.com/package/5183358](https://store.nights-software.com/package/5183358)
 * DLC 3: [https://store.nights-software.com/package/5314042](https://store.nights-software.com/package/5314042)
 * DLC 4: [https://store.nights-software.com/package/5673677](https://store.nights-software.com/package/5673677)
+* DLC 4: [https://store.nights-software.com/package/5968995](https://store.nights-software.com/package/5968995)
 
-*You require the base resource to be able to purchase the DLC(s).*
+*You require the base resource to be able to purchase DLC1.*
 *You require DLC1 resource to be able to purchase the DLC2.*
 *You require DLC2 resource to be able to purchase the DLC3.*
 *You require DLC3 resource to be able to purchase the DLC4.*
+*You require DLC4 resource to be able to purchase the DLC5.*
 
 ## Installation Notice
 *Got all of the Natural Disasters? Install just DLC4, this contains all code required. The latest resource is the one you install! The pack includes Air Raid Sirens which you can seperately install.*
@@ -97,13 +99,15 @@ ensure night_natural_disasters
 
 ## Permissions
 
-You have 3 options in config.lua:
+You have several permission options in config.lua:
 
-1. Discord Admin System, supported by our Discord API: [Discord linked admin system](https://store.nights-software.com/package/5054917) & [Discord API ](https://store.nights-software.com/package/5035729)
+1. [Discord API ](https://store.nights-software.com/package/5035729)
 
 2. Ace Permissions: (Ace Permissions Documentation)[https://docs.nights-software.com/resources/acePerms/]
 
-3. Set both to false in the config.lua to use no permissions.
+3. QBCore or ESX, define the group names in the permission group/role list.
+
+4. Everyone has permission (Default)
 
 ## Weather Compatibility
 
@@ -135,6 +139,7 @@ exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords --[[V
 * [https://store.nights-software.com/package/5183358](https://store.nights-software.com/package/5183358) - Natural Disasters DLC 2 (Install this one and remove the older versions: base AND DLC 1.)
 * [https://store.nights-software.com/package/5314042](https://store.nights-software.com/package/5314042) - Natural Disasters DLC 3 (Install this one and remove the older versions: base, DLC 1 AND DLC 2)
 * [https://store.nights-software.com/package/5673677](https://store.nights-software.com/package/5673677) - Natural Disasters DLC 4 (Install this one and remove the older versions: Base, DLC 1, DLC2 AND DLC3)
+* [https://store.nights-software.com/package/5968995](https://store.nights-software.com/package/5968995) - Natural Disasters DLC 5 (Install this one and remove the older versions: Base, DLC 1, DLC2, DLC3 AND DLC4)
 * [https://store.nights-software.com/package/5030134](https://store.nights-software.com/package/5030134) - Air Raid Sirens, for the nice integration. (Install this one as well as the selected above.) 
 
 ## Support
