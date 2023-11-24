@@ -78,6 +78,12 @@ ensure night_gates
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. The MDT will only work for those Discord Roles which have been set up. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
 
+## Configuring Gate & Bollard or other prop positions
+
+1. Use /createbollards [object model] [amount of objects] [max width in meters] [distance between objects] to open the tool to create objects. Once you confirm position you will find a copyable GateObjects table in your night_gates folder. You can copy the content of bollards.txt to your config.lua inside your Gate section. bollards.txt overwrites upon confirming your bollards positions in-game.
+
+2. /creategate works the same way, but then outputs one gate per confirmed position.
+
 ## Editing c_functions.lua / s_functions.lua
 
 Are you not familiar with code? Then skip this section or take on the challenge!
