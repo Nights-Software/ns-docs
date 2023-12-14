@@ -31,7 +31,7 @@ A guide to install Gates & Bollards for FiveM
 
 **Youtube!** Watch this installation tutorial video:
 
-[Installation tutorial (Coming soon)](https://store.nights-software.com){: .btn .btn-red}
+[Installation tutorial](https://youtu.be/sOQC541Uico){: .btn .btn-red}
 
 ## Purchasing the resource
 
