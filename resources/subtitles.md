@@ -35,7 +35,7 @@ A guide to install Subtitles for FiveM
 
 ## Purchasing the resource
 
-Find this product at: [https://store.nights-software.com/package/6005872](https://store.nights-software.com/package/6005872)
+Find this product at: [https://store.nights-software.com/package/6043540](https://store.nights-software.com/package/6043540)
 
 # Read before installing
 
