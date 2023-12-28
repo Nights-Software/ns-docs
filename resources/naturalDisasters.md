@@ -101,9 +101,9 @@ ensure night_natural_disasters
 
 You have several permission options in config.lua:
 
-1. [Discord API ](https://store.nights-software.com/package/5035729)
+1. [Discord API](https://store.nights-software.com/package/5035729)
 
-2. Ace Permissions: (Ace Permissions Documentation)[https://docs.nights-software.com/resources/acePerms/]
+2. Ace Permissions: [Ace Permissions Documentation](https://docs.nights-software.com/resources/acePerms/)
 
 3. QBCore or ESX, define the group names in the permission group/role list.
 
