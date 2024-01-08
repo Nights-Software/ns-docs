@@ -4,7 +4,7 @@ title: "Discord API"
 nav_order: 11
 has_children: false
 has_toc: true
-last_modified_date: "2023-10-07 16:27:00"
+last_modified_date: "2024-01-08 17:25:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordAPI.png" alt="Discord API Resource" draggable="false">
@@ -82,13 +82,16 @@ Invite link for our bot: <https://discord.com/oauth2/authorize?client_id=9566907
 
 *Notice: Please keep in mind that our bot will probably be used by multiple communities and/or FiveM servers and that resources using this API may require a longer loading time to get data from Discord!*
 
-### `Discord_Guild_ID`
+### `Discord_Guild_Names`
 
-Provide us with your Discord server/guild ID so the bot knows where to fetch the data from. Your or our bot needs to be part of that Discord server/guild.
+Provide us with your Discord server/guild IDs so the bot knows where to fetch the data from. Your or our bot needs to be part of every Discord server/guild.
 
 Example:
 ```lua
-Discord_Guild_ID = "744819251788906496"
+Discord_Guild_Names = {
+    ["989438923925229598"] = "Nights Software",
+    ["1001055923912653544"] = "My Community Discord"
+}
 ```
 
 ### `Discord_Role_Names`
@@ -187,17 +190,35 @@ Then select the Discord server on which your bot should join. If you cannot see 
 
 We work with an internal cache system so a Discord member or guild is fetched once and will only be fetched again if the optional force argument available on each function is set to true.
 
-### `IsUserPartOfGuild(src : String, force? : Boolean)`
+### `IsUserPartOfThisGuild(src : String, force : Boolean, guildName : String)`
 
 Returns `nil` if an error occurred. If the error resulted from the request to the Discord API, it will be logged in the server console.
 
-Otherwise, this function returns a Boolean indicating if the given user is part of the guild or not.
+Otherwise, this function returns a Boolean indicating if the given user is part of the given guild or not.
 
-### `GetDiscordMember(src : String, force? : Boolean)`
+### `IsUserPartOfAnyOfTheseGuilds(src : String, force? : Boolean, guildNames? : String[])`
+
+If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
+
+Returns `nil` if an error occurred. If the error resulted from the request to the Discord API, it will be logged in the server console.
+
+Otherwise, this function returns a Boolean indicating if the given user is part of any of the given guilds or not.
+
+### `IsUserPartOfAllOfTheseGuilds(src : String, force? : Boolean, guildNames? : String[])`
+
+If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
+
+Returns `nil` if an error occurred. If the error resulted from the request to the Discord API, it will be logged in the server console.
+
+Otherwise, this function returns a Boolean indicating if the given user is part of all of the given guilds or not.
+
+### `GetDiscordMember(src : String, force? : Boolean, guildNames? : String[])`
+
+If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
 
 Returns `nil` if an error occurred. This error will be logged in the server console.
 
-Otherwise, this function returns a Discord member object.
+Otherwise, this function returns a Discord member object from the first guild in `guildNames`.
 
 Return object example:
 ```lua
@@ -222,11 +243,13 @@ local discordMember = exports.night_discordapi:GetDiscordMember(src)
 if discordMember then print("Player " .. GetPlayerName(src) .. " is named " .. discordMember.name .. " on Discord.") end
 ```
 
-### `GetDiscordMemberRoles(src : String, force? : Boolean)`
+### `GetDiscordMemberRoles(src : String, force? : Boolean, guildNames? : String[])`
+
+If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
 
 Returns `nil` if an error occurred. This error will be logged in the server console.
 
-Otherwise, this function returns an array of Discord role names of the Discord roles the member has.
+Otherwise, this function returns an array of Discord role names of the Discord roles the member has from all guilds in `guildNames`.
 
 Return object example:
 ```lua
@@ -244,7 +267,9 @@ local discordMemberRoles = exports.night_discordapi:GetDiscordMemberRoles(src)
 if discordMemberRoles then print("Player " .. GetPlayerName(src) .. " has " .. #discordMemberRoles .. " discord roles.") end
 ```
 
-### `IsMemberPartOfThisRole(src : String, roleName : String, force? : Boolean)`
+### `IsMemberPartOfThisRole(src : String, roleName : String, force? : Boolean, guildNames? : String[])`
+
+If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
 
 Returns `nil` if an error occurred. This error will be logged in the server console.
 
@@ -259,7 +284,9 @@ if isAllowlisted then print("Player " .. GetPlayerName(src) .. " is allowlisted.
 
 In this case we specify that the Discord API should refetch the Discord member by setting the last parameter force to true. This is only necessary for functions like checking the allowlisted state upon joining. The more you force requests the more requests you make, and Discord will block your requests if you send too many in too little time.
 
-### `IsMemberPartOfAnyOfTheseRoles(src : String, roleNames : String[], force? : Boolean)`
+### `IsMemberPartOfAnyOfTheseRoles(src : String, roleNames : String[], force? : Boolean, guildNames? : String[])`
+
+If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
 
 Returns `nil` if an error occurred. This error will be logged in the server console.
 
@@ -277,7 +304,9 @@ local isPartOfStaff = exports.night_discordapi:IsMemberPartOfAnyOfTheseRoles(src
 if isPartOfStaff then print("Player " .. GetPlayerName(src) .. " is part of staff.") end
 ```
 
-### `IsMemberPartOfAllOfTheseRoles(src : String, roleNames : String[], force? : Boolean)`
+### `IsMemberPartOfAllOfTheseRoles(src : String, roleNames : String[], force? : Boolean, guildNames? : String[])`
+
+If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
 
 Returns `nil` if an error occurred. This error will be logged in the server console.
 
@@ -299,11 +328,11 @@ local isPartOfEveryRole = exports.night_discordapi:IsMemberPartOfAllOfTheseRoles
 if isPartOfEveryRole then print("Player " .. GetPlayerName(src) .. " is part of everything. Not bad!") end
 ```
 
-### `GetDiscordGuild(force? : Boolean)`
+### `GetDiscordGuild(guildName : String, force? : Boolean)`
 
 Returns `nil` if an error occurred. This error will be logged in the server console.
 
-Otherwise, this function returns a Discord guild object based on the guild ID specified in the config.
+Otherwise, this function returns a Discord guild object fetched based on the specified `guildName`.
 
 Return object example:
 ```lua
