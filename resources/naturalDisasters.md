@@ -15,7 +15,7 @@ last_modified_date: "2022-06-25 00:31:00"
 A guide to install Natural Disasters for FiveM
 {: .fs-5 .fw-300 }
 
-Just released: DLC 4!
+Just released: DLC 5!
 {: .label .label-purple }
 
 ---

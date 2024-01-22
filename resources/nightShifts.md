@@ -126,7 +126,7 @@ ensure map
 
 Download our free Discord API, which has been integrated in the NS - MDT resource as a permission system: [NS Discord API Free](https://store.nights-software.com/package/5035729)  
 
-1. Install the Discord API, using the documentation.pdf file provided with the resource.
+1. Install the Discord API, using [this documentation page](https://docs.nights-software.com/resources/discordAPI/).
 
 1. You will need the role names you have defined in the Discord API config.lua later, when configuring night_shifts.
 
@@ -221,6 +221,13 @@ GetUserShiftData is used to get all the data related to their shift stored clien
     else
         print("No shift data found for server ID "..src)
     end
+```
+
+More CLIENTSIDE exports:
+```lua
+exports.night_shifts:TriggerAlarm(isEmergency --[[ bool ]], isPoliceRequired --[[ bool ]], isAmbulanceRequired --[[ bool ]], isFireRequired --[[ bool ]], isTowRequired --[[ bool ]], description --[[ string ]], coordinates --[[ Vector3 ]])
+
+exports.night_shifts:CreateEmergencyCall(isEmergency --[[ bool ]], isPoliceRequired --[[ bool ]], isAmbulanceRequired --[[ bool ]], isFireRequired --[[ bool ]], isTowRequired --[[ bool ]], description --[[ string ]], caller_name --[[ string ]], coordinates --[[ Vector3 ]], contact_details --[[ string ]])
 ```
 
 ---
