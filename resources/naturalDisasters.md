@@ -40,7 +40,7 @@ Find this product and it's DLC's at:
 * DLC 2: [https://store.nights-software.com/package/5183358](https://store.nights-software.com/package/5183358)
 * DLC 3: [https://store.nights-software.com/package/5314042](https://store.nights-software.com/package/5314042)
 * DLC 4: [https://store.nights-software.com/package/5673677](https://store.nights-software.com/package/5673677)
-* DLC 4: [https://store.nights-software.com/package/5968995](https://store.nights-software.com/package/5968995)
+* DLC 5: [https://store.nights-software.com/package/5968995](https://store.nights-software.com/package/5968995)
 
 *You require the base resource to be able to purchase DLC1.*
 *You require DLC1 resource to be able to purchase the DLC2.*
@@ -110,6 +110,10 @@ You have several permission options in config.lua:
 4. Everyone has permission (Default)
 
 ## Weather Compatibility
+
+1. If you are using the built in weather & time system, make sure to remove/disable any other weather/time systems on your server and then skip this step.
+
+1. If you do not use the built in weather and time system, you require a compatible one. Continue reading...
 
 *You need @Customer roles in our Discord to see the channel link below: Claim your purchase or create a ticket in our Discord!* 
 
