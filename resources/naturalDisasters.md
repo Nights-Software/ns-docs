@@ -49,7 +49,7 @@ Find this product and it's DLC's at:
 *You require DLC4 resource to be able to purchase the DLC5.*
 
 ## Installation Notice
-*Got all of the Natural Disasters? Install just DLC4, this contains all code required. The latest resource is the one you install! The pack includes Air Raid Sirens which you can seperately install.*
+*Got all of the Natural Disasters? Install just DLC5, this contains all code required. The latest resource is the one you install! The pack includes Air Raid Sirens which you can seperately install.*
 
 ## Downloading the resource
 
@@ -134,6 +134,13 @@ So weather script compatibility is found in 3 resources: qb-weathersync or cd_ea
 1. We provide a configuration option for the following export (config.lua -> CustomSoundResource = "ResName" & s_functions.lua -> Server event = Accessible code):
 ```lua
 exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords --[[Vector 3]], disasterID --[[index nr]], soundFileName --[[File name]], soundFileVolume --[[Volume]])
+```
+
+2. More exports!
+```lua
+exports.night_natural_disasters:SpawnDisaster(DisasterId)
+exports.night_natural_disasters:StopDisaster(DisasterId)
+exports.night_natural_disasters:GetCurrentWeather()
 ```
 
 ## Recommended!
