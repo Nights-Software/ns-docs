@@ -113,7 +113,7 @@ You have several permission options in config.lua:
 
 1. If you are using the built in weather & time system, make sure to remove/disable any other weather/time systems on your server and then skip this step.
 
-1. If you do not use the built in weather and time system, you require a compatible one. Continue reading...
+1. If you do not use the built in weather and time system, you need to disable it in the config.lua and afterwards you will require a compatible one, described below.
 
 *You need @Customer roles in our Discord to see the channel link below: Claim your purchase or create a ticket in our Discord!* 
 
