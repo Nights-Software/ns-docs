@@ -119,7 +119,7 @@ You have several permission options in config.lua:
 
 In our Discord we provide free weather script edits [#free-files](https://discord.com/channels/989438923925229598/989479452209733662) which in most cases you require to prevent flickering lights on your screen. This is due to your current weather file overwriting the weather the disaster is trying to set. The same goes for blackouts.
 
-So weather script compatibility is found in 3 resources: qb-weathersync or cd_easytime (No longer supported) or vSyncR.
+So alternative weather script compatibility is found in 3 alternative resources: qb-weathersync or cd_easytime or vSyncR (edits by Nights Software [#free-files](https://discord.com/channels/989438923925229598/989479452209733662))
 
 ## How to add sound files for disasters?
 
