@@ -194,7 +194,7 @@ There are loads of options to configure. It is recommended you test the resource
 
 1. Set up the matching Discord API roles for: MDT Access, Departments, Sub-Departments and Ranks. This will allow you access to the departments in the MDT without errors.
 
-*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. The MDT will only work for those Discord Roles which have been set up. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
+*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
 
 ## Fix UI Lag
 

@@ -82,7 +82,7 @@ exports.night_subtitles:DisplaySubtitle(text, duration_in_milliseconds) -- param
 
 1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom: 
 
-*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. The MDT will only work for those Discord Roles which have been set up. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
+*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
 
 ## Editing c_functions.lua / s_functions.lua
 
