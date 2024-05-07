@@ -210,6 +210,7 @@ Feel free to take a look. We have provided these functions open source and you a
 
 ## Exports
 
+## SERVERSIDE EXPORTS:
 GetUserShiftData is used to get all the data related to their shift stored clientside for the given players' server ID. It will auto-print out the result to see what keys and values you get to use.
 ```lua
     local src = source
@@ -223,7 +224,7 @@ GetUserShiftData is used to get all the data related to their shift stored clien
     end
 ```
 
-More CLIENTSIDE exports:
+## CLIENTSIDE exports:
 ```lua
 exports.night_shifts:TriggerAlarm(isEmergency --[[ bool ]], isPoliceRequired --[[ bool ]], isAmbulanceRequired --[[ bool ]], isFireRequired --[[ bool ]], isTowRequired --[[ bool ]], description --[[ string ]], coordinates --[[ Vector3 ]])
 
