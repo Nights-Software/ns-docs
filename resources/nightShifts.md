@@ -4,7 +4,7 @@ title: "Night Shifts - Mobile Data Terminal"
 nav_order: 32
 has_children: false
 has_toc: true
-last_modified_date: "2023-05-03 17:00:00"
+last_modified_date: "2024-05-16 17:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/nightShifts.png" alt="Night Shifts - Mobile Data Terminal Resource" draggable="false">
@@ -210,7 +210,7 @@ Feel free to take a look. We have provided these functions open source and you a
 
 ## Exports
 
-## SERVERSIDE EXPORTS:
+## SERVERSIDE Exports:
 GetUserShiftData is used to get all the data related to their shift stored clientside for the given players' server ID. It will auto-print out the result to see what keys and values you get to use.
 ```lua
     local src = source
@@ -224,11 +224,17 @@ GetUserShiftData is used to get all the data related to their shift stored clien
     end
 ```
 
-## CLIENTSIDE exports:
+## CLIENTSIDE Exports:
 ```lua
 exports.night_shifts:TriggerAlarm(isEmergency --[[ bool ]], isPoliceRequired --[[ bool ]], isAmbulanceRequired --[[ bool ]], isFireRequired --[[ bool ]], isTowRequired --[[ bool ]], description --[[ string ]], coordinates --[[ Vector3 ]])
 
 exports.night_shifts:CreateEmergencyCall(isEmergency --[[ bool ]], isPoliceRequired --[[ bool ]], isAmbulanceRequired --[[ bool ]], isFireRequired --[[ bool ]], isTowRequired --[[ bool ]], description --[[ string ]], caller_name --[[ string ]], coordinates --[[ Vector3 ]], contact_details --[[ string ]])
+
+exports.night_shifts:GetCivilianCount() -- Gets the amount of civilians online and so on for the other exports.
+exports.night_shifts:GetPoliceCount()
+exports.night_shifts:GetAmbulanceCount()
+exports.night_shifts:GetFireCount()
+exports.night_shifts:GetTowCount()
 ```
 
 ---
