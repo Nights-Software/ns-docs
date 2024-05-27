@@ -100,7 +100,7 @@ This is an optional resource, but fits well within the purpose of the NS - MDT. 
 
 1. Rename the 'nearest-postal-master' to 'nearest-postal' and drag this folder to your resources folder.
 
-1. Ensure or start this resource in your server.cfg. 
+1. Ensure or start this resource in your server.cfg, make sure it starts before the 'night_shifts' resource 
 
 Example:
 ```lua
@@ -130,7 +130,7 @@ Download our free Discord API, which has been integrated in the NS - MDT resourc
 
 1. You will need the role names you have defined in the Discord API config.lua later, when configuring night_shifts.
 
-1. Ensure or start this resource, after setting it up, in your server.cfg. 
+1. Ensure or start this resource, after setting it up, in your server.cfg. Make sure it starts before the 'night_shifts' resource.
 
 Example:
 ```lua
