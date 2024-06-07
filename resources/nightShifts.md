@@ -196,7 +196,7 @@ There are loads of options to configure. It is recommended you test the resource
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
 
-## Config preview
+<!-- ## Config preview
 
 <details>
 
@@ -207,9 +207,10 @@ There are loads of options to configure. It is recommended you test the resource
 <p>
 ```lua
    Config = {}
-   -- Coming soon```
+   -- Coming soon
+```
 </p>
-</details>
+</details> -->
 
 ## Fix UI Lag
 
