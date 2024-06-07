@@ -207,8 +207,7 @@ There are loads of options to configure. It is recommended you test the resource
 <p>
 ```lua
    Config = {}
-   -- Coming soon
-```
+   -- Coming soon```
 </p>
 </details>
 
