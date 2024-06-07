@@ -243,6 +243,17 @@ exports.night_shifts:GetTowCount()
 
 You can edit styling in NUI/styles.css. It is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
 
+## Config preview
+
+<details>
+<summary>Click here to reveal an example of the config for this resource</summary>
+
+```lua
+Config = {}
+```
+
+</details>
+
 # How to play Night Shifts - MDT?
 Welcome to Night Shifts - MDT, a customizable MDT system for your community. Whether you're running a police, fire, or EMS department, Night Shifts provides a range of features to help you manage your operations. Our MDT is configurable to fit the needs of emergency services in any country.
 
@@ -382,16 +393,6 @@ set steam_webApiKey "your_key"
 1. Check whether your script is still named `night_shifts`, this is required for it to work. Do NOT rename it.
 
 ---
-
-## Config preview
-
-<details>
-<summary>Click here to reveal an example of the config for this resource</summary>
-
-```lua
-Config = {}
-```
-</details>
 
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
