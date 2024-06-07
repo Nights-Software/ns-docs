@@ -246,10 +246,17 @@ You can edit styling in NUI/styles.css. It is not recommended if you don't know 
 ## Config preview
 
 <details>
+
 <summary>Click here to reveal an example of the config for this resource</summary>
 
+### Config example
+
+You can add text within a collapsed section. 
+
+You can add an image or a code block, too.
+
 ```lua
-Config = {}
+   Config = {}
 ```
 
 </details>
