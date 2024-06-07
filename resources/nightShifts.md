@@ -383,6 +383,16 @@ set steam_webApiKey "your_key"
 
 ---
 
+## Config preview
+
+<details>
+<summary>Click here to reveal an example of the config for this resource</summary>
+
+```lua
+Config = {}
+```
+</details>
+
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
 
