@@ -196,6 +196,24 @@ There are loads of options to configure. It is recommended you test the resource
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
 
+## Config preview
+
+<details>
+
+<summary>Click here to reveal an example of the config for this resource</summary>
+
+### Config example
+
+You can add text within a collapsed section. 
+
+You can add an image or a code block, too.
+
+```ruby
+   Config = {}
+```
+
+</details>
+
 ## Fix UI Lag
 
 FiveM has a setting in their application (settings menu) which allows you to "Fix UI Lag". This is recommend to set checked (enabled) for this resource.
@@ -243,23 +261,7 @@ exports.night_shifts:GetTowCount()
 
 You can edit styling in NUI/styles.css. It is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
 
-## Config preview
-
-<details>
-
-<summary>Click here to reveal an example of the config for this resource</summary>
-
-### Config example
-
-You can add text within a collapsed section. 
-
-You can add an image or a code block, too.
-
-```lua
-   Config = {}
-```
-
-</details>
+---
 
 # How to play Night Shifts - MDT?
 Welcome to Night Shifts - MDT, a customizable MDT system for your community. Whether you're running a police, fire, or EMS department, Night Shifts provides a range of features to help you manage your operations. Our MDT is configurable to fit the needs of emergency services in any country.
