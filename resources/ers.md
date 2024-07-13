@@ -134,17 +134,21 @@ ensure night_ers #required
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works. Use the F8 console and server console (txAdmin) to check for errors, these lead to solutions.*
 
+# Framework compatibility
 
-## Editing c_functions.lua / s_functions.lua
+## ESX
+1. **Permissions to go on shift**  
+   - The ERS resource has 4 service types. ESX permissions can be used to allow players access by their job name and can be setup in `night_ers/config/config.lua`.
 
-*Are you not familiar with code? Then skip this section or take on the challenge!*
+2. **Weapons**  
+   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to ESX in `night_ers/client/c_functions.lua`.
 
-1. **Open source script files**  
-   - Besides `night_ers/callouts/*.lua`, we have provided 2 open script files containing functions you can edit to your desire. A client side functions script `night_ers/client/c_functions.lua` and a server side functions script `night_ers/server/s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits. 
+## QBcore
+1. **Permissions to go on shift**  
+   - The ERS resource has 4 service types. QBCore permissions can be used to allow players access by their job name or their QB permissions and can be setup in `night_ers/config/config.lua`.
 
-2. **Explore the functions**  
-   - Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can of course ask us any question and we will try to see if our knowledge can help you.
-
+2. **Weapons**  
+   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to QBCore in `night_ers/client/c_functions.lua`.
 
 # Creating ERS callouts
 
@@ -354,24 +358,14 @@ elseif calloutDataClient.calloutId == 111 then -- Example callout clientside
 Enjoy and good luck! Love from Nights Software!
 -->
 
+# Editing open source functions
+*Are you not familiar with code? Then skip this section or take on the challenge!*
 
-# Framework compatibility
+1. **Open source script files**  
+   - Besides `night_ers/callouts/*.lua`, we have provided 2 open script files containing functions you can edit to your desire. A client side functions script `night_ers/client/c_functions.lua` and a server side functions script `night_ers/server/s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits. 
 
-## ESX
-1. **Permissions to go on shift**  
-   - The ERS resource has 4 service types. ESX permissions can be used to allow players access by their job name and can be setup in `night_ers/config/config.lua`.
-
-2. **Weapons**  
-   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to ESX in `night_ers/client/c_functions.lua`.
-
-## QBcore
-1. **Permissions to go on shift**  
-   - The ERS resource has 4 service types. QBCore permissions can be used to allow players access by their job name or their QB permissions and can be setup in `night_ers/config/config.lua`.
-
-2. **Weapons**  
-   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to QBCore in `night_ers/client/c_functions.lua`.
-
-# Custom triggers upon events
+2. **Explore the functions**  
+   - Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can of course ask us any question and we will try to see if our knowledge can help you.
 
 ## Client `night_ers/client/c_functions.lua`
 
@@ -413,7 +407,10 @@ function OnEndedACallout() -- Contains no callout data.
 end
 ```
 
-The same goes for the server in `night_ers/server/s_functions.lua`
+## Server `night_ers/server/s_functions.lua`
+
+1. **Event triggers**  
+   - The ERS resource has multiple event triggers, also serverside. Discover them all!
 
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
