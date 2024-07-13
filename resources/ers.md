@@ -173,6 +173,8 @@ ensure night_ers #required
 - [x] **Task 4**  
 - Implement the snippets you made for the scripts listed above into these scripts with the correct index number ([110], [111]). Look at how we've done it to understand what you need to do in the `night_ers/callouts_config/callouts_config.lua`, `night_ers/callouts/callouts_server.lua` and `night_ers/callouts/callouts_client.lua` files.
 
+**Here is an example**
+
 ## Config `night_ers/callouts/callouts_config.lua`
 <!-- This is a callouts_config.lua example, you can copy this to create a callout in callouts_config.lua. 
 Make sure to change the index number [111] to the next CORRECT incremented ID for a callout. Example: after ID [110] comes ID [111].
