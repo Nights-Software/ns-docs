@@ -166,7 +166,7 @@ ensure night_ers #required
 ## FORMATS for adding a callout (config -> server -> client)
 *IT IS IMPORTANT TO REALIZE CALLOUT CREATION IS FOR DEVELOPERS*
 
-- **Support notice**
+**Support notice**
 - Nights Software does not offer support for creating custom callouts, besides the documentation. Ask the community instead!
     - If you do not have an understanding of developing you'll need to learn this first. You will be told the same thing in a ticket. Even though we love our community and love to help, we don't have the capacity (yet) to provide support for callout creation. Read these documented instructions carefully.
 
@@ -267,11 +267,11 @@ elseif calloutData.calloutId == 111 then -- Example callout serverside
                 DebugPrint("Created fire with ID: "..fireId)
                 table.insert(fireList, fireId)
             else
-                -- Light version
+                -- Lite version
                 local fireSize = Config.RandomSmallFireOrSmokeSize[math.random(#Config.RandomSmallFireOrSmokeSize)]
                 local fireType = "normal"
-                local fireId = exports['SmartFiresLight']:CreateFire(vector3(coords.x, coords.y, coords.z-0.5), fireSize, fireType)
-                DebugPrint("Created fire with SmartFiresLight with ID: "..fireId)
+                local fireId = exports['SmartFiresLite']:CreateFire(vector3(coords.x, coords.y, coords.z-0.5), fireSize, fireType)
+                DebugPrint("Created fire with SmartFiresLite with ID: "..fireId)
                 table.insert(fireList, fireId)
             end
         end
@@ -412,15 +412,122 @@ end
 1. **Event triggers**  
    - The ERS resource has multiple event triggers, also serverside. Discover them all!
 
+# ERS Functions
+
+## Client
+
+- **`ERS_SetMovementAnimClipSetToPed(ped, clipset)`**  
+  Applies a movement style. [Movement Clipsets](https://github.com/DurtyFree/gta-v-data-dumps/blob/master/movementClipsetsWalkingCompact.json)
+
+- **`ERS_SpawnConfiguredWeaponForPed(ped, calloutDataClient)`**  
+  Spawns a weapon from the callouts-config by chance in percentage.
+
+- **`ERS_RequestNetControlForEntity(entityId)`**  
+  Required control request before performing actions (functions) on an entity to ensure synchronization.
+
+- **`ERS_PerformTimedActionOnPed(calloutDataClient, pedList)`**  
+  Performs the probabilities configured in callouts-config. Basically performs ped behaviour after the configured timeout to ensure callouts remain unpredictable and dynamic. Each callout has config options for these secondary actions.  
+  **IMPORTANT**: The `pedList` argument requires a list of entity NETWORK ID's. Example: `pedList = {8157, 8158, 8159}`
+
+- **`ERS_CreateTemporaryBlipForEntities(entityList, timeoutInMs)`**  
+  Adds a blip for nearby entities and removes it after the given timeout in milliseconds. (1s = 1000ms). `entityList` should contain network ID's of entities.
+
+- **`ERS_SpawnParticlesWithinRange(coords, diameter, particleDict, particleName, particleSize, particleAmount, timeout, chanceToExplode)`**  
+  Creates looped particles with the chance of an explosion after the timeout based on percentage: 0-100.
+
+- **`ERS_GetRandomCoordinateWithinRangeOfCoordinate(coords, diameter)`**  
+  Returns a `vector3(x,y,z)` value containing random coordinates within a radius of the given coordinate. (Circle)
+
+- **`ERS_SetPedToFleeFromPlayer(ped)`**  
+  Makes a ped flee the player.
+
+- **`ERS_SetPedToAttackPlayer(ped)`**  
+  Makes a ped attack the player.
+
+- **`ERS_SetPedToSurrender(ped)`**  
+  Makes a ped surrender to player.
+
+- **`ERS_ApplyBloodToPed(ped)`**  
+  Applies blood randomly onto the ped.
+
+- **`ERS_CreateBloodPuddleAtPed(ped)`**  
+  Applies a blood puddle at ped position.
+
+- **`ERS_SetPedToPassout(ped)`**  
+  Makes a ped pass out.
+
+- **`ERS_ClearPedTasksAndBlockEvents(ped)`**  
+  Makes a ped ignore any event, used before performing actions on peds to ensure they're clear of any behaviour beforehand.
+
+- **`ERS_SetPedAsDrunkPed(ped)`**  
+  Applies drunk movement style to ped.
+
+- **`ERS_GetIsPedADrunkPed(ped)`**  
+  Returns a boolean, `true` if drunk, `false` if not drunk.
+
+- **`ERS_CheckIfPedIsAlive(ped)`**  
+  Returns a boolean, `true` if alive, `false` if dead.
+
+- **`ERS_IsPedAnAnimalPed(ped)`**  
+  Returns a boolean, `true` if ped is an animal ped, `false` if ped is not an animal ped.
+
+- **`ERS_SetRandomDamageToVehicle(veh)`**  
+  Applies damage to a vehicle.
+
+- **`ERS_CreateFlareAtCoordinate(coords)`**  
+  Creates an active red flare at given vector3 coordinates lasting a while.
+
+- **`ERS_GetSafeSpawnPointForNPCVehicle()`**  
+  Finds a coordinate where an NPC vehicle can spawn, or used for 'safe' destinations.
+
+- **`ERS_SelectRandomMovementClipSet()`**  
+  Returns a random movement clipset.
+
+- **`ERS_SelectMentalHealthPersonScenario()`**  
+  Returns a random scenario.
+
+- **`ERS_SelectRandomBystanderScenario()`**  
+  Returns a random scenario.
+
+- **`ERS_SelectRandomProtesterScenario()`**  
+  Returns a random scenario.
+
+- **`ERS_SelectRandomWoundedPersonScenario()`**  
+  Returns a random scenario.
+
+- **`ERS_SelectStandingByFireScenario()`**  
+  Returns a random scenario.
+
+- **`ERS_PedEquipWeapon(ped, weaponModel)`**  
+  Sets a weapon in the hands of a ped. Provide ped entity ID, `"weapon_pistol"` (weapon model names)
+
+- **`ERS_DeleteEntityFromCallout(entityId)`**  
+  Deletes an entity from the callout system and/or world. Provide entity ID's.
+
+## Server
+
+- **`ERS_CreatePed(model, coords, heading)`**  
+  Creates a ped which is synchronized by the ERS system and returns their Network ID.
+
+- **`ERS_CreateObject(model, coords, heading)`**  
+  Creates an object which is synchronized by the ERS system and can be cleaned up by Road Service and returns their Network ID.
+
+- **`ERS_CreateVehicle(model, vehType, coords, vehHeading)`**  
+  Creates a vehicle which is synchronized by the ERS system and returns their Network ID.
+
+- **`ERS_GetRandomCoordinateWithinRangeOfCoordinate(coords, diameter)`**  
+  Gets a random coordinate within range of the given coordinate. Spreads entities randomly on callout spawn.
+
+- **`ERS_GetRandomModel(model)`**  
+  Selects a random model from a given library/table (`config/entity-config.lua`).
+
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
 
 ## Feedback
-
 Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the Discord button at the bottom of this page to visit our ticket & review channels.
 
 ## Support
-
-Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord.
+Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support ticket system in Discord.
 
 [Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}
