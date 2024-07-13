@@ -150,10 +150,10 @@ ensure night_ers #required
    - The ERS resource contains a folder called `night_ers/callouts/*.lua`. All scripts in this folder are open source, which means you can add, remove, or edit callouts.
 
 2. **Using ERS functions**  
-   - ERS has multiple built-in functions, just like the FiveM native documentation, we've built our own set of functionalities. You will have to use these to properly create callout entities, for example. These ERS functions are listed on top of every (client and server-side) script.
+   - ERS has multiple built-in functions, just like the FiveM native documentation, we've built our own set of functionalities. You will have to use these to properly create callout entities. These ERS functions are listed on top of every (client and server-side) script.
 
 3. **Providing callout packs**  
-   - Providing free or paid ERS callout packs is allowed. Many of our community members are planning to sell or provide callout packs. We approve this, as long as you follow FiveM Policy. Basically, provide via [Tebex](https://www.tebex.io/). We are to report any illegal trade or distribution to authorities.
+   - Providing free or paid ERS callout packs is allowed. Many of our community members are planning to sell or provide callout packs. We approve this, as long as you follow [FiveM](https://forum.cfx.re/) (CFX) and [Tebex](https://www.tebex.io/) policy (terms of service). Basically, provide via [Tebex](https://www.tebex.io/). We are to report any illegal trade or distribution to authorities.
 
 ## FORMATS for adding a callout (config -> server -> client)
 *IT IS IMPORTANT TO REALIZE CALLOUT CREATION IS FOR DEVELOPERS*
@@ -173,7 +173,7 @@ ensure night_ers #required
 - [x] **Task 4**  
 - Implement the snippets you made for the scripts listed above into these scripts with the correct index number ([110], [111]). Look at how we've done it to understand what you need to do in the `night_ers/callouts_config/callouts_config.lua`, `night_ers/callouts/callouts_server.lua` and `night_ers/callouts/callouts_client.lua` files.
 
-## `night_ers/callouts/callouts_config.lua`
+## Config `night_ers/callouts/callouts_config.lua`
 <!-- This is a callouts_config.lua example, you can copy this to create a callout in callouts_config.lua. 
 Make sure to change the index number [111] to the next CORRECT incremented ID for a callout. Example: after ID [110] comes ID [111].
 
@@ -222,7 +222,7 @@ Goal: Paste your newly configured callout settings underneath the previous ID in
 },
 ```
 
-## `night_ers/callouts/callouts_server.lua` (Entity creation)
+## Server `night_ers/callouts/callouts_server.lua` (Entity creation)
 <!-- This is a callouts_server.lua example, you can copy this to create entities (peds, vehicles, objects, fires, smoke) serverside.
 Keep in mind to define the correct callout ID again in the script! 
 
@@ -294,7 +294,7 @@ elseif calloutData.calloutId == 111 then -- Example callout serverside
     -- Space for the next callout.
 ```
 
-## `night_ers/callouts/callouts_client.lua` (Entity behaviour)
+## Client `night_ers/callouts/callouts_client.lua` (Entity behaviour)
 <!-- This is a callouts_client.lua example, you can copy this to set entity (peds, vehicles, objects, fires, smoke) behaviour clientside. 
 
 Goal: Paste this underneath the previous callout ID in callouts_client.lua
