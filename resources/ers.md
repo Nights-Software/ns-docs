@@ -73,11 +73,11 @@ We are going to install multiple resources to make the ERS function as intended.
      - See all features [here](https://store.nights-software.com/package/5667103).
      - Find an installation tutorial [here](https://docs.nights-software.com/resources/nightShifts/).
 
-4. **SmartFiresLite (Got the full version? Then do not install SmartFiresLite)**
+4. **SmartFiresLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartFiresLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the ERS to spawn fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
-5. **SmartHoseLite (Got the full version? Then do not install SmartHoseLite)**
+5. **SmartHoseLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartHoseLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the player to use a water hose to extinguish fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
