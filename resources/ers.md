@@ -89,9 +89,9 @@ We are going to install multiple resources to make the ERS function as intended.
    - The ERS system is the main gamemode allowing you to simulate emergency response calls. You can play as Police, Fire, Medic, and tow service operator. This system includes 100+ callouts by default, crafted for all service types. This system allows you to create emergency calls yourself (via coding). Read more about this below...
 
 
-1. Place the resources listed above into your resources folder and DO NOT RENAME them.
+8. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
 
-2. Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.
+9. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
 
 Example:
 ```lua
@@ -108,37 +108,50 @@ ensure night_ers #required
 
 *Note: Always check your FiveM server console and F8 client console for errors, you need these errors to locate your issue if you have one.*
 
-1. We insist on you downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
+1. **Download VS Code**  
+   - We insist on you downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
 
-1. Open night_ers/config/config.lua in VS Code. 
+2. **Open the config file**  
+   - Open `night_ers/config/config.lua` in VS Code. 
 
-1. Once you've downloaded Visual Studio Code, open the file (or folder) to read it's contents. Example: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
+3. **Read file contents**  
+   - Once you've downloaded Visual Studio Code, open the file (or folder) to read its contents. Example: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
 
-1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
+4. **Understand configuration**  
+   - When configuring the resource you will see that each line has an explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
 
-1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Relax mode on and read it all to understand it.
+5. **Watch for notes**  
+   - Keep an eye out for notes! On some parts, we provide warnings on what you should not edit, add, or remove. Relax mode on and read it all to understand it.
 
-1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom: 
+6. **Follow an order**  
+   - It's smart to follow an order when setting up this resource's config file, we recommend going from top to bottom. 
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works. Use the F8 console and server console (txAdmin) to check for errors, these lead to solutions.*
 
+
 ## Editing c_functions.lua / s_functions.lua
 
-Are you not familiar with code? Then skip this section or take on the challenge!
+*Are you not familiar with code? Then skip this section or take on the challenge!*
 
-We have provided 2 open script files containing functions you can edit to your desire. A client side functions script `c_functions.lua` and a server side functions script `s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits.
+1. **Open source script files**  
+   - We have provided 2 open script files containing functions you can edit to your desire. A client side functions script `c_functions.lua` and a server side functions script `s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits. 
 
-Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can ofcourse ask us any question and we will try to see if our knowledge can help you.
+2. **Explore the functions**  
+   - Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can of course ask us any question and we will try to see if our knowledge can help you.
+
 
 # Creating ERS callouts
 
 ## A guide for creating callouts for the Emergency Response Simulator
 
-1. The ERS resource contains a folder called night_ers/callouts/*.lua. All scripts in this folder are open source, which means you can add, remove or edit callouts. 
+1. **Accessing callout scripts**  
+   - The ERS resource contains a folder called `night_ers/callouts/*.lua`. All scripts in this folder are open source, which means you can add, remove, or edit callouts.
 
-1. ERS has multiple built-in functions, just like the FiveM native documentation, we've built our own set of functionalities. You will have to use these to properly create callout entities for example. These ERS_functions are listed on-top of every (client and serverside) script.
+2. **Using ERS functions**  
+   - ERS has multiple built-in functions, just like the FiveM native documentation, we've built our own set of functionalities. You will have to use these to properly create callout entities, for example. These ERS functions are listed on top of every (client and server-side) script.
 
-1. Providing free or paid ERS callout packs is allowed. Many of our community members are planning to sell or provide callout packs. We approve this, as long as you follow FiveM Policy. Basically provide via [Tebex](https://www.tebex.io/). We are to report any illegal trade or distribution to authorities.
+3. **Providing callout packs**  
+   - Providing free or paid ERS callout packs is allowed. Many of our community members are planning to sell or provide callout packs. We approve this, as long as you follow FiveM Policy. Basically, provide via [Tebex](https://www.tebex.io/). We are to report any illegal trade or distribution to authorities.
 
 ## FORMATS for adding a callout (config -> server -> client)
 
