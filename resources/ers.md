@@ -128,6 +128,10 @@ ensure night_ers #required
 6. **Follow an order**  
    - It's smart to follow an order when setting up this resource's config file, we recommend going from top to bottom. 
 
+7. **Language, entity, fictive names and gear configs**
+   - `night_ers/config/*.lua` contains more config files for you to edit and adjust to your liking. All these files require some understanding of the resource to be able to properly edit them. Feel free to ask the [Discord community](https://discord.nights-software.com) for help if you need it.
+    - Weapon and clothing settings can be found in `night_ers/config/gear-config.lua`
+
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works. Use the F8 console and server console (txAdmin) to check for errors, these lead to solutions.*
 
 
@@ -351,9 +355,21 @@ Enjoy and good luck! Love from Nights Software!
 -->
 
 
+# Framework compatibility
 
+# ESX
+1. **Permissions to go on shift**  
+   - The ERS resource has 4 service types. ESX permissions can be used to allow players access by their job name and can be setup in `night_ers/config/config.lua`.
 
+2. **Weapons**  
+   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to ESX in `night_ers/client/c_functions.lua`.
 
+# QBcore
+1. **Permissions to go on shift**  
+   - The ERS resource has 4 service types. QBCore permissions can be used to allow players access by their job name or their QB permissions and can be setup in `night_ers/config/config.lua`.
+
+2. **Weapons**  
+   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to QBCore in `night_ers/client/c_functions.lua`.
 
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
