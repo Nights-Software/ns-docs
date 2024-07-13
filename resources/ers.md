@@ -92,8 +92,7 @@ We are going to install multiple resources to make the ERS function as intended.
 8. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
 
 9. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
-
-Example:
+    - Example:
 ```lua
 ensure night_discordapi #optional
 ensure night_subtitles #optional
@@ -115,7 +114,7 @@ ensure night_ers #required
    - Open `night_ers/config/config.lua` in VS Code. 
 
 3. **Read file contents**  
-   - Once you've downloaded Visual Studio Code, open the file (or folder) to read its contents. Example: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
+   - Once you've downloaded Visual Studio Code, open the file (or folder) to read its contents. Example: `night_ers/config/config.lua`, `night_ers/client/c_functions.lua`, `night_ers/server/s_functions.lua`.
 
 4. **Understand configuration**  
    - When configuring the resource you will see that each line has an explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
@@ -134,7 +133,7 @@ ensure night_ers #required
 *Are you not familiar with code? Then skip this section or take on the challenge!*
 
 1. **Open source script files**  
-   - We have provided 2 open script files containing functions you can edit to your desire. A client side functions script `c_functions.lua` and a server side functions script `s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits. 
+   - Besides `night_ers/callouts/*.lua`, we have provided 2 open script files containing functions you can edit to your desire. A client side functions script `night_ers/client/c_functions.lua` and a server side functions script `night_ers/server/s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits. 
 
 2. **Explore the functions**  
    - Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can of course ask us any question and we will try to see if our knowledge can help you.
@@ -154,22 +153,24 @@ ensure night_ers #required
    - Providing free or paid ERS callout packs is allowed. Many of our community members are planning to sell or provide callout packs. We approve this, as long as you follow FiveM Policy. Basically, provide via [Tebex](https://www.tebex.io/). We are to report any illegal trade or distribution to authorities.
 
 ## FORMATS for adding a callout (config -> server -> client)
+*IT IS IMPORTANT TO REALIZE CALLOUT CREATION IS FOR DEVELOPERS*
 
-**IT IS IMPORTANT TO REALIZE CALLOUT CREATION IS FOR DEVELOPERS**
-Nights Software does not offer support for creating custom callouts, besides the documentation. Ask the community instead!
+- **Support notice**
+- Nights Software does not offer support for creating custom callouts, besides the documentation. Ask the community instead!
+    - If you do not have an understanding of developing you'll need to learn this first. You will be told the same thing in a ticket. Even though we love our community and love to help, we don't have the capacity (yet) to provide support for callout creation. Read these documented instructions carefully.
 
-If you do not have an understanding of developing you'll need to learn this first. 
-You will be told the same thing in a ticket. Even though we love our community and love to help, we don't have the capacity (yet) to provide support for callout creation. 
-Read these documented instructions carefully.
-
-Good luck!
 
 ## Task List for creating one callout
-- [x] Task 1: Add the callout settings to callout_config.lua. (used to configure locations, required units and behaviour, optionally based off time to keep the callout random every time)
-- [x] Task 2: Add the serverside code to callouts_server.lua and adjust it to your liking. (used to spawn entities)
-- [x] Task 3: Add the clientside code to callouts_client.lua and adjust it to your liking. (used to apply behaviour to entities)
+- [] **Task 1** 
+- Add the callout settings to callout_config.lua. (used to configure locations, required units and behaviour, optionally based off time to keep the callout random every time)
+- [] **Task 2** 
+- Add the serverside code to callouts_server.lua and adjust it to your liking. (used to spawn entities)
+- [] **Task 3**  
+- Add the clientside code to callouts_client.lua and adjust it to your liking. (used to apply behaviour to entities)
+- [] **Task 4**  
+- Implement the snippets you made for the scripts listed above into these scripts with the correct index number ([110], [111]). Look at how we've done it to understand what you need to do in the `night_ers/callouts_config/callouts_config.lua`, `night_ers/callouts/callouts_server.lua` and `night_ers/callouts/callouts_client.lua` files.
 
-## START WITH THE CONFIG SETTINGS
+## `night_ers/callouts/callouts_config.lua`
 <!-- This is a callouts_config.lua example, you can copy this to create a callout in callouts_config.lua. 
 Make sure to change the index number [111] to the next CORRECT incremented ID for a callout. Example: after ID [110] comes ID [111].
 
@@ -218,7 +219,7 @@ Goal: Paste your newly configured callout settings underneath the previous ID in
 },
 ```
 
-## CONTINUE SERVERSIDE (Entity creation)
+## `night_ers/callouts/callouts_server.lua` (Entity creation)
 <!-- This is a callouts_server.lua example, you can copy this to create entities (peds, vehicles, objects, fires, smoke) serverside.
 Keep in mind to define the correct callout ID again in the script! 
 
@@ -242,7 +243,7 @@ elseif calloutData.calloutId == 111 then -- Example callout serverside
         local obj = NetworkGetEntityFromNetworkId(objNetId)
         table.insert(objectList, objNetId)
 
-        local fireToObjChance = math.random(100)
+        local fireToObjChance = math.random(100) -- Add a fire at object location by chance of 75%
         if fireToObjChance > 75 then
             -- Build fire
             if UsingSmartFires then
@@ -286,9 +287,11 @@ elseif calloutData.calloutId == 111 then -- Example callout serverside
     end
 
     calloutBuilt = true -- Always end with this, otherwise nothing will happen and your script will bug out!
+-- elseif calloutData.calloutId == 112 then
+    -- Space for the next callout.
 ```
 
-## END WITH CLIENTSIDE (Entity behaviour)
+## `night_ers/callouts/callouts_client.lua` (Entity behaviour)
 <!-- This is a callouts_client.lua example, you can copy this to set entity (peds, vehicles, objects, fires, smoke) behaviour clientside. 
 
 Goal: Paste this underneath the previous callout ID in callouts_client.lua
@@ -333,6 +336,8 @@ elseif calloutDataClient.calloutId == 111 then -- Example callout clientside
     -- This function handles the configured behaviour in your callout from callouts_config.lua after the configured timeout.
     -- So basically: You configure and code the ped behaviour and after a timeout they will perform a second stage of behaviour.
     ERS_PerformTimedActionOnPed(calloutDataClient, pedList)
+-- elseif calloutData.calloutId == 112 then
+    -- Space for the next callout.
 ```
 
 <!-- If you have any questions, ask the community! Nights Software does not provide support for custom callout creation, besides the documentation. 
