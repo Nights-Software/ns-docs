@@ -421,6 +421,7 @@ end
 ---
 
 # ERS Functions
+Most ERS functions are encrypted. Those which are open source are in the following files: `night_ers/callouts/callouts_client.lua` & `night_ers/callouts/callouts_server.lua`
 
 ## Client
 
@@ -524,9 +525,9 @@ end
   Creates a vehicle which is synchronized by the ERS system and returns their Network ID.
 
 - **`ERS_GetRandomCoordinateWithinRangeOfCoordinate(coords, diameter)`**  
-  Gets a random coordinate within range of the given coordinate. Spreads entities randomly on callout spawn.
+  Gets a random vector3 coordinate within range of the given vector3 coordinate. Spreads entities randomly on callout spawn.
 
-- **`ERS_GetRandomModel(model)`**  
+- **`ERS_GetRandomModel(modelList)`**  
   Selects a random model from a given library/table (`config/entity-config.lua`).
 
 ---
