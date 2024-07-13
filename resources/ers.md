@@ -421,7 +421,7 @@ end
 ---
 
 # ERS Functions
-Most ERS functions are encrypted. Those which are open source are in the following files: `night_ers/callouts/callouts_client.lua` & `night_ers/callouts/callouts_server.lua`
+*Most ERS functions are encrypted. Those which are open source are at the bottom of the following files: `night_ers/callouts/callouts_client.lua` & `night_ers/callouts/callouts_server.lua`*
 
 ## Client
 
