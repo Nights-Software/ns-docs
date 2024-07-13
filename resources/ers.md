@@ -50,13 +50,31 @@ Set FTP Transfer Type to Binary -> Open Keymaster Download ZIP Package -> Unpack
 
 ---
 
-## Installing Emergency Response Simulator for FiveM
+# Framework compatibility
+
+## ESX
+1. **Permissions to go on shift**  
+   - The ERS resource has 4 service types. ESX permissions can be used to allow players access by their job name and can be setup in `night_ers/config/config.lua`.
+
+2. **Weapons**  
+   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to ESX in `night_ers/client/c_functions.lua`.
+
+## QBcore
+1. **Permissions to go on shift**  
+   - The ERS resource has 4 service types. QBCore permissions can be used to allow players access by their job name or their QB permissions and can be setup in `night_ers/config/config.lua`.
+
+2. **Weapons**  
+   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to QBCore in `night_ers/client/c_functions.lua`.
+
+---
+
+# Installing Emergency Response Simulator for FiveM
 
 We are going to install multiple resources to make the ERS function as intended.
 
 1. Download the packages which we are going to install from [keymaster](https://keymaster.fivem.net/asset-grants). Make sure to install them in the order as they are listed.
 
-### Resources
+## Resources to install
 
 1. **Night Discord API (Optional - Included with ERS Essential, Plus and Ultimate)**
    - `night_discordapi` allows you to utilize Discord roles for permissions. You can also choose for ESX, QBcore, Ace permissions, or no permissions as an alternative.
@@ -134,21 +152,7 @@ ensure night_ers #required
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works. Use the F8 console and server console (txAdmin) to check for errors, these lead to solutions.*
 
-# Framework compatibility
-
-## ESX
-1. **Permissions to go on shift**  
-   - The ERS resource has 4 service types. ESX permissions can be used to allow players access by their job name and can be setup in `night_ers/config/config.lua`.
-
-2. **Weapons**  
-   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to ESX in `night_ers/client/c_functions.lua`.
-
-## QBcore
-1. **Permissions to go on shift**  
-   - The ERS resource has 4 service types. QBCore permissions can be used to allow players access by their job name or their QB permissions and can be setup in `night_ers/config/config.lua`.
-
-2. **Weapons**  
-   - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to QBCore in `night_ers/client/c_functions.lua`.
+---
 
 # Creating ERS callouts
 
@@ -358,6 +362,8 @@ elseif calloutDataClient.calloutId == 111 then -- Example callout clientside
 Enjoy and good luck! Love from Nights Software!
 -->
 
+---
+
 # Editing open source functions
 *Are you not familiar with code? Then skip this section or take on the challenge!*
 
@@ -411,6 +417,8 @@ end
 
 1. **Event triggers**  
    - The ERS resource has multiple event triggers, also serverside. Discover them all!
+
+---
 
 # ERS Functions
 
@@ -520,6 +528,8 @@ end
 
 - **`ERS_GetRandomModel(model)`**  
   Selects a random model from a given library/table (`config/entity-config.lua`).
+
+---
 
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
