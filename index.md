@@ -6,7 +6,7 @@ description: "A documentation explaining the installation process of FiveM resou
 permalink: /
 has_children: false
 has_toc: false
-last_modified_date: "2023-05-04 00:14:00"
+last_modified_date: "2024-09-07 12:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/banner.png" alt="Nights Software Banner" draggable="false">
