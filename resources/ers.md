@@ -104,6 +104,8 @@ ensure emsprops #required
 ensure night_ers #required
 ```
 
+*Any other resources included with ERS Plus and ERS Ultimate can be started before ERS*
+
 ## Configuring the night_ers config.lua file
 
 *Note: Always check your FiveM server console and F8 client console for errors, you need these errors to locate your issue if you have one.*
@@ -162,13 +164,13 @@ ensure night_ers #required
 
 
 ## Task List for creating one callout
-- [] **Task 1** 
+- [x] **Task 1** 
 - Add the callout settings to callout_config.lua. (used to configure locations, required units and behaviour, optionally based off time to keep the callout random every time)
-- [] **Task 2** 
+- [x] **Task 2** 
 - Add the serverside code to callouts_server.lua and adjust it to your liking. (used to spawn entities)
-- [] **Task 3**  
+- [x] **Task 3**  
 - Add the clientside code to callouts_client.lua and adjust it to your liking. (used to apply behaviour to entities)
-- [] **Task 4**  
+- [x] **Task 4**  
 - Implement the snippets you made for the scripts listed above into these scripts with the correct index number ([110], [111]). Look at how we've done it to understand what you need to do in the `night_ers/callouts_config/callouts_config.lua`, `night_ers/callouts/callouts_server.lua` and `night_ers/callouts/callouts_client.lua` files.
 
 ## `night_ers/callouts/callouts_config.lua`
