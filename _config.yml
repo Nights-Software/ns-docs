@@ -10,7 +10,7 @@ exclude: ["LICENSE.txt", "README.md"]
 heading_anchors: true
 
 aux_links:
-  "Nights Software Website":
+  "Nights Software Webstore":
     - "//store.nights-software.com/"
 aux_links_new_tab: true
 
