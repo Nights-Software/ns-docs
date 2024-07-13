@@ -143,8 +143,8 @@ ensure night_ers #required
 5. **Watch for notes**  
    - Keep an eye out for notes! On some parts, we provide warnings on what you should not edit, add, or remove. Relax mode on and read it all to understand it.
 
-6. **Follow an order**  
-   - It's smart to follow an order when setting up this resource's config file, we recommend going from top to bottom. 
+6. **Cofigure in order**  
+   - It's required to configure in order when setting up this resource's config file, we recommend going from top to bottom. 
 
 7. **Language, entity, fictive names and gear configs**
    - `night_ers/config/*.lua` contains more config files for you to edit and adjust to your liking. All these files require some understanding of the resource to be able to properly edit them. Feel free to ask the [Discord community](https://discord.nights-software.com) for help if you need it.
