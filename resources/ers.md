@@ -13,6 +13,7 @@ last_modified_date: "2024-07-12 20:30:00"
 {: .no_toc}
 
 A guide to install Emergency Response Simulator for FiveM
+*Crafted by [Nights Software](https://store.nights-software.com/) in collaboration with [London Studios](https://londonstudios.net)*
 
 {: .fs-5 .fw-300 }
 
