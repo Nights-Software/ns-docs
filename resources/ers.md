@@ -357,19 +357,63 @@ Enjoy and good luck! Love from Nights Software!
 
 # Framework compatibility
 
-# ESX
+## ESX
 1. **Permissions to go on shift**  
    - The ERS resource has 4 service types. ESX permissions can be used to allow players access by their job name and can be setup in `night_ers/config/config.lua`.
 
 2. **Weapons**  
    - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to ESX in `night_ers/client/c_functions.lua`.
 
-# QBcore
+## QBcore
 1. **Permissions to go on shift**  
    - The ERS resource has 4 service types. QBCore permissions can be used to allow players access by their job name or their QB permissions and can be setup in `night_ers/config/config.lua`.
 
 2. **Weapons**  
    - Weapons can be configured in `night_ers/config/gear-config.lua` and the code handling item distribution can be adjusted to QBCore in `night_ers/client/c_functions.lua`.
+
+# Custom triggers upon events
+
+## Client `night_ers/client/c_functions.lua`
+
+1. **Event triggers**  
+   - The ERS resource has multiple event triggers like the following example functions. There are more in this file, discover them all!
+
+```lua
+function OnIsOfferedCallout(calloutdata)
+    -- Add your code here. Keep in mind they are offered a callout. It is possible they will not accept the callout.
+
+    -- if Config.Debug then
+    --     for k, v in pairs(calloutdata) do
+    --         print("key: "..k)
+    --         if type(v) == "table" then
+    --             print(json.encode(v))
+    --         else
+    --             if type(v) == "boolean" then
+    --                 print(v)
+    --             else
+    --                 print("value: "..v)
+    --             end
+    --         end
+    --     end
+    -- end
+end
+
+function OnAcceptedCalloutOffer(calloutdata)
+    -- Add your code here. Keep in mind they have accepted a callout. It is possible they will cancel before arrival (and spawn of entities).
+end
+
+function OnArrivedAtCallout(calloutdata)
+    -- Add your code here. This is triggered right before the entities are built for a callout. This code will execute first.
+
+end
+
+function OnEndedACallout() -- Contains no callout data.
+    -- Add your code here. This is triggered right before the entities are deleted or callout is cancelled serverside. This code will execute first.
+    
+end
+```
+
+The same goes for the server in `night_ers/server/s_functions.lua`
 
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
