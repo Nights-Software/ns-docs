@@ -87,7 +87,7 @@ We are going to install multiple resources to make the ERS function as intended.
      - This resource is a drag-and-drop into your resources folder!
 
 ### 3. **Nearest Postal & map (Optional - Recommended)**
-    - `nearest-postal` allows you to use default postals.
+   - `nearest-postal` allows you to use default postals on a custom `map`.
       - Read the original post on the [CFX Forums](https://forum.cfx.re/t/release-postal-code-map-minimap-new-improved-v1-3/147458) or
       - Direct download the script [here](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip).
       - Direct download the map [here](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0).
