@@ -86,6 +86,13 @@ We are going to install multiple resources to make the ERS function as intended.
      - See all features [here](https://store.nights-software.com/package/6043540).
      - This resource is a drag-and-drop into your resources folder!
 
+3. **Nearest Postal & map (Optional - Recommended)**
+    - `nearest-postal` allows you to use default postals.
+      - Direct download the script [here](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip).
+      - Direct download the map [here](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0).
+      - These resources are a drag-and-drop into your resources folder!
+      - If you do not want to use this postal resource, either edit the postal code handling in c_functions.lua or set usage to false in `night_ers/config/config.lua`.
+
 3. **Night Shifts MDT (Optional - Included with ERS Plus and ERS Ultimate)**
    - `night_shifts` is a modern MDT allowing you to manage and control processes for all emergency services.
      - See all features [here](https://store.nights-software.com/package/5667103).
@@ -115,6 +122,8 @@ We are going to install multiple resources to make the ERS function as intended.
 ```lua
 ensure night_discordapi #optional
 ensure night_subtitles #optional
+ensure nearest-postal #optional
+ensure map #optional
 ensure SmartFiresLite #required
 ensure SmartHoseLite #required
 ensure night_shifts #optional
