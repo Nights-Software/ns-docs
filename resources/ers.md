@@ -76,49 +76,49 @@ We are going to install multiple resources to make the ERS function as intended.
 
 ## Resources to install
 
-### 1. **Night Discord API (Optional - Included with ERS Essential, Plus and Ultimate)**
+1. **Night Discord API (Optional - Included with ERS Essential, Plus and Ultimate)**
    - `night_discordapi` allows you to utilize Discord roles for permissions. You can also choose for ESX, QBcore, Ace permissions, or no permissions as an alternative.
      - See all features [here](https://store.nights-software.com/package/5035729).
      - Find installation support [here](https://docs.nights-software.com/resources/discordAPI/).
 
-### 2. **Night Subtitles (Optional - Included with ERS Essential, Plus and Ultimate)**
+2. **Night Subtitles (Optional - Included with ERS Essential, Plus and Ultimate)**
    - `night_subtitles` displays subtitles as if you're watching a movie.
      - See all features [here](https://store.nights-software.com/package/6043540).
      - This resource is a drag-and-drop into your resources folder!
 
-### 3. **Nearest Postal & map (Optional - Recommended)**
-   - `nearest-postal` allows you to use default postals on a custom `map`.
+3. **Nearest Postal & map (Optional - Recommended)**
+    - `nearest-postal` allows you to use default postals.
       - Read the original post on the [CFX Forums](https://forum.cfx.re/t/release-postal-code-map-minimap-new-improved-v1-3/147458) or
       - Direct download the script [here](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip).
       - Direct download the map [here](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0).
       - These resources are a drag-and-drop into your resources folder!
       - If you do not want to use this postal resource, either edit the postal code handling in c_functions.lua or set usage to false in `night_ers/config/config.lua`.
 
-### 4. **Night Shifts MDT (Optional - Included with ERS Plus and ERS Ultimate)**
+4. **Night Shifts MDT (Optional - Included with ERS Plus and ERS Ultimate)**
    - `night_shifts` is a modern MDT allowing you to manage and control processes for all emergency services.
      - See all features [here](https://store.nights-software.com/package/5667103).
      - Find an installation tutorial [here](https://docs.nights-software.com/resources/nightShifts/).
 
-### 5. **SmartFiresLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartFiresLite)**
+5. **SmartFiresLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartFiresLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the ERS to spawn fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
-### 6. **SmartHoseLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartHoseLite)**
+6. **SmartHoseLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartHoseLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the player to use a water hose to extinguish fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
-### 7. **EMS Props**
+7. **EMS Props**
    - ERS uses stretchers from the open-source resource called EMS Props made by Tiddy.
      - Download it via their [CFX Forum post](https://forum.cfx.re/t/add-on-props-medical-prop-pack/5037054).
      - This resource is a drag-and-drop into your resources folder!
 
-### 8. **Emergency Response Simulator**
+8. **Emergency Response Simulator**
    - The ERS system is the main gamemode allowing you to simulate emergency response calls. You can play as Police, Fire, Medic, and tow service operator. This system includes 100+ callouts by default, crafted for all service types. This system allows you to create emergency calls yourself (via coding). Read more about this below...
 
 
-### 9. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
+9. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
 
-### 10. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
+10. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
     - Example:
 ```lua
 ensure night_discordapi #optional
