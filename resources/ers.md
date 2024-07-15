@@ -178,12 +178,12 @@ ensure night_ers #required
 3. **Providing callout packs**  
    - Providing free or paid ERS callout packs is allowed. Many of our community members are planning to sell or provide callout packs. We approve this, as long as you follow [FiveM](https://forum.cfx.re/) (CFX) and [Tebex](https://www.tebex.io/) policy (terms of service). Basically, provide via [Tebex](https://www.tebex.io/). We are to report any illegal trade or distribution to authorities.
 
-## FORMATS for adding a callout (config -> server -> client)
+## The format for adding a callout (config, server & client)
 *IT IS IMPORTANT TO REALIZE CALLOUT CREATION IS FOR DEVELOPERS*
 
 **Support notice**
 - Nights Software does not offer support for creating custom callouts, besides the documentation. Ask the community instead!
-    - If you do not have an understanding of developing you'll need to learn this first. You will be told the same thing in a ticket. Even though we love our community and love to help, we don't have the capacity (yet) to provide support for callout creation. Read these documented instructions carefully.
+    - If you do not have an understanding of developing you'll need to learn this first. You will be told the same thing in a ticket. Even though we love our community and love to help, we don't have the capacity (yet) to provide support for callout creation. Read these documented instructions carefully and ask our community to share knowledge!
 
 
 ## Task List for creating one callout
