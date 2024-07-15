@@ -86,11 +86,11 @@ We are going to install multiple resources to make the ERS function as intended.
      - See all features [here](https://store.nights-software.com/package/6043540).
      - This resource is a drag-and-drop into your resources folder!
 
-3. **Nearest Postal & map (Optional - Recommended)**
-    - `nearest-postal` allows you to use default postals.
+3. **Nearest Postal & map (Optional - Free open source)**
+    - `nearest-postal` allows you to use default postals and adds a custom `map`.
       - Read the original post on the [CFX Forums](https://forum.cfx.re/t/release-postal-code-map-minimap-new-improved-v1-3/147458) or
-      - Direct download the script [here](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip).
-      - Direct download the map [here](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0).
+      - Direct download the `nearest-postal` script [here](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip).
+      - Direct download the custom `map` [here](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0).
       - These resources are a drag-and-drop into your resources folder!
       - If you do not want to use this postal resource, either edit the postal code handling in c_functions.lua or set usage to false in `night_ers/config/config.lua`.
 
@@ -99,24 +99,25 @@ We are going to install multiple resources to make the ERS function as intended.
      - See all features [here](https://store.nights-software.com/package/5667103).
      - Find an installation tutorial [here](https://docs.nights-software.com/resources/nightShifts/).
 
-5. **SmartFiresLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartFiresLite)**
+5. **SmartFiresLite (Required - Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartFiresLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the ERS to spawn fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
-6. **SmartHoseLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartHoseLite)**
+6. **SmartHoseLite (Required - Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartHoseLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the player to use a water hose to extinguish fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
-7. **EMS Props**
+7. **EMS Props (Required - Free open source)**
    - ERS uses stretchers from the open-source resource called EMS Props made by Tiddy.
      - Download it via their [CFX Forum post](https://forum.cfx.re/t/add-on-props-medical-prop-pack/5037054).
      - This resource is a drag-and-drop into your resources folder!
 
-8. **Emergency Response Simulator**
+8. **Emergency Response Simulator (Required)**
    - The ERS system is the main gamemode allowing you to simulate emergency response calls. You can play as Police, Fire, Medic, and tow service operator. This system includes 100+ callouts by default, crafted for all service types. This system allows you to create emergency calls yourself (via coding). Read more about this below...
 
 
 9. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
+   - We repeat, do not rename scripts to other than what they are called in this documentation.
 
 10. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
     - Example:
