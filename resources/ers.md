@@ -120,13 +120,13 @@ We are going to install multiple resources to make the ERS function as intended.
 
 10. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
     - Example:
-```lua
+```conf
 ensure night_discordapi #optional
 ensure night_subtitles #optional
 ensure nearest-postal #optional
 ensure map #optional
-ensure SmartFiresLite #required
-ensure SmartHoseLite #required
+ensure SmartFiresLite #or SmartFires if you have the full version (Required)
+ensure SmartHoseLite #or SmartHose if you have the full version (Required)
 ensure night_shifts #optional
 ensure emsprops #required
 ensure night_ers #required
