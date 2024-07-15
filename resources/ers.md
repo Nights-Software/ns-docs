@@ -94,31 +94,31 @@ We are going to install multiple resources to make the ERS function as intended.
       - These resources are a drag-and-drop into your resources folder!
       - If you do not want to use this postal resource, either edit the postal code handling in c_functions.lua or set usage to false in `night_ers/config/config.lua`.
 
-3. **Night Shifts MDT (Optional - Included with ERS Plus and ERS Ultimate)**
+4. **Night Shifts MDT (Optional - Included with ERS Plus and ERS Ultimate)**
    - `night_shifts` is a modern MDT allowing you to manage and control processes for all emergency services.
      - See all features [here](https://store.nights-software.com/package/5667103).
      - Find an installation tutorial [here](https://docs.nights-software.com/resources/nightShifts/).
 
-4. **SmartFiresLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartFiresLite)**
+5. **SmartFiresLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartFiresLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the ERS to spawn fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
-5. **SmartHoseLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartHoseLite)**
+6. **SmartHoseLite (Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartHoseLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the player to use a water hose to extinguish fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
-6. **EMS Props**
+7. **EMS Props**
    - ERS uses stretchers from the open-source resource called EMS Props made by Tiddy.
      - Download it via their [CFX Forum post](https://forum.cfx.re/t/add-on-props-medical-prop-pack/5037054).
      - This resource is a drag-and-drop into your resources folder!
 
-7. **Emergency Response Simulator**
+8. **Emergency Response Simulator**
    - The ERS system is the main gamemode allowing you to simulate emergency response calls. You can play as Police, Fire, Medic, and tow service operator. This system includes 100+ callouts by default, crafted for all service types. This system allows you to create emergency calls yourself (via coding). Read more about this below...
 
 
-8. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
+9. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
 
-9. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
+10. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
     - Example:
 ```lua
 ensure night_discordapi #optional
