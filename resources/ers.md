@@ -52,6 +52,11 @@ Set FTP Transfer Type to Binary -> Open Keymaster Download ZIP Package -> Unpack
 
 # Framework compatibility
 
+## Standalone
+
+1. **With or without frameworks**
+   - ERS is a standalone product. It works without any framework, but also alongside most known frameworks.
+
 ## ESX
 1. **Permissions to go on shift**  
    - The ERS resource has 4 service types. ESX permissions can be used to allow players access by their job name and can be setup in `night_ers/config/config.lua`.
