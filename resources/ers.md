@@ -548,6 +548,29 @@ end
 
 ---
 
+# Props by NovelaxNeko
+
+## 10 Free (included) props
+
+**Free prop model names:**
+
+- **ERS Props**
+  - { Name = "Cone", Prop = "neko_night_cone_00" }
+  - { Name = "Barrier", Prop = "neko_night_water_barrier_00" }
+  - { Name = "Warning triangle", Prop = "neko_night_warning_tri_00" }
+  - { Name = "Rubber barrier", Prop = "neko_night_rubber_barrier_00" }
+  - { Name = "neko_night_barrier_00", Prop = "neko_night_barrier_00" }
+  - { Name = "neko_night_barrier_01", Prop = "neko_night_barrier_01" }
+  - { Name = "neko_night_barrier_02", Prop = "neko_night_barrier_02" }
+  - { Name = "Arrow board cross", Prop = "neko_night_arrow_board_00" }
+  - { Name = "Arrow board left", Prop = "neko_night_arrow_board_00_l" }
+  - { Name = "Arrow board right", Prop = "neko_night_arrow_board_00_r" }
+
+- **Check out this artist!**
+[https://novelaxneko.com/](https://novelaxneko.com/)
+
+---
+
 # Help us or let us help you
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
 
