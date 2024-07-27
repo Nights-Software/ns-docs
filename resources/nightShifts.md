@@ -196,21 +196,23 @@ There are loads of options to configure. It is recommended you test the resource
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
 
-<!-- ## Config preview
+## Config Notes 
+This setup should allow access to the MDT (police and civilian). Configure more after configuring, testing and understanding this.
 
-<details>
+1. **Make sure roles are defined in required places:**
+  - Each department should have a main: role "police" for example. This role should at least be given to: The department (1), the first rank (2), the first sub-department (3).
 
-<summary>Click here to reveal an example of the config for this resource</summary>
+2. **Make sure the civilian role is assigned to all Discord users.**
+  - To make sure everyone can register their civilian, give the "civilian" role to all your Discord users. Do not add multiple civilian roles. One is enough for: The department (1) and the first and only rank (2).
 
-<p>### Config example</p>
+3. **To access the MDT in the first place, assign (a) role(s) in the config!**
+  - Check out:
 
-<p>
-```lua
-   Config = {}
-   -- Coming soon
-```
-</p>
-</details> -->
+  ```lua
+   DiscordGuildNames = {"myroleplayserver"}, -- It checks whether the user is in any of these Discord servers and checks for the roles the user has in these Discord servers. Match these names to your Discord API. The first guild defined is where it fetches the Discord member data from (avatar, nickname etc.).
+   RolesWithAccessToMDT = {"police", "ambulance", "fire", "tow", "civilian"}, -- Edit these to match your roles (role names) from Night Discord API [FREE] https://store.nights-software.com/package/5035729 
+
+  ```
 
 ## Fix UI Lag
 
