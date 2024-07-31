@@ -120,11 +120,21 @@ We are going to install multiple resources to make the ERS function as intended.
 8. **Emergency Response Simulator (Required)**
    - The ERS system is the main gamemode allowing you to simulate emergency response calls. You can play as Police, Fire, Medic, and tow service operator. This system includes 100+ callouts by default, crafted for all service types. This system allows you to create emergency calls yourself (via coding). Read more about this below...
 
+9. **Theebu Flatbeds Lite (Optional - Included with ERS Essential, Plus and Ultimate)**
+   - This script is included for free and provided by [Theebu](https://store.theebu.net).
+   - If you have the [full version](https://store.theebu.net/package/5033826) then skip installing this lite version.
+   - Theebu's flatbeds allow you to transport vehicles on the back of different types of vehicles. Here are your options:
+     - Config.flatbed = "flatbed"              -- Base game flatbed
+     - Config.flatbedm2 = "flatbedm2"          -- https://www.gta5-mods.com/vehicles/freightliner-m2-crew-cab-flatbed-add-on-script-beta
+     - Config.lgc19flatbed = "lgc19flatbed"    -- https://forum.cfx.re/t/2019-peterbilt-flatbed/4783413
+     - Config.biftowmfd2 = "biftowmfd2"        -- https://mfd.tebex.io/package/6281210
+     - Config.Gtow = "Gtow"                    -- https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem
 
-9. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
+10. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
    - We repeat, do not rename scripts to other than what they are called in this documentation.
 
-10. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
+11. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
+    - List the ensured resources in the order from the example below on ensuring/starting resources! This is required!
     - Example:
 ```conf
 ensure night_discordapi #optional
@@ -136,6 +146,7 @@ ensure SmartHoseLite #or SmartHose if you have the full version (Required)
 ensure night_shifts #optional
 ensure emsprops #required
 ensure night_ers #required
+ensure ebu_flatbeds_ers #optional
 ```
 
 *Any other resources included with ERS Plus and ERS Ultimate can be started before ERS*
@@ -559,9 +570,9 @@ end
   - { Name = "Barrier", Prop = "neko_night_water_barrier_00" }
   - { Name = "Warning triangle", Prop = "neko_night_warning_tri_00" }
   - { Name = "Rubber barrier", Prop = "neko_night_rubber_barrier_00" }
-  - { Name = "neko_night_barrier_00", Prop = "neko_night_barrier_00" }
-  - { Name = "neko_night_barrier_01", Prop = "neko_night_barrier_01" }
-  - { Name = "neko_night_barrier_02", Prop = "neko_night_barrier_02" }
+  - { Name = "Barrier", Prop = "neko_night_barrier_00" }
+  - { Name = "Barrier 1", Prop = "neko_night_barrier_01" }
+  - { Name = "Barrier 2", Prop = "neko_night_barrier_02" }
   - { Name = "Arrow board cross", Prop = "neko_night_arrow_board_00" }
   - { Name = "Arrow board left", Prop = "neko_night_arrow_board_00_l" }
   - { Name = "Arrow board right", Prop = "neko_night_arrow_board_00_r" }
