@@ -125,10 +125,10 @@ We are going to install multiple resources to make the ERS function as intended.
    - If you have the [full version](https://store.theebu.net/package/5033826) then skip installing this lite version.
    - Theebu's flatbeds allow you to transport vehicles on the back of different types of vehicles. Here are your options:
      - Config.flatbed = "flatbed"              -- Base game flatbed
-     - Config.flatbedm2 = "flatbedm2"          -- https://www.gta5-mods.com/vehicles/freightliner-m2-crew-cab-flatbed-add-on-script-beta
-     - Config.lgc19flatbed = "lgc19flatbed"    -- https://forum.cfx.re/t/2019-peterbilt-flatbed/4783413
-     - Config.biftowmfd2 = "biftowmfd2"        -- https://mfd.tebex.io/package/6281210
-     - Config.Gtow = "Gtow"                    -- https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem
+     - Config.flatbedm2 = "flatbedm2"          -- [https://www.gta5-mods.com/vehicles/freightliner-m2-crew-cab-flatbed-add-on-script-beta](https://www.gta5-mods.com/vehicles/freightliner-m2-crew-cab-flatbed-add-on-script-beta)
+     - Config.lgc19flatbed = "lgc19flatbed"    -- [https://forum.cfx.re/t/2019-peterbilt-flatbed/4783413](https://forum.cfx.re/t/2019-peterbilt-flatbed/4783413)
+     - Config.biftowmfd2 = "biftowmfd2"        -- [https://mfd.tebex.io/package/6281210](https://mfd.tebex.io/package/6281210)
+     - Config.Gtow = "Gtow"                    -- [https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem](https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem)
 
 10. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
    - We repeat, do not rename scripts to other than what they are called in this documentation.
