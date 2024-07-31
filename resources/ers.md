@@ -50,7 +50,11 @@ Set FTP Transfer Type to Binary -> Open Keymaster Download ZIP Package -> Unpack
 
 ---
 
-# Framework compatibility
+# Framework & Script compatibility
+
+1. **WARNING: ERS is currently not compatible with**
+ - OkOkPoliceJob (confirmed)
+ - RemoveCops-AI (confirmed)
 
 ## Standalone
 
