@@ -113,6 +113,7 @@ We are going to install multiple resources to make the ERS function as intended.
 5. **SmartFiresLite (Required - Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartFiresLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the ERS to spawn fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
+     - IMPORTANT: If you have the full version, please re-name it to: `SmartFires` (case sensitive).
 
 6. **SmartHoseLite (Required - Got the [full version](https://store.londonstudios.net/category/fire-resources)? Then do not install SmartHoseLite)**
    - Provided by [London Studios](https://londonstudios.net). This resource allows the player to use a water hose to extinguish fires and is included for free. Consider getting the full version for more advanced gameplay.

@@ -16,7 +16,7 @@ A guide to install Ace permissions! for FiveM
 
 {: .fs-5 .fw-300 }
 
----
+--- 
 <details open markdown="block">
   <summary>
     Table of contents
