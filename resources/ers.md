@@ -611,8 +611,8 @@ Get in touch for feedback or support, join our Discord and make use of our ticke
 
 - **Compatibility knowledge**
   - Iceline Hosting: Enable Beyond by setting it to 1 in your server dashboard, otherwise entities will not spawn.
-  - okokPoliceJob: Limit the amount of objects you spawn, to prevent hitting the network object limit.
   - RemoveCopsAI: Remove this resource, it does not work with ERS, because it removes spawned entities by ERS.
+  - Clear world commands / Anti cheat » Usually causes issues when deleting ERS entities, which should not be deleted by other scripts. ERS entities spawn server side so are usually not affected by Anti Cheat.
 
 ## Feedback
 Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the Discord button at the bottom of this page to visit our ticket & review channels.
