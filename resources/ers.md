@@ -523,6 +523,16 @@ end
 - **`ERS_GetSafeSpawnPointForNPCVehicle()`**  
   Finds a coordinate where an NPC vehicle can spawn, or used for 'safe' destinations.
 
+Usage example
+```
+local found, coords, vehicleHeading = ERS_GetSafeSpawnPointForNPCVehicle()
+
+if not found then
+    print(Config.Messages[Config.Language].NoSpawnPointAvailableForNPC)
+    return
+end
+```
+
 - **`ERS_SelectRandomMovementClipSet()`**  
   Returns a random movement clipset.
 
@@ -593,6 +603,11 @@ end
 Get in touch for feedback or support, join our Discord and make use of our ticket system!
 
 ## Troubleshoot
+
+- **FAQ Answers**
+  - SmartFires and SmartHose resource actually need to be named to `SmartFires` and `SmartHose`, otherwise fire & smoke callouts will bug out your callout system.
+  - MDT integration? Make sure to enable ERS in `night_shifts` and enable Night Shifts in `night_ers`. Duty toggled through the MDT.
+  - Read the compatibility knowledge below for more wisdom.
 
 - **Compatibility knowledge**
   - Iceline Hosting: Enable Beyond by setting it to 1 in your server dashboard, otherwise entities will not spawn.
