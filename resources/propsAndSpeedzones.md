@@ -50,7 +50,7 @@ ensure night_prop_system
 
 1. Configure /config/config.lua.
 
-1. Note: Custom props are not included. The ones used in the video showcase is obtainable at Cell 1 Modding: [https://discord.gg/59yamPENYn](https://discord.gg/59yamPENYn) (Partner).
+1. Note: Custom props are not included. The ones used in the video showcase is obtainable at Cell 1 Modding: [https://discord.gg/XSrqSTtF5M](https://discord.gg/XSrqSTtF5M).
 
 ## Export functions
 
