@@ -91,7 +91,7 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 1. Carefully read the instructions given in natural_disasters/config/config.lua, it offers you all kinds of customization options!
 
-1. Ensure or start the resource in server.cfg. 
+1. Ensure or start the resource in server.cfg. (Do not rename this script!)
 Example:
 ```lua
 ensure night_natural_disasters
@@ -131,16 +131,26 @@ So alternative weather script compatibility is found in 3 alternative resources:
 
 ## Exports
 
-1. We provide a configuration option for the following export (config.lua -> CustomSoundResource = "ResName" & s_functions.lua -> Server event = Accessible code):
+1. Serverside Exports
 ```lua
+exports.night_natural_disasters:SpawnDisaster(id)
+exports.night_natural_disasters:StopDisaster(id)
+exports.night_natural_disasters:NextWeatherStage()
+exports.night_natural_disasters:SetWeather(weatherType)
+exports.night_natural_disasters:SetTime(hour, minute)
+exports.night_natural_disasters:ToggleBlackout()
+exports.night_natural_disasters:ToggleFreezeTime()
+exports.night_natural_disasters:ToggleDynamicWeather()
+exports.night_natural_disasters:GetCurrentWeather() -- returns "EXTRASUNNY" for example (string)
+exports.night_natural_disasters:GetIsBlackoutActive() -- returns true or false (boolean)
+exports.night_natural_disasters:GetIsTimeFrozen() -- returns true or false (boolean)
+exports.night_natural_disasters:GetIsWeatherDynamic() -- returns true or false (boolean)
 exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords --[[Vector 3]], disasterID --[[index nr]], soundFileName --[[File name]], soundFileVolume --[[Volume]])
 ```
 
-2. More exports!
+2. Clientside Exports
 ```lua
-exports.night_natural_disasters:SpawnDisaster(DisasterId)
-exports.night_natural_disasters:StopDisaster(DisasterId)
-exports.night_natural_disasters:GetCurrentWeather()
+exports.night_natural_disasters:PauseSynchronization(boolean) -- Used by housing system scripts for weather & disaster proof interiors.
 ```
 
 ## Recommended!
