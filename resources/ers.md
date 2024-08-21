@@ -50,7 +50,17 @@ Set FTP Transfer Type to Binary -> Open Keymaster Download ZIP Package -> Unpack
 
 ---
 
-# Framework & Script compatibility
+# fxServer, framework and script compatibility
+
+## fxServer
+1. **ERS was tested for gamebuild 2944**
+We recommend testing your setup on this gamebuild. If you desire to use a different gamebuild, try it out AFTER you confirmed it worked on 2944, 3095.
+ - We do not recommend older gamebuilds than 2944.
+
+## OneSync
+1. **ERS requires OneSync Legacy/Infinity**
+You must enable OneSync Legacy or Infinity.
+ - It is likely that some hosting companies have a dashboard in which you also need to set `Enable Beyond` to 1, instead of 0.
 
 ## WARNING
 1. **ERS is currently not compatible with**
