@@ -65,7 +65,6 @@ You must enable OneSync Legacy or Infinity.
 ## WARNING
 1. **ERS is currently not compatible with**
 We are in contact with the creators to find a resolution for both of the parties.
- - OkOkPoliceJob (confirmed)
  - RemoveCops-AI (confirmed)
 
 ## Standalone
