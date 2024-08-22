@@ -112,6 +112,7 @@ We are going to install multiple resources to make the ERS function as intended.
       - Direct download the `nearest-postal` script [here](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip).
       - Direct download the custom `map` [here](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0).
       - These resources are a drag-and-drop into your resources folder!
+      - If you are using ModernHUD, comment out `provide "nearest-postal"` in the fxmanifest.lua of ModernHUD, refresh and restart.
       - If you do not want to use this postal resource, either edit the postal code handling in c_functions.lua or set usage to false in `night_ers/config/config.lua`.
 
 4. **Night Shifts MDT (Optional - Included with ERS Plus and ERS Ultimate)**
