@@ -100,7 +100,9 @@ This is an optional resource, but fits well within the purpose of the NS - MDT. 
 
 1. Rename the 'nearest-postal-master' to 'nearest-postal' and drag this folder to your resources folder.
 
-1. Ensure or start this resource in your server.cfg, make sure it starts before the 'night_shifts' resource 
+1. Ensure or start this resource in your server.cfg, make sure it starts before the 'night_shifts' resource.
+
+1. If you are using ModernHUD, comment out `provide "nearest-postal"` in the fxmanifest.lua of ModernHUD, refresh and restart.
 
 Example:
 ```lua
