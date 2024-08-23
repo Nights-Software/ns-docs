@@ -32,7 +32,7 @@ A guide to install Emergency Response Simulator for FiveM
 
 **Youtube!** Watch this installation tutorial video:
 
-[Coming soon!](https://store.nights-software.com){: .btn .btn-red}
+In depth (MDT & ERS) [Installation tutorial by FLeeLive!](https://youtu.be/iDItAxtY08k){: .btn .btn-red}
 
 ## Purchasing the resource
 
