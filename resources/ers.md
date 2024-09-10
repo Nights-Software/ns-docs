@@ -231,13 +231,15 @@ ensure ebu_flatbeds_ers #optional
 - [x] **Task 3**  
 - Adjust the config, client and server code (all of them) within your new file to your liking.
 - [x] **Task 4**  
-- Test the callout and make sure it works as intended by restarting the script and spawning the callout afterwards.
+- Test the callout and make sure it works as intended by restarting the script and spawning the callout afterwards. (/requestcallout)
 
 ## Important notes
 - Find all ERS functions below.
 - Make sure to use the correct syntax and formatting.
 - Test your callout thoroughly to ensure it works as intended.
 - Consider adding comments to your code to explain your logic and reasoning for certain actions.
+
+---
 
 # Editing open source functions
 *Are you not familiar with code? Then skip this section or take on the challenge!*
