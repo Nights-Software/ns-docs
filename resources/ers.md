@@ -206,10 +206,10 @@ ensure ebu_flatbeds_ers #optional
    - The ERS resource contains a folder called `night_ers/callouts/*.lua`. All scripts in this folder are open source, which means you can add, remove, or edit callouts.
 
 2. **Using ERS functions**  
-   - ERS has multiple built-in functions, just like the FiveM native documentation, we've built our own set of functionalities. You will have to use these to properly create callout entities. These ERS functions are listed on top of every (client and server-side) script.
+   - ERS has multiple built-in functions, just like the FiveM native documentation, we've built our own set of functionalities. You will have to use these to properly create and handle callout entities. These ERS functions are listed below.
 
 3. **Providing callout packs**  
-   - Providing free or paid ERS callout packs is allowed. Many of our community members are planning to sell or provide callout packs. We approve this, as long as you follow [FiveM](https://forum.cfx.re/) (CFX) and [Tebex](https://www.tebex.io/) policy (terms of service). Basically, provide via [Tebex](https://www.tebex.io/). We are to report any illegal trade or distribution to authorities.
+   - Providing free or paid ERS callout packs is allowed. Many of our community members are planning to sell or provide callout packs. We approve this, as long as you follow [FiveM](https://forum.cfx.re/) (CFX) and [Tebex](https://www.tebex.io/) policy (terms of service). Basically, provide paid scripts via [Tebex](https://www.tebex.io/). We are to report any illegal trade or distribution to authorities.
 
 ## The format for adding a callout (config, server & client)
 *IT IS IMPORTANT TO REALIZE CALLOUT CREATION IS FOR DEVELOPERS*
@@ -218,195 +218,26 @@ ensure ebu_flatbeds_ers #optional
 - Nights Software does not offer support for creating custom callouts, besides the documentation. Ask the community instead!
     - If you do not have an understanding of developing you'll need to learn this first. You will be told the same thing in a ticket. Even though we love our community and love to help, we don't have the capacity (yet) to provide support for callout creation. Read these documented instructions carefully and ask our community to share knowledge!
 
+## Callout Creator Pack
+
+1. **Nights Software has created a Callout Creator Pack to help you create your own callouts. This pack includes an example callout and a documentation on how to create your own callouts.**  
+  - [Download the free Callout Creator Pack here](https://store.nights-software.com/package/6374594).
 
 ## Task List for creating one callout
 - [x] **Task 1** 
-- Add the callout settings to callout_config.lua. (used to configure locations, required units and behaviour, optionally based off time to keep the callout random every time)
+- Enter the `night_ers/callouts/plugins/` folder and copy an existing `.lua` callout file or paste in a newly created callout file.
 - [x] **Task 2** 
-- Add the serverside code to callouts_server.lua and adjust it to your liking. (used to spawn entities)
+- Rename the file to your desired callout name.
 - [x] **Task 3**  
-- Add the clientside code to callouts_client.lua and adjust it to your liking. (used to apply behaviour to entities)
+- Adjust the config, client and server code (all of them) within your new file to your liking.
 - [x] **Task 4**  
-- Implement the snippets you made for the scripts listed above into these scripts with the correct index number ([110], [111]). Look at how we've done it to understand what you need to do in the `night_ers/callouts_config/callouts_config.lua`, `night_ers/callouts/callouts_server.lua` and `night_ers/callouts/callouts_client.lua` files.
+- Test the callout and make sure it works as intended by restarting the script and spawning the callout afterwards.
 
-**Here is an example**
-
-## Config `night_ers/callouts/callouts_config.lua`
-<!-- This is a callouts_config.lua example, you can copy this to create a callout in callouts_config.lua. 
-Make sure to change the index number [111] to the next CORRECT incremented ID for a callout. Example: after ID [110] comes ID [111].
-
-Goal: Paste your newly configured callout settings underneath the previous ID in night_ers/callouts/callouts_config.lua -->
-
-```lua
-[111] = {   
-    Enabled = true,             -- true = enabled | false = disabled
-    CalloutName = "Format",     -- Give your callout a name, like: Fight in a bar
-    CalloutDescriptions = {     -- Define multiple descriptions for your callout.
-        "Description 1.",
-        "Description 2.",
-        "Description 3.",
-        -- "Example of another description to add here",
-    },               
-    CalloutUnitsRequired = {    -- Service types set to true will be potentially offered this callout.
-        description = "Police, Ambulance, Fire.",
-        policeRequired = true,
-        ambulanceRequired = true,
-        fireRequired = true,
-        towRequired = false,
-    },
-    CalloutLocations = {
-        [1] = vector3(-1321.16, -585.79, 28.8),     -- Add GTA vector3(x,y,z) coordinates to this list. Mind the index numbers and their order! [1], [2], [3]
-        -- [2] = vector3(-1321.16, -585.79, 28.8),
-        -- [3] = vector3(-1321.16, -585.79, 28.8),
-
-    },                                                             
-    PedChanceToFleeFromPlayer = 0,      -- Value between 0 and 100 -> Lower is less chance.
-    PedChanceToAttackPlayer = 0,        -- Value between 0 and 100 -> Lower is less chance.
-    PedChanceToSurrender = 0,           -- Value between 0 and 100 -> Lower is less chance.
-    PedChanceToObtainWeapons = 0,       -- Value between 0 and 100 -> Lower is less chance.
-    PedActionMinimumTimeoutInMs = 1000, -- Milliseconds for the minimum timeout time to start the secondary action.
-    PedActionMaximumTimeoutInMs = 5000, -- Milliseconds for the maximum timeout time to start the secondary action. Must be a higher number than the minimum!
-    PedActionOnNoActionFound = "none",  -- When no action of the above options is found. It'll perform this action after the set timeout. Options: "none", "attack", "flee", "surrender"
-    PedWeaponData = {                   -- The ped will be given one randomly selected weapon (in hand) from these weapons if PedChanceToObtainWeapons passed.
-        "weapon_poolcue",
-        "weapon_golfclub",
-        "weapon_crowbar",
-        "weapon_bat",
-        "weapon_pistol",
-        "weapon_combatpistol",
-        "weapon_appistol",
-        -- Add more...
-    },
-},
-```
-
-## Server `night_ers/callouts/callouts_server.lua` (Entity creation)
-<!-- This is a callouts_server.lua example, you can copy this to create entities (peds, vehicles, objects, fires, smoke) serverside.
-Keep in mind to define the correct callout ID again in the script! 
-
-Goal: Paste your newly created server entity creation for callout ID 111 (in this case) underneath ID 110. 
-
-Hint: Config.randomWasteDumpObjects is an example of a list from night_ers/config/entity-config.lua. It is used for storing lists of models for peds, vehicles, particles, objects etc. -->
-
-```lua
-elseif calloutData.calloutId == 111 then -- Example callout serverside
-
-    local diameter = 20 -- Radius of the coordinates in which the entities will randomly spawn if diameter is used for local coords = ...
-
-    -- Build objects (Example of spawning multiple objects)
-    local randomAmountOfObjects = math.random(3,10)
-    for i = 1, randomAmountOfObjects do
-        local coords = ERS_GetRandomCoordinateWithinRangeOfCoordinate(calloutData.Coordinates, diameter)
-        local objModel = ERS_GetRandomModel(Config.randomWasteDumpObjects)
-        local objCoords = vector3(coords.x, coords.y, coords.z+2.0)
-        local objHeading = math.random(360)
-        local objNetId = ERS_CreateObject(objModel, objCoords, objHeading)
-        local obj = NetworkGetEntityFromNetworkId(objNetId)
-        table.insert(objectList, objNetId)
-
-        local fireToObjChance = math.random(100) -- Add a fire at object location by chance of 75%
-        if fireToObjChance > 75 then
-            -- Build fire
-            if UsingSmartFires then
-                -- Full version
-                local fireSize = Config.RandomSmallFireOrSmokeSize[math.random(#Config.RandomSmallFireOrSmokeSize)]
-                local fireType = Config.NormalFireTypes[math.random(#Config.NormalFireTypes)]
-                local fireId = exports['SmartFires']:CreateFire(vector3(coords.x, coords.y, coords.z-0.5), fireSize, fireType)
-                DebugPrint("Created fire with ID: "..fireId)
-                table.insert(fireList, fireId)
-            else
-                -- Lite version
-                local fireSize = Config.RandomSmallFireOrSmokeSize[math.random(#Config.RandomSmallFireOrSmokeSize)]
-                local fireType = "normal"
-                local fireId = exports['SmartFiresLite']:CreateFire(vector3(coords.x, coords.y, coords.z-0.5), fireSize, fireType)
-                DebugPrint("Created fire with SmartFiresLite with ID: "..fireId)
-                table.insert(fireList, fireId)
-            end
-        end
-    end
-
-    -- Build vehicle (Example of building one vehicle)
-    local vehModel = ERS_GetRandomModel(Config.randomVans)
-    local vehType = "automobile" -- Types: automobile bike boat heli plane submarine trailer train
-    local vehCoords = vector3(calloutData.Coordinates.x, calloutData.Coordinates.y, calloutData.Coordinates.z)
-    local vehHeading = math.random(360)
-    local vehNetId = ERS_CreateVehicle(vehModel, vehType, vehCoords, vehHeading)
-    local vehicle = NetworkGetEntityFromNetworkId(vehNetId)
-    table.insert(vehicleList, vehNetId) -- These lists store network ID's and will be passed to the client.
-
-    -- Build ped (Example of building multiple peds based on a seatIndex and setting them into the previously built vehicle serverside.)
-    local seatIndex = -1
-    for i = 1, 2 do
-        local pedModel = ERS_GetRandomModel(Config.randomGangPeds)
-        local pedCoords = vector3(calloutData.Coordinates.x, calloutData.Coordinates.y, calloutData.Coordinates.z+1.0)
-        local pedHeading = math.random(360)
-        local pedNetId = ERS_CreatePed(pedModel, pedCoords, pedHeading)
-        local ped = NetworkGetEntityFromNetworkId(pedNetId)
-        ERS_SetPedIntoVehicle(ped, vehicle, seatIndex)
-        seatIndex = seatIndex + 1
-        table.insert(pedList, pedNetId) -- These lists store network ID's and will be passed to the client.
-    end
-
-    calloutBuilt = true -- Always end with this, otherwise nothing will happen and your script will bug out!
--- elseif calloutData.calloutId == 112 then
-    -- Space for the next callout.
-```
-
-## Client `night_ers/callouts/callouts_client.lua` (Entity behaviour)
-<!-- This is a callouts_client.lua example, you can copy this to set entity (peds, vehicles, objects, fires, smoke) behaviour clientside. 
-
-Goal: Paste this underneath the previous callout ID in callouts_client.lua
-
-Hint: Looping through the lists that are provided (pedList, vehicleList, objectList) is required. The ID's inside these lists are Network ID's. The configured behaviour after the
-timeout is handled by the function ERS_PerformTimedActionOnPed(calloutDataClient, pedList). If you create a new list to pass, make sure to insert PED Network ID's!
-
--->
-
-```lua
-elseif calloutDataClient.calloutId == 111 then -- Example callout clientside
-
-    for index, objNetId in pairs(objectList) do
-        local obj = NetToObj(objNetId)
-        if DoesEntityExist(obj) then
-            ERS_RequestNetControlForEntity(obj) 
-            PlaceObjectOnGroundProperly(obj)
-            -- Do something with the object entity ID.
-        end
-    end
-
-    for index, vehNetId in pairs(vehicleList) do
-        local veh = NetToVeh(vehNetId)
-        if DoesEntityExist(veh) then
-            ERS_RequestNetControlForEntity(veh) 
-            -- Do something with the vehicle entity ID.
-        end
-    end
-
-    for index, pedNetId in pairs(pedList) do
-        local ped = NetToPed(pedNetId)
-        if DoesEntityExist(ped) then
-            ERS_RequestNetControlForEntity(ped)
-            if index == 1 then
-                ERS_SetPedToFleeFromPlayer(ped)
-                -- Do something with the ped entity ID.
-            end
-
-        end
-    end
-
-    -- This function handles the configured behaviour in your callout from callouts_config.lua after the configured timeout.
-    -- So basically: You configure and code the ped behaviour and after a timeout they will perform a second stage of behaviour.
-    ERS_PerformTimedActionOnPed(calloutDataClient, pedList)
--- elseif calloutData.calloutId == 112 then
-    -- Space for the next callout.
-```
-
-<!-- If you have any questions, ask the community! Nights Software does not provide support for custom callout creation, besides the documentation. 
-
-Enjoy and good luck! Love from Nights Software!
--->
-
----
+## Important notes
+- Find all ERS functions below.
+- Make sure to use the correct syntax and formatting.
+- Test your callout thoroughly to ensure it works as intended.
+- Consider adding comments to your code to explain your logic and reasoning for certain actions.
 
 # Editing open source functions
 *Are you not familiar with code? Then skip this section or take on the challenge!*
