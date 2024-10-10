@@ -419,6 +419,20 @@ end
 
 ---
 
+# Exports
+
+ERS provides both client and server exports. Find the details and how to use them in the files below.
+
+## Client exports
+
+`night_ers/client/exports_client.lua`
+
+## Server exports
+
+`night_ers/server/exports_server.lua`
+
+---
+
 # Props by NovelaxNeko
 
 ## 10 Free (included) props
