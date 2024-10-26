@@ -147,10 +147,14 @@ We are going to install multiple resources to make the ERS function as intended.
      - Config.biftowmfd2 = "biftowmfd2"        -- [https://mfd.tebex.io/package/6281210](https://mfd.tebex.io/package/6281210)
      - Config.Gtow = "Gtow"                    -- [https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem](https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem)
 
-10. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
+10. **World Events Add-on (Optional)**
+    - `night_ers_worldevents` allows you to spawn world events in your area of interest.
+      - See all features [here](https://store.nights-software.com/package/6437544).
+
+11. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
    - We repeat, do not rename scripts to other than what they are called in this documentation.
 
-11. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
+12. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
     - List the ensured resources in the order from the example below on ensuring/starting resources! This is required!
     - Example:
 ```conf
@@ -430,6 +434,16 @@ ERS provides both client and server exports. Find the details and how to use the
 ## Server exports
 
 `night_ers/server/exports_server.lua`
+
+---
+
+# Installing ERS Add-ons
+
+## World Events Add-on
+
+1. **Drag & Drop**
+   - Drag & drop the `night_ers_worldevents` folder into your resources folder.
+   - Ensure the resource is added to your `server.cfg` file: `ensure night_ers_worldevents` below the `ensure night_ers` line.
 
 ---
 
