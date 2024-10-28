@@ -53,7 +53,14 @@ We assume you have a database for your FiveM server. If you do not have one, con
 
 In your server.cfg:
 ```
-set mysql_connection_string "user=userName;password=YourPassword;host=YourHost;port=3306;database=YourDatabase;charset=utf8mb4_general_ci" 
+set mysql_connection_string "user=Your_Database_Username;password=Your_Database_Password;host=Your_Database_Host;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci" 
+```
+
+*Hint: You can find your database credentials on your host dashboard. If you run a localhost you can use localhost as the host, root as username and no password.*
+
+Localhost example:
+```
+set mysql_connection_string "user=root;password=;host=localhost;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
 ```
 
 1. When you boot up the server, the code will run a query which installs the required tables into your database.
@@ -139,22 +146,6 @@ Example:
 ensure night_discordapi
 ```
 
-## Setting up your Steam webApiKey in your FiveM server
-
-1. Make sure the server has the steam webapi key in it's server.cfg, otherwise it will not be able to make use of steam services: 
-[Generate a steam web api key](https://steamcommunity.com/dev/apikey)
-
-Choose a domain, can be any.
-
-In your server.cfg:
-```
-set steam_webApiKey "your_key"
-```
-
-- Also set this key in your servers hosting company web dashboard (if applicable).
-
-- Still experiencing issues? Re-log into steam and discord, don't just restart it. Then connect to FiveM. 
-
 ## Downloading & Installing Night Shifts - Mobile Data Terminal
 
 Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants) after purchasing it. It can take a few minutes for the resource to appear in keymaster after purchase.
@@ -174,6 +165,18 @@ ensure night_shifts
 
 1. Start your server and look at your server console to see whether both oxmysql (must start first) and night_shifts (must start after oxmysql) have started. Do not continue until you confirm this to be true and without errors. If you have any errors, read them and use them to solve your issue. They guide you!
 
+## Configuring your Discord API roles in `departments_config.lua`
+
+1. Make sure you have the Discord API installed and working. Also make sure you have roles defined.
+
+1. Open /config/departments_config.lua in VS Code.
+
+1. Important: Set up your night_discordapi roles to match the ones configured in the MDT. You can find all required variables to match by searching: (CNTL+F) `RoleName`.
+
+1. Set up the matching Discord API roles for: DiscordGuildNames, MDT Access, Departments, Sub-Departments and Ranks. This will allow you access to the departments in the MDT without errors.
+
+1. Make sure you have a department role like "LSPD" defined for the department, first rank and first sub-department at all times. The same goes for the ambulance department and any other departments you have. Exception: Civilian department does not have sub-departments and does not want those either.
+
 ## Configuring the config.lua file
 
 There are loads of options to configure. It is recommended you test the resource before editing it. So you are sure it works by default. If you start editing it, frequently test what you've changed to prevent getting errors you can not trace. If you ask for support, we will recommend you to re-install it if you've edited it. There are many ways to break code and many reasons why code will not work sometimes. Lets move on by following the steps below!
@@ -182,19 +185,13 @@ There are loads of options to configure. It is recommended you test the resource
 
 1. We recommend downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
 
-1. Open /config/config.lua in VS Code. 
-
-1. Important: Set up your night_discordapi roles to match the ones configured in the MDT. You can find all required variables to match by searching: (CNTL+F) `RoleName`.
-
 1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
 
 1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
 
 1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Relax mode on and read it all to understand it.
 
-1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom: 
-
-1. Set up the matching Discord API roles for: MDT Access, Departments, Sub-Departments and Ranks. This will allow you access to the departments in the MDT without errors.
+1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom.
 
 *Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
 
@@ -215,6 +212,8 @@ This setup should allow access to the MDT (police and civilian). Configure more 
    RolesWithAccessToMDT = {"police", "ambulance", "fire", "tow", "civilian"}, -- Edit these to match your roles (role names) from Night Discord API [FREE] https://store.nights-software.com/package/5035729 
 
   ```
+
+  - Set up the civilian department. This should give you first access to the MDT and it's civilian section.
 
 ## Fix UI Lag
 
