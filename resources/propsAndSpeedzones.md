@@ -58,8 +58,15 @@ ensure night_prop_system
 
 1. Example:
 ```lua
-exports['night_prop_system']:OpenPropMenu(src, toggle) -- toggle means wether you want to open it (true) or -force- close it (false).
-exports['night_prop_system']:OpenSpeedZoneMenu(src, toggle) -- toggle means wether you want to open it (true) or -force- close it (false).
+-- Usage example exports client side
+exports['night_prop_system']:TogglePlaceObjectsTool()
+exports['night_prop_system']:ToggleSpeedzoneTool()
+exports['night_prop_system']:ToggleRoadNodeTool()
+
+-- Usage Example exports server side (we kept the old naming server side for easy compatibility for previous users)
+exports['night_prop_system']:OpenPropMenu(source)
+exports['night_prop_system']:OpenSpeedZoneMenu(source)
+exports['night_prop_system']:ToggleRoadNodeTool(source)
 ```
 
 ## Support
