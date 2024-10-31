@@ -185,7 +185,7 @@ There are loads of options to configure. It is recommended you test the resource
 
 1. We recommend downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
 
-1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
+1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like: `config/*.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
 
 1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
 
@@ -204,12 +204,13 @@ This setup should allow access to the MDT (police and civilian). Configure more 
 2. **Make sure the civilian role is assigned to all Discord users.**
   - To make sure everyone can register their civilian, give the "civilian" role to all your Discord users. Do not add multiple civilian roles. One is enough for: The department (1) and the first and only rank (2).
 
-3. **To access the MDT in the first place, assign (a) role(s) in the config!**
+3. **To access the MDT in the first place, assign (a) role(s) in the `departments_config.lua`!**
   - Check out:
 
   ```lua
-   DiscordGuildNames = {"myroleplayserver"}, -- It checks whether the user is in any of these Discord servers and checks for the roles the user has in these Discord servers. Match these names to your Discord API. The first guild defined is where it fetches the Discord member data from (avatar, nickname etc.).
-   RolesWithAccessToMDT = {"police", "ambulance", "fire", "tow", "civilian"}, -- Edit these to match your roles (role names) from Night Discord API [FREE] https://store.nights-software.com/package/5035729 
+    Config.MobileDataTerminal.DiscordGuildNames = {"Nights Software"} -- It checks whether the user is in any of these Discord servers and checks for the roles the user has in these Discord servers. Match these names to your Discord API. The first guild defined is where it fetches the Discord member data from (avatar, nickname etc.).
+    Config.MobileDataTerminal.RolesWithAccessToMDT = {"Police", "Ambulance", "Fire", "Tow", "Civilian"} -- Edit these to match your roles (role names) from Night Discord API [FREE] https://store.nights-software.com/package/5035729 
+    Config.MobileDataTerminal.ManagementRoles = {"Manager"}
 
   ```
 
