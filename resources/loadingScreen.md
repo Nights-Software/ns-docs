@@ -43,6 +43,11 @@ Base: [https://store.nights-software.com/package/5504509](https://store.nights-s
 
 Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants) after purchasing it. It can take a few minutes for the resource to appear in keymaster after purchase.
 
+## Read before installing the resource
+
+Please keep in mind that services like Imgur and Discord do **not** work with this script.
+The image host you are using needs to have the ability to link directly to the uploaded images.
+
 ## Installing the resource
 
 *Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
