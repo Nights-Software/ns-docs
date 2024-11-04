@@ -45,7 +45,7 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 ---
 
-## Setting up your database tables (Dependency)
+## Preparing your database (Dependency)
 
 We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
 
