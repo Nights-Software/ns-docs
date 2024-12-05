@@ -4,7 +4,7 @@ title: "Night Shifts - Mobile Data Terminal"
 nav_order: 32
 has_children: false
 has_toc: true
-last_modified_date: "2024-05-16 17:00:00"
+last_modified_date: "2024-12-05 14:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/nightShifts.png" alt="Night Shifts - Mobile Data Terminal Resource" draggable="false">
