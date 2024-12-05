@@ -165,15 +165,19 @@ ensure night_shifts
 
 1. Start your server and look at your server console to see whether both oxmysql (must start first) and night_shifts (must start after oxmysql) have started. Do not continue until you confirm this to be true and without errors. If you have any errors, read them and use them to solve your issue. They guide you!
 
+## Using nearest-postal and ModernHUD or SimpleHUD?
+
+1. ModernHUD and SimpleHUD both `provide "nearest-postal"` in their fxmanifest.lua. You have to comment out `provide "nearest-postal"` in the fxmanifest.lua of ModernHUD or SimpleHUD to use nearest-postal with NS - MDT. This will prevent errors.
+
 ## Configuring your Discord API roles in `departments_config.lua`
 
 1. Make sure you have the Discord API installed and working. Also make sure you have roles defined.
 
 1. Open /config/departments_config.lua in VS Code.
 
-1. Important: Set up your night_discordapi roles to match the ones configured in the MDT. You can find all required variables to match by searching: (CNTL+F) `RoleName`.
+1. Important: Set up your night_discordapi roles to match the ones configured in the `departments_config.lua`. You can find all required variables to match by searching: (CNTL+F) `RoleName`.
 
-1. Set up the matching Discord API roles for: DiscordGuildNames, MDT Access, Departments, Sub-Departments and Ranks. This will allow you access to the departments in the MDT without errors.
+1. Set up the matching Discord API roles (NOT ID's) for: DiscordGuildNames, MDT Access, Departments, Sub-Departments and Ranks. This will allow you access to the departments in the MDT without errors. Read further and find more config notes which are important to follow.
 
 1. Make sure you have a department role like "LSPD" defined for the department, first rank and first sub-department at all times. The same goes for the ambulance department and any other departments you have. Exception: Civilian department does not have sub-departments and does not want those either.
 
@@ -193,10 +197,10 @@ There are loads of options to configure. It is recommended you test the resource
 
 1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom.
 
-*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
+*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them.*
 
 ## Config Notes 
-This setup should allow access to the MDT (police and civilian). Configure more after configuring, testing and understanding this.
+This setup should allow access to the MDT (police and civilian). Continue after configuring, testing and understanding this.
 
 1. **Make sure roles are defined in required places:**
   - Each department should have a main: role "police" for example. This role should at least be given to: The department (1), the first rank (2), the first sub-department (3).
@@ -211,7 +215,6 @@ This setup should allow access to the MDT (police and civilian). Configure more 
     Config.MobileDataTerminal.DiscordGuildNames = {"Nights Software"} -- It checks whether the user is in any of these Discord servers and checks for the roles the user has in these Discord servers. Match these names to your Discord API. The first guild defined is where it fetches the Discord member data from (avatar, nickname etc.).
     Config.MobileDataTerminal.RolesWithAccessToMDT = {"Police", "Ambulance", "Fire", "Tow", "Civilian"} -- Edit these to match your roles (role names) from Night Discord API [FREE] https://store.nights-software.com/package/5035729 
     Config.MobileDataTerminal.ManagementRoles = {"Manager"}
-
   ```
 
   - Set up the civilian department. This should give you first access to the MDT and it's civilian section.
@@ -261,12 +264,12 @@ exports.night_shifts:GetTowCount()
 
 ## Editing styling
 
-You can edit styling in NUI/styles.css. It is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
+You can edit styling in NUI/styles.css. Editing this is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
 
 ---
 
 # How to play Night Shifts - MDT?
-Welcome to Night Shifts - MDT, a customizable MDT system for your community. Whether you're running a police, fire, or EMS department, Night Shifts provides a range of features to help you manage your operations. Our MDT is configurable to fit the needs of emergency services in any country.
+Welcome to Night Shifts - MDT, a customizable self-service MDT system for your community. Whether you're running a police, fire, or EMS department, Night Shifts provides a range of features to help you manage your operations. Our MDT is configurable to fit the needs of emergency services in any country.
 
 ## Civilian Side
 The civilian side of the MDT includes features such as an emergency services hotline, a council/city hall registry for managing civilians, and a DVLA/DMV registry for managing vehicles. You can edit your civilians and vehicles, and even add custom profile pictures for each one.
@@ -385,21 +388,13 @@ A list of tips and tricks:
 
 1. Always read the commentry in the scripts you're editing. There is logic in them.
 
-1. Got players who can not connect due to their steam license? There are solutions for this: 
+1. Got players who can not connect due to their FiveM ID not found? There are solutions for this: 
 
-- Make sure the server has the steam webapi key in it's server.cfg, otherwise it will not be able to make use of steam services: 
-[Generate a steam web api key](https://steamcommunity.com/dev/apikey)
-
-Choose a domain, can be any.
-
-In your server.cfg:
-```
-set steam_webApiKey "your_key"
-```
-
-- Also set this key in your servers hosting company web dashboard (if applicable).
-
-- Re-log into steam and discord, don't just restart it. THEN connect to FiveM. 
+**The solution for the FiveM ID not found (night_shifts) on entering a server.**
+- Log into the FiveM app when inside the app. 
+- Close the FiveM app.
+- Open the FiveM app.
+- Join the server as a logged in user.
 
 1. Check whether your script is still named `night_shifts`, this is required for it to work. Do NOT rename it.
 
