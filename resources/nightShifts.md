@@ -109,7 +109,7 @@ This is an optional resource, but fits well within the purpose of the NS - MDT. 
 
 1. Ensure or start this resource in your server.cfg, make sure it starts before the 'night_shifts' resource.
 
-1. If you are using ModernHUD, comment out `provide "nearest-postal"` in the fxmanifest.lua of ModernHUD, refresh and restart.
+1. If you are using ModernHUD or SimpleHUD, comment out `provide "nearest-postal"` in the fxmanifest.lua of ModernHUD or SimpleHUD and restart the server (not just the resource).
 
 Example:
 ```lua
@@ -164,10 +164,6 @@ ensure night_shifts
 ```
 
 1. Start your server and look at your server console to see whether both oxmysql (must start first) and night_shifts (must start after oxmysql) have started. Do not continue until you confirm this to be true and without errors. If you have any errors, read them and use them to solve your issue. They guide you!
-
-## Using nearest-postal and ModernHUD or SimpleHUD?
-
-1. ModernHUD and SimpleHUD both `provide "nearest-postal"` in their fxmanifest.lua. You have to comment out `provide "nearest-postal"` in the fxmanifest.lua of ModernHUD or SimpleHUD to use nearest-postal with NS - MDT. This will prevent errors.
 
 ## Configuring your Discord API roles in `departments_config.lua`
 
