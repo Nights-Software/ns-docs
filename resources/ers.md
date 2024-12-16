@@ -168,6 +168,7 @@ ensure night_shifts #optional
 ensure emsprops #required
 ensure night_ers #required
 ensure ebu_flatbeds_ers #optional
+ensure night_ers_worldevents #optional DLC
 ```
 
 *Any other resources included with ERS Plus and ERS Ultimate can be started before ERS*
