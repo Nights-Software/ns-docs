@@ -147,14 +147,18 @@ We are going to install multiple resources to make the ERS function as intended.
      - Config.biftowmfd2 = "biftowmfd2"        -- [https://mfd.tebex.io/package/6281210](https://mfd.tebex.io/package/6281210)
      - Config.Gtow = "Gtow"                    -- [https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem](https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem)
 
-10. **World Events Add-on (Optional)**
+10. **World Events Add-on 1 (Optional)**
     - `night_ers_worldevents` allows you to spawn world events in your area of interest.
       - See all features [here](https://store.nights-software.com/package/6437544).
 
-11. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
+11. **Dynamic Weighing Stations Add-on 2 (Optional)**
+    - `night_ers_weighstation` allows you to weigh vehicles at dynamically set up weighing stations.
+      - See all features [here](https://store.nights-software.com/package/6605986).
+
+12. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
    - We repeat, do not rename scripts to other than what they are called in this documentation.
 
-12. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
+13. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
     - List the ensured resources in the order from the example below on ensuring/starting resources! This is required!
     - Example:
 ```conf
@@ -169,9 +173,8 @@ ensure emsprops #required
 ensure night_ers #required
 ensure ebu_flatbeds_ers #optional
 ensure night_ers_worldevents #optional DLC
+ensure night_ers_weighstation #optional DLC
 ```
-
-*Any other resources included with ERS Plus and ERS Ultimate can be started before ERS*
 
 ## Configuring the night_ers config.lua file
 
