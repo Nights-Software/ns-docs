@@ -49,7 +49,7 @@ ZIP Package -> Unpack in a folder on your local machine -> drag from local machi
 
 We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for NS - MDT to work.
 
-1. If you don't have one, connect to your database by using it's credentials (Find these on your host dashboard) in the following line, which you will put in your server.cfg.
+1. Once you have set up your database via your hosting provider, connect to your database by using it's credentials in an SQL connection string. We will now form one below with the credentials you found in your dashboard. Once this is done, we will define the sql connection string in your server.cfg, above the ensure/start of the resources.
 
 In your server.cfg:
 ```
