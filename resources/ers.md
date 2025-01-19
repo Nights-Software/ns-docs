@@ -69,7 +69,7 @@ You must enable OneSync Legacy or Infinity.
 
 ## WARNING
 1. **ERS is currently not compatible with**
-We are in contact with the creators to find a resolution for both of the parties.
+We sometimes reach out to the creators to find a resolution for both of the parties.
  - RemoveCops-AI (confirmed)
 
 ## Standalone
