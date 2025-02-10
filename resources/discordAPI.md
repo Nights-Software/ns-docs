@@ -4,7 +4,7 @@ title: "Discord API"
 nav_order: 11
 has_children: false
 has_toc: true
-last_modified_date: "2024-01-08 17:25:00"
+last_modified_date: "2025-02-09 14:55:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordAPI.png" alt="Discord API Resource" draggable="false">
@@ -348,6 +348,28 @@ Function usage example:
 ```lua
 local discordGuild = exports.night_discordapi:GetDiscordGuild()
 if discordGuild then print("Our guild is currently named " .. discordGuild.name .. ".") end
+```
+
+### `GetDiscordUser(src : String, force? : Boolean)`
+
+Returns `nil` if an error occurred. This error will be logged in the server console.
+
+Otherwise, this function returns a Discord user object fetched based on the specified `src`.
+
+Return object example:
+```lua
+{
+    id = "264212773049729024",
+    name = "Kunfu_Ratte",
+    avatar = "https://cdn.discordapp.com/avatars/264212773049729024/a_96bfd94a112d060f7aad83b108fdf044.gif",
+}
+```
+
+Function usage example:
+```lua
+local src = source
+local discordUser = exports.night_discordapi:GetDiscordUser(src)
+if discordUser then print("Player " .. GetPlayerName(src) .. " is named " .. discordUser.name .. " on Discord.") end
 ```
 
 ### Feedback
