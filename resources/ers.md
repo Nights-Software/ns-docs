@@ -134,15 +134,10 @@ We are going to install multiple resources to make the ERS function as intended.
    - Provided by [London Studios](https://londonstudios.net). This resource allows the player to use a water hose to extinguish fires and is included for free. Consider getting the full version for more advanced gameplay.
      - This resource is a drag-and-drop into your resources folder!
 
-7. **EMS Props (Required - Free open source)**
-   - ERS uses stretchers from the open-source resource called EMS Props made by Tiddy.
-     - Download it via their [CFX Forum post](https://forum.cfx.re/t/add-on-props-medical-prop-pack/5037054).
-     - This resource is a drag-and-drop into your resources folder!
-
-8. **Emergency Response Simulator (Required)**
+7. **Emergency Response Simulator (Required)**
    - The ERS system is the main gamemode allowing you to simulate emergency response calls. You can play as Police, Fire, Medic, and tow service operator. This system includes 100+ callouts by default, crafted for all service types. This system allows you to create emergency calls yourself (via coding). Read more about this below...
 
-9. **Theebu Flatbeds Lite (Optional - Included with ERS Essential, Plus and Ultimate)**
+8. **Theebu Flatbeds Lite (Optional - Included with ERS Essential, Plus and Ultimate)**
    - This script is included for free and provided by [Theebu](https://store.theebu.net).
    - If you have the [full version](https://store.theebu.net/package/5033826) then skip installing this lite version.
    - Theebu's flatbeds allow you to transport vehicles on the back of different types of vehicles. Here are your options:
@@ -152,18 +147,18 @@ We are going to install multiple resources to make the ERS function as intended.
      - Config.biftowmfd2 = "biftowmfd2"        -- [https://mfd.tebex.io/package/6281210](https://mfd.tebex.io/package/6281210)
      - Config.Gtow = "Gtow"                    -- [https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem](https://www.gta5-mods.com/vehicles/peterbilt-337-tuning-by-mfd-fivem)
 
-10. **World Events Add-on 1 (Optional)**
+9. **World Events Add-on 1 (Optional)**
     - `night_ers_worldevents` allows you to spawn world events in your area of interest.
       - See all features [here](https://store.nights-software.com/package/6437544).
 
-11. **Dynamic Weighing Stations Add-on 2 (Optional)**
+10. **Dynamic Weighing Stations Add-on 2 (Optional)**
     - `night_ers_weighstation` allows you to weigh vehicles at dynamically set up weighing stations.
       - See all features [here](https://store.nights-software.com/package/6605986).
 
-12. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
+11. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
    - We repeat, do not rename scripts to other than what they are called in this documentation.
 
-13. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
+12. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
     - List the ensured resources in the order from the example below on ensuring/starting resources! This is required!
     - Example:
 ```conf
@@ -174,7 +169,6 @@ ensure map #optional
 ensure SmartFiresLite #or SmartFires if you have the full version (Required)
 ensure SmartHoseLite #or SmartHose if you have the full version (Required)
 ensure night_shifts #optional
-ensure emsprops #required
 ensure night_ers #required
 ensure ebu_flatbeds_ers #optional
 ensure night_ers_worldevents #optional DLC
@@ -186,7 +180,7 @@ ensure night_ers_weighstation #optional DLC
 *Note: Always check your FiveM server console and F8 client console for errors, you need these errors to locate your issue if you have one.*
 
 1. **Download VS Code**  
-   - We insist on you downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
+   - We insist on you downloading Visual Studio Code (VS Code) to read and write (lua) files: [Download VS Code](https://code.visualstudio.com/download).
 
 2. **Open the config file**  
    - Open `night_ers/config/config.lua` in VS Code. 
@@ -440,9 +434,27 @@ ERS provides both client and server exports. Find the details and how to use the
 
 `night_ers/client/exports_client.lua`
 
+```lua
+    local isOnShift = exports['night_ers']:getIsPlayerOnShift()
+    local getPlayerActiveServiceType = exports['night_ers']:getPlayerActiveServiceType()
+    local isPlayerAttachedToCallout = exports['night_ers']:getIsPlayerAttachedToCallout()
+    local isPlayerTrackingUnit = exports['night_ers']:getIsPlayerTrackingUnit()
+    exports['night_ers']:playRadioAnimation()
+    exports['night_ers']:toggleDispatchMessages()
+    exports['night_ers']:toggleHints()
+    exports['night_ers']:toggleShift()
+    exports['night_ers']:trackPlayerCallout(targetSource) -- targetSource is the target player server id
+    exports['night_ers']:ERS_PedEquipWeapon(pedEntityId, weaponModelName, ammo)
+```
+
 ## Server exports
 
 `night_ers/server/exports_server.lua`
+
+```lua
+    exports['night_ers']:toggleShift(source, shiftType) -- shiftType can be "police", "ambulance", "fire" or "tow"
+    exports['night_ers']:trackPlayerCallout(source, targetSource)
+```
 
 ---
 
@@ -485,14 +497,14 @@ Get in touch for feedback or support, join our Discord and make use of our ticke
 ## Troubleshoot
 
 - **FAQ Answers**
-  - SmartFires and SmartHose resource actually need to be named to `SmartFires` and `SmartHose`, otherwise fire & smoke callouts will bug out your callout system.
+  - SmartFires and SmartHose resource actually need to be named to `SmartFires` and `SmartHose`, otherwise fire & smoke callouts will bug out your callout system. The same goes for SmartFiresLite and SmartHoseLite.
   - MDT integration? Make sure to enable ERS in `night_shifts` and enable Night Shifts in `night_ers`. Duty toggled through the MDT.
   - Read the compatibility knowledge below for more wisdom.
 
 - **Compatibility knowledge**
   - Iceline Hosting: Enable Beyond by setting it to 1 in your server dashboard, otherwise entities will not spawn.
   - RemoveCopsAI: Remove this resource, it does not work with ERS, because it removes spawned entities by ERS.
-  - Clear world commands / Anti cheat » Usually causes issues when deleting ERS entities, which should not be deleted by other scripts. ERS entities spawn server side so are usually not affected by Anti Cheat.
+  - Clear world commands / Anti cheat » Usually causes issues when deleting ERS entities, which should not be deleted by other scripts. Most ERS entities spawn server side so are usually not affected by Anti Cheat.
 
 ## Feedback
 Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the Discord button at the bottom of this page to visit our ticket & review channels.
