@@ -55,12 +55,12 @@ Set FTP Transfer Type to Binary -> Open Keymaster Download ZIP Package -> Unpack
 # fxServer, framework and script compatibility
 
 ## fxServer gamebuild & artifacts version
-1. **ERS was tested for gamebuild 2944 and 3323**
-Use the recommended settings below, do not use older gamebuilds.
-- Gamebuild tested and considered compatible for: 2944 to 3323.
-- Artifacts version tested and considered compatible for: 12255 and newer.
+1. **ERS was tested and considered compatible with gamebuild 3323**
+Use the recommended settings below, do not use older gamebuilds / artifacts, unless you want to test compatiblity yourself. We do not offer support when you are using non-recommended setups.
+- Gamebuild tested and considered compatible for: 3323.
+- Artifacts version tested and considered compatible for: 13079. 
 
-*Note: Do not use artifacts version 7290 with newer gamebuilds, this does not work properly. We tend to use the latest artifacts version and the latest gamebuild available. This seems to be the best way to go.*
+*Note: Do not use artifacts version (so called recommended) 7290 with newer gamebuilds, this does not work properly. We tend to use the latest artifacts version available. The gamebuild is not always compatible, use what we recommend or test compatibility yourself. This seems to be the best way to go.*
 
 ## OneSync
 1. **ERS requires OneSync Legacy/Infinity**
