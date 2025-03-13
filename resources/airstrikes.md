@@ -36,7 +36,7 @@ Base: [https://store.nights-software.com/package/](https://store.nights-software
 
 ## Downloading the resource
 
-Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants).
+Download this resource via [https://portal.cfx.re/assets/granted-assets](https://portal.cfx.re/assets/granted-assets).
 
 ## Installing the resource
 

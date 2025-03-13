@@ -148,7 +148,7 @@ ensure night_discordapi
 
 ## Downloading & Installing Night Shifts - Mobile Data Terminal
 
-Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants) after purchasing it. It can take a few minutes for the resource to appear in keymaster after purchase.
+Download this resource via [https://portal.cfx.re/assets/granted-assets](https://portal.cfx.re/assets/granted-assets) after purchasing it. It can take a few minutes for the resource to appear in the CFX Portal after purchase.
 
 1. Do not skip steps, are you sure your database and oxmysql is working?
 

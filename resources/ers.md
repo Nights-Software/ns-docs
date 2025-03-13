@@ -45,7 +45,7 @@ Find this product at: [https://store.nights-software.com/category/ers](https://s
 *Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
 
 ```
-Set FTP Transfer Type to Binary -> Open Keymaster Download ZIP Package -> Unpack in a folder on your local machine -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
+Set FTP Transfer Type to Binary -> Open the CFX Portal Download ZIP Package -> Unpack in a folder on your local machine -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
 ```
 
 *IMPORTANT: Follow this guide step by step. If you're stuck at a step, please ask for support in our Discord and provide the step name, do not skip steps. Click the button to join discord at the bottom of this page.*
@@ -97,7 +97,7 @@ We sometimes reach out to the creators to find a resolution for both of the part
 
 We are going to install multiple resources to make the ERS function as intended.
 
-1. Download the packages which we are going to install from [keymaster](https://keymaster.fivem.net/asset-grants). Make sure to install them in the order as they are listed.
+1. Download the packages which we are going to install from [the CFX Portal](https://portal.cfx.re/assets/granted-assets). Make sure to install them in the order as they are listed.
 
 ## Resources to install
 

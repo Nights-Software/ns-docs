@@ -53,7 +53,7 @@ Find this product and it's DLC's at:
 
 ## Downloading the resource
 
-Download this resource via [https://keymaster.fivem.net/asset-grants](https://keymaster.fivem.net/asset-grants).
+Download this resource via [https://portal.cfx.re/assets/granted-assets](https://portal.cfx.re/assets/granted-assets).
 
 ## Optional: Built in or external sound resources.
 
