@@ -32,7 +32,7 @@ A guide to install MetaBuild
 
 Find this product at:
 
-Base: [https://store.nights-software.com/package/5667103](https://store.nights-software.com/package/5667103)
+[https://store.nights-software.com/package/6755408](https://store.nights-software.com/package/6755408)
 
 # Read before installing
 
