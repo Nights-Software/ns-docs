@@ -1,7 +1,8 @@
 ---
 layout: default
 title: "Night Shifts - Mobile Data Terminal"
-nav_order: 32
+#nav_order: 32
+nav_order: 3
 has_children: false
 has_toc: true
 last_modified_date: "2024-12-05 14:00:00"
@@ -38,7 +39,7 @@ Base: [https://store.nights-software.com/package/5667103](https://store.nights-s
 *Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
 
 ```
-ZIP Package -> Unpack in a folder on your local machine -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
+ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfer Protocol (FTP) type to binary -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
 ```
 
 *IMPORTANT: Follow this guide step by step. If you're stuck at a step, please ask for support in our Discord and provide the step name, do not skip steps. Click the button to join discord at the bottom of this page.*
@@ -152,7 +153,7 @@ Download this resource via [https://portal.cfx.re/assets/granted-assets](https:/
 
 1. Do not skip steps, are you sure your database and oxmysql is working?
 
-1. Unpack the files into a folder onto your server. Please keep in mind you need to unpack it either on your servers' desktop before installing it, or do that locally on your own desktop and then drag over the files manually, to prevent parsing errors. Do not rename the resource.
+1. Unpack the files into a folder onto your server. ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfer Protocol (FTP) type to binary -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.. Do not rename the resource.
 
 1. Make sure you put the 'night_shifts' folder into your resources folder of your server.
 
