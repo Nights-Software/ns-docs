@@ -10,7 +10,7 @@ last_modified_date: "2025-03-27 14:00:00"
 
 <img class="cover-img" src="/assets/img/metabuild.png" alt="MetaBuild" draggable="false">
 
-# Night Shifts - Mobile Data Terminal
+# MetaBuild - The Ultimate FiveM building & construction simulator
 {: .no_toc}
 
 A guide to install MetaBuild
