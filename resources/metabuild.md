@@ -82,7 +82,7 @@ If you have questions about oxmysql, head over to their documentation page: [Oxm
 
 1. Place 'oxmysql' into your resources folder.
 
-2. Ensure / start 'oxmysql' in your server.cfg somewhere in the top of your server.cfg, to make sure it starts before the 'night_shifts' resource, which we install later in this documentation.
+2. Ensure / start 'oxmysql' in your server.cfg somewhere in the top of your server.cfg, to make sure it starts before the 'night_metabuild' resource, which we install later in this documentation.
 
 Example:
 ```lua
@@ -167,13 +167,13 @@ A list of tips and tricks:
 
 1. Got players who'se FiveM ID is not found? 
 
-**The solution for the FiveM ID not found (night_shifts) on entering a server.**
+**The solution for the FiveM ID not found (night_metabuild) on entering a server.**
 - Log into the FiveM app when inside the app. 
 - Close the FiveM app.
 - Open the FiveM app.
 - Join the server as a logged in user.
 
-1. Check whether your script is still named `night_shifts`, this is required for it to work. Do NOT rename it.
+Check whether your script is still named `night_metabuild`, this is required for it to work. Do NOT rename it.
 
 ---
 
