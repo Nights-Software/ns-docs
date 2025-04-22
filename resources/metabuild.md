@@ -46,6 +46,10 @@ ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfe
 
 ---
 
+## `server.cfg`
+
+Add `setr game_enableDynamicDoorCreation "true"` to your server.cfg. Place it somewhere above the starting of scripts.
+
 ## Preparing your database (Dependency)
 
 We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for MetaBuild to work.
