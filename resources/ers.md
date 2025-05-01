@@ -155,10 +155,14 @@ We are going to install multiple resources to make the ERS function as intended.
     - `night_ers_weighstation` allows you to weigh vehicles at dynamically set up weighing stations.
       - See all features [here](https://store.nights-software.com/package/6605986).
 
-11. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
+11. **K9 Dog Handler Add-on 3 (Optional)**
+    - `night_ers_k9` allows you to spawn K9 dogs for the line of duty.
+    - See all features [here](https://store.nights-software.com/package/6813075).
+
+12. **Place the resources listed above into your resources folder and DO NOT RENAME them.**
    - We repeat, do not rename scripts to other than what they are called in this documentation.
 
-12. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
+13. **Ensure / start the resources listed above IN THE GIVEN ORDER in your server.cfg.**
     - List the ensured resources in the order from the example below on ensuring/starting resources! This is required!
     - Example:
 ```conf
@@ -173,6 +177,7 @@ ensure night_ers #required
 ensure ebu_flatbeds_ers #optional
 ensure night_ers_worldevents #optional DLC
 ensure night_ers_weighstation #optional DLC
+ensure night_ers_k9 #optional DLC
 ```
 
 ## Configuring the night_ers config.lua file
