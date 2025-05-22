@@ -507,6 +507,8 @@ Get in touch for feedback or support, join our Discord and make use of our ticke
   - Read the compatibility knowledge below for more wisdom.
 
 - **Compatibility knowledge**
+  - Gamebuild 3407 is NOT compatible with ERS. We recommend either 2944 or 3323.
+  - Artifacts versions lower than 14230 are considered NOT compatible with ERS. Not even the outdated recommended version (b7290).
   - Iceline Hosting: Enable Beyond by setting it to 1 in your server dashboard, otherwise entities will not spawn.
   - RemoveCopsAI: Remove this resource, it does not work with ERS, because it removes spawned entities by ERS.
   - Andrew’s Advanced AI: Remove this resource, it does not work with ERS, because it removes spawned entities by ERS.
