@@ -512,6 +512,7 @@ Get in touch for feedback or support, join our Discord and make use of our ticke
   - Iceline Hosting: Enable Beyond by setting it to 1 in your server dashboard, otherwise entities will not spawn.
   - RemoveCopsAI: Remove this resource, it does not work with ERS, because it removes spawned entities by ERS.
   - Andrew’s Advanced AI: Remove this resource, it does not work with ERS, because it removes spawned entities by ERS.
+  - Realistic Euphoria Physics: Remove this resource, it does not work with ERS, because it denies some inter(actions).
   - Clear world commands / Anti cheat » Usually causes issues when deleting ERS entities, which should not be deleted by other scripts. Most ERS entities spawn server side so are usually not affected by Anti Cheat.
 
 ## Feedback
