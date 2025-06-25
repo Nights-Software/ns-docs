@@ -152,7 +152,7 @@ Feel free to take a look. We have provided these functions open source and you a
 
 ## Editing styling
 
-You can edit LIMITED styling in NUI/styles.css. Editing this is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
+You can edit LIMITED styling in html/styles.css. Editing this is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
 
 ---
 
