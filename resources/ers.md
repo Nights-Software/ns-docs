@@ -34,8 +34,6 @@ A guide to install Emergency Response Simulator for FiveM
 
 [Installation tutorial by Skull](https://youtu.be/qPSKlMGHoX8){: .btn .btn-red}
 
-[Installation tutorial by FLeeLive!](https://youtu.be/iDItAxtY08k){: .btn .btn-red}
-
 ## Purchasing the resource
 
 Find this product at: [https://store.nights-software.com/category/ers](https://store.nights-software.com/category/ers)
