@@ -4,10 +4,10 @@ title: "Objectives"
 nav_order: 25
 has_children: false
 has_toc: true
-last_modified_date: "2025-01-27 16:00:00"
+last_modified_date: "2025-07-22 16:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/objectives.png" alt="Objectives for FiveM" draggable="false">
+<img class="cover-img" src="/assets/img/night_objectives.png" alt="Objectives for FiveM" draggable="false">
 
 # Objectives for FiveM
 {: .no_toc}
@@ -17,91 +17,301 @@ A guide to install Objectives for FiveM
 {: .fs-5 .fw-300 }
 
 ---
-<details open markdown="block">
-  <summary>
-    Table of contents
-  </summary>
-  {: .text-delta }
+
+## 📋 Table of Contents
+{: .no_toc .text-delta }
+
 1. TOC
 {:toc}
-</details>
----
-
-## Installation Tutorial
-
-**Youtube!** Watch this installation tutorial video:
-
-[Coming soon!](https://store.nights-software.com){: .btn .btn-red}
-
-## Purchasing the resource
-
-Find this product at: [https://store.nights-software.com/package/6064980](https://store.nights-software.com/package/6064980)
-
-# Read before installing
-
-*Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
-
-```
-ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfer Protocol (FTP) type to binary -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
-```
-
-*IMPORTANT: Follow this guide step by step. If you're stuck at a step, please ask for support in our Discord and provide the step name, do not skip steps. Click the button to join discord at the bottom of this page.*
 
 ---
 
-## Installing Objectives for FiveM
+## 🎯 Overview
 
-1. Place 'night_objectives' into your resources folder.
+Simply use client-side exports to invoke objectives on your game screen and give context to what your players can do in your FiveM server. Objectives provides a clean, customizable way to display mission information, hints, and guidance directly to players.
 
-2. Ensure / start 'night_objectives' in your server.cfg.
+### **Key Features**
+{: .no_toc }
 
-Example:
-```lua
+- ✅ **Client-Side Exports** - Easy integration with any script
+- ✅ **Customizable Styling** - Configure the appearance of objectives
+- ✅ **Universal Compatibility** - Works with any FiveM server
+- ✅ **Duration Control** - Set custom display duration
+- ✅ **Clear Function** - Remove objectives when needed
+- ✅ **Escrow Protection** - Secure resource protection
+- ✅ **Lightweight** - Minimal performance impact
+
+---
+
+## 🛒 Purchase Information
+
+**Get Objectives:**
+[Purchase on Nights Software Store](https://store.nights-software.com/package/6064980){: .btn .btn-blue}
+
+---
+
+## 📺 Installation Tutorial
+
+**Watch the installation tutorial:**
+
+[Video Showcase](https://youtu.be/nsqlox6hCjA){: .btn .btn-red}
+
+---
+
+## ⚠️ Important Pre-Installation Notes
+
+{: .warning }
+> **Critical Installation Order:** Always follow this exact sequence to avoid parsing errors in the F8 console:
+> 1. Download ZIP Package from CFX Portal
+> 2. Unpack in a folder on your local machine
+> 3. Set File Transfer Protocol (FTP) type to **binary**
+> 4. Drag files from local machine to server resources folder
+> 5. Add to server.cfg (ensure script)
+> 6. Boot up the server
+
+{: .important }
+> **Support Policy:** Follow this guide step by step. If you're stuck, ask for support in our Discord and provide the specific step name. Do not skip steps.
+
+---
+
+## 🔧 System Requirements & Compatibility
+
+### **Framework Compatibility**
+{: .no_toc }
+
+- **✅ Standalone:** Works independently without any framework
+- **✅ Any FiveM Server:** Universal compatibility
+
+### **OneSync Compatibility**
+{: .no_toc }
+
+- **✅ OneSync Legacy:** Fully tested and compatible
+- **✅ OneSync Infinity:** Fully tested and compatible
+
+{: .tip }
+> **Note:** Objectives is designed to work with any FiveM server configuration and doesn't require specific framework dependencies.
+
+---
+
+## 📦 Installation Process
+
+### **Step 1: Download & Install**
+{: .no_toc }
+
+1. **Download** the resource from the CFX Portal after purchase
+2. **Extract** the ZIP package to your local machine
+3. **Transfer files** using binary FTP mode to your server's resources folder
+4. **Ensure the folder** is named `night_objectives` (do not rename)
+
+### **Step 2: Server Configuration**
+{: .no_toc }
+
+Add the resource to your `server.cfg`:
+
+```cfg
 ensure night_objectives
 ```
 
-## Export usage
-In your client side script:
+### **Step 3: Verify Installation**
+{: .no_toc }
+
+1. **Start your server** and check the console for any errors
+2. **Test the resource** by using the exports in a client script
+3. **Verify functionality** by displaying a test objective
+
+---
+
+## ⚙️ Configuration Setup
+
+### **Required Tools**
+{: .no_toc }
+
+{: .tip }
+> **Visual Studio Code:** We recommend downloading [VS Code](https://code.visualstudio.com/download) for editing Lua files.
+
+### **Configuration Files**
+{: .no_toc }
+
+| File | Purpose |
+|------|---------|
+| `night_objectives/config/config.lua` | Main configuration and styling settings |
+| `night_objectives/client/c_functions.lua` | Client-side functions |
+| `night_objectives/server/s_functions.lua` | Server-side functions |
+
+### **Configuration Process**
+{: .no_toc }
+
+1. **Open VS Code** and navigate to the config files
+2. **Read thoroughly** - each line has explanatory comments
+3. **Configure styling** - customize the appearance of objectives
+4. **Test frequently** - use F8 console for error checking
+
+{: .tip }
+> **Styling Options:** The config file contains all styling options for customizing the appearance of objectives.
+
+---
+
+## 🎮 How It Works
+
+### **Display Objectives**
+{: .no_toc }
+
+Use the client-side export to display objectives on the player's screen:
+
 ```lua
-exports.night_objectives:DisplayObjective(true --[[ display (true/false) ]], "This is your title" --[[ title ]], "This is your description" --[[ description ]], "This a hint" --[[ hint ]], 15 --[[ Duration in seconds ]])
+exports.night_objectives:DisplayObjective(
+    true,                    -- display (true/false)
+    "Mission Title",         -- title
+    "Mission Description",   -- description
+    "Helpful Hint",          -- hint
+    15                       -- duration in seconds
+)
+```
+
+### **Clear Objectives**
+{: .no_toc }
+
+Remove objectives from the screen:
+
+```lua
 exports.night_objectives:ClearObjective()
 ```
 
-## Configuring the config.lua file
+### **Integration Examples**
+{: .no_toc }
 
-*Note: Always check your FiveM server console and F8 client console for errors, you need these errors to locate your issue if you have one.*
+**Mission System Integration:**
+```lua
+-- Display mission objective
+exports.night_objectives:DisplayObjective(true, "Deliver Package", "Take the package to the marked location", "Follow the GPS route", 30)
 
-1. We recommend downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
+-- Clear when mission completes
+exports.night_objectives:ClearObjective()
+```
 
-1. Open /config/config.lua in VS Code. 
+**Job System Integration:**
+```lua
+-- Display job instructions
+exports.night_objectives:DisplayObjective(true, "Police Duty", "Patrol the city and respond to calls", "Use /911 to respond to emergencies", 60)
+```
 
-1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
+---
 
-1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
+## 🔗 Integration & Compatibility
 
-1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Relax mode on and read it all to understand it.
+### **Framework Support**
+{: .no_toc }
 
-1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom: 
+- **Standalone** - Works independently without framework dependencies
 
-*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
+### **Script Integration**
+{: .no_toc }
 
-## Editing c_functions.lua / s_functions.lua
+- **Mission Systems** - Display mission objectives and progress
+- **Job Systems** - Show job-specific instructions and tasks
+- **Tutorial Systems** - Guide new players through features
+- **Event Systems** - Display event information and instructions
 
-Are you not familiar with code? Then skip this section or take on the challenge!
+{: .tip }
+> **Universal Integration:** Objectives can be integrated into any FiveM script using simple client-side exports.
 
-We have provided 2 open script files containing functions you can edit to your desire. A client side functions script `c_functions.lua` and a server side functions script `s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits.
+---
 
-Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can ofcourse ask us any question and we will try to see if our knowledge can help you.
+## 📊 Exports
 
-# Help us or let us help you
-Get in touch for feedback or support, join our Discord and make use of our ticket system!
+### **Client-Side Exports**
+{: .no_toc }
 
-## Feedback
+```lua
+-- Display an objective
+exports.night_objectives:DisplayObjective(
+    display,        -- boolean: true to show, false to hide
+    title,          -- string: objective title
+    description,    -- string: objective description
+    hint,           -- string: helpful hint text
+    duration        -- number: display duration in seconds
+)
 
-Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the Discord button at the bottom of this page to visit our ticket & review channels.
+-- Clear all objectives
+exports.night_objectives:ClearObjective()
+```
 
-## Support
+### **Parameter Details**
+{: .no_toc }
 
-Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord.
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `display` | boolean | Set to `true` to show objective, `false` to hide |
+| `title` | string | The main title of the objective |
+| `description` | string | Detailed description of what the player should do |
+| `hint` | string | Additional helpful hint or instruction |
+| `duration` | number | How long to display the objective in seconds |
+
+---
+
+## 🛠️ Troubleshooting
+
+### **Common Issues**
+{: .no_toc }
+
+{: .warning }
+> **Export Not Found**
+> - Ensure the resource is properly started in server.cfg
+> - Check that the resource name is `night_objectives`
+> - Verify the resource started without errors in console
+
+{: .warning }
+> **Objectives Not Displaying**
+> - Check F8 console for any error messages
+> - Verify the export parameters are correct
+> - Ensure the display parameter is set to `true`
+
+{: .warning }
+> **Styling Issues**
+> - Check the config.lua file for styling settings
+> - Verify CSS/styling configurations are correct
+> - Test with default settings first
+
+### **Debugging Tips**
+{: .no_toc }
+
+- **Check F8 Console** - Look for any error messages
+- **Test with Simple Export** - Start with basic parameters
+- **Verify Resource Loading** - Ensure resource starts without errors
+- **Check File Permissions** - Ensure all files are accessible
+
+---
+
+## 💡 Best Practices
+
+### **Objective Design**
+{: .no_toc }
+
+- **Clear Titles** - Use concise, descriptive titles
+- **Detailed Descriptions** - Provide enough information for players to understand
+- **Helpful Hints** - Include additional guidance when needed
+- **Appropriate Duration** - Set duration based on objective complexity
+
+### **Integration Tips**
+{: .no_toc }
+
+- **Consistent Styling** - Use consistent objective formatting across your server
+- **Clear Objectives** - Always clear objectives when they're no longer relevant
+- **Error Handling** - Implement proper error handling for export calls
+- **Performance** - Don't spam objectives; use appropriate timing
+
+### **User Experience**
+{: .no_toc }
+
+- **Progressive Disclosure** - Show objectives as players progress
+- **Contextual Information** - Display objectives relevant to current situation
+- **Clear Instructions** - Make objectives easy to understand and follow
+- **Visual Hierarchy** - Use titles and descriptions effectively
+
+---
+
+## 🆘 Support
+
+Read through the instructions again if you have not managed to install the resource. Can't get it to work still? Create a ticket through our dedicated support system in Discord:
 
 [Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}

@@ -4,10 +4,10 @@ title: "Natural Disasters"
 nav_order: 6
 has_children: false
 has_toc: true
-last_modified_date: "2025-01-27 16:00:00"
+last_modified_date: "2025-07-22 16:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/naturalDisasters.gif" alt="Natural Disasters Resource" draggable="false">
+<img class="cover-img" src="/assets/img/night_natural_disasters.png" alt="Natural Disasters Resource" draggable="false">
 
 # Natural Disasters (Normal / DLC 1, 2, 3, 4 & 5)
 {: .no_toc }

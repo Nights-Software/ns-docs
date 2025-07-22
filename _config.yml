@@ -37,7 +37,7 @@ back_to_top: true
 back_to_top_text: "Back to top"
 
 # Footer improvements
-footer_content: "Copyright &copy; 2025 Nights Software | Built with [Just the Docs](https://just-the-docs.github.io/just-the-docs/)"
+footer_content: "Copyright &copy; 2025 Nights Software"
 
 # Last edit tracking
 last_edit_timestamp: true

@@ -4,7 +4,7 @@ title: "Emergency Response Simulator"
 nav_order: 4
 has_children: false
 has_toc: true
-last_modified_date: "2025-01-27 16:00:00"
+last_modified_date: "2025-07-22 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/ers.png" alt="Emergency Response Simulator for FiveM" draggable="false">
@@ -296,11 +296,21 @@ function OnEndedACallout()
 end
 ```
 
+- Explore the file for more...
+
 ### **Server Functions** (`night_ers/server/s_functions.lua`)
 {: .no_toc }
 
-- Multiple server-side event triggers available
-- Explore the file for complete function list
+```lua
+-- src: number - The user who toggled shift
+-- isOnShift: boolean - Wether the user is now on shift
+-- serviceType: string - The service type of the shift [police, fire, ambulance, tow]
+function OnToggleShift(src, isOnShift, serviceType)
+    -- Triggered when a user toggles their ERS shift.
+end
+```
+
+- Explore the file for more...
 
 ---
 
@@ -418,19 +428,19 @@ exports['night_ers']:trackPlayerCallout(source, targetSource)
 {: .no_toc }
 
 {: .warning }
-> **Resource Naming:** SmartFires and SmartHose must be named exactly `SmartFires` and `SmartHose` (case sensitive). Same applies to Lite versions.
+> **Resource Naming:** SmartFires and SmartHose must be named exactly `SmartFires` and `SmartHose` (case sensitive). Same applies to Lite versions. A common issue is that callouts can no longer be cancelled or will no longer spawn after encountering issues due to faulty naming of the resources
 
 #### **MDT Integration Issues**
 {: .no_toc }
 
 {: .tip }
-> **Solution:** Enable ERS in `night_shifts` config and enable Night Shifts in `night_ers` config. Duty is toggled through the MDT.
+> **Solution:** Enable ERS in `night_shifts` config and enable Night Shifts in `night_ers` config. Duty can (optionally) toggled through the MDT
 
 #### **Hosting-Specific Issues**
 {: .no_toc }
 
 - **Iceline Hosting:** Set `Enable Beyond` to 1 in server dashboard
-- **Entity Spawning:** Ensure OneSync is properly configured
+- **Entity Spawning:** Ensure OneSync is properly configured in the host dashboard
 
 ### **Compatibility Checklist**
 {: .no_toc }
@@ -457,6 +467,7 @@ exports['night_ers']:trackPlayerCallout(source, targetSource)
 {: .no_toc }
 
 We welcome your feedback! Visit our Discord for:
+- Support
 - Product reviews
 - Feature suggestions
 - Documentation improvements

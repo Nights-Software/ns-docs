@@ -4,10 +4,10 @@ title: "Discord API"
 nav_order: 3
 has_children: false
 has_toc: true
-last_modified_date: "2025-01-27 16:00:00"
+last_modified_date: "2025-07-22 16:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/discordAPI.png" alt="Discord API Resource" draggable="false">
+<img class="cover-img" src="/assets/img/night_discordapi.png" alt="Discord API Resource" draggable="false">
 
 # Discord API
 {: .no_toc }
@@ -475,7 +475,6 @@ The Discord API serves as the foundation for these resources:
 | [Discord Spawn](/resources/discordSpawn) | Role-based spawning system |
 | [Discord Lockers](/resources/discordLockers) | Role-based locker access |
 | [Discord Allowlist](/resources/discordAllowlist) | Discord-based allowlist system |
-| [Discord Admin](/resources/discordAdmin) | Discord administration tools |
 | [Emergency Response Simulator](/resources/ers) | A PvE Emergency Simulator |
 | [Night Shifts MDT](/resources/nightShifts) | An system managing Emergency Services & Registrations |
 ---

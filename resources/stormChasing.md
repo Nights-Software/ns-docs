@@ -4,12 +4,12 @@ title: "Storm Chasing"
 nav_order: 20
 has_children: false
 has_toc: true
-last_modified_date: "2025-01-27 16:00:00"
+last_modified_date: "2025-07-22 16:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/stormChasing.png" alt="Storm Chasing" draggable="false">
+<img class="cover-img" src="/assets/img/night_storm_chasing.png" alt="Storm Chasing" draggable="false">
 
-# Storm Chasing
+# Storm Chasing for FiveM
 {: .no_toc}
 
 A guide to install Storm Chasing for FiveM
@@ -17,164 +17,317 @@ A guide to install Storm Chasing for FiveM
 {: .fs-5 .fw-300 }
 
 ---
-<details open markdown="block">
-  <summary>
-    Table of contents
-  </summary>
-  {: .text-delta }
+
+## 📋 Table of Contents
+{: .no_toc .text-delta }
+
 1. TOC
 {:toc}
-</details>
----
-
-## Purchasing the resource
-
-Find this product at:
-
-Base: [https://store.nights-software.com/package/6903928](https://store.nights-software.com/package/6903928)
-
-# Read before installing
-
-*Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
-
-```
-ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfer Protocol (FTP) type to binary -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
-```
-
-*IMPORTANT: Follow this guide step by step. If you're stuck at a step, please ask for support in our Discord and provide the step name, do not skip steps. Click the button to join discord at the bottom of this page.*
 
 ---
 
-## Preparing your database (Dependency)
+## 🎯 Overview
 
-We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for the script to work.
+Dive into the heart of extreme weather with this unique and immersive storm chasing experience. Deploy probes, collect real-game-time tornado data, and fight through intense weather conditions in Los Santos. Whether you're roleplaying a meteorologist, storm chaser, or a science organization, this system delivers dynamic gameplay on all fronts.
 
-1. Once you have set up your database via your hosting provider, connect to your database by using it's credentials in an SQL connection string. We will now form one below with the credentials you found in your dashboard. Once this is done, we will define the sql connection string in your server.cfg, above the ensure/start of the resources.
+### **Key Features**
+{: .no_toc }
 
-In your server.cfg:
+- ✅ **Deployable Probes** - Track tornadoes in real game time and deploy scientific probes
+- ✅ **Live Tornado Detection** - Probes interact dynamically with active tornadoes
+- ✅ **Live Weather Map (Radar)** - Observe storms & tornados on the LIVE weather map
+- ✅ **Quality-Based Data System** - Readings rated (Poor, Fair, Good, Excellent) based on probe placement
+- ✅ **EF Scale Intensity Detection** - Detect tornado intensity on Enhanced Fujita (EF) scale (EF0-EF5)
+- ✅ **Data Economy Integration** - Sell data to fictional corporations with different bonuses
+- ✅ **Company Market Fluctuations** - Data value changes over time requiring smart decisions
+- ✅ **Progressive Challenges** - Stronger tornadoes bring greater danger and valuable data
+- ✅ **Storm Chasing Roleplay** - Immersive scientific and civilian RP opportunities
+- ✅ **Configurability** - Freedom to configure storms, tornadoes, market, businesses, rewards
+- ✅ **Freelance Based** - No specific job permission required
+- ✅ **Weather Integrations** - Natural Disasters, qb-weathersync, vSyncR
+- ✅ **Framework Compatibility** - ESX/QBCore/Standalone compatible (reward payouts)
+- ✅ **Escrow Protection** - Encryption with limited open source script parts
+
+---
+
+## 🛒 Purchase Information
+
+**Get Storm Chasing:**
+[Purchase on Nights Software Store](https://store.nights-software.com/package/6903928){: .btn .btn-blue}
+
+---
+
+## 📺 Video Showcase
+
+**Watch the video showcase:**
+
+[Video Showcase](https://youtu.be/7r2jwDbRdAE){: .btn .btn-red}
+
+---
+
+## ⚠️ Important Pre-Installation Notes
+
+{: .warning }
+> **Critical Installation Order:** Always follow this exact sequence to avoid parsing errors in the F8 console:
+> 1. Download ZIP Package from CFX Portal
+> 2. Unpack in a folder on your local machine
+> 3. Set your File Transfer Protocol (FTP) type to **binary**
+> 4. Drag files from local machine to server resources folder
+> 5. Add to server.cfg (ensure script)
+> 6. Boot up the server
+
+{: .important }
+> **Support Policy:** Follow this guide step by step. If you're stuck, ask for support in our Discord and provide the specific step name. Do not skip steps.
+
+{: .warning }
+> **Database Requirement:** Storm Chasing requires a MySQL database and oxmysql resource to function properly.
+
+---
+
+## 🔧 System Requirements & Compatibility
+
+### **Framework Compatibility**
+{: .no_toc }
+
+- **✅ Standalone:** Works independently without any framework
+- **✅ ESX:** Compatible with ESX framework (reward payouts)
+- **✅ QBCore:** Compatible with QBCore framework (reward payouts)
+
+### **OneSync Compatibility**
+{: .no_toc }
+
+- **✅ OneSync Legacy:** Fully tested and compatible
+- **✅ OneSync Infinity:** Fully tested and compatible
+
+### **Weather System Integration**
+{: .no_toc }
+
+- **✅ Natural Disasters (Includes weather & time)** - Compatible with [Natural Disasters](https://store.nights-software.com/package/5177022) resource
+- **✅ qb-weathersync** - Compatible with qb-weathersync
+- **✅ vSyncR** - Default weather integration
+- **✅ Custom Weather** - Options to customize weather integration
+
+### **Dependencies**
+{: .no_toc }
+
+- **✅ MySQL Database** - Required for data storage
+- **✅ oxmysql** - Required database API
+
+{: .tip }
+> **Note:** Storm Chasing is designed to work with any FiveM server configuration and provides immersive storm chasing gameplay.
+
+---
+
+## 📦 Installation Process
+
+### **Step 1: Database Setup (Required)**
+{: .no_toc }
+
+We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for Storm Chasing to work.
+
+1. **Set up your database** via your hosting provider
+2. **Connect to your database** using credentials in an SQL connection string
+3. **Add to server.cfg** above the ensure/start of resources:
+
+```cfg
+set mysql_connection_string "user=Your_Database_Username;password=Your_Database_Password;host=Your_Database_Host;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
 ```
-set mysql_connection_string "user=Your_Database_Username;password=Your_Database_Password;host=Your_Database_Host;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci" 
-```
 
-*Hint: You can find your database credentials on your host dashboard. If you run a localhost you can use localhost as the host, root as username and no password.*
+{: .tip }
+> **Localhost Example:**
+> ```cfg
+> set mysql_connection_string "user=root;password=;host=localhost;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
+> ```
 
-Localhost example:
-```
-set mysql_connection_string "user=root;password=;host=localhost;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
-```
-
-1. When you boot up the server, the code will run a query which installs the required tables into your database.
+4. **Automatic Table Installation** - When you boot up the server, the code will run queries to install required tables
 
 {: .note }
-> Note
->
-> The files include a datatables.sql file, however the script installs the table queries automatically. No need to manually execute the .sql files.
+> **Manual Installation:** The files include a `datatables.sql` file, however the script installs the table queries automatically. No need to manually execute the .sql files.
 
+### **Step 2: Install oxmysql (Required)**
+{: .no_toc }
 
-## Installing oxmysql (Dependency)
+If you don't have oxmysql installed, download it from:
+[Download oxmysql](https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip)
 
-We assume you have oxmysql installed, this is a dependency for the script to work.
+1. **Place oxmysql** into your resources folder
+2. **Add to server.cfg** - Ensure it starts before Storm Chasing:
 
-If you do not have oxmysql as your primary API for using a database. Find the download here: [Download Oxmysql](https://github.com/overextended/oxmysql/releases/latest/download/oxmysql.zip) &  [Install Oxmysql](https://overextended.github.io/docs/oxmysql/#installation).
-
-If you have questions about oxmysql, head over to their documentation page: [Oxmysql documentation](https://overextended.github.io/docs/oxmysql/)
-
-1. Place 'oxmysql' into your resources folder.
-
-2. Ensure / start 'oxmysql' in your server.cfg somewhere in the top of your server.cfg, to make sure it starts before the 'night_storm_chasing' resource, which we install later in this documentation.
-
-Example:
-```lua
+```cfg
 ensure oxmysql
 ```
 
-## Testing your database & oxmysql
+{: .tip }
+> **Documentation:** For oxmysql questions, visit [oxmysql documentation](https://overextended.github.io/docs/oxmysql/)
 
-Once you've installed your database with tables, installed oxmysql and configured your server.cfg, your server should be ready to run. Start and test whether oxmysql works. In some cases you can get print-outs in your server console, like this one: 
+### **Step 3: Test Database Connection**
+{: .no_toc }
 
-`[script:oxmysql] Database server connection established!` 
+Start your server and check the console for oxmysql connection messages. You should see:
+```
+[script:oxmysql] Database server connection established!
+```
 
-This will let you know your installation has worked. You can also check whether there are errors to solve in your server console.
+### **Step 4: Install Storm Chasing**
+{: .no_toc }
 
-## Downloading & Installing Storm Chasing
+1. **Download** from [CFX Portal Assets](https://portal.cfx.re/assets/granted-assets) after purchasing
+2. **Extract and transfer** using binary FTP mode
+3. **Place 'night_storm_chasing'** into your resources folder
+4. **Add to server.cfg**:
 
-Download this resource via [https://portal.cfx.re/assets/granted-assets](https://portal.cfx.re/assets/granted-assets) after purchasing it. It can take a few minutes for the resource to appear in the CFX Portal after purchase.
-
-1. Do not skip steps, are you sure your database and oxmysql is working?
-
-1. Unpack the files into a folder onto your server. ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfer Protocol (FTP) type to binary -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.. Do not rename the resource.
-
-1. Make sure you put the 'night_storm_chasing' folder into your resources folder of your server.
-
-1. Ensure or start this resource in your server.cfg. 
-
-Example:
-```lua
+```cfg
 ensure night_storm_chasing
 ```
-## Configuring the config.lua file
 
-There are loads of options to configure. It is recommended you test the resource before editing it. So you are sure it works by default. If you start editing it, frequently test what you've changed to prevent getting errors you can not trace. If you ask for support, we will recommend you to re-install it if you've edited it. There are many ways to break code and many reasons why code will not work sometimes. Lets move on by following the steps below!
+5. **Verify startup** - Check console for both oxmysql and night_storm_chasing starting without errors
 
-*Note: Always check your FiveM server console and F8 client console for errors, you need these errors to locate your issue if you have one.*
+---
 
-1. We recommend downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
+## ⚙️ Configuration Setup
 
-1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like: `config/*.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
+### **Required Tools**
+{: .no_toc }
 
-1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
+{: .tip }
+> **Visual Studio Code:** We recommend downloading [VS Code](https://code.visualstudio.com/download) for editing Lua files.
 
-1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Relax mode on and read it all to understand it.
+### **Configuration Files**
+{: .no_toc }
 
-1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom.
+| File | Purpose |
+|------|---------|
+| `night_storm_chasing/config/config.lua` | Main configuration settings |
+| `night_storm_chasing/client/c_functions.lua` | Client-side functions |
+| `night_storm_chasing/server/s_functions.lua` | Server-side functions |
 
-## Fix UI Lag
+### **Configuration Process**
+{: .no_toc }
 
-FiveM has a setting in their application (settings menu) which allows you to "Fix UI Lag". This is recommend to set checked (enabled) for this resource.
+1. **Open VS Code** and navigate to the config files
+2. **Read thoroughly** - each line has explanatory comments
+3. **Configure settings** - customize storms, tornadoes, market, businesses, and rewards
+4. **Test frequently** - use F8 console for error checking
 
-## Editing c_functions.lua / s_functions.lua
+{: .tip }
+> **Configuration Options:** Configure storm behavior, tornado settings, market fluctuations, business rewards, and weather integrations.
 
-Are you not familiar with code? Then skip this section or take on the challenge!
+---
 
-We have provided 2 open script files containing functions you can edit to your desire. A client side functions script `c_functions.lua` and a server side functions script `s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits.
+## 🎮 How It Works
 
-Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can ofcourse ask us any question and we will try to see if our knowledge can help you.
+### **Storm Chasing System**
+{: .no_toc }
 
-## Exports
+- **Deployable Probes** - Track tornadoes in real game time and deploy scientific probes
+- **Live Tornado Detection** - Probes interact dynamically with active tornadoes
+- **Data Collection** - Collect wind speed, pressure, temperature, humidity, and more
+- **Quality-Based System** - Readings rated based on probe placement quality
 
-## SERVERSIDE Exports:
+### **Weather Integration**
+{: .no_toc }
+
+- **Live Weather Map** - Observe storms & tornados on the LIVE weather map
+- **EF Scale Detection** - Detect tornado intensity on Enhanced Fujita (EF) scale
+- **Weather Systems** - Compatible with [Natural Disasters](https://store.nights-software.com/package/5177022), qb-weathersync, vSyncR
+- **Custom Weather** - Options to customize weather integration
+
+### **Economy System**
+{: .no_toc }
+
+- **Data Economy** - Sell collected probe data to fictional corporations
+- **Company Markets** - StormTech Research Institute, WeatherShield Defense Corp
+- **Market Fluctuations** - Data value changes over time requiring smart decisions
+- **Progressive Rewards** - Stronger tornadoes bring more valuable data
+
+### **Roleplay Features**
+{: .no_toc }
+
+- **Storm Chasing RP** - Immersive scientific and civilian roleplay
+- **Team Formation** - Create storm hunter teams and emergency response units
+- **Corporate Research** - Establish research divisions and organizations
+- **Freelance Based** - No specific job permission required
+
+---
+
+## 📊 Exports
+
+### **Server-Side Exports**
+{: .no_toc }
 
 ```lua
-    exports.night_storm_chasing:RequestStorm() -- Triggers a storm if there are no more than 2 storms or tornado's active.
+-- Trigger a storm if there are no more than 2 storms or tornadoes active
+exports.night_storm_chasing:RequestStorm()
 ```
 
----
-
-## Editing styling
-
-You can edit LIMITED styling in html/styles.css. Editing this is not recommended if you don't know what you're doing, because this can be tricky. It wasn't specifically made to be edited, but if you're handy or looking for a challenge you'll find your way for most cases!
+{: .tip }
+> **Export Usage:** Use this export to manually trigger storms when conditions allow.
 
 ---
 
-## Troubleshoot
+## 🛠️ Troubleshooting
 
-Troubleshoot common issues:
+### **Common Issues**
+{: .no_toc }
 
-1. Always read the commentry in the scripts you're editing. There is logic in them.
+{: .warning }
+> **Resource Not Starting**
+> - Ensure the resource is properly added to server.cfg
+> - Check that the resource name is `night_storm_chasing`
+> - Verify the resource started without errors in console
 
-1. Check whether your script is still named `night_storm_chasing`, this is required for it to work. Do NOT rename it.
+{: .warning }
+> **Database Connection Issues**
+> - Verify MySQL connection string is correct
+> - Check database credentials and accessibility
+> - Ensure oxmysql is properly installed and started
+
+{: .warning }
+> **Probes Not Working**
+> - Check F8 console for any error messages
+> - Verify configuration settings in config.lua
+> - Test with default settings first
+
+### **Debugging Tips**
+{: .no_toc }
+
+- **Check F8 Console** - Look for any error messages
+- **Verify Database** - Ensure database and oxmysql are working
+- **Test Probes** - Try deploying probes to test functionality
+- **Check Configuration** - Verify all config settings are correct
 
 ---
 
-# Help us or let us help you
-Get in touch for feedback or support, join our Discord and make use of our ticket system!
+## 💡 Best Practices
 
-## Feedback
+### **Storm Configuration**
+{: .no_toc }
 
-Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the Discord button at the bottom of this page to visit our ticket & review channels.
+- **Storm Behavior** - Configure appropriate storm patterns and intensity
+- **Tornado Settings** - Set realistic tornado frequency and strength
+- **Probe Placement** - Configure probe deployment mechanics
+- **Data Quality** - Balance data collection difficulty and rewards
 
-## Support
+### **Performance Optimization**
+{: .no_toc }
 
-Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord.
+- **Storm Limits** - Monitor active storm count for performance
+- **Probe Management** - Configure probe limits and cleanup
+- **Weather Integration** - Optimize weather system compatibility
+- **Regular Testing** - Test storm functionality regularly
+
+### **User Experience**
+{: .no_toc }
+
+- **Clear Instructions** - Provide users with storm chasing guidelines
+- **Roleplay Support** - Encourage scientific and civilian RP
+- **Market Guidance** - Help users understand data economy
+- **Help Documentation** - Create server-specific storm chasing guides
+
+---
+
+## 🆘 Support
+
+Read through the instructions again if you have not managed to install the resource. Can't get it to work still? Create a ticket through our dedicated support system in Discord:
 
 [Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}

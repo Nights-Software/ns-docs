@@ -4,10 +4,10 @@ title: "Henchmen"
 nav_order: 28
 has_children: false
 has_toc: true
-last_modified_date: "2025-01-27 16:00:00"
+last_modified_date: "2025-07-22 16:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/henchmen.png" alt="Henchmen for FiveM" draggable="false">
+<img class="cover-img" src="/assets/img/night_henchmen.png" alt="Henchmen for FiveM" draggable="false">
 
 # Henchmen for FiveM
 {: .no_toc}
@@ -17,84 +17,273 @@ A guide to install Henchmen for FiveM
 {: .fs-5 .fw-300 }
 
 ---
-<details open markdown="block">
-  <summary>
-    Table of contents
-  </summary>
-  {: .text-delta }
+
+## 📋 Table of Contents
+{: .no_toc .text-delta }
+
 1. TOC
 {:toc}
-</details>
----
-
-## Installation Tutorial
-
-**Youtube!** Watch this installation tutorial video:
-
-[Coming soon!](https://store.nights-software.com){: .btn .btn-red}
-
-## Purchasing the resource
-
-Find this product at: [https://store.nights-software.com/package/6153056](https://store.nights-software.com/package/6153056)
-
-# Read before installing
-
-*Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
-
-```
-ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfer Protocol (FTP) type to binary -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
-```
-
-*IMPORTANT: Follow this guide step by step. If you're stuck at a step, please ask for support in our Discord and provide the step name, do not skip steps. Click the button to join discord at the bottom of this page.*
 
 ---
 
-## Installing Henchmen for FiveM
+## 🎯 Overview
 
-1. Place 'night_henchmen' into your resources folder.
+Dive into the world of Henchmen, where loyal companions await at various customizable locations. These trusted allies shadow your every move, ready to stand by your side through thick and thin. With diverse options ranging from faithful animal companions to versatile NPCs, including both multiplayer and native characters, the possibilities are endless. Want a doppelgänger with a twist? Henchmen can even mirror your own persona, adding a unique flair to your entourage.
 
-2. Ensure / start 'night_henchmen' in your server.cfg.
+Customize their behavior to your liking; whether it's a relaxed idle stance or a daring taunt, the choice is yours. Pick up your henchmen today and embark on adventures with style and panache!
 
-Example:
-```lua
+### **Key Features**
+{: .no_toc }
+
+- ✅ **Customizable pickup locations** - Set henchmen spawn points per section
+- ✅ **Diverse henchmen types** - Animals, NPCs (MP/native), or player copies
+- ✅ **Doppelgänger system** - Henchmen can mirror your own persona
+- ✅ **Customizable weapon loadout** - Set weapons or copy your own
+- ✅ **Up to 3 henchmen** - Multiple companion support
+- ✅ **Behavior commands** - Order to follow, idle, or attack
+- ✅ **Customizable outfits** - Set outfits per section
+- ✅ **Custom idle animations** - Configure henchmen behavior
+- ✅ **Command/hotkey usage** - Flexible control options
+- ✅ **Multi-Framework Support** - ESX/QB/NS Discord API/Ace Perms/Standalone
+- ✅ **OneSync Compatible** - Works with Legacy and Infinity
+- ✅ **Multi-Language Support** - International server support
+- ✅ **Escrow Protection** - Secure resource protection
+
+---
+
+## 🎥 Video Showcase
+
+**Watch Henchmen in action:**
+
+[Video Showcase](https://youtu.be/rzTQdG8Vd6E){: .btn .btn-red}
+
+---
+
+## 🛒 Purchase Information
+
+**Get Henchmen:**
+[Purchase on Nights Software Store](https://store.nights-software.com/package/6153056){: .btn .btn-blue}
+
+---
+
+## ⚠️ Important Pre-Installation Notes
+
+{: .warning }
+> **Critical Installation Order:** Always follow this exact sequence to avoid parsing errors in the F8 console:
+> 1. Download ZIP Package from CFX Portal
+> 2. Unpack in a folder on your local machine
+> 3. Set File Transfer Protocol (FTP) type to **binary**
+> 4. Drag files from local machine to server resources folder
+> 5. Add to server.cfg (ensure script)
+> 6. Boot up the server
+
+{: .important }
+> **Support Policy:** Follow this guide step by step. If you're stuck, ask for support in our Discord and provide the specific step name. Do not skip steps.
+
+{: .warning }
+> **OneSync Synchronization:** NPC synchronization can be unreliable with many players in the same OneSync dimension area.
+
+---
+
+## 🔧 System Requirements & Compatibility
+
+### **OneSync Compatibility**
+{: .no_toc }
+
+- **✅ OneSync Legacy:** Fully tested and compatible
+- **✅ OneSync Infinity:** Fully tested and compatible
+
+{: .warning }
+> **Synchronization Note:** NPC synchronization may be unreliable with many players in the same OneSync dimension area.
+
+### **Framework Compatibility**
+{: .no_toc }
+
+- **✅ ESX:** Full compatibility with ESX framework
+- **✅ QBCore:** Full compatibility with QBCore framework
+- **✅ NS Discord API:** Compatible with Discord API integration
+- **✅ Ace Permissions:** Compatible with ACE permission system
+- **✅ Standalone:** Works without any framework
+
+{: .tip }
+> **Note:** Henchmen works seamlessly with all major FiveM frameworks and can operate standalone.
+
+---
+
+## 📦 Installation Process
+
+### **Step 1: Download the Resource**
+{: .no_toc }
+
+1. **Access CFX Portal**
+   - Go to [CFX Portal Assets](https://portal.cfx.re/assets/granted-assets)
+   - Find "Henchmen" in your granted assets
+   - Download the ZIP package
+
+### **Step 2: Extract and Transfer**
+{: .no_toc }
+
+1. **Extract the ZIP file**
+   - Unpack the downloaded ZIP package to a local folder
+   - Ensure all files are properly extracted
+
+2. **Transfer to Server**
+   - Set your FTP client to **binary transfer mode**
+   - Upload the `night_henchmen` folder to your server's `resources` directory
+   - Maintain the original folder structure
+
+### **Step 3: Server Configuration**
+{: .no_toc }
+
+Add the following line to your `server.cfg` file:
+
+```cfg
 ensure night_henchmen
 ```
 
-## Configuring the config.lua file
+{: .tip }
+> **Server Restart:** After adding the ensure line, restart your server for the resource to load properly.
 
-*Note: Always check your FiveM server console and F8 client console for errors, you need these errors to locate your issue if you have one.*
+---
 
-1. We recommend downloading Visual Studio Code (VS Code) to read (lua) files: [Download VS Code](https://code.visualstudio.com/download).
+## ⚙️ Configuration Setup
 
-1. Open /config/config.lua in VS Code. 
+### **Required Tools**
+{: .no_toc }
 
-1. Once you've downloaded Visual Studio Code, open the file (or folder) with it to read it's contents, like: `config/config.lua`, `client/c_functions.lua`, `server/s_functions.lua`.
+{: .tip }
+> **Visual Studio Code:** We strongly recommend downloading [VS Code](https://code.visualstudio.com/download) for editing Lua files.
 
-1. When configuring the resource you will see that each line has and explanation written at the end of it. During the process of configuring and testing what you've configured you'll figure out what things are for. Every variable is named so that you can relate to what you are editing.
+### **Configuration Files**
+{: .no_toc }
 
-1. Keep eye out for notes! On some parts we provide warnings on what you should not edit, add or remove. Relax mode on and read it all to understand it.
+| File | Purpose |
+|------|---------|
+| `night_henchmen/config/config.lua` | Main configuration settings |
+| `night_henchmen/client/c_functions.lua` | Client-side functions |
+| `night_henchmen/server/s_functions.lua` | Server-side functions |
 
-1. It's smart to follow an order when setting up this resources' config file, we recommend going from top-to-bottom: 
+### **Configuration Process**
+{: .no_toc }
 
-*Hint: You will take some time to configure this the way you like, so plan that time and take your time to read! Frequently test your edits to see whether you're making mistakes and where to find them. Trying stuff early is good for confirming that your resource works, but not for trying out it's functionalities.*
+1. **Open VS Code** and navigate to the config files
+2. **Read thoroughly** - each line has explanatory comments
+3. **Configure in order** - work from top to bottom
+4. **Watch for notes** - important warnings are clearly marked
+5. **Test frequently** - use F8 console and server console for error checking
 
-## Editing c_functions.lua / s_functions.lua
+{: .tip }
+> **Time Investment:** Plan adequate time for configuration. Each variable is named descriptively to help you understand its purpose.
 
-Are you not familiar with code? Then skip this section or take on the challenge!
+---
 
-We have provided 2 open script files containing functions you can edit to your desire. A client side functions script `c_functions.lua` and a server side functions script `s_functions.lua`. You can also write events or new functions in them if you need to for your custom add-ons or edits.
+## 🎮 How It Works
 
-Feel free to take a look. We have provided these functions open source and you are expected to edit them yourself if you like. Nights software does not provide specific support for custom framework integrations. But you can ofcourse ask us any question and we will try to see if our knowledge can help you.
+### **Henchmen System**
+{: .no_toc }
 
-# Help us or let us help you
-Get in touch for feedback or support, join our Discord and make use of our ticket system!
+- **Pickup Locations** - Configure henchmen spawn points across the map
+- **Diverse Types** - Choose from animals, NPCs, or player copies
+- **Doppelgänger Feature** - Henchmen can mirror your own character
+- **Multiple Companions** - Support for up to 3 henchmen simultaneously
 
-## Feedback
+### **Combat & Behavior**
+{: .no_toc }
 
-Are you missing things in this documentation or do you wish to leave us a product review. Feel free to visit our Discord! Click the Discord button at the bottom of this page to visit our ticket & review channels.
+- **Weapon Loadout** - Customize weapons or copy your own loadout
+- **Behavior Commands** - Order henchmen to follow, idle, or attack
+- **Custom Animations** - Configure idle animations and behaviors
+- **Combat AI** - Intelligent combat assistance
 
-## Support
+### **Customization Options**
+{: .no_toc }
 
-Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord.
+- **Outfit System** - Set custom outfits per henchmen section
+- **Command Integration** - Flexible command and hotkey usage
+- **Framework Integration** - Works with all major FiveM frameworks
+- **Language Support** - Multi-language configuration
+
+---
+
+## 🔗 Integration & Compatibility
+
+### **Framework Support**
+{: .no_toc }
+
+- **Standalone** - Works independently without framework dependencies
+- **ESX** - Full ESX framework integration
+- **QBCore** - Full QBCore framework integration
+
+### **Permission Systems**
+{: .no_toc }
+
+- **Discord API** - Role-based permissions through Discord integration
+- **ACE Permissions** - Server-side permission management
+- **Framework Permissions** - ESX/QBCore group-based access
+
+{: .tip }
+> **Permission Setup:** Configure access permissions to control who can use henchmen features.
+
+---
+
+## 🛠️ Troubleshooting
+
+### **Common Issues**
+{: .no_toc }
+
+{: .warning }
+> **Parsing Errors in F8 Console**
+> - Ensure files are transferred in binary mode via FTP
+> - Follow the installation order: ZIP → Unpack → Binary FTP → Resources → server.cfg
+
+{: .warning }
+> **Henchmen Not Appearing**
+> - Check server.cfg for proper resource ensure
+> - Verify configuration file syntax
+> - Confirm pickup locations are properly configured
+
+{: .warning }
+> **Synchronization Issues**
+> - Monitor OneSync performance with many players
+> - Consider reducing henchmen count in crowded areas
+> - Check for conflicts with other NPC resources
+
+### **Performance Optimization**
+{: .no_toc }
+
+- **Limit henchmen count** - Avoid excessive henchmen in small areas
+- **Monitor OneSync performance** - Check for synchronization issues
+- **Optimize pickup locations** - Spread henchmen across different areas
+
+---
+
+## 💡 Best Practices
+
+### **Configuration Tips**
+{: .no_toc }
+
+- **Strategic Placement** - Position henchmen pickup locations logically
+- **Balance Henchmen Types** - Mix different henchmen types for variety
+- **Test Commands** - Verify all behavior commands work correctly
+- **Backup Configurations** - Keep backups of working configurations
+
+### **Performance Management**
+{: .no_toc }
+
+- **Monitor Synchronization** - Watch for OneSync issues with many players
+- **Optimize Locations** - Avoid clustering henchmen in busy areas
+- **Resource Management** - Track resource usage with active henchmen
+
+### **User Experience**
+{: .no_toc }
+
+- **Clear Instructions** - Provide players with henchmen usage guidelines
+- **Balanced Features** - Ensure henchmen don't overpower gameplay
+
+---
+
+## 🆘 Support
+
+Read through the instructions again if you have not managed to install the resource. Can't get it to work still? Create a ticket through our dedicated support system in Discord:
 
 [Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}

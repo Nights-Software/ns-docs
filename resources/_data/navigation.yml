@@ -62,8 +62,6 @@
 
 - title: Discord Integration
   children:
-    - title: Discord Admin
-      url: /resources/discordAdmin
     - title: Discord Allowlist
       url: /resources/discordAllowlist
     - title: Discord Lockers
@@ -83,8 +81,8 @@
   children:
     - title: Easy 3D Text Labels
       url: /resources/easy3dTextLabels
-    - title: Easy Zones
-      url: /resources/easyZones
+    - title: Configurable Zones
+      url: /resources/configurableZones
     - title: Props & Speed Zones
       url: /resources/propsAndSpeedzones
     - title: Gates

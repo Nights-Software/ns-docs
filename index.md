@@ -90,7 +90,6 @@ Get up and running with our most popular resources:
 - **[Meta Build](/resources/metabuild)** - Advanced building system
 
 ### 🔗 Discord Integration
-- **[Discord Admin](/resources/discordAdmin)** - Discord administration tools
 - **[Discord Allowlist](/resources/discordAllowlist)** - Discord-based allowlist
 - **[Discord Lockers](/resources/discordLockers)** - Role-based lockers
 - **[Discord Player List](/resources/discordPlayerlist)** - Player list integration
@@ -100,7 +99,7 @@ Get up and running with our most popular resources:
 
 ### 🛠️ Utility Systems
 - **[Easy 3D Text Labels](/resources/easy3dTextLabels)** - 3D text display
-- **[Easy Zones](/resources/easyZones)** - Zone management
+- **[Configurable Zones](/resources/configurableZones)** - Zone management
 - **[Props & Speed Zones](/resources/propsAndSpeedzones)** - Speed enforcement
 - **[Loading Screen](/resources/loadingScreen)** - Custom loading screens
 - **[Subtitles](/resources/subtitles)** - Subtitle system
