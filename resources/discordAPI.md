@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "Discord API"
-nav_order: 11
+nav_order: 3
 has_children: false
 has_toc: true
-last_modified_date: "2025-02-09 14:55:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordAPI.png" alt="Discord API Resource" draggable="false">
@@ -12,7 +12,7 @@ last_modified_date: "2025-02-09 14:55:00"
 # Discord API
 {: .no_toc }
 
-A guide to install Discord API! for FiveM
+A comprehensive FiveM resource for integrating Discord functionality into your server. This resource provides easy access to Discord user data, guild membership, roles, and more through a simple API.
 {: .fs-5 .fw-300 }
 
 ---
@@ -28,350 +28,512 @@ A guide to install Discord API! for FiveM
 
 ---
 
-## Installation Tutorial
+## 📋 Overview
 
-**Youtube!** Watch this installation tutorial video:
+The Discord API resource provides seamless integration between your FiveM server and Discord, enabling:
+- **Role-based permissions** across all connected resources
+- **Real-time player synchronization** with Discord roles
+- **Automatic player management** based on Discord membership
+- **Cross-platform communication** between Discord and FiveM
+- **Discord User Management**: Check if users are members of specific Discord servers
+- **Role Verification**: Verify user roles across multiple Discord servers
+- **User Data Retrieval**: Get Discord user information, avatars, and member details
+- **Guild Information**: Retrieve Discord server/guild information
+- **Caching System**: Built-in caching for improved performance
+- **Rate Limiting**: Automatic Discord API rate limit handling
+- **Multi-Guild Support**: Support for multiple Discord servers
+- **Custom Role Mapping**: Map Discord role IDs to custom names
+
+{: .note}
+**Prerequisites:** You'll need a Discord bot token and basic knowledge of Discord server management.
+
+---
+
+## 🎥 Installation Tutorial
+
+**Video Guide** - Watch our comprehensive installation tutorial:
 
 [Installation Tutorial](https://youtu.be/l1NtpnA-jhc?si=CXq1Uq7HiXQpEJ58){: .btn .btn-red}
 
-## Purchasing the resource
+---
 
-Find this product at:
+## 🛒 Purchase & Download
 
-Base: [https://store.nights-software.com/package/5035729](https://store.nights-software.com/package/5035729)
+### Purchase Location
+**Tebex Store:** [Discord API Package](https://store.nights-software.com/package/5035729)
 
-## Downloading the resource
+### Download Method
+Download via [CFX Portal](https://portal.cfx.re/assets/granted-assets) after purchase.
 
-Download this resource via [https://portal.cfx.re/assets/granted-assets](https://portal.cfx.re/assets/granted-assets).
+{: .warning}
+**Important:** It may take a few minutes for the resource to appear in the CFX Portal after purchase.
 
-## Installing the resource
+---
 
-*Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
+## ⚙️ Installation Process
 
-```
-ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfer Protocol (FTP) type to binary -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
-```
+### Step 1: File Transfer
+{: .important}
+**Critical:** Always follow this exact order to avoid parsing errors:
 
-1. Drag the resource into your resources folder.
+1. Download the ZIP package
+2. Extract to a local folder
+3. Set FTP transfer mode to **binary**
+4. Upload files to your server's resources folder
+5. Add to server.cfg
+6. Restart your server
 
-2. Ensure the resource in server.cfg and make sure this line comes before any other resource using the Discord API. 
-Example:
+### Step 2: Server Configuration
+Add the resource to your `server.cfg` **somewhere ON TOP as one of the first starting resources**:
+
 ```lua
 ensure night_discordapi
 ```
 
-1. Configure /config/config.lua (see next section).
+{: .tip}
+**Pro Tip:** Place this line before any other resources that depend on Discord API.
 
-## Configuring the resource
+### Step 3: Configuration Setup
+Configure `/config/config.lua` (see configuration section below).
 
-### `Discord_Bot_Token`
+---
 
-Please put your Discord bot token here or leave it empty if you want to use the bot we provide. To get your own Discord bot token, you need to [create a Discord bot](#create-your-own-discord-bot) first.
+## 🔧 Configuration
 
-Example (using your own bot):
+**Note**: This resource requires a Discord bot to function. You can either use the default bot provided by Nights Software or set up your own Discord bot following the documentation.
+
+### Basic Configuration
+
+```lua
+Config = {
+    -- Discord Bot Token (leave empty to use the provided default FiveM DC API bot, or add your own bot token)
+    Discord_Bot_Token = "",
+    
+    -- Discord Guild/Server Configuration
+    Discord_Guild_Names = {
+        ["YOUR_GUILD_ID"] = "Your Guild Name",
+        ["ANOTHER_GUILD_ID"] = "Another Guild Name",
+    },
+    
+    -- Discord Role Mapping
+    Discord_Role_Names = {
+        ["ROLE_ID"] = "Role_Name",
+        ["ANOTHER_ROLE_ID"] = "Another_Role",
+    },
+    
+    -- Logging Level (0 = INFO/ERROR/WARN only, 1+ = includes DEBUG)
+    Discord_API_Log_Level = 1,
+}
+```
+
+### Configuration Details
+
+- **Discord_Bot_Token**: Your Discord bot token (optional - uses default if empty)
+- **Discord_Guild_Names**: Map Discord server IDs to readable names
+- **Discord_Role_Names**: Map Discord role IDs to custom role names
+- **Discord_API_Log_Level**: Control logging verbosity
+
+### Discord Bot Token
+
+Choose between using your own bot or our provided bot:
+
+#### Option A: Your Own Bot
 ```lua
 Discord_Bot_Token = "NzV4sQb2IEcGxY0bnPWrlHoz.E0LPvL.SJcnCkgAniGUxGXve0xrVMxv7HT"
 ```
 
-Example (using our bot):
+#### Option B: Our Provided Bot
 ```lua
 Discord_Bot_Token = ""
 ```
 
-Invite link for our bot: <https://discord.com/oauth2/authorize?client_id=956690799385522237&permissions=1024&scope=bot>
+**Our Bot Invite Link:** [Invite Nights Software Bot](https://discord.com/oauth2/authorize?client_id=956690799385522237&permissions=1024&scope=bot)
 
-*Notice: Please keep in mind that our bot will probably be used by multiple communities and/or FiveM servers and that resources using this API may require a longer loading time to get data from Discord!*
+{: .warning}
+**Note:** Our shared bot may have longer response times due to multiple server usage.
 
-### `Discord_Guild_Names`
 
-Provide us with your Discord server/guild IDs so the bot knows where to fetch the data from. Your or our bot needs to be part of every Discord server/guild.
 
-Example:
-```lua
-Discord_Guild_Names = {
-    ["989438923925229598"] = "Nights Software",
-    ["1001055923912653544"] = "My Community Discord"
-}
+---
+
+## 🤖 Creating Your Own Discord Bot
+
+### Step 1: Create Discord Application
+1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
+2. Click "New Application"
+3. Name your application (e.g., "My FiveM Server Bot")
+
+### Step 2: Create Bot User
+1. Navigate to "Bot" section
+2. Click "Add Bot"
+3. Copy the bot token (keep this secure!)
+
+### Step 3: Configure Permissions
+Set these bot permissions:
+- **Read Messages/View Channels**
+- **Manage Roles** (if using role-based features)
+- **Send Messages** (for notifications)
+
+### Step 4: Invite Bot to Server
+Use this URL format (replace CLIENT_ID with your bot's client ID):
+```
+https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=1024&scope=bot
 ```
 
-### `Discord_Role_Names`
+---
 
-Provide custom names for your Discord roles. The numbers on the left are the Discord role IDs. The role names on the right are used for configuring some of our other resources using this API, for example [night_playerlist](https://store.nights-software.com/package/5035743).
+## 📚 Exports
 
-Example:
+The Discord API provides comprehensive exports for checking guild membership, user data, roles, and guild information.
+
+### Guild Membership Functions
+
+#### `IsUserPartOfThisGuild(src, force, guildName)`
+Check if a player is a member of a specific Discord server.
+
+**Parameters:**
+- `src` (string): Player source ID
+- `force` (boolean): Force refresh cache (required)
+- `guildName` (string): Name of the Discord server (as defined in config) (required)
+
+**Returns:** `boolean` - true if user is a member, false if not, nil on error
+
+**Example:**
 ```lua
-Discord_Role_Names = {
-    ["744819251839500327"] = "Administrator",
-    ["263267340614102369"] = "Supporter",
-    ["586868533403808435"] = "Police_Officer",
-    ["017924316415482635"] = "Firefigher",
-    ["818609692039542052"] = "Allowlisted",
-    ["468677647228363421"] = "Banned"
-}
+local isMember = exports['night_discordapi']:IsUserPartOfThisGuild(source, false, "Your Guild Name")
+if isMember then
+    print("Player is a member of the Discord server!")
+end
 ```
 
-### `Discord_API_Cooldown`
+#### `IsUserPartOfAnyOfTheseGuilds(src, force, guildNames)`
+Check if a player is a member of any of the specified Discord servers.
 
-How long the API should wait in between requests. We recommend at least two seconds.
+**Parameters:**
+- `src` (string): Player source ID
+- `force` (boolean): Force refresh cache (optional)
+- `guildNames` (table): Array of Discord server names (optional)
 
-Example:
+**Returns:** `boolean` - true if user is a member of any server, false if not, nil on error
+
+**Example:**
 ```lua
-Discord_API_Cooldown = 2
+local guildNames = {"Guild 1", "Guild 2", "Guild 3"}
+local isMember = exports['night_discordapi']:IsUserPartOfAnyOfTheseGuilds(source, false, guildNames)
+if isMember then
+    print("Player is a member of at least one Discord server!")
+end
 ```
 
-### `Discord_API_Log_Level`
+#### `IsUserPartOfAllOfTheseGuilds(src, force, guildNames)`
+Check if a player is a member of all specified Discord servers.
 
-What messages shall be logged. 0 means no messages at all, 1 means only errors, 2 means errors and warnings, and 3 logs all messages. This setting does not affect the config check messages.
+**Parameters:**
+- `src` (string): Player source ID
+- `force` (boolean): Force refresh cache (optional)
+- `guildNames` (table): Array of Discord server names (optional)
 
-Example (log all messages):
+**Returns:** `boolean` - true if user is a member of all servers, false if not, nil on error
+
+**Example:**
 ```lua
-Discord_API_Log_Level = 3
+local guildNames = {"Guild 1", "Guild 2"}
+local isMember = exports['night_discordapi']:IsUserPartOfAllOfTheseGuilds(source, false, guildNames)
+if isMember then
+    print("Player is a member of all Discord servers!")
+end
 ```
 
-### `Discord_API_Log_SameMessageCooldown`
+### User Data Functions
 
-How long the API should wait until logging the same message again. For example, when you get a lot of 404 warnings, increasing this number might help clearing up your console.
+#### `GetDiscordUser(src, force)`
+Get Discord user information for a player.
 
-Example (no cooldown):
+**Parameters:**
+- `src` (string): Player source ID
+- `force` (boolean): Force refresh cache (optional)
+
+**Returns:** `table` - User data containing id, name, avatar, or nil on error
+
+**Example:**
 ```lua
-Discord_API_Log_SameMessageCooldown = 0
+local userData = exports['night_discordapi']:GetDiscordUser(source, false)
+if userData then
+    print("Discord ID: " .. userData.id)
+    print("Username: " .. userData.name)
+    print("Avatar: " .. (userData.avatar or "No avatar"))
+end
 ```
 
-## Support
+#### `GetDiscordMember(src, force, guildNames)`
+Get Discord member information for a player in specific servers.
 
-Read through the instructions again if you have not managed to install the resource. Can't get it to work still? 
-Create a ticket through our dedicated support system in Discord:
+**Parameters:**
+- `src` (string): Player source ID
+- `force` (boolean): Force refresh cache (optional)
+- `guildNames` (table): Array of Discord server names (optional)
 
-[Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}
+**Returns:** `table` - Member data containing id, name, nick, avatar, discriminator, roles, or nil on error
 
-## Create your own Discord Bot
-
-For creating your own Discord bot, we made a little tutorial. You need to have a Discord bot, a Discord server and the "Manage Server" permission in your Discord server in order to add the bot.
-
-### Step 1: Registering your own Discord application
-
-Please access the Discord Developer Portal on <https://discord.com/developers/applications>. You should see a page with the heading "Applications", and you probably will have no applications created yet.
-
-<img src="/assets/img/discordAPI/1DiscordApplications.png" alt="Discord Applications Page">
-
-Please click on the "New Application"-button on the top right and provide a name for the application. Please use something other than "Test", maybe the name of your community instead. Then hit "Create".
-
-<img src="/assets/img/discordAPI/2DiscordCreateANewApplication.png" alt="Discord Applications Page: Create an application">
-
-### Step 2: Building a bot
-
-You have just created your own Discord application. It should look almost like this.
-
-<img src="/assets/img/discordAPI/3DiscordNewApplicationBuildABot.png" alt="Discord Application: Bot section page">
-
-Now you can head to the Bot section on the left and click on "Add Bot" on the top right. Discord will ask you if you really want to proceed since creating a bot cannot be reversed unless you delete the whole application. Please click on "Yes, do it!" since we want to create a bot and not use this application for anything else.
-
-Now your bot should have been created and your page should be looking like this.
-
-<img src="/assets/img/discordAPI/4DiscordNewApplicationBot.png" alt="Discord Application: Bot created">
-
-On this page you can change the bots' profile picture and name to your liking. You will receive the bot token after you reset the token for the first time. Please copy it over to our config.lua to the `Discord_Bot_Token` variable. You should not share your bot token with anyone, not even with our Sales Support team.
-
-### Step 3: Inviting the bot to your Discord server
-
-After the bot has been setup, you can head to the OAuth2 section in the left navigation bar. Go to the URL Generator and select the bot scope. In the bot permissions we just need to select the "Read Messages/View Channels"-permission.
-
-<img src="/assets/img/discordAPI/5DiscordNewApplicationBotInviteLink.png" alt="Discord Application: OAuth2: URL Generator for creating bot invite link">
-
-Now scroll down to retrieve the invite link. Just copy the link and open it in a new tab.
-
-<img src="/assets/img/discordAPI/6DiscordNewApplicationBotInvite.png" alt="Discord Bot Invite Confirmation">
-
-Then select the Discord server on which your bot should join. If you cannot see your server then you are missing the necessary permissions called "Manage Server". Otherwise, your bot should be part of your Discord server now and you can continue with the configuration of this resource ([go up](#configuring-the-resource)).
-
-## Developer Documentation
-
-*Notice: This part is meant for developers that want to implement this API in their own resources.*
-
-We work with an internal cache system so a Discord member or guild is fetched once and will only be fetched again if the optional force argument available on each function is set to true.
-
-### `IsUserPartOfThisGuild(src : String, force : Boolean, guildName : String)`
-
-Returns `nil` if an error occurred. If the error resulted from the request to the Discord API, it will be logged in the server console.
-
-Otherwise, this function returns a Boolean indicating if the given user is part of the given guild or not.
-
-### `IsUserPartOfAnyOfTheseGuilds(src : String, force? : Boolean, guildNames? : String[])`
-
-If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
-
-Returns `nil` if an error occurred. If the error resulted from the request to the Discord API, it will be logged in the server console.
-
-Otherwise, this function returns a Boolean indicating if the given user is part of any of the given guilds or not.
-
-### `IsUserPartOfAllOfTheseGuilds(src : String, force? : Boolean, guildNames? : String[])`
-
-If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
-
-Returns `nil` if an error occurred. If the error resulted from the request to the Discord API, it will be logged in the server console.
-
-Otherwise, this function returns a Boolean indicating if the given user is part of all of the given guilds or not.
-
-### `GetDiscordMember(src : String, force? : Boolean, guildNames? : String[])`
-
-If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
-
-Returns `nil` if an error occurred. This error will be logged in the server console.
-
-Otherwise, this function returns a Discord member object from the first guild in `guildNames`.
-
-Return object example:
+**Example:**
 ```lua
-{
-    id = "264212773049729024",
-    name = "Kunfu_Ratte",
-    nick = "Mike",
-    avatar = "https://cdn.discordapp.com/avatars/264212773049729024/a_96bfd94a112d060f7aad83b108fdf044.gif",
-    discriminator = "1300",
-    roles = {
-        "Administrator",
-        "Firefighter",
-        "Allowlisted"
-    }
-}
+local memberData = exports['night_discordapi']:GetDiscordMember(source, false, {"Your Guild Name"})
+if memberData then
+    print("Member ID: " .. memberData.id)
+    print("Nickname: " .. (memberData.nick or "No nickname"))
+    print("Roles: " .. table.concat(memberData.roles, ", "))
+end
 ```
 
-Function usage example:
+### Role Functions
+
+#### `GetDiscordMemberRoles(src, force, guildNames)`
+Get all Discord roles for a player across specified servers.
+
+**Parameters:**
+- `src` (string): Player source ID
+- `force` (boolean): Force refresh cache (optional)
+- `guildNames` (table): Array of Discord server names (optional)
+
+**Returns:** `table` - Array of role names, or nil on error
+
+**Example:**
 ```lua
-local src = source
-local discordMember = exports.night_discordapi:GetDiscordMember(src)
-if discordMember then print("Player " .. GetPlayerName(src) .. " is named " .. discordMember.name .. " on Discord.") end
+local roles = exports['night_discordapi']:GetDiscordMemberRoles(source, false, {"Guild 1", "Guild 2"})
+if roles then
+    for _, role in ipairs(roles) do
+        print("Role: " .. role)
+    end
+end
 ```
 
-### `GetDiscordMemberRoles(src : String, force? : Boolean, guildNames? : String[])`
+#### `IsMemberPartOfThisRole(src, roleName, force, guildNames)`
+Check if a player has a specific Discord role.
 
-If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
+**Parameters:**
+- `src` (string): Player source ID
+- `roleName` (string): Name of the role to check
+- `force` (boolean): Force refresh cache (optional)
+- `guildNames` (table): Array of Discord server names (optional)
 
-Returns `nil` if an error occurred. This error will be logged in the server console.
+**Returns:** `boolean` - true if user has the role, false if not, nil on error
 
-Otherwise, this function returns an array of Discord role names of the Discord roles the member has from all guilds in `guildNames`.
-
-Return object example:
+**Example:**
 ```lua
-{
-    "Administrator",
-    "Firefighter",
-    "Allowlisted"
-}
+local hasRole = exports['night_discordapi']:IsMemberPartOfThisRole(source, "Admin", false, {"Your Guild"})
+if hasRole then
+    print("Player has Admin role!")
+end
 ```
 
-Function usage example:
+#### `IsMemberPartOfAnyOfTheseRoles(src, roleNames, force, guildNames)`
+Check if a player has any of the specified Discord roles.
+
+**Parameters:**
+- `src` (string): Player source ID
+- `roleNames` (table): Array of role names to check
+- `force` (boolean): Force refresh cache (optional)
+- `guildNames` (table): Array of Discord server names (optional)
+
+**Returns:** `boolean` - true if user has any of the roles, false if not, nil on error
+
+**Example:**
 ```lua
-local src = source
-local discordMemberRoles = exports.night_discordapi:GetDiscordMemberRoles(src)
-if discordMemberRoles then print("Player " .. GetPlayerName(src) .. " has " .. #discordMemberRoles .. " discord roles.") end
+local roleNames = {"Admin", "Moderator", "VIP"}
+local hasRole = exports['night_discordapi']:IsMemberPartOfAnyOfTheseRoles(source, roleNames, false, {"Your Guild"})
+if hasRole then
+    print("Player has at least one of the specified roles!")
+end
 ```
 
-### `IsMemberPartOfThisRole(src : String, roleName : String, force? : Boolean, guildNames? : String[])`
+#### `IsMemberPartOfAllOfTheseRoles(src, roleNames, force, guildNames)`
+Check if a player has all of the specified Discord roles.
 
-If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
+**Parameters:**
+- `src` (string): Player source ID
+- `roleNames` (table): Array of role names to check
+- `force` (boolean): Force refresh cache (optional)
+- `guildNames` (table): Array of Discord server names (optional)
 
-Returns `nil` if an error occurred. This error will be logged in the server console.
+**Returns:** `boolean` - true if user has all roles, false if not, nil on error
 
-Otherwise, this function returns a Boolean indicating if the player is part of the specified role or not.
-
-Function usage example:
+**Example:**
 ```lua
-local src = source
-local isAllowlisted = exports.night_discordapi:IsMemberPartOfThisRole(src, "Allowlisted", true)
-if isAllowlisted then print("Player " .. GetPlayerName(src) .. " is allowlisted.") end
+local roleNames = {"Admin", "Moderator"}
+local hasAllRoles = exports['night_discordapi']:IsMemberPartOfAllOfTheseRoles(source, roleNames, false, {"Your Guild"})
+if hasAllRoles then
+    print("Player has all specified roles!")
+end
 ```
 
-In this case we specify that the Discord API should refetch the Discord member by setting the last parameter force to true. This is only necessary for functions like checking the allowlisted state upon joining. The more you force requests the more requests you make, and Discord will block your requests if you send too many in too little time.
+### Guild Information Functions
 
-### `IsMemberPartOfAnyOfTheseRoles(src : String, roleNames : String[], force? : Boolean, guildNames? : String[])`
+#### `GetDiscordGuild(guildName, force)`
+Get information about a Discord server/guild.
 
-If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
+**Parameters:**
+- `guildName` (string): Name of the Discord server (as defined in config)
+- `force` (boolean): Force refresh cache (optional)
 
-Returns `nil` if an error occurred. This error will be logged in the server console.
+**Returns:** `table` - Guild data containing id, name, icon, ownerid, roles, or nil on error
 
-Otherwise, this function returns a Boolean indicating if the player is part of any of the specified roles or not.
-
-Function usage example:
+**Example:**
 ```lua
-local src = source
-local staffRoles = {
-    "Community Manager",
-    "Administrator",
-    "Supporter"
-}
-local isPartOfStaff = exports.night_discordapi:IsMemberPartOfAnyOfTheseRoles(src, staffRoles)
-if isPartOfStaff then print("Player " .. GetPlayerName(src) .. " is part of staff.") end
+local guildData = exports['night_discordapi']:GetDiscordGuild("Your Guild Name", false)
+if guildData then
+    print("Guild ID: " .. guildData.id)
+    print("Guild Name: " .. guildData.name)
+    print("Owner ID: " .. guildData.ownerid)
+end
 ```
 
-### `IsMemberPartOfAllOfTheseRoles(src : String, roleNames : String[], force? : Boolean, guildNames? : String[])`
+---
 
-If `guildNames` is not specified, it defaults to all `Discord_Guild_Names` from the config.
+## 💡 Usage Examples
 
-Returns `nil` if an error occurred. This error will be logged in the server console.
-
-Otherwise, this function returns a Boolean indicating if the player is part of all of the specified roles or not.
-
-Function usage example:
+### Basic Permission System
 ```lua
-local src = source
-local roles = {
-    "Community Manager",
-    "Administrator",
-    "Supporter",
-    "Police_Officer",
-    "Firefighter",
-    "Allowlisted",
-    "Banned"
-}
-local isPartOfEveryRole = exports.night_discordapi:IsMemberPartOfAllOfTheseRoles(src, roles)
-if isPartOfEveryRole then print("Player " .. GetPlayerName(src) .. " is part of everything. Not bad!") end
+-- Check if player has admin role
+local hasAdmin = exports['night_discordapi']:IsMemberPartOfThisRole(source, "Admin", false, {"Your Guild"})
+if hasAdmin then
+    -- Give admin permissions
+    TriggerClientEvent('chat:addMessage', source, {
+        color = {255, 0, 0},
+        multiline = true,
+        args = {"System", "You have admin permissions!"}
+    })
+end
 ```
 
-### `GetDiscordGuild(guildName : String, force? : Boolean)`
-
-Returns `nil` if an error occurred. This error will be logged in the server console.
-
-Otherwise, this function returns a Discord guild object fetched based on the specified `guildName`.
-
-Return object example:
+### Multi-Server Role Check
 ```lua
-{
-    id = "744819251788906496",
-    name = "Police Interceptors by EA-RP",
-    icon = "https://cdn.discordapp.com/icons/744819251788906496/71afaf201d8a8ca5499fac7b5c001e90.png",
-    owner_id = "463714151576109057"
-}
+-- Check if player has role in any of multiple servers
+local guildNames = {"Main Server", "Staff Server", "VIP Server"}
+local roleNames = {"Admin", "Moderator", "VIP"}
+local hasPermission = exports['night_discordapi']:IsMemberPartOfAnyOfTheseRoles(source, roleNames, false, guildNames)
+
+if hasPermission then
+    -- Example: Grant access to restricted area
+    TriggerClientEvent('restrictedArea:grantAccess', source)
+end
 ```
 
-Function usage example:
+### User Information Display
 ```lua
-local discordGuild = exports.night_discordapi:GetDiscordGuild()
-if discordGuild then print("Our guild is currently named " .. discordGuild.name .. ".") end
+-- Get and display user information
+local userData = exports['night_discordapi']:GetDiscordUser(source, false)
+if userData then
+    TriggerClientEvent('chat:addMessage', -1, {
+        color = {0, 255, 0},
+        multiline = true,
+        args = {"Discord", userData.name .. " joined the server!"}
+    })
+end
 ```
 
-### `GetDiscordUser(src : String, force? : Boolean)`
-
-Returns `nil` if an error occurred. This error will be logged in the server console.
-
-Otherwise, this function returns a Discord user object fetched based on the specified `src`.
-
-Return object example:
+### Guild Membership Verification
 ```lua
-{
-    id = "264212773049729024",
-    name = "Kunfu_Ratte",
-    avatar = "https://cdn.discordapp.com/avatars/264212773049729024/a_96bfd94a112d060f7aad83b108fdf044.gif",
-}
+-- Verify player is member of specific guild
+local isMember = exports['night_discordapi']:IsUserPartOfThisGuild(source, false, "Whitelisted Guild")
+if not isMember then
+    DropPlayer(source, "You must be a member of our Discord server to join this server.")
+end
 ```
 
-Function usage example:
+### Advanced Role System
 ```lua
-local src = source
-local discordUser = exports.night_discordapi:GetDiscordUser(src)
-if discordUser then print("Player " .. GetPlayerName(src) .. " is named " .. discordUser.name .. " on Discord.") end
+-- Check multiple roles across multiple servers
+local guildNames = {"Police Department", "Fire Department", "EMS"}
+local requiredRoles = {"Officer", "Firefighter", "Paramedic"}
+
+local hasRequiredRole = exports['night_discordapi']:IsMemberPartOfAnyOfTheseRoles(source, requiredRoles, false, guildNames)
+if hasRequiredRole then
+    -- Allow access to emergency services
+    TriggerClientEvent('emergency:grantAccess', source)
+else
+    TriggerClientEvent('chat:addMessage', source, {
+        color = {255, 0, 0},
+        multiline = true,
+        args = {"System", "You need to be verified in our Discord server to access emergency services."}
+    })
+end
 ```
 
-### Feedback
+---
 
-Let us know if you have any suggestions for improvements or any ideas for new functions.
+## 🔗 Integration with Other Resources
+
+The Discord API serves as the foundation for these resources:
+
+| Resource | Purpose |
+|----------|---------|
+| [Player List](/resources/discordPlayerlist) | Display players with Discord roles |
+| [Player Names](/resources/discordPlayerNames) | Sync Discord usernames |
+| [Garage System](/resources/garageSystem) | Role-based vehicle access |
+| [Vehicle Permissions (vPerms)](/resources/vPerms) | Role-based vehicle permissions |
+| [Weapon Permissions (wPerms)](/resources/wPerms) | Role-based weapon permissions |
+| [Discord Spawn](/resources/discordSpawn) | Role-based spawning system |
+| [Discord Lockers](/resources/discordLockers) | Role-based locker access |
+| [Discord Allowlist](/resources/discordAllowlist) | Discord-based allowlist system |
+| [Discord Admin](/resources/discordAdmin) | Discord administration tools |
+| [Emergency Response Simulator](/resources/ers) | A PvE Emergency Simulator |
+| [Night Shifts MDT](/resources/nightShifts) | An system managing Emergency Services & Registrations |
+---
+
+## 🚨 Troubleshooting
+
+### Common Issues
+
+#### Bot Not Responding
+- Verify bot token is correct
+- Ensure bot is online and has proper permissions
+- Check bot is invited to your Discord server
+
+#### Role Permissions Not Working
+- Confirm role IDs are correct
+- Verify bot has been given the required permission
+- Verify the guild names match between the scripts, if applicable.
+- Verify the role names match between the scripts.
+
+#### Resource Dependencies
+- Ensure Discord API loads before dependent resources
+- Check server.cfg load order
+
+### Error Messages
+
+| Error | Solution |
+|-------|----------|
+| `Discord API not found` | Check resource name in server.cfg |
+| `Invalid bot token` | Verify token format and validity |
+| `Guild not found` | Confirm guild ID and bot membership |
+
+### Debug Mode
+Enable debug logging by setting `Discord_API_Log_Level = 1` in your config to see detailed API request information.
+
+{: .tip}
+**Need Help?** Join our [Discord community](https://discord.com/channels/989438923925229598/1152361824554061824) for support.
+
+---
+
+## 📊 Performance Optimization
+
+### Best Practices
+- Use your own custom bot token, which is not used for any other purposes.
+
+### Monitoring
+- Check F8 console for error messages
+- Monitor the txAdmin console for the Discord API status & installation feedback.
+
+---
+
+## 📞 Support
+
+### Getting Help
+1. **Check this documentation** for common solutions
+2. **Search our Discord** for similar issues
+3. **Create a support ticket** with detailed information
+
+### Useful Links
+- [Discord Developer Documentation](https://discord.com/developers/docs)
+- [FiveM Documentation](https://docs.fivem.net/)
+- [Nights Software Discord](https://discord.com/channels/989438923925229598/1152361824554061824)

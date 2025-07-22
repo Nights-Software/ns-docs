@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "Discord Allowlist"
-nav_order: 10
+nav_order: 11
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-25 00:31:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordAllowlist.png" alt="Discord Allowlist! Resource" draggable="false">

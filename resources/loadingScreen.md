@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Ambilight Loading Screen"
-nav_order: 31
+title: "Loading Screen"
+nav_order: 37
 has_children: false
 has_toc: true
-last_modified_date: "2023-02-02 22:14:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/loadingScreen.png" alt="Ambilight Loading Screen Resource" draggable="false">

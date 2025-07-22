@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "DC Playernames"
-nav_order: 28
+title: "Discord Player Names"
+nav_order: 31
 has_children: false
 has_toc: true
-last_modified_date: "2022-10-2 17:25:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordPlayernames.png" alt="DC Playernames! Resource" draggable="false">

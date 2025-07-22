@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "Easy Zones"
-nav_order: 16
+nav_order: 34
 has_children: false
 has_toc: true
-last_modified_date: "2022-07-15 00:25:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/easyZones.png" alt="Easy Zones! Resource" draggable="false">

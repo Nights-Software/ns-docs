@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "Vehicle Spawns"
-nav_order: 34
+nav_order: 17
 has_children: false
 has_toc: true
-last_modified_date: "2023-17-08 21:00:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/vehicleSpawns.png" alt="Vehicle Spawns" draggable="false">

@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Discord Linked Advanced Spawn Selector"
-nav_order: 22
+title: "Discord Spawn"
+nav_order: 32
 has_children: false
 has_toc: true
-last_modified_date: "2022-07-15 00:45:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordSpawn.png" alt="Discord Linked Advanced Spawn Selector! Resource" draggable="false">

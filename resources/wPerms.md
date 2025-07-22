@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Discord wPerms"
-nav_order: 27
+title: "Weapon Permissions (wPerms)"
+nav_order: 12
 has_children: false
 has_toc: true
-last_modified_date: "2022-10-17 17:25:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/wPerms.png" alt="Discord wPerms! Resource" draggable="false">
@@ -115,9 +115,3 @@ A functional Example:
     },
 },
 ```
-
-## Support
-
-Read through the instructions again if you have not managed to install the resource. Can’t get it to work still? Create a ticket through our dedicated support system in Discord:
-
-[Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}

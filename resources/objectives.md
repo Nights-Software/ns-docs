@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Objectives for FiveM"
-nav_order: 38
+title: "Objectives"
+nav_order: 25
 has_children: false
 has_toc: true
-last_modified_date: "2024-01-04 17:30:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/objectives.png" alt="Objectives for FiveM" draggable="false">

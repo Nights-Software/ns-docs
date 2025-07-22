@@ -1,11 +1,91 @@
 ---
 layout: default
-title: 404
-permalink: /404
-nav_exclude: true
-search_exclude: true
+title: "Page Not Found"
+permalink: /404.html
 ---
 
-<h1>Page not found</h1>
+<div style="text-align: center; padding: 4rem 2rem;">
+  <h1 style="font-size: 4rem; margin-bottom: 1rem; color: #dc3545;">404</h1>
+  <h2 style="font-size: 2rem; margin-bottom: 2rem; color: #6c757d;">Page Not Found</h2>
+  
+  <p style="font-size: 1.2rem; margin-bottom: 3rem; color: #495057;">
+    The page you're looking for doesn't exist or has been moved.
+  </p>
+  
+  <div style="max-width: 600px; margin: 0 auto;">
+    <h3 style="margin-bottom: 1rem;">Try these options:</h3>
+    
+    <div style="display: grid; gap: 1rem; margin-bottom: 3rem;">
+      <a href="/" class="btn btn-blue" style="display: inline-block; padding: 1rem 2rem; text-decoration: none; border-radius: 6px;">
+        🏠 Go to Homepage
+      </a>
+      
+      <a href="/resources/installation-guide" class="btn btn-blue" style="display: inline-block; padding: 1rem 2rem; text-decoration: none; border-radius: 6px;">
+        📖 Installation Guide
+      </a>
+    </div>
+    
+    <div style="background: #f8f9fa; padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+      <h4 style="margin-bottom: 1rem;">Looking for a specific resource?</h4>
+      <p style="margin-bottom: 1rem;">Try searching our documentation:</p>
+      <div id="search-container"></div>
+    </div>
+    
+    <div style="background: #fff3cd; padding: 2rem; border-radius: 8px; border-left: 4px solid #ffc107;">
+      <h4 style="margin-bottom: 1rem;">Need Help?</h4>
+      <p style="margin-bottom: 1rem;">Join our Discord community for support:</p>
+      <a href="https://discord.com/channels/989438923925229598/1152361824554061824" class="btn btn-discord" style="display: inline-block; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 6px;">
+        💬 Join Discord
+      </a>
+    </div>
+  </div>
+</div>
 
-<p>The page you requested could not be found. Try using the navigation or search to find what you're looking for or go to this <a href="{{ '/' | absolute_url }}">site's home page</a>.</p>
+<script>
+// Simple search functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const searchContainer = document.getElementById('search-container');
+  if (searchContainer) {
+    searchContainer.innerHTML = `
+      <input type="text" id="search-input" placeholder="Search resources..." 
+             style="width: 100%; padding: 0.75rem; border: 1px solid #dee2e6; border-radius: 4px; font-size: 1rem;">
+      <div id="search-results" style="margin-top: 1rem;"></div>
+    `;
+    
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    
+    // Simple resource list (you can expand this)
+    const resources = [
+      { name: 'Discord API', url: '/resources/discordAPI' },
+      { name: 'Garage System', url: '/resources/garageSystem' },
+      { name: 'Natural Disasters', url: '/resources/naturalDisasters' },
+      { name: 'Vehicle Spawns', url: '/resources/vehicleSpawns' },
+      { name: 'Objectives', url: '/resources/objectives' },
+      { name: 'Party System', url: '/resources/partySystem' },
+      { name: 'Installation Guide', url: '/resources/installation-guide' },
+    ];
+    
+    searchInput.addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      const filtered = resources.filter(resource => 
+        resource.name.toLowerCase().includes(query)
+      );
+      
+      if (query.length > 0 && filtered.length > 0) {
+        searchResults.innerHTML = filtered.map(resource => 
+          `<div style="padding: 0.5rem; border-bottom: 1px solid #dee2e6;">
+             <a href="${resource.url}" style="color: #0366d6; text-decoration: none;">
+               ${resource.name}
+             </a>
+           </div>`
+        ).join('');
+      } else if (query.length > 0) {
+        searchResults.innerHTML = '<div style="padding: 0.5rem; color: #6c757d;">No resources found</div>';
+      } else {
+        searchResults.innerHTML = '';
+      }
+    });
+  }
+});
+</script>

@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "Discord Lockers"
-nav_order: 26
+nav_order: 30
 has_children: false
 has_toc: true
-last_modified_date: "2022-09-18 12:25:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordLockers.png" alt="Discord Linked Lockers! Resource" draggable="false">

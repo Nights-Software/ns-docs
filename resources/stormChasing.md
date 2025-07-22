@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "Storm Chasing"
-nav_order: 4
+nav_order: 20
 has_children: false
 has_toc: true
-last_modified_date: "2025-25-06 22:00:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/stormChasing.png" alt="Storm Chasing" draggable="false">

@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Ammobox & Crates"
-nav_order: 29
+title: "Ammo Boxes & Crates"
+nav_order: 44
 has_children: false
 has_toc: true
-last_modified_date: "2022-10-17 17:25:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/ammoboxes_and_crates.png" alt="Ammobox & Crates! Resource" draggable="false">

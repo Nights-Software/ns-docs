@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Gates & Bollards for FiveM"
+title: "Gates"
 nav_order: 36
 has_children: false
 has_toc: true
-last_modified_date: "2023-11-23 17:30:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/gates.png" alt="Gates & Bollards for FiveM" draggable="false">

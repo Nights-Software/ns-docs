@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "Advanced Player Tracking"
-nav_order: 18
+nav_order: 13
 has_children: false
 has_toc: true
-last_modified_date: "2022-07-15 00:30:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/advancedPlayerTracking.png" alt="Advanced Player Tracking! Resource" draggable="false">

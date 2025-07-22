@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Ped & Player CPR (Animated)"
-nav_order: 14
+title: "Ped & Player CPR"
+nav_order: 40
 has_children: false
 has_toc: true
-last_modified_date: "2022-07-08 00:00:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/pedAndPlayerCPR.png" alt="Ped & Player CPR (Animated) Resource" draggable="false">

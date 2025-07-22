@@ -1,0 +1,126 @@
+# Navigation structure for Nights Software Documentation
+# This file organizes all resources into logical categories
+
+- title: Getting Started
+  children:
+    - title: Home
+      url: /
+    - title: Installation Guide
+      url: /resources/installation-guide
+
+- title: Core Systems
+  children:
+    - title: Discord API
+      url: /resources/discordAPI
+    - title: ACE Permissions
+      url: /resources/acePerms
+
+- title: Vehicle Systems
+  children:
+    - title: Garage System
+      url: /resources/garageSystem
+    - title: Vehicle Spawns
+      url: /resources/vehicleSpawns
+    - title: Vehicle Rentals
+      url: /resources/vehicleRentals
+    - title: Vehicle Locks
+      url: /resources/vehicleLocks
+    - title: Vehicle Lift
+      url: /resources/vehicleLift
+
+- title: Environmental Features
+  children:
+    - title: Natural Disasters
+      url: /resources/naturalDisasters
+    - title: Storm Chasing
+      url: /resources/stormChasing
+    - title: Smoke Generator
+      url: /resources/smokeGenerator
+    - title: Smoke Screen
+      url: /resources/smokeScreen
+    - title: Air Raid Sirens
+      url: /resources/airRaidSirens
+    - title: Landing Zone Alarm
+      url: /resources/landingZoneAlarm
+
+- title: Gameplay Features
+  children:
+    - title: Objectives
+      url: /resources/objectives
+    - title: Raids
+      url: /resources/raids
+    - title: Party System
+      url: /resources/partySystem
+    - title: Night Shifts
+      url: /resources/nightShifts
+    - title: Henchmen
+      url: /resources/henchmen
+    - title: Gemstone Mining Job
+      url: /resources/gemstoneMiningJob
+    - title: Advanced Player Tracking
+      url: /resources/advancedPlayerTracking
+
+- title: Discord Integration
+  children:
+    - title: Discord Admin
+      url: /resources/discordAdmin
+    - title: Discord Allowlist
+      url: /resources/discordAllowlist
+    - title: Discord Lockers
+      url: /resources/discordLockers
+    - title: Discord Player List
+      url: /resources/discordPlayerlist
+    - title: Discord Player Names
+      url: /resources/discordPlayerNames
+    - title: Discord Spawn
+      url: /resources/discordSpawn
+    - title: Vehicle Permissions (vPerms)
+      url: /resources/vPerms
+    - title: Weapon Permissions (wPerms)
+      url: /resources/wPerms
+
+- title: Utility Systems
+  children:
+    - title: Easy 3D Text Labels
+      url: /resources/easy3dTextLabels
+    - title: Easy Zones
+      url: /resources/easyZones
+    - title: Props & Speed Zones
+      url: /resources/propsAndSpeedzones
+    - title: Gates
+      url: /resources/gates
+    - title: Loading Screen
+      url: /resources/loadingScreen
+    - title: Subtitles
+      url: /resources/subtitles
+
+- title: Emergency & Medical
+  children:
+    - title: Emergency Response System (ERS)
+      url: /resources/ers
+    - title: Coma & Down System
+      url: /resources/comaAndDownSystem
+    - title: Ped & Player CPR
+      url: /resources/pedAndPlayerCPR
+    - title: Boat Rescue
+      url: /resources/boatRescue
+
+- title: Military & Tactical
+  children:
+    - title: Aircraft Radar
+      url: /resources/aircraftRadar
+    - title: Airstrikes
+      url: /resources/airstrikes
+    - title: Ammo Boxes & Crates
+      url: /resources/ammoBox
+    - title: Weapon Crates
+      url: /resources/weaponCrates
+    - title: Meta Build
+      url: /resources/metabuild
+
+- title: Additional Features
+  children:
+    - title: Onto the Seas
+      url: /resources/ontoTheSeas
+    - title: Loading Screen
+      url: /resources/loadingScreen 

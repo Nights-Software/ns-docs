@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Natural Disasters (Normal / DLC)"
-nav_order: 2
+title: "Natural Disasters"
+nav_order: 6
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-25 00:31:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/naturalDisasters.gif" alt="Natural Disasters Resource" draggable="false">

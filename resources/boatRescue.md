@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Boat Rescue (Tow) for FiveM!"
-nav_order: 27
+title: "Boat Rescue"
+nav_order: 41
 has_children: false
 has_toc: true
-last_modified_date: "2022-10-01 23:56:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/boatRescue.png" alt="Boat Rescue (Tow) for FiveM! Resource" draggable="false">

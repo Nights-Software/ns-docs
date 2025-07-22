@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Gemstone mining job"
-nav_order: 15
+title: "Gemstone Mining Job"
+nav_order: 29
 has_children: false
 has_toc: true
-last_modified_date: "2022-07-11 00:25:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/gemstoneMining.png" alt="Gemstone mining job! Resource" draggable="false">

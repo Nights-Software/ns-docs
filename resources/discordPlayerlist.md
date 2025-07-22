@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Discord Playerlist"
+title: "Discord Player List"
 nav_order: 9
 has_children: false
 has_toc: true
-last_modified_date: "2022-06-25 00:31:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/discordPlayerlist.png" alt="Discord Playerlist! Resource" draggable="false">

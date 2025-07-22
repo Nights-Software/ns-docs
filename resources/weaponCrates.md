@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Discord Linked Weapon Crates"
-nav_order: 25
+title: "Weapon Crates"
+nav_order: 45
 has_children: false
 has_toc: true
-last_modified_date: "2022-08-12 18:25:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/weaponCrates.png" alt="Discord Linked Weapon Crates! Resource" draggable="false">

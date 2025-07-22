@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "Party System"
-nav_order: 30
+nav_order: 27
 has_children: false
 has_toc: true
-last_modified_date: "2023-02-02 22:14:00"
+last_modified_date: "2025-01-27 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/partySystem.png" alt="Party System Resource" draggable="false">
