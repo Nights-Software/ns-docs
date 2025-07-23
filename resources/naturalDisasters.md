@@ -7,7 +7,7 @@ has_toc: true
 last_modified_date: "2025-01-22"
 ---
 
-<img class="cover-img" src="/assets/img/night_natural_disasters.png" alt="Natural Disasters Resource" draggable="false">
+<img class="cover-img" src="/assets/img/naturalDisasters.png" alt="Natural Disasters Resource" draggable="false">
 
 # Natural Disasters
 {: .no_toc }
@@ -15,63 +15,82 @@ last_modified_date: "2025-01-22"
 A comprehensive natural disaster system for FiveM servers featuring dynamic weather, blackouts, and multiple disaster types.
 {: .fs-5 .fw-300 }
 
-Just released: DLC 5!
-{: .label .label-purple }
-
 ---
 
-<details open markdown="block">
-  <summary>
-    Table of contents
-  </summary>
-  {: .text-delta }
+## 📋 Table of Contents
+{: .no_toc .text-delta }
+
 1. TOC
 {:toc}
-</details>
 
 ---
 
-## Overview
+## 🎯 Overview
 
 Natural Disasters is a comprehensive weather and disaster system that brings dynamic environmental challenges to your FiveM server. The system includes multiple disaster types, weather synchronization, blackout mechanics, and seamless integration with popular sound systems.
 
-### Key Features
+### **Key Features**
+{: .no_toc }
 
-- **Multiple Disaster Types**: Tornadoes, earthquakes, tsunamis, and more
-- **Dynamic Weather System**: Built-in weather and time management
-- **Blackout Mechanics**: Realistic power outages during disasters
-- **Sound Integration**: Support for xSound and PlayCustomSounds
-- **Framework Compatibility**: Works with ESX, QBCore, and standalone setups
-- **OneSync Compatible**: Legacy and Infinity support
-- **DLC Expansion**: 5 additional content packs available
+- ✅ **Multiple Disaster Types** - Tornadoes, earthquakes, tsunamis, and more
+- ✅ **Dynamic Weather System** - Built-in weather and time management
+- ✅ **Blackout Mechanics** - Realistic power outages during disasters
+- ✅ **Sound Integration** - Support for xSound and PlayCustomSounds
+- ✅ **Framework Compatibility** - Works with ESX, QBCore, and standalone setups
+- ✅ **OneSync Compatible** - Legacy and Infinity support
+- ✅ **DLC Expansion** - 5 additional content packs available
+- ✅ **Lightweight** - Minimal performance impact
+- ✅ **Escrow Protection** - Secure resource protection
 
-## Purchase Information
+---
 
-### Base Resource
-- **Store Link**: [Natural Disasters Base](https://store.nights-software.com/package/5131340)
+## 🛒 Purchase Information
 
-### DLC Packs
-- **DLC 1**: [Natural Disasters DLC 1](https://store.nights-software.com/package/5154004)
-- **DLC 2**: [Natural Disasters DLC 2](https://store.nights-software.com/package/5183358)
-- **DLC 3**: [Natural Disasters DLC 3](https://store.nights-software.com/package/5314042)
-- **DLC 4**: [Natural Disasters DLC 4](https://store.nights-software.com/package/5673677)
-- **DLC 5**: [Natural Disasters DLC 5](https://store.nights-software.com/package/5968995)
+**Get Natural Disasters for FiveM:**
 
-### Requirements
+Base: [Purchase on Nights Software Store](https://store.nights-software.com/package/5131340){: .btn .btn-blue}
+
+**DLC Packs:**
+- DLC 1: [Purchase DLC 1](https://store.nights-software.com/package/5154004){: .btn .btn-green}
+- DLC 2: [Purchase DLC 2](https://store.nights-software.com/package/5183358){: .btn .btn-green}
+- DLC 3: [Purchase DLC 3](https://store.nights-software.com/package/5314042){: .btn .btn-green}
+- DLC 4: [Purchase DLC 4](https://store.nights-software.com/package/5673677){: .btn .btn-green}
+- DLC 5: [Purchase DLC 5](https://store.nights-software.com/package/5968995){: .btn .btn-green}
+
+### **Requirements**
+{: .no_toc }
+
 - Base resource required for DLC 1
 - DLC 1 required for DLC 2
 - DLC 2 required for DLC 3
 - DLC 3 required for DLC 4
 - DLC 4 required for DLC 5
 
-### Installation Notice
+### **Installation Notice**
+{: .no_toc }
+
 *Got all of the Natural Disasters? Install just DLC5, this contains all code required. The latest resource is the one you install! The pack includes Air Raid Sirens which you can separately install.*
 
-## Installation
+---
 
-### Prerequisites
+## 📺 Video Showcase
 
-#### Sound System Setup (Optional)
+**Watch the video showcase:**
+
+[Video Showcase](https://youtu.be/example){: .btn .btn-red}
+
+---
+
+## 📦 Installation Process
+
+### **Step 1: Download Resource**
+{: .no_toc }
+
+Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/granted-assets) after purchasing.
+
+### **Step 2: Sound System Setup (Optional)**
+{: .no_toc }
+
 If you are using the built-in sound system, skip this step and proceed to resource installation.
 
 1. **Download Sound Resources**:
@@ -99,12 +118,9 @@ If you are using the built-in sound system, skip this step and proceed to resour
    - If not using xSound: Comment out or remove the dependency line
    - Example: `-- dependency 'xsound'`
 
-### Resource Installation
+### **Step 3: Install Resource**
+{: .no_toc }
 
-#### Step 1: Download
-Download the resource from [CFX Portal](https://portal.cfx.re/assets/granted-assets).
-
-#### Step 2: File Transfer
 **Important**: Follow this exact order to avoid parsing errors:
 1. Unpack ZIP package in a local folder
 2. Set FTP transfer type to **binary**
@@ -112,18 +128,21 @@ Download the resource from [CFX Portal](https://portal.cfx.re/assets/granted-ass
 4. Add to server.cfg
 5. Boot server
 
-#### Step 3: Install Resource
-1. Drag the resource into your resources folder
+1. **Drag the resource** into your resources folder
    - **Note**: If installing DLC, replace the base resource completely
-2. Configure `natural_disasters/config/config.lua` for customization
-3. Add to server.cfg:
+2. **Configure** `natural_disasters/config/config.lua` for customization
+3. **Add to server.cfg**:
    ```lua
    ensure night_natural_disasters
    ```
 
-## Configuration
+---
 
-### Permissions
+## ⚙️ Configuration
+
+### **Permissions**
+{: .no_toc }
+
 Choose from multiple permission systems:
 
 1. **Discord API**: [Discord API Documentation](https://store.nights-software.com/package/5035729)
@@ -131,7 +150,8 @@ Choose from multiple permission systems:
 3. **Framework Groups**: Configure QBCore or ESX group names
 4. **Everyone**: Default setting (no restrictions)
 
-### Weather Compatibility
+### **Weather Compatibility**
+{: .no_toc }
 
 #### Using Built-in Weather System
 - Remove/disable other weather/time systems on your server
@@ -146,7 +166,8 @@ Choose from multiple permission systems:
 
 **Free Weather Script Edits**: Available in our Discord [#free-files](https://discord.com/channels/989438923925229598/989479452209733662) channel (requires @Customer role)
 
-### Sound File Management
+### **Sound File Management**
+{: .no_toc }
 
 #### Adding Disaster Sound Files
 1. Navigate to `NUI/sounds/` folder
@@ -158,9 +179,13 @@ Choose from multiple permission systems:
 2. Add your sound file
 3. Configure in main config: `SoundFileNameForAirRaidSirens = "yourfilename"`
 
-## Exports
+---
 
-### Server-side Exports
+## 🔧 Exports
+
+### **Server-side Exports**
+{: .no_toc }
+
 ```lua
 -- Disaster Management
 exports.night_natural_disasters:SpawnDisaster(id)
@@ -186,15 +211,20 @@ exports.night_natural_disasters:GetIsWeatherDynamic() -- returns true or false (
 exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords, disasterID, soundFileName, soundFileVolume)
 ```
 
-### Client-side Exports
+### **Client-side Exports**
+{: .no_toc }
+
 ```lua
 -- Synchronization Control
 exports.night_natural_disasters:PauseSynchronization(boolean) -- Used by housing system scripts for weather & disaster proof interiors.
 ```
 
-## Troubleshooting
+---
 
-### Common Issues
+## 🔧 Troubleshooting
+
+### **Common Issues**
+{: .no_toc }
 
 1. **Parsing Errors in F8 Console**
    - Ensure you follow the exact file transfer order
@@ -216,7 +246,8 @@ exports.night_natural_disasters:PauseSynchronization(boolean) -- Used by housing
    - Check Ace permissions configuration
    - Confirm framework group names
 
-### Best Practices
+### **Best Practices**
+{: .no_toc }
 
 1. **Installation Order**
    - Always install the latest DLC version
@@ -233,30 +264,44 @@ exports.night_natural_disasters:PauseSynchronization(boolean) -- Used by housing
    - Adjust disaster frequency as needed
    - Use appropriate sound file sizes
 
-## Related Resources
+---
 
-### Recommended Additions
+## 🔗 Related Resources
+
+### **Recommended Additions**
+{: .no_toc }
+
 - [Air Raid Sirens](https://store.nights-software.com/package/5030134) - Enhanced disaster atmosphere
 - [Discord API](https://store.nights-software.com/package/5035729) - Role-based permissions
 - [Ace Permissions](https://docs.nights-software.com/resources/acePerms/) - Advanced permission system
 
-### Installation Order
+### **Installation Order**
+{: .no_toc }
+
 1. **DLC 5** (contains all previous content) - [Purchase](https://store.nights-software.com/package/5968995)
 2. **Air Raid Sirens** (optional integration) - [Purchase](https://store.nights-software.com/package/5030134)
 
-## Support
+---
 
-### Documentation
+## 🆘 Support
+
+### **Documentation**
+{: .no_toc }
+
 - Review this guide thoroughly before seeking support
 - Check configuration settings carefully
 - Verify all prerequisites are met
 
-### Community Support
+### **Community Support**
+{: .no_toc }
+
 Join our Discord community for assistance:
 
 [Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}
 
-### Technical Support
+### **Technical Support**
+{: .no_toc }
+
 - Create a ticket in our Discord support system
 - Provide detailed error messages and configuration
 - Include server logs when possible
