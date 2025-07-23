@@ -32,6 +32,8 @@ Before installing any Nights Software resource, ensure you have:
 
 {: .checklist}
 - ✅ **FiveM Server** - Running and accessible
+- ✅ **Recommended Gamebuild:** 3323
+- ✅ **Recommended Artifacts:** 17000
 - ✅ **FTP Access** - File transfer protocol, in binary transfer type mode, access to your server
 - ✅ **Server.cfg Access** - Ability to modify server configuration
 - ✅ **Basic FiveM Knowledge** - Understanding of resource management

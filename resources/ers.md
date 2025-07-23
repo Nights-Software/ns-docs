@@ -66,11 +66,11 @@ A guide to install Emergency Response Simulator for FiveM
 {: .no_toc }
 
 - **✅ Recommended Gamebuild:** 3323
-- **✅ Recommended Artifacts:** 15414
-- **❌ Not Compatible:** Gamebuild 3407, Artifacts versions below 14230
+- **✅ Recommended Artifacts:** 17000
+- **❌ Not Compatible:** Gamebuild 3407, Artifacts versions below 17000
 
 {: .note }
-> **Important:** Do not use artifacts version 7290 with newer gamebuilds. Use our recommended versions or test compatibility yourself.
+> **Important:** If you are using newer Artifacts or GameBuilds, test this. Please inform us of (in)compatibility.
 
 ### **OneSync Requirements**
 {: .no_toc }
@@ -446,8 +446,9 @@ exports['night_ers']:trackPlayerCallout(source, targetSource)
 ### **Compatibility Checklist**
 {: .no_toc }
 
-- ✅ **Gamebuild:** Use 2944, 3095 or 3323 (avoid 3407)
-- ✅ **Artifacts:** Use version 15414 or higher (avoid 7290)
+- ✅ **Recommended Gamebuild:** 3323
+- ✅ **Recommended Artifacts:** 17000
+- ❌ **Not Compatible:** Gamebuild 3407, Artifacts versions below 17000
 - ❌ **RemoveCopsAI:** Remove this resource
 - ❌ **Andrew's Advanced AI:** Remove this resource
 - ❌ **Realistic Euphoria Physics:** Remove this resource
