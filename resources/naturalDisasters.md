@@ -7,7 +7,7 @@ has_toc: true
 last_modified_date: "2025-01-22"
 ---
 
-<img class="cover-img" src="/assets/img/naturalDisasters.png" alt="Natural Disasters Resource" draggable="false">
+<img class="cover-img" src="/assets/img/night_natural_disasters.png" alt="Natural Disasters Resource" draggable="false">
 
 # Natural Disasters
 {: .no_toc }
