@@ -66,6 +66,7 @@ Take your server customization to the next level with MetaBuild! Whether you're 
 ## 🛒 Purchase Information
 
 **Get MetaBuild:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/6755408){: .btn .btn-blue}
 
 ---
@@ -143,7 +144,7 @@ Take your server customization to the next level with MetaBuild! Whether you're 
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_metabuild
 ```
 
@@ -159,7 +160,7 @@ ensure night_metabuild
 
 Add this line to your `server.cfg` above the starting of scripts:
 
-```cfg
+```conf
 setr game_enableDynamicDoorCreation "true"
 ```
 
@@ -168,13 +169,13 @@ setr game_enableDynamicDoorCreation "true"
 
 Add your MySQL connection string to `server.cfg` above the ensure/start of resources:
 
-```cfg
+```conf
 set mysql_connection_string "user=Your_Database_Username;password=Your_Database_Password;host=Your_Database_Host;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
 ```
 
 {: .tip }
 > **Localhost Example:**
-> ```cfg
+> ```conf
 > set mysql_connection_string "user=root;password=;host=localhost;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
 > ```
 
@@ -202,7 +203,7 @@ If you don't have oxmysql installed, download it from:
 1. **Place oxmysql** into your resources folder
 2. **Add to server.cfg** - Ensure it starts before MetaBuild:
 
-```cfg
+```conf
 ensure oxmysql
 ```
 

@@ -68,6 +68,7 @@ The Aircraft Radar revolutionizes your FiveM server by offering an array of incr
 ## 🛒 Purchase Information
 
 **Get Aircraft Radar:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5851372){: .btn .btn-blue}
 
 ---
@@ -137,7 +138,7 @@ The Aircraft Radar revolutionizes your FiveM server by offering an array of incr
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_aircraft_radar
 ```
 

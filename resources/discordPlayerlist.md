@@ -53,6 +53,7 @@ Discord Playerlist is a dynamic player management system that integrates with yo
 ## 🛒 Purchase Information
 
 **Get Discord Playerlist:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5035743){: .btn .btn-blue}
 
 ---
@@ -128,7 +129,7 @@ Discord Playerlist is a dynamic player management system that integrates with yo
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_playerlist
 ```
 

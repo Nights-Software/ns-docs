@@ -53,6 +53,7 @@ This asset is a game-changer for your FiveM server. With easy drag-and-drop func
 ## 🛒 Purchase Information
 
 **Get Raids & Heists:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/6208652){: .btn .btn-blue}
 
 ---
@@ -125,7 +126,7 @@ Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/gran
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_raids
 ```
 

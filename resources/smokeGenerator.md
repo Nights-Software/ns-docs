@@ -47,6 +47,7 @@ Spawn smoke in your hand for any purpose you can think of! Set the size and colo
 ## 🛒 Purchase Information
 
 **Get Smoke Generator:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5100834){: .btn .btn-blue}
 
 ---
@@ -122,7 +123,7 @@ Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/gran
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_handheld_smoke_gen
 ```
 

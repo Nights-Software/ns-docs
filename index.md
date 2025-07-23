@@ -30,15 +30,21 @@ Get up and running with our most popular resources:
   </div>
   
   <div class="card" style="border: 1px solid #e1e4e8; border-radius: 8px; padding: 1.5rem; background: #f8f9fa;">
-    <h3 style="margin-top: 0; color: #28a745;">Garage System</h3>
-    <p>Advanced vehicle management system with role-based permissions and multiple garage locations.</p>
-    <a href="/resources/garageSystem" class="btn btn-blue">Get Started</a>
+    <h3 style="margin-top: 0; color: #28a745;">Emergency Response Simulator</h3>
+    <p>An advanced co-op PvE gamemode simulating emergency services.</p>
+    <a href="/resources/ers" class="btn btn-blue">Get Started</a>
   </div>
   
   <div class="card" style="border: 1px solid #e1e4e8; border-radius: 8px; padding: 1.5rem; background: #f8f9fa;">
     <h3 style="margin-top: 0; color: #dc3545;">Natural Disasters</h3>
     <p>Add dynamic weather events and natural disasters to create immersive gameplay experiences.</p>
     <a href="/resources/naturalDisasters" class="btn btn-blue">Get Started</a>
+  </div>
+
+  <div class="card" style="border: 1px solid #e1e4e8; border-radius: 8px; padding: 1.5rem; background: #f8f9fa;">
+    <h3 style="margin-top: 0; color:rgb(220, 192, 53);">Storm Chasing</h3>
+    <p>Chase devastating storms & tornadoes and collect weather data by placing probes. You can even sell them to a fluctuating market.</p>
+    <a href="/resources/stormChasing" class="btn btn-blue">Get Started</a>
   </div>
 </div>
 
@@ -48,22 +54,20 @@ Get up and running with our most popular resources:
 
 ### 🎮 Core Systems
 - **[Discord API](/resources/discordAPI)** - Complete Discord integration
-- **[Advanced Player Tracking](/resources/advancedPlayerTracking)** - Real-time player monitoring
-- **[Vehicle Permissions (vPerms)](/resources/vPerms)** - Role-based vehicle access control
-- **[Weapon Permissions (wPerms)](/resources/wPerms)** - Role-based weapon access control
+- **[Natural Disasters](/resources/naturalDisasters)** - Dynamic weather events & weather/time control
 - **[ACE Permissions](/resources/acePerms)** - Advanced permission system
 
 ### 🚨 Emergency & Medical
 - **[Emergency Response System (ERS)](/resources/ers)** - Emergency services
+- **[Night Shifts MDT](/resources/nightShifts)** - Control emergency services and registrations
 - **[Coma & Down System](/resources/comaAndDownSystem)** - Realistic injury system
 - **[Ped & Player CPR](/resources/pedAndPlayerCPR)** - Medical assistance
 - **[Boat Rescue](/resources/boatRescue)** - Water rescue operations
 
 ### 🌪️ Environmental Features
-- **[Natural Disasters](/resources/naturalDisasters)** - Dynamic weather events
 - **[Storm Chasing](/resources/stormChasing)** - Weather-based gameplay
 - **[Smoke Generator](/resources/smokeGenerator)** - Atmospheric effects
-- **[Smoke Screen](/resources/smokeScreen)** - Tactical smoke deployment
+- **[Smoke Screen](/resources/smokeScreen)** - Tactical handheld smoke deployment
 - **[Air Raid Sirens](/resources/airRaidSirens)** - Emergency warning systems
 - **[Landing Zone Alarm](/resources/landingZoneAlarm)** - Landing zone notifications
 
@@ -78,9 +82,11 @@ Get up and running with our most popular resources:
 - **[Objectives](/resources/objectives)** - Mission and objective system
 - **[Raids](/resources/raids)** - Dynamic raid events
 - **[Party System](/resources/partySystem)** - Group management
-- **[Night Shifts](/resources/nightShifts)** - Time-based gameplay
 - **[Henchmen](/resources/henchmen)** - NPC henchman system
 - **[Gemstone Mining Job](/resources/gemstoneMiningJob)** - Mining profession
+- **[Advanced Player Tracking](/resources/advancedPlayerTracking)** - Real-time player monitoring
+- **[Props & Speed Zones](/resources/propsAndSpeedzones)** - Speed enforcement
+- **[Onto the Seas](/resources/ontoTheSeas)** - Maritime features
 
 ### 🚁 Military & Tactical
 - **[Aircraft Radar](/resources/aircraftRadar)** - Aircraft detection system
@@ -96,14 +102,14 @@ Get up and running with our most popular resources:
 - **[Discord Player Names](/resources/discordPlayerNames)** - Username synchronization
 - **[Discord Spawn](/resources/discordSpawn)** - Role-based spawning
 - **[Discord Teams](/resources/discordTeams)** - Team management
+- **[Discord Vehicle Permissions (vPerms)](/resources/vPerms)** - Role-based vehicle access control
+- **[Discord Weapon Permissions (wPerms)](/resources/wPerms)** - Role-based weapon access control
 
 ### 🛠️ Utility Systems
 - **[Easy 3D Text Labels](/resources/easy3dTextLabels)** - 3D text display
 - **[Configurable Zones](/resources/configurableZones)** - Zone management
-- **[Props & Speed Zones](/resources/propsAndSpeedzones)** - Speed enforcement
 - **[Loading Screen](/resources/loadingScreen)** - Custom loading screens
 - **[Subtitles](/resources/subtitles)** - Subtitle system
-- **[Onto the Seas](/resources/ontoTheSeas)** - Maritime features
 
 ---
 

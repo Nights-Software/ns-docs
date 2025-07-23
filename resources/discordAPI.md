@@ -176,7 +176,7 @@ Set these bot permissions:
 
 ### Step 4: Invite Bot to Server
 Use this URL format (replace CLIENT_ID with your bot's client ID):
-```
+```conf
 https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=1024&scope=bot
 ```
 

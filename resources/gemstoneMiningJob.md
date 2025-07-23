@@ -59,6 +59,7 @@ Mine your way through the quarry or anywhere else. Configure it all yourself! Co
 ## 🛒 Purchase Information
 
 **Get Gemstone Mining Job:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5022830){: .btn .btn-blue}
 
 ---
@@ -124,7 +125,7 @@ Mine your way through the quarry or anywhere else. Configure it all yourself! Co
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_gemstone_mining
 ```
 

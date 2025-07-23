@@ -4,15 +4,15 @@ title: "Natural Disasters"
 nav_order: 6
 has_children: false
 has_toc: true
-last_modified_date: "2025-07-22 16:00:00"
+last_modified_date: "2025-01-22"
 ---
 
 <img class="cover-img" src="/assets/img/night_natural_disasters.png" alt="Natural Disasters Resource" draggable="false">
 
-# Natural Disasters (Normal / DLC 1, 2, 3, 4 & 5)
+# Natural Disasters
 {: .no_toc }
 
-A guide to install Natural Disasters for FiveM
+A comprehensive natural disaster system for FiveM servers featuring dynamic weather, blackouts, and multiple disaster types.
 {: .fs-5 .fw-300 }
 
 Just released: DLC 5!
@@ -31,141 +31,232 @@ Just released: DLC 5!
 
 ---
 
-## Purchasing the resource
+## Overview
 
-Find this product and it's DLC's at:
+Natural Disasters is a comprehensive weather and disaster system that brings dynamic environmental challenges to your FiveM server. The system includes multiple disaster types, weather synchronization, blackout mechanics, and seamless integration with popular sound systems.
 
-* Base: [https://store.nights-software.com/package/5131340](https://store.nights-software.com/package/5131340)
-* DLC 1: [https://store.nights-software.com/package/5154004](https://store.nights-software.com/package/5154004)
-* DLC 2: [https://store.nights-software.com/package/5183358](https://store.nights-software.com/package/5183358)
-* DLC 3: [https://store.nights-software.com/package/5314042](https://store.nights-software.com/package/5314042)
-* DLC 4: [https://store.nights-software.com/package/5673677](https://store.nights-software.com/package/5673677)
-* DLC 5: [https://store.nights-software.com/package/5968995](https://store.nights-software.com/package/5968995)
+### Key Features
 
-*You require the base resource to be able to purchase DLC1.*
-*You require DLC1 resource to be able to purchase the DLC2.*
-*You require DLC2 resource to be able to purchase the DLC3.*
-*You require DLC3 resource to be able to purchase the DLC4.*
-*You require DLC4 resource to be able to purchase the DLC5.*
+- **Multiple Disaster Types**: Tornadoes, earthquakes, tsunamis, and more
+- **Dynamic Weather System**: Built-in weather and time management
+- **Blackout Mechanics**: Realistic power outages during disasters
+- **Sound Integration**: Support for xSound and PlayCustomSounds
+- **Framework Compatibility**: Works with ESX, QBCore, and standalone setups
+- **OneSync Compatible**: Legacy and Infinity support
+- **DLC Expansion**: 5 additional content packs available
 
-## Installation Notice
-*Got all of the Natural Disasters? Install just DLC5, this contains all code required. The latest resource is the one you install! The pack includes Air Raid Sirens which you can seperately install.*
+## Purchase Information
 
-## Downloading the resource
+### Base Resource
+- **Store Link**: [Natural Disasters Base](https://store.nights-software.com/package/5131340)
 
-Download this resource via [https://portal.cfx.re/assets/granted-assets](https://portal.cfx.re/assets/granted-assets).
+### DLC Packs
+- **DLC 1**: [Natural Disasters DLC 1](https://store.nights-software.com/package/5154004)
+- **DLC 2**: [Natural Disasters DLC 2](https://store.nights-software.com/package/5183358)
+- **DLC 3**: [Natural Disasters DLC 3](https://store.nights-software.com/package/5314042)
+- **DLC 4**: [Natural Disasters DLC 4](https://store.nights-software.com/package/5673677)
+- **DLC 5**: [Natural Disasters DLC 5](https://store.nights-software.com/package/5968995)
 
-## Optional: Built in or external sound resources.
+### Requirements
+- Base resource required for DLC 1
+- DLC 1 required for DLC 2
+- DLC 2 required for DLC 3
+- DLC 3 required for DLC 4
+- DLC 4 required for DLC 5
 
-1. If you are using the built in sound system, skip this whole step and move on to 'Installing the resource'.
+### Installation Notice
+*Got all of the Natural Disasters? Install just DLC5, this contains all code required. The latest resource is the one you install! The pack includes Air Raid Sirens which you can separately install.*
 
-1. Drag "PlayCustomSounds" and/or "xsound" in your /resources/ folder. Download these from the creators. Using integrations? You will require both resources if you use Air Raid Sirens 
-Integration: [https://store.nights-software.com/package/5030134](https://store.nights-software.com/package/5030134)
+## Installation
 
-1. Ensure or start the resource in server.cfg. 
-Example:
-```lua
-ensure xsound
-```
-xSound must be somewhere on top of server.cfg and preferably downloaded fresh from: [https://github.com/Xogy/xsound](https://github.com/Xogy/xsound)
-PlayCustomSounds can be downloaded fresh from: [https://github.com/LondonStudios/PlayCustomSounds](https://github.com/LondonStudios/PlayCustomSounds)
-* Note: Don't forget to add the .ogg sound files, located in folder: SoundFiles (found in your purchased resource for Air Raid Sirens & Natural Disasters) to the sound resource (PlayCustomSounds). If you use xSound make sure to update c_functions.lua with your desired sound URL.
+### Prerequisites
 
-1. Configure natural_disasters/config/config.lua in the next step and set the sound resource you are using to **true** and the other to **false**.
+#### Sound System Setup (Optional)
+If you are using the built-in sound system, skip this step and proceed to resource installation.
 
-1. Note: If you use xsound, use the `dependency 'xsound'` in fxmanifest.lua, otherwise comment it or leave it out.
-Example of a comment: `-- dependency 'xsound'`
+1. **Download Sound Resources**:
+   - [xSound](https://github.com/Xogy/xsound) - Download fresh from GitHub
+   - [PlayCustomSounds](https://github.com/LondonStudios/PlayCustomSounds) - Download fresh from GitHub
 
-1. xSound must be installed fresh from [https://github.com/Xogy/xsound](https://github.com/Xogy/xsound)
+2. **Install Sound Resources**:
+   - Drag "PlayCustomSounds" and/or "xsound" into your `/resources/` folder
+   - If using Air Raid Sirens integration, you'll need both resources
 
-## Installing the resource
+3. **Configure Server.cfg**:
+   ```lua
+   ensure xsound
+   ```
+   - xSound must be placed high in server.cfg
+   - Download fresh from GitHub for best compatibility
 
-*Note: Always make sure when you transfer files to your server you follow this order: (Otherwise you will experience parsing errors in F8 console.)*
+4. **Add Sound Files**:
+   - Copy `.ogg` sound files from the `SoundFiles` folder (in your purchased resource)
+   - Add them to your chosen sound resource
+   - For xSound: Update `c_functions.lua` with your desired sound URL
 
-```
-ZIP Package -> Unpack in a folder on your local machine -> Set your File Transfer Protocol (FTP) type to binary -> drag from local machine into the server resources folder -> server.cfg (ensure script) and then boot up the server.
-```
+5. **Configure Dependencies**:
+   - If using xSound: Add `dependency 'xsound'` to fxmanifest.lua
+   - If not using xSound: Comment out or remove the dependency line
+   - Example: `-- dependency 'xsound'`
 
-1. Drag the resource into your resources folder.
-    - NOTE: If you are installing the DLC, replace the base resource! Overwrite it with the DLC!
+### Resource Installation
 
-1. Carefully read the instructions given in natural_disasters/config/config.lua, it offers you all kinds of customization options!
+#### Step 1: Download
+Download the resource from [CFX Portal](https://portal.cfx.re/assets/granted-assets).
 
-1. Ensure or start the resource in server.cfg. (Do not rename this script!)
-Example:
-```lua
-ensure night_natural_disasters
-```
+#### Step 2: File Transfer
+**Important**: Follow this exact order to avoid parsing errors:
+1. Unpack ZIP package in a local folder
+2. Set FTP transfer type to **binary**
+3. Drag files from local machine to server resources folder
+4. Add to server.cfg
+5. Boot server
 
-## Permissions
+#### Step 3: Install Resource
+1. Drag the resource into your resources folder
+   - **Note**: If installing DLC, replace the base resource completely
+2. Configure `natural_disasters/config/config.lua` for customization
+3. Add to server.cfg:
+   ```lua
+   ensure night_natural_disasters
+   ```
 
-You have several permission options in config.lua:
+## Configuration
 
-1. [Discord API](https://store.nights-software.com/package/5035729)
+### Permissions
+Choose from multiple permission systems:
 
-2. Ace Permissions: [Ace Permissions Documentation](https://docs.nights-software.com/resources/acePerms/)
+1. **Discord API**: [Discord API Documentation](https://store.nights-software.com/package/5035729)
+2. **Ace Permissions**: [Ace Permissions Documentation](https://docs.nights-software.com/resources/acePerms/)
+3. **Framework Groups**: Configure QBCore or ESX group names
+4. **Everyone**: Default setting (no restrictions)
 
-3. QBCore or ESX, define the group names in the permission group/role list.
+### Weather Compatibility
 
-4. Everyone has permission (Default)
+#### Using Built-in Weather System
+- Remove/disable other weather/time systems on your server
+- Built-in system handles all weather and time management
 
-## Weather Compatibility
+#### Using External Weather Systems
+- Disable built-in weather in config.lua
+- Use compatible weather scripts:
+  - qb-weathersync
+  - cd_easytime
+  - vSyncR
 
-1. If you are using the built in weather & time system, make sure to remove/disable any other weather/time systems on your server and then skip this step.
+**Free Weather Script Edits**: Available in our Discord [#free-files](https://discord.com/channels/989438923925229598/989479452209733662) channel (requires @Customer role)
 
-1. If you do not use the built in weather and time system, you need to disable it in the config.lua and afterwards you will require a compatible one, described below.
+### Sound File Management
 
-*You need @Customer roles in our Discord to see the channel link below: Claim your purchase or create a ticket in our Discord!* 
+#### Adding Disaster Sound Files
+1. Navigate to `NUI/sounds/` folder
+2. Add your `.ogg` sound file
+3. Configure filename (without .ogg extension) in `config/config.lua`
 
-In our Discord we provide free weather script edits [#free-files](https://discord.com/channels/989438923925229598/989479452209733662) which in most cases you require to prevent flickering lights on your screen. This is due to your current weather file overwriting the weather the disaster is trying to set. The same goes for blackouts.
-
-So alternative weather script compatibility is found in 3 alternative resources: qb-weathersync or cd_easytime or vSyncR (edits by Nights Software [#free-files](https://discord.com/channels/989438923925229598/989479452209733662))
-
-## How to add sound files for disasters?
-
-1. Enter the NUI/sounds/ folder and drag your soundfile into this folder. After you've done that, head to config/config.lua and assign the file name without .ogg in the designated area.
-
-## How to add sound files for the Air Raid Sirens?
-
-1. Enter the night_air_raid_sirens folder and head to the NUI/sounds/ folder. Drag the sound file in there. Head back to night_natural_disasters and place the sound file name without .ogg in the `SoundFileNameForAirRaidSirens = "yourfilename",` variable. 
+#### Adding Air Raid Siren Sound Files
+1. Navigate to `night_air_raid_sirens/NUI/sounds/` folder
+2. Add your sound file
+3. Configure in main config: `SoundFileNameForAirRaidSirens = "yourfilename"`
 
 ## Exports
 
-1. Serverside Exports
+### Server-side Exports
 ```lua
+-- Disaster Management
 exports.night_natural_disasters:SpawnDisaster(id)
 exports.night_natural_disasters:StopDisaster(id)
+
+-- Weather & Time Control
 exports.night_natural_disasters:NextWeatherStage()
 exports.night_natural_disasters:SetWeather(weatherType)
 exports.night_natural_disasters:SetTime(hour, minute)
+
+-- System Toggles
 exports.night_natural_disasters:ToggleBlackout()
 exports.night_natural_disasters:ToggleFreezeTime()
 exports.night_natural_disasters:ToggleDynamicWeather()
+
+-- Status Checks
 exports.night_natural_disasters:GetCurrentWeather() -- returns "EXTRASUNNY" for example (string)
 exports.night_natural_disasters:GetIsBlackoutActive() -- returns true or false (boolean)
 exports.night_natural_disasters:GetIsTimeFrozen() -- returns true or false (boolean)
 exports.night_natural_disasters:GetIsWeatherDynamic() -- returns true or false (boolean)
-exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords --[[Vector 3]], disasterID --[[index nr]], soundFileName --[[File name]], soundFileVolume --[[Volume]])
+
+-- External Sound Integration
+exports[Config.Integrations.CustomSoundResource]:StartExternalSound(coords, disasterID, soundFileName, soundFileVolume)
 ```
 
-2. Clientside Exports
+### Client-side Exports
 ```lua
+-- Synchronization Control
 exports.night_natural_disasters:PauseSynchronization(boolean) -- Used by housing system scripts for weather & disaster proof interiors.
 ```
 
-## Recommended!
+## Troubleshooting
 
-* [https://store.nights-software.com/package/5131340](https://store.nights-software.com/package/5131340) - Natural Disasters base (Purchase this one, do not install, you need this one to be able to buy DLC 1)
-* [https://store.nights-software.com/package/5154004](https://store.nights-software.com/package/5154004) - Natural Disasters DLC 1 (Install this one and remove the older versions: base.)
-* [https://store.nights-software.com/package/5183358](https://store.nights-software.com/package/5183358) - Natural Disasters DLC 2 (Install this one and remove the older versions: base AND DLC 1.)
-* [https://store.nights-software.com/package/5314042](https://store.nights-software.com/package/5314042) - Natural Disasters DLC 3 (Install this one and remove the older versions: base, DLC 1 AND DLC 2)
-* [https://store.nights-software.com/package/5673677](https://store.nights-software.com/package/5673677) - Natural Disasters DLC 4 (Install this one and remove the older versions: Base, DLC 1, DLC2 AND DLC3)
-* [https://store.nights-software.com/package/5968995](https://store.nights-software.com/package/5968995) - Natural Disasters DLC 5 (Install this one and remove the older versions: Base, DLC 1, DLC2, DLC3 AND DLC4)
-* [https://store.nights-software.com/package/5030134](https://store.nights-software.com/package/5030134) - Air Raid Sirens, for the nice integration. (Install this one as well as the selected above.) 
+### Common Issues
+
+1. **Parsing Errors in F8 Console**
+   - Ensure you follow the exact file transfer order
+   - Use binary FTP transfer mode
+   - Don't rename the script
+
+2. **Weather Flickering**
+   - Disable conflicting weather systems
+   - Use our free weather script edits from Discord
+   - Ensure proper weather compatibility
+
+3. **Sound Issues**
+   - Verify sound files are in correct format (.ogg)
+   - Check file paths in configuration
+   - Ensure sound resource is properly installed
+
+4. **Permission Problems**
+   - Verify Discord API setup
+   - Check Ace permissions configuration
+   - Confirm framework group names
+
+### Best Practices
+
+1. **Installation Order**
+   - Always install the latest DLC version
+   - Remove older versions completely
+   - Install Air Raid Sirens separately if needed
+
+2. **Configuration**
+   - Read through config.lua thoroughly
+   - Test settings on a development server first
+   - Backup configurations before major changes
+
+3. **Performance**
+   - Monitor server performance during disasters
+   - Adjust disaster frequency as needed
+   - Use appropriate sound file sizes
+
+## Related Resources
+
+### Recommended Additions
+- [Air Raid Sirens](https://store.nights-software.com/package/5030134) - Enhanced disaster atmosphere
+- [Discord API](https://store.nights-software.com/package/5035729) - Role-based permissions
+- [Ace Permissions](https://docs.nights-software.com/resources/acePerms/) - Advanced permission system
+
+### Installation Order
+1. **DLC 5** (contains all previous content) - [Purchase](https://store.nights-software.com/package/5968995)
+2. **Air Raid Sirens** (optional integration) - [Purchase](https://store.nights-software.com/package/5030134)
 
 ## Support
 
-Read through the instructions again if you have not managed to install the resource. Can't get it to work still?
-Create a ticket through our dedicated support system in Discord: 
+### Documentation
+- Review this guide thoroughly before seeking support
+- Check configuration settings carefully
+- Verify all prerequisites are met
+
+### Community Support
+Join our Discord community for assistance:
 
 [Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}
+
+### Technical Support
+- Create a ticket in our Discord support system
+- Provide detailed error messages and configuration
+- Include server logs when possible

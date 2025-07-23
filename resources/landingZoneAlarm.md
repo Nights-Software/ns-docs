@@ -57,6 +57,7 @@ Use the `/lzalarm` command and place an emergency landing site down on the groun
 ## 🛒 Purchase Information
 
 **Get Landing Zone Alarm:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5020551){: .btn .btn-blue}
 
 ---
@@ -122,7 +123,7 @@ Use the `/lzalarm` command and place an emergency landing site down on the groun
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_lzalarm
 ```
 

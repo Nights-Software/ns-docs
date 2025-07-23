@@ -55,6 +55,7 @@ Discord Linked Spawn Selector is an advanced spawn management system that provid
 ## 🛒 Purchase Information
 
 **Get Discord Linked Spawn Selector:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5197594){: .btn .btn-blue}
 
 ---
@@ -130,7 +131,7 @@ Discord Linked Spawn Selector is an advanced spawn management system that provid
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_discord_spawn
 ```
 

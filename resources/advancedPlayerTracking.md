@@ -55,6 +55,7 @@ Advanced Player Tracking v2 is a standalone player tracking system that allows p
 ## 🛒 Purchase Information
 
 **Get Advanced Player Tracking v2:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5010021){: .btn .btn-blue}
 
 ---
@@ -123,7 +124,7 @@ Advanced Player Tracking v2 is a standalone player tracking system that allows p
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_advancedTracking
 ```
 

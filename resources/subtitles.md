@@ -46,6 +46,7 @@ Simply use client-side exports to invoke subtitles on your game screen and grant
 ## 🛒 Purchase Information
 
 **Get Subtitles for FiveM:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/6043540){: .btn .btn-blue}
 
 ---
@@ -112,7 +113,7 @@ Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/gran
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_subtitles
 ```
 

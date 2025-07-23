@@ -67,6 +67,7 @@ Discord Linked Lockers is a comprehensive locker system that allows players to c
 ## 🛒 Purchase Information
 
 **Get Discord Linked Lockers:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5296139){: .btn .btn-blue}
 
 ---
@@ -130,7 +131,7 @@ Discord Linked Lockers is a comprehensive locker system that allows players to c
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_discord_lockers
 ```
 

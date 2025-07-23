@@ -46,6 +46,7 @@ Easy 3D Text Labels is a powerful text display system that allows you to create 
 ## 🛒 Purchase Information
 
 **Get Easy 3D Text Labels:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5009919){: .btn .btn-blue}
 
 ---
@@ -110,7 +111,7 @@ Easy 3D Text Labels is a powerful text display system that allows you to create 
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_easylabels
 ```
 

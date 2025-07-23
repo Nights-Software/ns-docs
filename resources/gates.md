@@ -65,6 +65,7 @@ Unlock another opportunity in FiveM! Easily configure gates and bollards at stra
 ## 🛒 Purchase Information
 
 **Get Gates & Bollards:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/6005872){: .btn .btn-blue}
 
 ---
@@ -134,7 +135,7 @@ Unlock another opportunity in FiveM! Easily configure gates and bollards at stra
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_gates
 ```
 

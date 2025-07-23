@@ -59,6 +59,7 @@ Coma & Down System v3 is a comprehensive medical roleplay system that creates re
 ## 🛒 Purchase Information
 
 **Get Coma & Down System v3:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5009962){: .btn .btn-blue}
 
 ---
@@ -123,7 +124,7 @@ Coma & Down System v3 is a comprehensive medical roleplay system that creates re
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_coma_down_system
 ```
 

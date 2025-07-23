@@ -50,6 +50,7 @@ Place down props (like cones / barriers) with a user-friendly interface and use 
 ## 🛒 Purchase Information
 
 **Get Props & Speed Zones:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5087747){: .btn .btn-blue}
 
 ---
@@ -114,7 +115,7 @@ Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/gran
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_prop_system
 ```
 

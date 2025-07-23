@@ -55,6 +55,7 @@ Ammo Boxes & Crates is a comprehensive ammunition distribution system that allow
 ## 🛒 Purchase Information
 
 **Get Ammo Boxes & Crates:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5416619){: .btn .btn-blue}
 
 ---
@@ -114,7 +115,7 @@ Ammo Boxes & Crates is a comprehensive ammunition distribution system that allow
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_ammobox
 ```
 

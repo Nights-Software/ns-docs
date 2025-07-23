@@ -61,6 +61,7 @@ The Garage System allows you to configure infinite garages around the map. All t
 ## 🛒 Purchase Information
 
 **Get Garage System:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5208515){: .btn .btn-blue}
 
 ---
@@ -129,7 +130,7 @@ The Garage System allows you to configure infinite garages around the map. All t
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_garage_system
 ```
 

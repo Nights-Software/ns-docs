@@ -55,6 +55,7 @@ The smokescreen resource allows players to place 1 smokescreen per 800 GTA meter
 ## 🛒 Purchase Information
 
 **Get Smokescreen:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5939502){: .btn .btn-blue}
 
 ---
@@ -135,7 +136,7 @@ Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/gran
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_smokescreen
 ```
 

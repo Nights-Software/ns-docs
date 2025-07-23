@@ -47,6 +47,7 @@ Perform animated CPR on any injured pedestrian and/or player on the street. This
 ## 🛒 Purchase Information
 
 **Get Ped & Player CPR:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5009947){: .btn .btn-blue}
 
 ---
@@ -117,7 +118,7 @@ Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/gran
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_ped_cpr
 ```
 

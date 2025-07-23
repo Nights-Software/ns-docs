@@ -130,7 +130,7 @@ ensure night_loading_screen
 
 Most resources follow this or a similar structure:
 
-```
+```conf
 resource_folder/
 ├── fxmanifest.lua
 ├── config/
@@ -268,7 +268,3 @@ When updating, check for:
 - Adequate server specifications
 - Proper network configuration
 - Regular maintenance schedules
-
----
-
-*Last updated: January 27, 2025* 

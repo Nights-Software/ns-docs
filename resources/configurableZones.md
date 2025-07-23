@@ -54,6 +54,7 @@ Configurable Zones is a powerful zone management system that allows you to creat
 ## 🛒 Purchase Information
 
 **Get Configurable Zones:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5047155){: .btn .btn-blue}
 
 ---
@@ -118,7 +119,7 @@ Configurable Zones is a powerful zone management system that allows you to creat
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_easy_zones
 ```
 

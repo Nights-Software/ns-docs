@@ -53,6 +53,7 @@ Discord Allowlist is a streamlined access control system that integrates with yo
 ## 🛒 Purchase Information
 
 **Get Discord Allowlist:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5035752){: .btn .btn-blue}
 
 ---
@@ -128,7 +129,7 @@ Discord Allowlist is a streamlined access control system that integrates with yo
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_discordallowlist
 ```
 

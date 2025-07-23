@@ -58,6 +58,7 @@ Boat Rescue (Tow) is an innovative FiveM resource that brings realistic boat tow
 ## 🛒 Purchase Information
 
 **Get Boat Rescue (Tow) - Early Access:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5317442){: .btn .btn-blue}
 
 ---
@@ -120,7 +121,7 @@ Boat Rescue (Tow) is an innovative FiveM resource that brings realistic boat tow
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_boatRescue
 ```
 

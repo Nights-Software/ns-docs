@@ -38,6 +38,7 @@ A guide to install Emergency Response Simulator for FiveM
 ## 🛒 Purchase Information
 
 **Get Emergency Response Simulator:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/category/ers){: .btn .btn-blue}
 
 ---

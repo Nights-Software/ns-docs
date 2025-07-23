@@ -57,6 +57,7 @@ Welcome to Night Shifts - MDT, a customizable MDT system for your community. Whe
 ## 🛒 Purchase Information
 
 **Get Night Shifts MDT:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5667103){: .btn .btn-blue}
 
 ---
@@ -119,13 +120,13 @@ We assume you have a database for your FiveM server. If you do not have one, con
 2. **Connect to your database** using credentials in an SQL connection string
 3. **Add to server.cfg** above the ensure/start of resources:
 
-```cfg
+```conf
 set mysql_connection_string "user=Your_Database_Username;password=Your_Database_Password;host=Your_Database_Host;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
 ```
 
 {: .tip }
 > **Localhost Example:**
-> ```cfg
+> ```conf
 > set mysql_connection_string "user=root;password=;host=localhost;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
 > ```
 
@@ -143,7 +144,7 @@ If you don't have oxmysql installed, download it from:
 1. **Place oxmysql** into your resources folder
 2. **Add to server.cfg** - Ensure it starts before Night Shifts MDT:
 
-```cfg
+```conf
 ensure oxmysql
 ```
 
@@ -154,7 +155,7 @@ ensure oxmysql
 {: .no_toc }
 
 Start your server and check the console for oxmysql connection messages. You should see:
-```
+```conf
 [script:oxmysql] Database server connection established!
 ```
 
@@ -167,14 +168,14 @@ This optional resource fits well within the purpose of Night Shifts MDT:
 2. **Extract and rename** 'nearest-postal-master' to 'nearest-postal'
 3. **Add to server.cfg** before Night Shifts MDT:
 
-```cfg
+```conf
 ensure nearest-postal
 ```
 
 4. **Install postal map** - Download from [CFX Release](https://forum.cfx.re/t/release-postal-code-map-minimap-new-improved-v1-3/147458)
 5. **Add map resource** to server.cfg:
 
-```cfg
+```conf
 ensure map
 ```
 
@@ -187,7 +188,7 @@ Download our free Discord API: [NS Discord API Free](https://store.nights-softwa
 2. **Note role names** from Discord API config.lua for later use
 3. **Add to server.cfg** before Night Shifts MDT:
 
-```cfg
+```conf
 ensure night_discordapi
 ```
 
@@ -199,7 +200,7 @@ ensure night_discordapi
 3. **Place 'night_shifts'** into your resources folder
 4. **Add to server.cfg**:
 
-```cfg
+```conf
 ensure night_shifts
 ```
 

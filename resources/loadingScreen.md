@@ -80,6 +80,7 @@ This FiveM loadingscreen allows you to configure your (ambilight youtube video) 
 ## 🛒 Purchase Information
 
 **Get Ambilight Loading Screen:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5504509){: .btn .btn-blue}
 
 ---
@@ -148,7 +149,7 @@ This FiveM loadingscreen allows you to configure your (ambilight youtube video) 
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_loading_screen
 ```
 

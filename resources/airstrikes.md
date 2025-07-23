@@ -60,6 +60,7 @@ Airstrikes FiveM is a comprehensive aerial combat system that provides both orbi
 ## 🛒 Purchase Information
 
 **Get Airstrikes FiveM:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/){: .btn .btn-blue}
 
 ---
@@ -129,7 +130,7 @@ Airstrikes FiveM is a comprehensive aerial combat system that provides both orbi
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_airstrikes
 ```
 

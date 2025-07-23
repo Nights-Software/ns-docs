@@ -46,6 +46,7 @@ Simply use client-side exports to invoke objectives on your game screen and give
 ## 🛒 Purchase Information
 
 **Get Objectives:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/6064980){: .btn .btn-blue}
 
 ---
@@ -108,7 +109,7 @@ Simply use client-side exports to invoke objectives on your game screen and give
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_objectives
 ```
 

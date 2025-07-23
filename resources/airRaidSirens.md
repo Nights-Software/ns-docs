@@ -65,6 +65,7 @@ Air Raid Sirens V3 is a comprehensive emergency alert system that allows server 
 ## 🛒 Purchase Information
 
 **Get Air Raid Sirens V3:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5030134){: .btn .btn-blue}
 
 ---
@@ -133,7 +134,7 @@ Air Raid Sirens V3 is a comprehensive emergency alert system that allows server 
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_air_raid_sirens
 ```
 

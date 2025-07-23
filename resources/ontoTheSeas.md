@@ -47,6 +47,7 @@ Onto the Seas is a script providing your server with features for any skipper to
 ## 🛒 Purchase Information
 
 **Get Onto the Seas!:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5117650){: .btn .btn-blue}
 
 ---
@@ -119,7 +120,7 @@ Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/gran
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_onto_the_sea
 ```
 

@@ -62,6 +62,7 @@ Customize their behavior to your liking; whether it's a relaxed idle stance or a
 ## 🛒 Purchase Information
 
 **Get Henchmen:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/6153056){: .btn .btn-blue}
 
 ---
@@ -137,7 +138,7 @@ Customize their behavior to your liking; whether it's a relaxed idle stance or a
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_henchmen
 ```
 

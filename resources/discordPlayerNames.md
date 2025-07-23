@@ -56,6 +56,7 @@ Discord Playernames is a flexible player identification system that allows you t
 ## 🛒 Purchase Information
 
 **Get Discord Playernames:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5357523){: .btn .btn-blue}
 
 ---
@@ -120,7 +121,7 @@ Discord Playernames is a flexible player identification system that allows you t
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 ensure night_discord_playernames
 ```
 

@@ -51,6 +51,7 @@ The Party System for FiveM allows you to team up with your friends and companion
 ## 🛒 Purchase Information
 
 **Get Party System:**
+
 [Purchase on Nights Software Store](https://store.nights-software.com/package/5472349){: .btn .btn-blue}
 
 ---
@@ -119,7 +120,7 @@ Download this resource via [CFX Portal Assets](https://portal.cfx.re/assets/gran
 
 Add the resource to your `server.cfg`:
 
-```cfg
+```conf
 ensure night_party_system
 ```
 

@@ -58,7 +58,7 @@ ACE Permissions is a permission system that leverages FiveM's native ACE (Access
 
 Add the following code to your `perms.cfg` file:
 
-```cfg
+```conf
 # Permission Groups
 add_ace Admin administrator allow
 add_ace Supporter supporter allow
@@ -87,7 +87,7 @@ add_ace Tester command.teleport allow
 
 Add the following line to your `server.cfg` file:
 
-```cfg
+```conf
 exec perms.cfg
 ```
 
@@ -203,7 +203,7 @@ end
 ### **Permission Structure Examples**
 {: .no_toc }
 
-```cfg
+```conf
 # Admin Group - Full Access
 add_ace Admin administrator allow
 add_ace Admin command.* allow
@@ -233,7 +233,7 @@ add_ace Tester command.noclip allow
 
 Create your own permission groups for specific purposes:
 
-```cfg
+```conf
 # Custom Groups
 add_ace Police police allow
 add_ace Fire fire allow
@@ -258,7 +258,7 @@ add_ace Medic command.revive allow
 
 Use inheritance to create permission hierarchies:
 
-```cfg
+```conf
 # Base permissions
 add_ace Staff staff allow
 
