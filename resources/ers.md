@@ -66,11 +66,11 @@ A guide to install Emergency Response Simulator for FiveM
 {: .no_toc }
 
 - **✅ Recommended Gamebuild:** 3323
-- **✅ Recommended Artifacts:** 17000
-- **❌ Not Compatible:** Gamebuild 3407, Artifacts versions below 17000
+- **✅ Recommended Artifacts:** 17000(+)
+- **❌ Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts versions below 14230.
 
 {: .note }
-> **Important:** If you are using newer Artifacts or GameBuilds, test this. Please inform us of (in)compatibility.
+> **Important:** If you are using different Gamebuilds or Artifacts, trial and error this. Please inform us of (in)compatibility.
 
 ### **OneSync Requirements**
 {: .no_toc }
