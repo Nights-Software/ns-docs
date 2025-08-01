@@ -95,6 +95,18 @@ A guide to install Emergency Response Simulator for FiveM
 - **Weapons:** Configure in `night_ers/config/gear-config.lua`
 - **Code:** Adjust item distribution in `night_ers/client/c_functions.lua`
 
+### **Known Incompatibilities**
+{: .no_toc }
+
+{: .warning }
+> **Incompatible Resources:**
+> - RemoveCops-AI
+> - Andrew's Advanced AI
+> - Realistic Euphoria Physics
+> - RedSaints Stretcher/Ambulance
+> - Improved-Seat-Shuffle-FiveM by Dalrae1
+> - Clear world commands / Anti-cheat (resolve with your provider)
+
 ---
 
 ## 📦 Installation Process
