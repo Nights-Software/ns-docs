@@ -95,16 +95,6 @@ A guide to install Emergency Response Simulator for FiveM
 - **Weapons:** Configure in `night_ers/config/gear-config.lua`
 - **Code:** Adjust item distribution in `night_ers/client/c_functions.lua`
 
-### **Known Incompatibilities**
-{: .no_toc }
-
-{: .warning }
-> **Incompatible Resources:**
-> - RemoveCops-AI
-> - Andrew's Advanced AI
-> - Realistic Euphoria Physics
-> - Clear world commands / Anti-cheat (may cause entity deletion issues)
-
 ---
 
 ## 📦 Installation Process
@@ -280,20 +270,70 @@ ERS includes open-source callout scripts in `night_ers/callouts/plugins/*.lua`. 
 {: .no_toc }
 
 ```lua
-function OnIsOfferedCallout(calloutdata)
-    -- Triggered when callout is offered (may not be accepted)
+--- Handles when a callout is offered to the player.
+-- @param calloutData table The data of the callout.
+function OnIsOfferedCallout(calloutData)
+    -- Add your code here. Keep in mind they are offered a callout. It is possible they will not accept the callout.
+    -- local jsonReady = CloneWithoutFunctions(calloutData)
+    TriggerServerEvent('ErsIntegration::OnIsOfferedCallout', calloutData)
 end
 
-function OnAcceptedCalloutOffer(calloutdata)
-    -- Triggered when callout is accepted
+--- Handles when a callout is accepted by the player.
+-- @param calloutData table The data of the callout.
+function OnAcceptedCalloutOffer(calloutData)
+    -- Add your code here. Keep in mind they have accepted a callout. It is possible they will cancel before arrival (and spawn of entities).
+    TriggerServerEvent('ErsIntegration::OnAcceptedCalloutOffer', calloutData)
 end
 
-function OnArrivedAtCallout(calloutdata)
-    -- Triggered before entities are built
+--- Handles when the player arrives at a callout.
+-- @param calloutData table The data of the callout.
+function OnArrivedAtCallout(calloutData)
+    -- Add your code here. This is triggered right before the entities are built for a callout. This code will execute first.
+    TriggerServerEvent('ErsIntegration::OnArrivedAtCallout', calloutData)
 end
 
-function OnEndedACallout()
-    -- Triggered before entities are deleted
+--- Handles when a callout is ended (as the host). This does not mean the callout is completed.
+-- @param calloutData table The data of the callout.
+function OnEndedACallout(calloutData)
+    -- Add your code here. This is triggered right before the entities are deleted or callout is cancelled serverside. This code will execute first.
+    TriggerServerEvent('ErsIntegration::OnEndedACallout', calloutData)
+end
+
+--- Handles when a callout is completed successfully.
+-- @param calloutData table The data of the callout.
+function OnCalloutCompletedSuccesfully(calloutData)
+    -- Add your code here. This is triggered right after the entire callout task list is completed.
+    TriggerServerEvent('ErsIntegration::OnCalloutCompletedSuccesfully', calloutData)
+end
+
+--- Handles when a pullover is initiated.
+-- @param pedData table The data of the ped.
+-- @param vehicleData table The data of the vehicle.
+function OnPullover(pedData, vehicleData)
+    -- Add your custom pullover logic here or trigger (and build) a server event to handle it.
+    TriggerServerEvent('ErsIntegration::OnPullover', pedData, vehicleData)
+end
+
+--- Handles when a pullover is ended.
+-- @param pedData table The data of the ped.
+-- @param vehicleData table The data of the vehicle.
+function OnPulloverEnded(pedData, vehicleData)
+    -- Add your custom pullover ended logic here or trigger (and build) a server event to handle it.
+    TriggerServerEvent('ErsIntegration::OnPulloverEnded', pedData, vehicleData)
+end
+
+--- Handles when a pursuit is started.
+-- @param pedData table The data of the ped.
+function OnPursuitStarted(pedData)
+    -- Add your custom pursuit started logic here or trigger (and build) a server event to handle it.
+    TriggerServerEvent('ErsIntegration::OnPursuitStarted', pedData)
+end
+
+--- Handles when a pursuit is ended.
+-- @param pedData table The data of the ped.
+function OnPursuitEnded(pedData)
+    -- Add your custom pursuit ended logic here or trigger (and build) a server event to handle it.
+    TriggerServerEvent('ErsIntegration::OnPursuitEnded', pedData)
 end
 ```
 
@@ -303,12 +343,116 @@ end
 {: .no_toc }
 
 ```lua
--- src: number - The user who toggled shift
--- isOnShift: boolean - Wether the user is now on shift
--- serviceType: string - The service type of the shift [police, fire, ambulance, tow]
-function OnToggleShift(src, isOnShift, serviceType)
-    -- Triggered when a user toggles their ERS shift.
-end
+--- Handles user shift toggle events.
+-- @param src number The source ID of the user who toggled shift.
+-- @param isOnShift boolean Whether the user is now on shift or off shift.
+-- @param serviceType string The service type of the shift (police, fire, ambulance, tow).
+RegisterServerEvent("ErsIntegration::OnToggleShift")
+AddEventHandler("ErsIntegration::OnToggleShift", function(source, isOnShift, serviceType)
+    -- Add your custom shift toggle logic here
+    -- print(source, isOnShift, serviceType)
+end)
+
+--- Handles first-time NPC interaction events.
+-- @param src number The source ID of the user who interacted with the NPC.
+-- @param pedData table The complete data table of the NPC being interacted with.
+-- @param context string The interaction context:
+RegisterServerEvent("ErsIntegration::OnFirstNPCInteraction")
+AddEventHandler("ErsIntegration::OnFirstNPCInteraction", function(source, pedData, context)
+    -- Add your custom NPC interaction logic here
+    --[[
+        Context frequency analysis:
+        - "on_interaction": Very common (normal ped interactions)
+        - "on_aiming_at_ped": Common (when aiming at peds and ordering them to kneel)
+        - "on_pullover": Common (traffic stops)
+        - "on_pursuit_start": Uncommon (callout/world event peds fleeing, regular peds are usually interacted with first)
+        - "on_pursuit_end": Very rare (edge cases only)
+        - "on_pullover_end": Very rare (edge cases only)
+    ]]
+    -- print(source, json.encode(pedData, { indent = true }), context)
+end)
+
+--- Handles when a callout is offered.
+-- @param calloutData table The data of the callout.
+RegisterServerEvent("ErsIntegration::OnIsOfferedCallout")
+AddEventHandler("ErsIntegration::OnIsOfferedCallout", function(calloutData)
+    local src = source
+    -- Add your custom callout offered logic here
+    -- print(src, calloutData)
+end)
+
+--- Handles when a callout is accepted.
+-- @param calloutData table The data of the callout.
+RegisterServerEvent("ErsIntegration::OnAcceptedCalloutOffer")
+AddEventHandler("ErsIntegration::OnAcceptedCalloutOffer", function(calloutData)
+    local src = source
+    -- Add your custom callout accepted logic here
+    -- print(src, calloutData)
+end)
+
+--- Handles when a callout is arrived at.
+-- @param calloutData table The data of the callout.
+RegisterServerEvent("ErsIntegration::OnArrivedAtCallout")
+AddEventHandler("ErsIntegration::OnArrivedAtCallout", function(calloutData)
+    local src = source
+    -- Add your custom callout arrived at logic here
+    -- print(src, calloutData)
+end)
+
+--- Handles when a callout is ended.
+RegisterServerEvent("ErsIntegration::OnEndedACallout")
+AddEventHandler("ErsIntegration::OnEndedACallout", function()
+    local src = source
+    -- Add your custom callout ended logic here
+    -- print(src)
+end)
+
+--- Handles when a callout is completed successfully.
+-- @param calloutData table The data of the callout.
+RegisterServerEvent("ErsIntegration::OnCalloutCompletedSuccesfully")
+AddEventHandler("ErsIntegration::OnCalloutCompletedSuccesfully", function(calloutData)
+    local src = source
+    -- Add your custom callout completed successfully logic here
+    -- print(src, calloutData)
+end)
+
+--- Handles when a pullover is initiated.
+-- @param pedData table The data of the ped.
+-- @param vehicleData table The data of the vehicle.
+RegisterServerEvent("ErsIntegration::OnPullover")
+AddEventHandler("ErsIntegration::OnPullover", function(pedData, vehicleData)
+    local src = source
+    -- Add your custom pullover logic here
+    -- print(src, pedData, vehicleData)
+end)
+
+--- Handles when a pullover is ended.
+-- @param pedData table The data of the ped.
+-- @param vehicleData table The data of the vehicle.
+RegisterServerEvent("ErsIntegration::OnPulloverEnded")
+AddEventHandler("ErsIntegration::OnPulloverEnded", function(pedData, vehicleData)
+    local src = source
+    -- Add your custom pullover ended logic here
+    -- print(src, pedData, vehicleData)
+end)
+
+--- Handles when a pursuit is started.
+-- @param pedNetId number The network ID of the ped.
+RegisterServerEvent("ErsIntegration::OnPursuitStarted")
+AddEventHandler("ErsIntegration::OnPursuitStarted", function(pedData)
+    local src = source
+    -- Add your custom pursuit started logic here
+    -- print(src, pedData)
+end)
+
+--- Handles when a pursuit is ended.
+-- @param pedData table The data of the ped.
+RegisterServerEvent("ErsIntegration::OnPursuitEnded")
+AddEventHandler("ErsIntegration::OnPursuitEnded", function(pedData)
+    local src = source
+    -- Add your custom pursuit ended logic here, note that it's possible that the ped is being deleted on losing the target.
+    -- print(src, pedData)
+end)
 ```
 
 - Explore the file for more...
@@ -447,12 +591,14 @@ exports['night_ers']:trackPlayerCallout(source, targetSource)
 {: .no_toc }
 
 - ✅ **Recommended Gamebuild:** 3323
-- ✅ **Recommended Artifacts:** 17000
-- ❌ **Not Compatible:** Gamebuild 3407, Artifacts versions below 17000
-- ❌ **RemoveCopsAI:** Remove this resource
-- ❌ **Andrew's Advanced AI:** Remove this resource
-- ❌ **Realistic Euphoria Physics:** Remove this resource
-- ⚠️ **Anti-cheat:** May cause entity deletion issues
+- ✅ **Recommended Artifacts:** 17000(+)
+- ❌ **Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts versions below 14230.
+- ❌ **RemoveCops-AI:** We recommend to disable this resource when using ERS.
+- ❌ **Andrew's Advanced AI:** We recommend to disable this resource when using ERS.
+- ❌ **Realistic Euphoria Physics:** We recommend to disable this resource when using ERS.
+- ❌ **RedSaints Stretcher/Ambulance:** We recommend to disable this resource when using ERS.
+- ❌ **Improved-Seat-Shuffle-FiveM by Dalrae1:** We recommend to disable this resource when using ERS.
+- ⚠️ **Anti-cheat:** May cause entity deletion issues. This can be prevented via your anti-cheat settings. Contact your provider.
 
 ---
 
