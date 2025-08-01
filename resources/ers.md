@@ -230,8 +230,8 @@ ensure night_ers_k9
 | `night_ers/config/spikestrip-config.lua` | Spikestrip settings |
 | `night_ers/config/stretcher-config.lua` | Stretcher settings |
 | `night_ers/config/vehinteractions-config.lua` | Vehicle search settings |
-| `night_ers/client/c_functions.lua` | Client-side functions |
-| `night_ers/server/s_functions.lua` | Server-side functions |
+| `night_ers/client/c_functions.lua` | Client-side functions / events |
+| `night_ers/server/s_functions.lua` | Server-side functions / events |
 
 ### **Configuration Process**
 {: .no_toc }
@@ -273,9 +273,9 @@ ERS includes open-source callout scripts in `night_ers/callouts/plugins/*.lua`. 
 
 ---
 
-## 🔧 Open Source Functions
+## 🔧 Open Source Functions / Events
 
-### **Client Functions** (`night_ers/client/c_functions.lua`)
+### **Client Functions / Events** (`night_ers/client/c_functions.lua`)
 {: .no_toc }
 
 #### **Event Triggers**
@@ -351,7 +351,7 @@ end
 
 - Explore the file for more...
 
-### **Server Functions** (`night_ers/server/s_functions.lua`)
+### **Server Functions / Events** (`night_ers/server/s_functions.lua`)
 {: .no_toc }
 
 ```lua
