@@ -4,7 +4,7 @@ title: "Emergency Response Simulator"
 nav_order: 4
 has_children: false
 has_toc: true
-last_modified_date: "2025-07-22 16:00:00"
+last_modified_date: "2025-08-01 16:00:00"
 ---
 
 <img class="cover-img" src="/assets/img/ers.png" alt="Emergency Response Simulator for FiveM" draggable="false">
@@ -542,7 +542,14 @@ exports['night_ers']:trackPlayerCallout(targetSource)
 exports['night_ers']:ERS_PedEquipWeapon(pedEntityId, weaponModelName, ammo)
 exports['night_ers']:SetERSVehicleInfoDisplay(display) -- Sets the display for vehicle information on traffic stops to true or false.
 exports['night_ers']:SetERSIDCardInfoDisplay(display) -- Sets the display for ID cards to true or false.
+
+-- NPC Pursuit Backup Requests
 exports['night_ers']:ERS_RequestOrCancelPursuitBackupByType(unitType)-- Available unit types: "light", "medium", "heavy", "air", "army" (only during pursuit mode)
+
+-- NPC Backup Requests
+exports['night_ers']:RequestNPCBackupByType(backupType) -- Available backup types: "ambulance", "police", "taxi", "tow", "roadservice", "coroner", "animalrescue", "mechanic", "fire"
+exports['night_ers']:CancelNPCBackupByType(backupType, mustNotify) -- Available backup types: "ambulance", "police", "taxi", "tow", "roadservice", "coroner", "animalrescue", "mechanic", "fire" (string) | notify the user (bool)
+
 ```
 
 ### **Server Exports** (`night_ers/server/exports_server.lua`)
