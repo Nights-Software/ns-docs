@@ -533,13 +533,16 @@ local getPlayerActiveServiceType = exports['night_ers']:getPlayerActiveServiceTy
 local isPlayerAttachedToCallout = exports['night_ers']:getIsPlayerAttachedToCallout()
 local isPlayerTrackingUnit = exports['night_ers']:getIsPlayerTrackingUnit()
 
--- Control functions
+-- Other
 exports['night_ers']:playRadioAnimation()
 exports['night_ers']:toggleDispatchMessages()
 exports['night_ers']:toggleHints()
 exports['night_ers']:toggleShift()
 exports['night_ers']:trackPlayerCallout(targetSource)
 exports['night_ers']:ERS_PedEquipWeapon(pedEntityId, weaponModelName, ammo)
+exports['night_ers']:SetERSVehicleInfoDisplay(display) -- Sets the display for vehicle information on traffic stops to true or false.
+exports['night_ers']:SetERSIDCardInfoDisplay(display) -- Sets the display for ID cards to true or false.
+exports['night_ers']:ERS_RequestOrCancelPursuitBackupByType(unitType)-- Available unit types: "light", "medium", "heavy", "air", "army" (only during pursuit mode)
 ```
 
 ### **Server Exports** (`night_ers/server/exports_server.lua`)
@@ -549,6 +552,11 @@ exports['night_ers']:ERS_PedEquipWeapon(pedEntityId, weaponModelName, ammo)
 -- Shift management
 exports['night_ers']:toggleShift(source, shiftType) -- "police", "ambulance", "fire", "tow"
 exports['night_ers']:trackPlayerCallout(source, targetSource)
+exports['night_ers']:setPlayerCalloutOffersEnabled(source, enabled)
+
+-- Advanced programming exports:
+exports['night_ers']:getCallouts() -- Returns a json ready table of all callouts in the callouts/plugins/*.lua folder. (Without functions!)
+exports['night_ers']:createCallout(callout) -- Only use if you know what you are doing, this allows you to adjust some variables to when spawning callouts via an external program.
 ```
 
 ---
