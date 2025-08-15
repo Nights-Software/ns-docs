@@ -4,7 +4,7 @@ title: "Emergency Response Simulator"
 nav_order: 4
 has_children: false
 has_toc: true
-last_modified_date: "2025-08-01 16:00:00"
+last_modified_date: "2025-08-15 11:15:00"
 ---
 
 <img class="cover-img" src="/assets/img/ers.png" alt="Emergency Response Simulator for FiveM" draggable="false">
@@ -382,6 +382,25 @@ AddEventHandler("ErsIntegration::OnFirstNPCInteraction", function(source, pedDat
         - "on_pullover_end": Very rare (edge cases only)
     ]]
     -- print(source, json.encode(pedData, { indent = true }), context)
+end)
+
+-- Handles first vehicle interaction events.
+-- @param src number The source ID of the user who interacted with the vehicle.
+-- @param vehicleData table The complete data table of the vehicle being interacted with.
+-- @param context string The interaction context:
+RegisterServerEvent("ErsIntegration::OnFirstVehicleInteraction")
+AddEventHandler("ErsIntegration::OnFirstVehicleInteraction", function(source, vehicleData, context)
+    -- Add your custom vehicle interaction logic here
+    --[[
+        Context frequency analysis:
+        -- Explained: "First interaction with this specific vehicle instance in current session, unless the network ID was replaced. Then it can be an other instance for the same vehicle."
+
+        - "on_pullover": Very common (traffic stops)
+        - "on_vehicle_search": Common (when searching for vehicles)
+        - "on_pursuit_start": Uncommon (callout/world event peds fleeing whilst in a vehicle and not interacted with yet)
+        - "on_pullover_end": Very rare (edge cases only)
+    ]]
+    -- print(source, json.encode(vehicleData, { indent = true }), context)
 end)
 
 --- Handles when a callout is offered.
