@@ -51,9 +51,10 @@ The Discord API resource provides seamless integration between your FiveM server
 
 ## 🎥 Installation Tutorial
 
-**Video Guide** - Watch our comprehensive installation tutorial:
+**Video Guide** - Watch our comprehensive installation tutorial(s):
 
-[Installation Tutorial](https://youtu.be/l1NtpnA-jhc?si=CXq1Uq7HiXQpEJ58){: .btn .btn-red}
+[Discord API Installation Tutorial](https://youtu.be/l1NtpnA-jhc?si=CXq1Uq7HiXQpEJ58){: .btn .btn-red}
+[How to Create a Discord Bot - Quick Tutorial](https://www.youtube.com/watch?v=4XswiJ1iUaw){: .btn .btn-red}
 
 ---
 
@@ -100,9 +101,7 @@ Configure `/config/config.lua` (see configuration section below).
 
 ## 🔧 Configuration
 
-**Note**: This resource requires a Discord bot to function. You must create your own Discord bot application, learn how to do this (in a few minutes) here: 
-
-[📺 How to Create a Discord Bot - Quick Tutorial](https://www.youtube.com/watch?v=4XswiJ1iUaw)
+**Note**: This resource requires a Discord bot to function. You must create your own Discord bot application. How to do this is covered in the next step.
 
 ### Basic Configuration
 
@@ -150,7 +149,7 @@ Discord_Bot_Token = "YOUR_BOT_TOKEN_HERE"
 
 ## 🤖 Creating Your Own Discord Bot
 
-[📺 How to Create a Discord Bot - Quick Tutorial](https://www.youtube.com/watch?v=4XswiJ1iUaw)
+[📺 How to Create a Discord Bot - Quick Tutorial](https://www.youtube.com/watch?v=4XswiJ1iUaw){: .btn .btn-red}
 
 ### Step 1: Create a New Application
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
