@@ -100,13 +100,15 @@ Configure `/config/config.lua` (see configuration section below).
 
 ## 🔧 Configuration
 
-**Note**: This resource requires a Discord bot to function. You can either use the default bot provided by Nights Software or set up your own Discord bot following the documentation.
+**Note**: This resource requires a Discord bot to function. You must create your own Discord bot application, learn how to do this (in a few minutes) here: 
+
+[📺 How to Create a Discord Bot - Quick Tutorial](https://www.youtube.com/watch?v=4XswiJ1iUaw)
 
 ### Basic Configuration
 
 ```lua
 Config = {
-    -- Discord Bot Token (leave empty to use the provided default FiveM DC API bot, or add your own bot token)
+    -- Discord Bot Token
     Discord_Bot_Token = "",
     
     -- Discord Guild/Server Configuration
@@ -128,57 +130,55 @@ Config = {
 
 ### Configuration Details
 
-- **Discord_Bot_Token**: Your Discord bot token (optional - uses default if empty)
+- **Discord_Bot_Token**: Your Discord bot token
 - **Discord_Guild_Names**: Map Discord server IDs to readable names
 - **Discord_Role_Names**: Map Discord role IDs to custom role names
 - **Discord_API_Log_Level**: Control logging verbosity
 
 ### Discord Bot Token
 
-Choose between using your own bot or our provided bot:
+You must provide your own Discord bot token. Follow the tutorial above to create your bot and obtain the token:
 
-#### Option A: Your Own Bot
 ```lua
-Discord_Bot_Token = "NzV4sQb2IEcGxY0bnPWrlHoz.E0LPvL.SJcnCkgAniGUxGXve0xrVMxv7HT"
+Discord_Bot_Token = "YOUR_BOT_TOKEN_HERE"
 ```
-
-#### Option B: Our Provided Bot
-```lua
-Discord_Bot_Token = ""
-```
-
-**Our Bot Invite Link:** [Invite Nights Software Bot](https://discord.com/oauth2/authorize?client_id=956690799385522237&permissions=1024&scope=bot)
 
 {: .warning}
-**Note:** Our shared bot may have longer response times due to multiple server usage.
-
-
+**Important:** Keep your bot token secure and never share it publicly. The token provides access to your Discord bot.
 
 ---
 
 ## 🤖 Creating Your Own Discord Bot
 
-### Step 1: Create Discord Application
+[📺 How to Create a Discord Bot - Quick Tutorial](https://www.youtube.com/watch?v=4XswiJ1iUaw)
+
+### Step 1: Create a New Application
 1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
 2. Click "New Application"
-3. Name your application (e.g., "My FiveM Server Bot")
+3. Enter a name for your application (e.g., "My FiveM Server Bot")
+4. Click "Create"
 
-### Step 2: Create Bot User
-1. Navigate to "Bot" section
-2. Click "Add Bot"
-3. Copy the bot token (keep this secure!)
+### Step 2: Set Up the Bot
+1. In your application's settings, select the "Bot" tab
+2. Click "Add Bot" and confirm by clicking "Yes, do it!"
+3. Customize your bot's username and profile picture as desired
 
-### Step 3: Configure Permissions
-Set these bot permissions:
-- **Read Messages/View Channels**
-- **Manage Roles** (if using role-based features)
-- **Send Messages** (for notifications)
+### Step 3: Retrieve the Bot Token
+1. Under the "Bot" tab, click the "Reset Token" button to generate a new token
+2. Copy the token and store it securely - this token is essential for your bot's functionality
 
-### Step 4: Invite Bot to Server
-Use this URL format (replace CLIENT_ID with your bot's client ID):
-```conf
-https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=1024&scope=bot
-```
+### Step 4: Set Up OAuth2 for Bot Permissions
+1. Navigate to the "OAuth2" tab in your application's settings
+2. Under "Scopes", select "bot"
+3. In the "Bot Permissions" section, choose the permissions your bot requires:
+   - **Read Messages/View Channels**
+   - **Any other functionalities to obtain member (role) information**
+4. Copy the generated URL
+
+### Step 5: Invite the Bot to Your Server
+1. Paste the copied URL into your browser
+2. Select the server you want to add the bot to and click "Authorize"
+3. Complete any CAPTCHA verification if prompted
 
 ---
 
@@ -475,9 +475,8 @@ The Discord API serves as the foundation for these resources:
 | [Discord Spawn](/resources/discordSpawn) | Role-based spawning system |
 | [Discord Lockers](/resources/discordLockers) | Role-based locker access |
 | [Discord Allowlist](/resources/discordAllowlist) | Discord-based allowlist system |
-| [Emergency Response Simulator](/resources/ers) | A PvE Emergency Simulator |
+| [Emergency Response Simulator](/resources/ers) | A PvE Emergency Response Simulator |
 | [Night Shifts MDT](/resources/nightShifts) | An system managing Emergency Services & Registrations |
----
 
 ## 🚨 Troubleshooting
 
