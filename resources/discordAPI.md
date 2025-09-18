@@ -51,7 +51,7 @@ The Discord API resource provides seamless integration between your FiveM server
 
 ## 🎥 Installation Tutorial
 
-**Video Guide** - Watch our comprehensive installation tutorial(s):
+**Video Guide** - Watch comprehensive installation tutorial(s):
 
 [Discord API Installation Tutorial](https://youtu.be/l1NtpnA-jhc?si=CXq1Uq7HiXQpEJ58){: .btn .btn-red}
 [How to Create a Discord Bot - Quick Tutorial](https://www.youtube.com/watch?v=4XswiJ1iUaw){: .btn .btn-red}
