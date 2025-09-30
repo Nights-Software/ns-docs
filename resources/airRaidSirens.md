@@ -7,7 +7,7 @@ has_toc: true
 last_modified_date: "2025-10-30 16:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/airRaidSirens.png" alt="Air Raid Sirens V4 for FiveM" draggable="false">
+<img class="cover-img" src="/assets/img/night_air_raid_sirens.png" alt="Air Raid Sirens V4 for FiveM" draggable="false">
 
 # Air Raid Sirens V4 for FiveM
 {: .no_toc}
