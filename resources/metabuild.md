@@ -184,8 +184,8 @@ set mysql_connection_string "user=Your_Database_Username;password=Your_Database_
 
 When you boot up the server, MetaBuild will automatically run queries to install the required tables into your database.
 
-{: .note }
-> **Manual Installation:** The files include a `datatables.sql` file if you prefer to manually install the tables.
+{: .warning }
+> **Do not manually import SQL file into your database:** The script is required to do this for you! 
 
 ---
 
