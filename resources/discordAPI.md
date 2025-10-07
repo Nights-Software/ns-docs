@@ -179,6 +179,10 @@ Discord_Bot_Token = "YOUR_BOT_TOKEN_HERE"
 2. Select the server you want to add the bot to and click "Authorize"
 3. Complete any CAPTCHA verification if prompted
 
+{: .warning}
+**Important:** The bot does NOT have to be online.
+
+
 ---
 
 ## 📚 Exports
