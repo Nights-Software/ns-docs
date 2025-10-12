@@ -1,13 +1,13 @@
 ---
 layout: default
-title: "Night Speedometer"
+title: "Speedometer"
 nav_order: 20
 has_children: false
 has_toc: true
-last_modified_date: "2025-01-27 16:00:00"
+last_modified_date: "2025-10-12 12:00:00"
 ---
 
-<img class="cover-img" src="/assets/img/night_speedometer.png" alt="Night Speedometer" draggable="false">
+<img class="cover-img" src="/assets/img/night_speedometer.png" alt="Speedometer" draggable="false">
 
 # Night Speedometer for FiveM
 {: .no_toc}
