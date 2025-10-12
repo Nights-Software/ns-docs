@@ -41,10 +41,9 @@ Experience the ultimate driving interface with Night Speedometer - a modern, fea
 - ✅ **Fuel System** - Fuel level display with low fuel warnings
 - ✅ **Compass Navigation** - Rotating compass with directional indicators
 - ✅ **Vehicle Status Icons** - Door, lights, handbrake, and engine indicators
-- ✅ **Parking Sensors** - Proximity detection for safe parking
 - ✅ **Drag & Drop Positioning** - Customizable UI placement
 - ✅ **Theme Customization** - Scale, opacity, and position settings
-- ✅ **Framework Compatibility** - ESX/QBCore/Standalone compatible
+- ✅ **Framework Compatibility** - Standalone compatible
 - ✅ **Modern UI Design** - Glass-morphism design with smooth animations
 - ✅ **Configurable Controls** - Customizable keybindings and commands
 - ✅ **Performance Optimized** - Efficient rendering with configurable update intervals
@@ -55,7 +54,7 @@ Experience the ultimate driving interface with Night Speedometer - a modern, fea
 
 **Get Night Speedometer:**
 
-[Purchase on Nights Software Store](https://store.nights-software.com/package/night-speedometer){: .btn .btn-blue}
+[Purchase on Nights Software Store](https://store.nights-software.com/package/7070740){: .btn .btn-blue}
 
 ---
 
@@ -63,7 +62,7 @@ Experience the ultimate driving interface with Night Speedometer - a modern, fea
 
 **Watch the video showcase:**
 
-[Video Showcase](https://youtu.be/night-speedometer-demo){: .btn .btn-red}
+[Video Showcase](https://youtu.be/LvQomjiIufU){: .btn .btn-red}
 
 ---
 
@@ -92,8 +91,8 @@ Experience the ultimate driving interface with Night Speedometer - a modern, fea
 {: .no_toc }
 
 - **✅ Standalone:** Works independently without any framework
-- **✅ ESX:** Compatible with ESX framework
-- **✅ QBCore:** Compatible with QBCore framework
+- **✅ ESX:** Works alongside ESX framework, no integrations.
+- **✅ QBCore:** Works alongside QBCore framework, no integrations.
 
 ### **OneSync Compatibility**
 {: .no_toc }
@@ -277,7 +276,6 @@ Config.EngineToggle = {command = "engine_toggle", keyMapping = 'DOWN', input = '
 - **Update Intervals** - Adjust refresh rate (default: 100ms)
 - **RPM Scaling** - Configure maximum RPM for display
 - **Parking Thresholds** - Set speed limits for parking detection
-- **Sensor Sensitivity** - Adjust parking sensor distance
 
 ---
 
