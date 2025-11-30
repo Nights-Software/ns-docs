@@ -128,8 +128,8 @@ If you are using the built-in sound system, skip this step and proceed to resour
 4. Add to server.cfg
 5. Boot server
 
-1. **Drag the resource** into your resources folder
-   - **Note**: If installing DLC, replace the base resource completely
+1. **Install only the latest DLC you own!**
+   - **Note**: If installing DLC upon the base edition, replace the base resource completely
 2. **Configure** `natural_disasters/config/config.lua` for customization
 3. **Add to server.cfg**:
    ```lua
