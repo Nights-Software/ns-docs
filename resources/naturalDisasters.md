@@ -121,12 +121,14 @@ If you are using the built-in sound system, skip this step and proceed to resour
 ### **Step 3: Install Resource**
 {: .no_toc }
 
-**Important**: Follow this exact order to avoid parsing errors:
-1. Unpack ZIP package in a local folder
-2. Set FTP transfer type to **binary**
-3. Drag files from local machine to server resources folder
-4. Add to server.cfg
-5. Boot server
+{: .important }
+> **Critical Installation Order:** Always follow this exact sequence to avoid parsing errors in the F8 console:
+> 1. Download ZIP Package from CFX Portal
+> 2. Unpack in a folder on your local machine
+> 3. Set your File Transfer Protocol (FTP) type to **binary**
+> 4. Drag files from local machine to server resources folder
+> 5. Add to server.cfg (ensure script)
+> 6. Boot up the server
 
 1. **Install only the latest DLC you own!**
    - **Note**: If installing DLC upon the base edition, replace the base resource completely
