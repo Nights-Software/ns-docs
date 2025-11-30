@@ -137,6 +137,8 @@ If you are using the built-in sound system, skip this step and proceed to resour
    ```lua
    ensure night_natural_disasters
    ```
+4. Make sure you have only ONE weather and time system active in your server. (Recommended to use the built in & delete any others)
+5. Restart the server.
 
 ---
 
