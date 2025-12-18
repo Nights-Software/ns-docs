@@ -77,7 +77,12 @@ Base: [Purchase on Nights Software Store](https://store.nights-software.com/pack
 
 **Watch the video showcase:**
 
-[Video Showcase](https://youtu.be/example){: .btn .btn-red}
+[ND - Base | Video Showcase](https://youtu.be/lz7RaZrXBNE){: .btn .btn-red}
+[ND - DLC 1 | Video Showcase](https://youtu.be/zpPcxAkyCPY){: .btn .btn-red}
+[ND - DLC 2 | Video Showcase](https://youtu.be/aB0Mc1JKjYI){: .btn .btn-red}
+[ND - DLC 3 | Video Showcase](https://youtu.be/9we1WhLZJhI){: .btn .btn-red}
+[ND - DLC 4 | Video Showcase](https://youtu.be/niZ3aRhgY60){: .btn .btn-red}
+[ND - DLC 5 | Video Showcase](https://youtu.be/h5vF02HWhus){: .btn .btn-red}
 
 ---
 
