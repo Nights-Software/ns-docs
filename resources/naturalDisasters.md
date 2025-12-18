@@ -65,7 +65,7 @@ Base: [Purchase on Nights Software Store](https://store.nights-software.com/pack
 - DLC 2 required for DLC 3
 - DLC 3 required for DLC 4
 - DLC 4 required for DLC 5
-
+ 
 ### **Installation Notice**
 {: .no_toc }
 
