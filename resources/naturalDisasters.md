@@ -51,11 +51,11 @@ Natural Disasters is a comprehensive weather and disaster system that brings dyn
 Base: [Purchase on Nights Software Store](https://store.nights-software.com/package/5131340){: .btn .btn-blue}
 
 **DLC Packs:**
-- DLC 1: [Purchase DLC 1](https://store.nights-software.com/package/5154004){: .btn .btn-green}
-- DLC 2: [Purchase DLC 2](https://store.nights-software.com/package/5183358){: .btn .btn-green}
-- DLC 3: [Purchase DLC 3](https://store.nights-software.com/package/5314042){: .btn .btn-green}
-- DLC 4: [Purchase DLC 4](https://store.nights-software.com/package/5673677){: .btn .btn-green}
-- DLC 5: [Purchase DLC 5](https://store.nights-software.com/package/5968995){: .btn .btn-green}
+- [Purchase DLC 1](https://store.nights-software.com/package/5154004){: .btn .btn-green}
+- [Purchase DLC 2](https://store.nights-software.com/package/5183358){: .btn .btn-green}
+- [Purchase DLC 3](https://store.nights-software.com/package/5314042){: .btn .btn-green}
+- [Purchase DLC 4](https://store.nights-software.com/package/5673677){: .btn .btn-green}
+- [Purchase DLC 5](https://store.nights-software.com/package/5968995){: .btn .btn-green}
 
 ### **Requirements**
 {: .no_toc }
@@ -77,12 +77,12 @@ Base: [Purchase on Nights Software Store](https://store.nights-software.com/pack
 
 **Watch the video showcase:**
 
-[ND - Base | Video Showcase](https://youtu.be/lz7RaZrXBNE){: .btn .btn-red}
-[ND - DLC 1 | Video Showcase](https://youtu.be/zpPcxAkyCPY){: .btn .btn-red}
-[ND - DLC 2 | Video Showcase](https://youtu.be/aB0Mc1JKjYI){: .btn .btn-red}
-[ND - DLC 3 | Video Showcase](https://youtu.be/9we1WhLZJhI){: .btn .btn-red}
-[ND - DLC 4 | Video Showcase](https://youtu.be/niZ3aRhgY60){: .btn .btn-red}
-[ND - DLC 5 | Video Showcase](https://youtu.be/h5vF02HWhus){: .btn .btn-red}
+- [ND - Base Video Showcase](https://youtu.be/lz7RaZrXBNE){: .btn .btn-red}
+- [ND - DLC 1 Video Showcase](https://youtu.be/zpPcxAkyCPY){: .btn .btn-red}
+- [ND - DLC 2 Video Showcase](https://youtu.be/aB0Mc1JKjYI){: .btn .btn-red}
+- [ND - DLC 3 Video Showcase](https://youtu.be/9we1WhLZJhI){: .btn .btn-red}
+- [ND - DLC 4 Video Showcase](https://youtu.be/niZ3aRhgY60){: .btn .btn-red}
+- [ND - DLC 5 Video Showcase](https://youtu.be/h5vF02HWhus){: .btn .btn-red}
 
 ---
 
