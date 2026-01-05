@@ -66,8 +66,8 @@ A guide to install Emergency Response Simulator for FiveM
 {: .no_toc }
 
 - **✅ Recommended Gamebuild:** 3323
-- **✅ Recommended Artifacts:** 17000(+)
-- **❌ Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts versions below 14230.
+- **✅ Recommended Artifacts:** 21703(+)
+- **❌ Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts.
 
 {: .note }
 > **Important:** If you are using different Gamebuilds or Artifacts, trial and error this. Please inform us of (in)compatibility.
@@ -637,8 +637,8 @@ exports['night_ers']:createCallout(callout) -- Only use if you know what you are
 {: .no_toc }
 
 - ✅ **Recommended Gamebuild:** 3323
-- ✅ **Recommended Artifacts:** 17000(+)
-- ❌ **Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts versions below 14230.
+- ✅ **Recommended Artifacts:** 21703(+)
+- ❌ **Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts.
 - ❌ **RemoveCops-AI:** We recommend to disable this resource when using ERS.
 - ❌ **Andrew's Advanced AI:** We recommend to disable this resource when using ERS.
 - ❌ **Realistic Euphoria Physics:** We recommend to disable this resource when using ERS.
