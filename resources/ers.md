@@ -638,6 +638,7 @@ exports['night_ers']:createCallout(callout) -- Only use if you know what you are
 
 - ✅ **Recommended Gamebuild:** 3323
 - ✅ **Recommended Artifacts:** 21703(+)
+- ❌ **QBox important note; NPC Backup doesn't spawn:** Remove blocked NPC model names, like `s_m_y_cop_01` from `qbx_smallresources/qbx_entitiesblacklist/config.lua` and your backup peds will spawn again.
 - ❌ **Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts.
 - ❌ **RemoveCops-AI:** We recommend to disable this resource when using ERS.
 - ❌ **Andrew's Advanced AI:** We recommend to disable this resource when using ERS.
