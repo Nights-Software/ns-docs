@@ -289,6 +289,67 @@ local areaData = exports['night_air_raid_sirens']:GetSirensInArea("Fort Zancudo"
 -- Returns: table with {soundFile, soundReach, soundVolume, enabled, poleCount, poles}
 ```
 
+#### **Get Zone For Coords**
+{: .no_toc }
+
+Resolves which siren zone(s) cover a given world position. Designed for lightweight server-side polling from external resources, such as triggering zone-specific sirens based on a tornado or disaster location.
+
+```lua
+-- Returns the closest zone and all zones whose coverage radius includes the given position
+local closestZone, zonesInRange, closestDistance = exports['night_air_raid_sirens']:GetZoneForCoords(x, y, z, maxDistance)
+
+-- Parameters:
+--   x, y, z      (number) : world position to test
+--   maxDistance  (number) : optional cap on detection radius (defaults to each area's soundReach)
+
+-- Returns:
+--   closestZone     (string) : area name with the nearest pole, regardless of distance
+--   zonesInRange    (table)  : all area names where the position falls within coverage radius
+--   closestDistance (number) : distance in metres to the nearest pole
+```
+
+**Basic example — activate sirens for the zone a tornado is in:**
+
+```lua
+-- Server-side, called from your storm/tornado resource
+local tornadoCoords = GetTornadoPosition() -- your own function
+
+local closestZone, zonesInRange = exports['night_air_raid_sirens']:GetZoneForCoords(
+    tornadoCoords.x, tornadoCoords.y, tornadoCoords.z
+)
+
+if #zonesInRange > 0 then
+    exports['night_air_raid_sirens']:TriggerAirRaidSirensByAreaExport("air-raid-siren", zonesInRange)
+else
+    exports['night_air_raid_sirens']:DeactivateAllAirRaidSirensExport()
+end
+```
+
+**Polling example — update sirens as a tornado moves:**
+
+```lua
+-- Server-side polling loop (run inside a Citizen.CreateThread)
+Citizen.CreateThread(function()
+    while tornadoActive do
+        Citizen.Wait(5000) -- poll every 5 seconds
+
+        local coords = GetTornadoCurrentCoords()
+        local _, zonesInRange = exports['night_air_raid_sirens']:GetZoneForCoords(
+            coords.x, coords.y, coords.z
+        )
+
+        if zonesInRange and #zonesInRange > 0 then
+            exports['night_air_raid_sirens']:TriggerAirRaidSirensByAreaExport("air-raid-siren", zonesInRange)
+        else
+            exports['night_air_raid_sirens']:DeactivateAllAirRaidSirensExport()
+        end
+    end
+end)
+```
+
+{: .tip }
+> **Integration tip:** `GetZoneForCoords` is a read-only utility export — it has no side effects and no permission checks. Pair it with `TriggerAirRaidSirensByAreaExport` and `DeactivateAirRaidSirensByAreaExport` to build fully dynamic, zone-aware siren automation.
+
 ### **Sound File Examples**
 {: .no_toc }
 
