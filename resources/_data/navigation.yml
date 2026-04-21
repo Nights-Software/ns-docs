@@ -53,6 +53,8 @@
       url: /resources/partySystem
     - title: Night Shifts
       url: /resources/nightShifts
+    - title: Night Shifts MDT v1 (draft)
+      url: /resources/nightShifts_mdt_v1
     - title: Henchmen
       url: /resources/henchmen
     - title: Gemstone Mining Job

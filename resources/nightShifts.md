@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Night Shifts MDT"
+title: "Night Shifts MDT v0.9 (EA)"
 nav_order: 5
 has_children: false
 has_toc: true
