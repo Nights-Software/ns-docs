@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Night Shifts MDT v1"
-nav_order: 6
+nav_order: 5
 has_children: false
 has_toc: true
 last_modified_date: "2026-04-23 20:00:00"
@@ -218,8 +218,8 @@ Night Shifts MDT **does not require** a specific postal resource name. It **auto
 
 **How it works**
 
-1. **HUD-first (player position)** — If a supported HUD exposes postal for the local player, that is preferred: **rHUD** (`get_postal`), **SimpleHUD** / **ModernHUD** (`getPostal`), in that order.
-2. **World coordinates** — For map pins and coordinates, the MDT tries **rHUD** world APIs first, then **hinted** postal resources in order: **`mnr_postals`**, **`nearest-postal`**.
+1. **HUD-first (player position)** — If a supported HUD exposes postal for the local player, that is preferred: **`rhud`** (`get_postal`), then **`SimpleHUD`** / **`ModernHUD`** (`getPostal`), in that order.
+2. **World coordinates** — For map pins and coordinates, the MDT tries **`rhud`** world APIs first, then **hinted** postal resources in order: **`mnr_postals`**, **`nearest-postal`**.
 3. **Multiple formats** — The same hints are probed for several backends: JSON lists referenced by the resource **`postal_file`** manifest metadata, **MNR-style** Lua data (config + data files), **export**-based nearest-postal (`getNearestPostal`, `getPostalAtCoords`, etc.), and similar. You can ship **different postal file packs** (or forks of nearest-postal / MNR) as long as the resource exposes one of these patterns; the MDT picks the **first working** match at runtime.
 4. **Dependencies of postal resources** — Some MNR builds need **`ox_lib`** running. Install what your chosen postal resource documents.
 
@@ -358,7 +358,7 @@ Optional integration for servers that run **[Emergency Response Simulator](/reso
 ### **Postal codes & HUD (optional)**
 {: .no_toc }
 
-The MDT **auto-detects** postal data from common resources (**rHUD**, **SimpleHUD**, **ModernHUD**, **`mnr_postals`**, **`nearest-postal`**, JSON `postal_file` data, etc.)—**no** separate MDT bridge resource. See [Step 4: Postal codes](#step-4-postal-codes). Some MNR setups need **`ox_lib`**.
+The MDT **auto-detects** postal data from common resources (`rhud`, `SimpleHUD`, `ModernHUD`, `mnr_postals`, `nearest-postal`, JSON `postal_file` data, etc.)—**no** separate MDT bridge resource. See [Step 4: Postal codes](#step-4-postal-codes). Some MNR setups need **`ox_lib`**.
 
 ### **Discord webhooks (optional)**
 {: .no_toc }
@@ -434,11 +434,11 @@ end
 | **Returns** | **String** — postal / zone code for that player’s **current ped position**. |
 | **Limitations** | **Server-only.** Without a supported postal backend, you only get the unknown label. |
 
-Resolution order:
+Resolution order (same behaviour as [Step 4: Postal codes](#step-4-postal-codes)):
 
-- **(1)** If the **`rhud`** resource is running, **`exports.rhud:get_postal`** at the ped’s X/Y.
-- **(2)** Else if **SimpleHUD** or **ModernHUD** is running, their **`getPostal(source)`** export.
-- **(3)** Else nearest code from static postal data (**`mnr_postals`**, **`nearest-postal`**, or JSON via **`postal_file`** metadata) — still using the ped’s coordinates.
+1. **`rhud`** — if started, **`exports.rhud:get_postal`** at the ped’s X/Y.
+2. **`SimpleHUD`** or **`ModernHUD`** — if started, **`getPostal(source)`** on that resource.
+3. **Static postal data** — nearest code from **`mnr_postals`**, **`nearest-postal`**, or JSON via **`postal_file`** metadata, using the ped’s coordinates.
 
 ```lua
 local postal = exports['night_shifts_mdt']:GetPostalForPlayer(source)
