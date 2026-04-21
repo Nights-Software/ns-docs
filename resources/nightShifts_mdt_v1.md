@@ -389,9 +389,8 @@ Other scripts can use **`exports['night_shifts_mdt']`** (name must match your re
 ## 📊 Exports
 {: #exports }
 
-Use **`exports['night_shifts_mdt']`** — the name must match your **resource folder** in `server.cfg`.
-
-These are **Lua APIs for other resources** — used by **script authors**, not by players in-game. The **public** surface is the same as in the resource’s **`docs/EXPOSED_EXPORTS.md`**, plus **`GetPostalForPlayer`** (postal helper) below. Pass the player’s **server id** (e.g. `source`) for player-related server exports; the MDT resolves identity internally. For every registered export (including low-level ones), see **`docs/EXPORTS_REFERENCE.md`** in the resource folder.
+{: .warning }
+> **Developers / integrators only.** This section documents **Lua `exports`** for people writing **other FiveM resources** that talk to the MDT. **Players** and **server owners** doing a normal install and in-tablet setup **do not** need it—skip unless you are calling `exports` from code.
 
 ### **How this section is organised**
 {: .no_toc }
@@ -676,61 +675,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 }, function(success, callId)
     if success then print("Call #" .. tostring(callId)) end
 end)
-```
-
-#### **Actions — ANPR**
-{: .no_toc }
-
-##### `reportANPRHit(plate, detectionType, detectionSource, location)`
-
-| | |
-|---|--|
-| **Parameters** | `plate` (string). `detectionType` — **`"camera"`** or **`"vehicle"`**. `detectionSource` — camera name or officer label. `location` — street at detection. |
-| **Returns** | None; processing is asynchronous. |
-| **Limitations** | **Server-only.** Plate must be on the ANPR **registry**. Cooldown per `detectionSource` + plate. No player session (`source` -1 style) — officer metadata from MDT session does not apply vs client hits. |
-
-```lua
-exports['night_shifts_mdt']:reportANPRHit("ABC 1234", "vehicle", "L-42", "Vinewood Blvd")
-```
-
-##### `AddANPRRegistryFromNPC(displayPlate, reason)`
-
-| | |
-|---|--|
-| **Parameters** | `displayPlate` (string). `reason` (string) — e.g. **`Stolen`**, **`BOLO`**. |
-| **Returns** | None. |
-| **Limitations** | **Server-only.** **NPC pool / spawned traffic only.** Rows are stored with **`is_npc = 1`**: fixed ~**30 minute** expiry, and they are **auto-deactivated** when the NPC system re-uses the plate or when bulk NPC ANPR cleanup runs. **Do not use for player-owned vehicles**—use the MDT ANPR UI for those. If a plate already has an **active** registry entry, this export **does nothing**. |
-
-```lua
-exports['night_shifts_mdt']:AddANPRRegistryFromNPC("XYZ 999", "Stolen")
-```
-
-##### `DeactivateANPRRegistryNPCEntriesForPlate(normPlate [, callback])`
-
-| | |
-|---|--|
-| **Parameters** | `normPlate` (string) — uppercase, no spaces/hyphens. `callback` (optional) when DB work finishes. |
-| **Returns** | None. |
-| **Limitations** | **Server-only.** Deactivates **NPC-origin** rows for that plate. |
-
-##### `DeactivateANPRRegistryEntriesForPlate(normPlate [, callback])`
-
-| | |
-|---|--|
-| **Parameters** | `normPlate` (string). `callback` (optional). |
-| **Returns** | None. |
-| **Limitations** | **Server-only.** All registry entries for that plate (any source). Use when removing a vehicle from the system. |
-
-##### `DeactivateAllANPRRegistryNPCEntries([callback])`
-
-| | |
-|---|--|
-| **Parameters** | `callback` (optional). |
-| **Returns** | None. |
-| **Limitations** | **Server-only.** Bulk cleanup of NPC-origin registry rows. |
-
-```lua
-exports['night_shifts_mdt']:DeactivateAllANPRRegistryNPCEntries(function() print("done") end)
 ```
 
 ---
