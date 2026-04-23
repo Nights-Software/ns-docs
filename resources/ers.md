@@ -153,7 +153,7 @@ Download these packages from the [CFX Portal](https://portal.cfx.re/assets/grant
 7. **Night Shifts MDT** (Optional - Included with ERS Plus and Ultimate)
    - Modern MDT for emergency services management
    - [View Features](https://store.nights-software.com/package/5667103)
-   - [Installation Guide](/resources/nightShifts)
+   - [Installation Guide](/resources/nightShifts_mdt_v1)
 
 8. **Theebu Flatbeds Lite** (Optional - Included with ERS Essential, Plus and Ultimate)
    - Vehicle transport functionality
@@ -192,7 +192,7 @@ ensure SmartFiresLite  # or SmartFires if you have full version
 ensure SmartHoseLite   # or SmartHose if you have full version
 
 # Core ERS
-ensure night_shifts
+ensure night_shifts_mdt
 ensure night_ers
 
 # Optional Add-ons
@@ -625,7 +625,7 @@ exports['night_ers']:createCallout(callout) -- Only use if you know what you are
 {: .no_toc }
 
 {: .tip }
-> **Solution:** Enable ERS in `night_shifts` config and enable Night Shifts in `night_ers` config. Duty can (optionally) toggled through the MDT
+> **Solution:** Enable ERS in `night_shifts_mdt` config and enable Night Shifts in `night_ers` config. Duty can (optionally) toggled through the MDT
 
 #### **Hosting-Specific Issues**
 {: .no_toc }
