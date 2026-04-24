@@ -80,7 +80,7 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Show ID** — Offer your registered ID to the **nearest player** (range-limited), with accept/decline flow for the viewer
 - **Emergency Response Simulator** — Optional integration: search **ERS NPCs** and linked vehicles in the MDT when `night_ers` is configured accordingly
 - **Framework-linked civilians (optional)** — With **ESX**, **QBox** (`qbx_core`), or **QBCore** (`qb-core`) running, the MDT can **create or update** a council civilian record from the player’s framework character on load (name, DOB, sex, phone, job, etc.) and optionally **stamp identity documents** when your admin rules allow—see **Framework compatibility** below
-- **Framework fines (optional)** — Council-side fine payment can deduct from **bank** or **cash** on **ESX / QBCore / QBox** when configured
+- **Framework fines (optional)** — Council-side fine payment can deduct from **bank** or **cash** on **ESX / QBCore / QBox** when configured, or from **your own custom banking system** via the [Custom Banking Bridge](#custom-banking-bridge) on standalone servers
 
 ### **Platform & localization**
 {: .no_toc }
@@ -146,6 +146,8 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
   On first sync, a council-style **personal id** (e.g. `CIV-`…) can be issued; **identity documents** may be auto-generated when your document types and council rules allow (see server logs for `[MDT Framework]`). Existing civilians are **updated** on subsequent loads (name, job, phone, etc., per bridge data).
 
 - **✅ Framework fines:** Optional **bank/cash** deduction for council fines when a framework player pays—configure `Config.FrameworkFineAccount` in `config.lua` (`ESX` / `QBCore` / `QBox`).
+
+- **✅ Custom banking (standalone):** If you run a **standalone server with your own banking resource** (or want to override one specific operation on a framework server), the **banking bridge** exposes a `BankingBridge.Custom` slot you can plug into. Council fines, balance reads and any future money-moving feature will then go through your code instead of (or in addition to) the framework path. See [Custom Banking Bridge](#custom-banking-bridge) below.
 
 {: .note }
 > Run **`es_extended`**, **`qbx_core`**, or **`qb-core`** on the **same server** as Night Shifts MDT if you want automatic civilian sync. Only one framework path is selected (ESX → QBox → QBCore in that order if multiple were present).
@@ -282,7 +284,7 @@ Optional files some servers customize:
 | Path | Purpose |
 |------|---------|
 | `night_shifts_mdt/client/c_functions.lua` | Client helpers (e.g. postal auto-detect, shared utilities) |
-| `night_shifts_mdt/server/s_functions.lua` | Server helpers and shared server utilities |
+| `night_shifts_mdt/server/s_functions.lua` | Server helpers, Discord webhook implementation, and the optional [Custom Banking Bridge](#custom-banking-bridge) preset |
 
 ### **Configuration Process**
 {: .no_toc }
@@ -345,6 +347,90 @@ How Night Shifts MDT fits next to other resources. **Required** pieces are under
 
 - **Standalone** — MDT works with **no** ESX / QBCore / QBox; civilians are created through council flows and staff tools unless you add a framework.
 - **ESX / QBox / QBCore** — When `es_extended`, `qbx_core`, or `qb-core` is running, the **framework bridge** syncs characters into **`nsmdt_civilians`** and the **banking bridge** can charge **council fines** to the player’s **bank** or **cash** (`Config.FrameworkFineAccount`). Details and detection order: [Framework Compatibility](#framework-compatibility) (earlier on this page).
+
+### **Custom Banking Bridge**
+{: .no_toc #custom-banking-bridge }
+
+The MDT’s **banking bridge** (`server/server_banking_bridge.lua`) handles **ESX, QBox and QBCore** out of the box. For everything else — a **standalone server with your own banking resource**, a heavily modified framework, or a server that just wants to **override one specific operation** — you can register handlers on `BankingBridge.Custom`. Anywhere the MDT moves money (today: **council fine payments**) will then go through your code.
+
+A ready-to-uncomment **preset** is provided at the bottom of **`server/s_functions.lua`** (which is escrow-ignored and ships open). That is the recommended place to register your handlers; the file is reloaded on every resource restart and survives MDT updates.
+
+#### **When the custom path runs (and when it doesn’t)**
+{: .no_toc }
+
+Selection happens **per call**, not globally — you can override only the operations you care about and let the framework keep handling the rest.
+
+| Situation | What runs |
+|---|---|
+| `BankingBridge.Custom.<Op>` is registered as a function | **Your handler** runs first. Its return value is what callers receive. |
+| Your handler **throws** an error | Bridge logs `^1[MDT Banking]^7 BankingBridge.Custom.<Op> threw: …` and **falls through** to the framework path (or STANDALONE). MDT never crashes from a buggy handler. |
+| `BankingBridge.Custom.<Op>` is `nil` / not a function | Falls through to the **framework path** for that op (`ESX → QBox → QBCore`), or **STANDALONE** if no framework is detected. |
+| `BankingBridge.Custom` is `nil` entirely | Same as above — pure framework / STANDALONE behaviour, identical to MDT’s pre-custom default. |
+| Standalone server, no custom registered | `GetPlayerMoney` returns **`0`**. `AddMoney` / `RemoveMoney` are **no-ops returning `true`** so caller flow (e.g. fine "paid") is not blocked. The council fine UI **skips** the deduction call entirely in this case. |
+| Standalone server, custom **is** registered | Council fines and other money calls **do** invoke your handler. The bridge’s `HasActiveBackend()` reports `true` once any custom handler is present, which is what gates the fine deduction. |
+
+{: .tip }
+> The custom check happens **per operation**. If you implement only `AddMoney`, calls to `GetPlayerMoney` / `RemoveMoney` will still hit the detected framework (or STANDALONE no-op). Implement all three for a fully self-contained custom backend.
+
+#### **Handler signatures**
+{: .no_toc }
+
+| Handler | Signature | Return |
+|---|---|---|
+| `GetPlayerMoney` | `function(source, account)` | **Number** — current balance for that account. Return `0` if the player is unknown. |
+| `RemoveMoney` | `function(source, amount, reason, account)` | **Boolean** — `true` on success; `false` on failure (e.g. insufficient funds). On `false` the council UI shows the localised "insufficient funds" toast. |
+| `AddMoney` | `function(source, amount, reason, account)` | **Boolean** — `true` on success. |
+
+Parameters:
+
+- **`source`** — player server id (`number`).
+- **`amount`** — already validated > 0 by the bridge before your handler runs (`number`, integer once normalised).
+- **`reason`** — human-readable string the MDT supplies (e.g. `"MDT Fine #42"`). Forward to your banking transaction history.
+- **`account`** — one of `'cash'`, `'bank'`, `'crypto'`. The MDT itself uses `'bank'` for fines (configurable via `Config.FrameworkFineAccount`).
+
+{: .note }
+> **`reason`** is also the second argument to ESX `xPlayer.removeMoney` / QBCore `Player.Functions.RemoveMoney` for parity. If your banking system has no concept of a transaction reason, you can ignore the parameter — the MDT does not inspect what you do with it.
+
+#### **Minimal example**
+{: .no_toc }
+
+In **`server/s_functions.lua`**, uncomment the preset block at the bottom and replace the `exports['my_banking']:…` calls with whatever your banking resource exposes:
+
+```lua
+Citizen.CreateThread(function()
+    local waited = 0
+    while BankingBridge == nil do
+        Citizen.Wait(100)
+        waited = waited + 100
+        if waited >= 10000 then
+            print('^1[Night Shifts MDT]^7 BankingBridge global never appeared — custom banking NOT registered.')
+            return
+        end
+    end
+
+    BankingBridge.Custom = {
+        GetPlayerMoney = function(source, account)
+            return exports['my_banking']:GetBalance(source, account) or 0
+        end,
+        RemoveMoney = function(source, amount, reason, account)
+            return exports['my_banking']:Withdraw(source, amount, reason, account) == true
+        end,
+        AddMoney = function(source, amount, reason, account)
+            return exports['my_banking']:Deposit(source, amount, reason, account) == true
+        end,
+    }
+end)
+```
+
+The `Citizen.CreateThread` + polling wrapper is intentional — `s_functions.lua` loads **before** `server_banking_bridge.lua`, so the `BankingBridge` global does not exist yet at the top of this file. Polling (rather than a single `Wait(0)`) makes the registration robust against any boot-order shuffle and gives a clear console error if the bridge is somehow missing.
+
+{: .warning }
+> Do **not** call `BankingBridge.Custom.<Op>(…)` recursively from inside your own handler — that will infinite-loop. Always call your underlying banking resource’s exports directly.
+
+#### **What currently uses the bridge**
+{: .no_toc }
+
+Today the bridge is exercised by **council fine payments** (`server/server_council.lua`). Any future feature that moves money will go through the same three functions, so registering custom handlers now future-proofs your standalone setup.
 
 ### **Emergency Response Simulator (`night_ers`)**
 {: .no_toc }
