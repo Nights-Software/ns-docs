@@ -8,29 +8,24 @@ last_modified_date: "2026-04-25 20:10:00"
 ---
 
 # Night Shifts - Mobile Data Terminal for FiveM
-
 {: .no_toc}
 
 **Welcome to Night Shifts MDT (v1)** — a customizable **Mobile Data Terminal** for your FiveM community. Whether you run **police, fire, EMS, tow, or other emergency services**, Night Shifts helps you **run operations** from one place: **dispatch** (calls, map, units), **shift and status**, and **PNC-style records** (people, vehicles, warrants, cases, ANPR), alongside **civilian council** tools for identity, documents, and vehicles. The MDT is **meant to fit your server** — departments, ranks, permissions, forms, and reference data are managed **in the tablet**, with **languages and settings** so you can align emergency-services roleplay **with any country or region**.
 
 **v1** provides **in-game tablet** with modern looks and has a responsive feel with endless features.
-
 {: .fs-5 .fw-300 }
 
 ---
 
 ## 📋 Table of Contents
-
 {: .no_toc .text-delta }
 
 1. TOC
-
 {:toc}
 
 ---
 
 ## 🎯 Overview
-
 {: .warning }
 
 > **Documentation in progress** — This v1 page is being expanded as features and setup flows are finalized. Report inconsistencies or gaps via Discord support.
@@ -38,7 +33,6 @@ last_modified_date: "2026-04-25 20:10:00"
 Night Shifts MDT is a **standalone** emergency-services and civilian registry stack for FiveM: police / fire / EMS / council-style workflows, **rank-based permissions** managed **in the tablet** (database-backed, with super-admin bootstrap in config), and **heavy in-tablet configuration** so server owners can shape departments, forms, penal codes, and lookups without touching the NUI code.
 
 ### **Tablet & UX (v1)**
-
 {: .no_toc }
 
 - **Full tablet NUI** — Large-format interface (modern layout, sounds, toasts, modals, draggable notes taskbar where enabled)
@@ -47,7 +41,6 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Deep linking** — Navigate from dispatch map / alerts into PNC lookups, case files, ANPR, etc. where permissions allow
 
 ### **Dispatch & operations**
-
 {: .no_toc }
 
 - **Dispatch board** — Live incident workflow: calls, unit status, dispatch notes, and integrated **map** (Leaflet) for spatial awareness
@@ -57,7 +50,6 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Statistics** — Department metrics with **Chart.js** dashboards
 
 ### **Police National Computer (PNC) & records**
-
 {: .no_toc }
 
 - **Unified lookups** — Civilian profiles with tabbed detail: personal info, **documents**, **licenses**, **vehicles**, **properties**, **businesses**, **charges/fines**, **criminal history**, **warrants**
@@ -66,14 +58,12 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Penal code browser** — In-tablet reference for charges and sentencing context
 
 ### **Council / civilian registry**
-
 {: .no_toc }
 
 - **Self-service civilian portal** — Profile, documents, licenses, vehicles, properties, businesses (as permitted)
 - **Council administration** — Review queues and staff-side management for pending civilian-side changes (where configured)
 
 ### **Department management (in-tablet)**
-
 {: .no_toc }
 
 - **Roster & fleet** — View and manage unit roster and department vehicles from the MDT
@@ -82,7 +72,6 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Submissions review** — Review form submissions tied to your operations/application workflows
 
 ### **World & identity**
-
 {: .no_toc }
 
 - **Show ID** — Offer your registered ID to the **nearest player** (range-limited), with accept/decline flow for the viewer
@@ -91,7 +80,6 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Framework fines (optional)** — Council-side fine payment can deduct from **bank** or **cash** on **ESX / QBCore / QBox** when configured, or from **your own custom banking system** via the [Custom Banking Bridge](#custom-banking-bridge) on standalone servers
 
 ### **Platform & localization**
-
 {: .no_toc }
 
 - **Multi-language** — Translation-driven UI (per-locale files)
@@ -109,7 +97,6 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 ---
 
 ## ⚠️ Important Pre-Installation Notes
-
 {: .warning }
 
 > **Critical Installation Order:** Always follow this exact sequence to avoid parsing errors in the F8 console:
@@ -120,15 +107,12 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 > 4. Drag files from local machine to server resources folder
 > 5. Add to server.cfg (ensure script)
 > 6. Boot up the server
-
 {: .important }
 
 > **Support Policy:** Follow this guide step by step. If you're stuck, ask for support in our Discord and provide the specific step name. Do not skip steps.
-
 {: .warning }
 
 > **Database Requirement:** Night Shifts MDT requires a MySQL database and oxmysql resource to function properly.
-
 {: .tip }
 
 > **Emergency Response Simulator Compatible:** It is possible to search NPCs and their vehicles in the MDT when they have been interacted with via the Emergency Response Simulator.
@@ -136,18 +120,15 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 ---
 
 ## 🔧 System Requirements & Compatibility
-
 {: #system-requirements }
 
 ### **OneSync Compatibility**
-
 {: .no_toc }
 
 - **✅ OneSync Legacy:** Fully tested and compatible
 - **✅ OneSync Infinity:** Fully tested and compatible
 
 ### **Framework Compatibility**
-
 {: .no_toc #framework-compatibility }
 
 - **✅ Standalone:** If no supported framework resource is running, the MDT runs in **standalone** mode: **no automatic civilian generation** from characters (players use council registration / staff workflows as you configure).
@@ -162,18 +143,15 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
   On first sync, a council-style **personal id** (e.g. `CIV-`…) can be issued; **identity documents** may be auto-generated when your document types and council rules allow (see server logs for `[MDT Framework]`). Existing civilians are **updated** on subsequent loads (name, job, phone, etc., per bridge data).
 - **✅ Framework fines:** Optional **bank/cash** deduction for council fines when a framework player pays—configure `Config.FrameworkFineAccount` in `config.lua` (`ESX` / `QBCore` / `QBox`).
 - **✅ Custom banking (standalone):** If you run a **standalone server with your own banking resource** (or want to override one specific operation on a framework server), the **banking bridge** exposes a `BankingBridge.Custom` slot you can plug into. Council fines, balance reads and any future money-moving feature will then go through your code instead of (or in addition to) the framework path. See [Custom Banking Bridge](#custom-banking-bridge) below.
-
 {: .note }
 
 > Run `es_extended`, `qbx_core`, or `qb-core` on the **same server** as Night Shifts MDT if you want automatic civilian sync. Only one framework path is selected (ESX → QBox → QBCore in that order if multiple were present).
 
 ### **Dependencies**
-
 {: .no_toc }
 
 - **✅ MySQL Database** - Required for data storage
 - **✅ oxmysql** - Required database API
-
 {: .tip }
 
 > **Note:** Database setup (MySQL + oxmysql) is required regardless of framework. Permissions and departments are configured **inside the MDT** (and initial super-admins in `config.lua`). Optional integrations include: **auto civilian sync** on supported frameworks, **fine payments** through the framework account, and **Discord-driven department assignment** via the separate [Night Discord API](/resources/discordAPI/) resource — see [Discord integration](#discord-integration) below.
@@ -183,7 +161,6 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 ## 📦 Installation Process
 
 ### **Step 1: Database Setup (Required)**
-
 {: .no_toc }
 
 We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for Night Shifts MDT to work.
@@ -195,7 +172,6 @@ We assume you have a database for your FiveM server. If you do not have one, con
 ```conf
 set mysql_connection_string "user=Your_Database_Username;password=Your_Database_Password;host=Your_Database_Host;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
 ```
-
 {: .tip }
 
 > **Localhost Example:**
@@ -205,13 +181,11 @@ set mysql_connection_string "user=Your_Database_Username;password=Your_Database_
 > ```
 
 1. **Automatic Table Installation** - When you boot up the server, the code will run queries to install required tables
-
 {: .note }
 
 > **Manual Installation:** The files include a `datatables.sql` file if you prefer to manually install the tables.
 
 ### **Step 2: Install oxmysql (Required)**
-
 {: .no_toc }
 
 If you don't have oxmysql installed, download it from:
@@ -223,13 +197,11 @@ If you don't have oxmysql installed, download it from:
 ```conf
 ensure oxmysql
 ```
-
 {: .tip }
 
 > **Documentation:** For oxmysql questions, visit [oxmysql documentation](https://overextended.github.io/docs/oxmysql/)
 
 ### **Step 3: Test Database Connection**
-
 {: .no_toc }
 
 Start your server and check the console for oxmysql connection messages. You should see:
@@ -239,7 +211,6 @@ Start your server and check the console for oxmysql connection messages. You sho
 ```
 
 ### **Step 4: Postal codes (optional — auto-detect)**
-
 {: .no_toc #step-4-postal-codes }
 
 Night Shifts MDT **does not require** a specific postal resource name. It **auto-detects** which postal / map data is available on your server and uses it for **player** and **world** lookups (dispatch, addresses, etc.).
@@ -259,18 +230,16 @@ ensure nearest-postal
 # or: ensure mnr_postals
 # plus any minimap / postal overlay resource you use
 ```
-
 {: .tip }
 
 > **No extra bridge resource** — Integration is built into the MDT client; you do **not** need a separate “MDT ↔ postal” bridge. If nothing matches, postal-dependent UI may show blanks until a compatible resource is added.
 
 ### **Step 5: Install Night Shifts MDT**
-
 {: .no_toc }
 
 1. **Download** from [CFX Portal Assets](https://portal.cfx.re/assets/granted-assets)
 2. **Extract and transfer** using binary FTP mode
-3. **Place the resource folder** (e.g. `night_shifts_mdt`) into your `resources` directory—the folder name must match what you `ensure` and must match **ERS integration** checks if you use ERS (`night_shifts_mdt` in stock v1 layouts).
+3. **Place the resource folder** into your `resources` directory — keep the original folder name (`night_shifts_mdt`) as shipped; do not rename it.
 4. **Add to server.cfg**:
 
 ```conf
@@ -278,11 +247,9 @@ ensure night_shifts_mdt
 ```
 
 1. **Verify startup** — Check console for oxmysql and `night_shifts_mdt` starting without errors
-
 {: .note }
 
 > **Using ERS?** In `server.cfg`, `ensure night_shifts_mdt` **before** `ensure night_ers` — ERS calls MDT exports at startup, so the MDT must already be running. See **Emergency Response Simulator Integration** below for config and behaviour.
-
 {: .note }
 
 > **First start & database setup:** When the resource starts, it runs a **sequence of MySQL queries** to create or update the required **tables, columns, and indexes** automatically. That work can take a **short time** (often a few seconds; longer on a slow database or a very first install). Let the **server console** finish this phase before deciding something failed—brief delays here are normal.
@@ -292,7 +259,6 @@ ensure night_shifts_mdt
 ## ⚙️ Configuration Setup
 
 ### **Required Tools**
-
 {: .no_toc }
 
 {: .tip }
@@ -300,7 +266,6 @@ ensure night_shifts_mdt
 > **Visual Studio Code:** We strongly recommend downloading [VS Code](https://code.visualstudio.com/download) for editing Lua files.
 
 ### **Configuration Files**
-
 {: .no_toc }
 
 Paths below use `night_shifts_mdt` as the resource folder name—use the same name you deploy and `ensure` in `server.cfg` (some installs rename the folder; paths are always relative to that folder).
@@ -324,7 +289,6 @@ Optional files some servers customize:
 
 
 ### **Configuration Process**
-
 {: .no_toc }
 
 1. **Open VS Code** and navigate to the config files
@@ -332,7 +296,6 @@ Optional files some servers customize:
 3. **Configure in order** - work from top to bottom
 4. **Watch for notes** - important warnings are clearly marked
 5. **Test frequently** - use F8 console and server console for error checking
-
 {: .tip }
 
 > **Time Investment:** Plan adequate time for configuration. Each variable is named descriptively to help you understand its purpose.
@@ -342,7 +305,6 @@ Optional files some servers customize:
 ## 🎮 How It Works
 
 ### **Civilian-facing**
-
 {: .no_toc }
 
 - **Emergency call (e.g. F3)** — Quick civilian emergency call into the dispatch ecosystem (subject to cooldowns and “on shift” rules in config)
@@ -350,7 +312,6 @@ Optional files some servers customize:
 - **Show ID** — Present government ID to a nearby player for RP identity checks
 
 ### **Emergency services (in the tablet)**
-
 {: .no_toc }
 
 - **Shift & status** — Clock in/out, department selection, status codes, **panic** (command or MDT) as configured
@@ -360,7 +321,6 @@ Optional files some servers customize:
 - **Management** — Roster, fleet, bulletins, certifications, and submission review for leadership roles
 
 ### **Permissions**
-
 {: .no_toc #permissions }
 
 Two layers work together: **who can open admin tools** vs **what each job role may do in the MDT while on shift**.
@@ -383,7 +343,6 @@ Two layers work together: **who can open admin tools** vs **what each job role m
 Admin assignments take precedence: if an admin edits a row that started life as `discord`, it is promoted to `admin` and stays put across syncs.
 
 ### **Server owners & admins**
-
 {: .no_toc }
 
 - **First-run & roles** — Initial super-admins and tiered admin levels (moderator / admin / super admin) in config; ongoing **user management** and **permission matrices** in-tablet
@@ -397,14 +356,12 @@ Admin assignments take precedence: if an admin edits a row that started life as 
 How Night Shifts MDT fits next to other resources. **Required** pieces are under [System Requirements](#system-requirements) (OneSync, MySQL, oxmysql).
 
 ### **Frameworks (optional)**
-
 {: .no_toc }
 
 - **Standalone** — MDT works with **no** ESX / QBCore / QBox; civilians are created through council flows and staff tools unless you add a framework.
 - **ESX / QBox / QBCore** — When `es_extended`, `qbx_core`, or `qb-core` is running, the **framework bridge** syncs characters into `nsmdt_civilians` and the **banking bridge** can charge **council fines** to the player’s **bank** or **cash** (`Config.FrameworkFineAccount`). Details and detection order: [Framework Compatibility](#framework-compatibility) (earlier on this page).
 
 ### **Custom Banking Bridge**
-
 {: .no_toc #custom-banking-bridge }
 
 The MDT’s **banking bridge** (`server/server_banking_bridge.lua`) handles **ESX, QBox and QBCore** out of the box. For everything else — a **standalone server with your own banking resource**, a heavily modified framework, or a server that just wants to **override one specific operation** — you can register handlers on `BankingBridge.Custom`. Anywhere the MDT moves money (today: **council fine payments**) will then go through your code.
@@ -412,7 +369,6 @@ The MDT’s **banking bridge** (`server/server_banking_bridge.lua`) handles **ES
 A ready-to-uncomment **preset** is provided at the bottom of `server/s_functions.lua` (which is escrow-ignored and ships open). That is the recommended place to register your handlers; the file is reloaded on every resource restart and survives MDT updates.
 
 #### **When the custom path runs (and when it doesn’t)**
-
 {: .no_toc }
 
 Selection happens **per call**, not globally — you can override only the operations you care about and let the framework keep handling the rest.
@@ -426,14 +382,11 @@ Selection happens **per call**, not globally — you can override only the opera
 | `BankingBridge.Custom` is `nil` entirely                | Same as above — pure framework / STANDALONE behaviour, identical to MDT’s pre-custom default.                                                                                                                          |
 | Standalone server, no custom registered                 | `GetPlayerMoney` returns `0`. `AddMoney` / `RemoveMoney` are **no-ops returning `true`** so caller flow (e.g. fine "paid") is not blocked. The council fine UI **skips** the deduction call entirely in this case. |
 | Standalone server, custom **is** registered             | Council fines and other money calls **do** invoke your handler. The bridge’s `HasActiveBackend()` reports `true` once any custom handler is present, which is what gates the fine deduction.                           |
-
-
 {: .tip }
 
 > The custom check happens **per operation**. If you implement only `AddMoney`, calls to `GetPlayerMoney` / `RemoveMoney` will still hit the detected framework (or STANDALONE no-op). Implement all three for a fully self-contained custom backend.
 
 #### **Handler signatures**
-
 {: .no_toc }
 
 
@@ -450,13 +403,11 @@ Parameters:
 - `amount` — already validated > 0 by the bridge before your handler runs (`number`, integer once normalised).
 - `reason` — human-readable string the MDT supplies (e.g. `"MDT Fine #42"`). Forward to your banking transaction history.
 - `account` — one of `'cash'`, `'bank'`, `'crypto'`. The MDT itself uses `'bank'` for fines (configurable via `Config.FrameworkFineAccount`).
-
 {: .note }
 
 > `reason` is also the second argument to ESX `xPlayer.removeMoney` / QBCore `Player.Functions.RemoveMoney` for parity. If your banking system has no concept of a transaction reason, you can ignore the parameter — the MDT does not inspect what you do with it.
 
 #### **Minimal example**
-
 {: .no_toc }
 
 In `server/s_functions.lua`, uncomment the preset block at the bottom and replace the `exports['my_banking']:…` calls with whatever your banking resource exposes:
@@ -488,19 +439,16 @@ end)
 ```
 
 The `Citizen.CreateThread` + polling wrapper is intentional — `s_functions.lua` loads **before** `server_banking_bridge.lua`, so the `BankingBridge` global does not exist yet at the top of this file. Polling (rather than a single `Wait(0)`) makes the registration robust against any boot-order shuffle and gives a clear console error if the bridge is somehow missing.
-
 {: .warning }
 
 > Do **not** call `BankingBridge.Custom.<Op>(…)` recursively from inside your own handler — that will infinite-loop. Always call your underlying banking resource’s exports directly.
 
 #### **What currently uses the bridge**
-
 {: .no_toc }
 
 Today the bridge is exercised by **council fine payments** (`server/server_council.lua`). Any future feature that moves money will go through the same three functions, so registering custom handlers now future-proofs your standalone setup.
 
 ### **Emergency Response Simulator (`night_ers`)**
-
 {: .no_toc }
 
 Optional integration for servers that run **[Emergency Response Simulator](/resources/ers/)** (`night_ers`).
@@ -510,7 +458,6 @@ Optional integration for servers that run **[Emergency Response Simulator](/reso
 - `server.cfg` — `ensure night_shifts_mdt` before `ensure night_ers`. ERS calls MDT exports (PNC lookups, ped interactions, call forwarding, …) at startup, so the MDT has to be running first. If you do not run ERS, omit it.
 
 #### **Requirements**
-
 {: .no_toc }
 
 
@@ -522,13 +469,11 @@ Optional integration for servers that run **[Emergency Response Simulator](/reso
 | `ManageShiftsByMDT` enabled on the ERS side (where applicable)       | Lets the MDT own clock-in/out so ERS shift state stays aligned with MDT shifts instead of fighting them.                                                                                    |
 
 ### **Postal codes & HUD (optional)**
-
 {: .no_toc }
 
 The MDT **auto-detects** postal data from common resources (`rhud`, `SimpleHUD`, `ModernHUD`, `mnr_postals`, `nearest-postal`, JSON `postal_file` data, etc.)—**no** separate MDT bridge resource. See [Step 4: Postal codes](#step-4-postal-codes). Some MNR setups need `ox_lib`.
 
 ### **Discord integration (`night_discordapi`)**
-
 {: .no_toc #discord-integration }
 
 Optional integration that lets the MDT **grant department + rank automatically** based on the **Discord roles** a player holds. Intended for servers that already manage their roster in Discord and don’t want to mirror every promotion by hand in the admin panel.
@@ -536,7 +481,6 @@ Optional integration that lets the MDT **grant department + rank automatically**
 This is a **separate** capability from [Discord webhooks](#discord-webhooks-optional) below — webhooks **post messages out** of the MDT, this integration **reads roles in** to decide who has access to what.
 
 #### **What it does**
-
 {: .no_toc }
 
 - **Maps Discord roles → (department, rank)**. Optionally also a **sub-department** and an `isPrimary` flag. One Discord role can map to one (department, rank) pair; one user can have many mapped roles and gets all of the assignments.
@@ -545,7 +489,6 @@ This is a **separate** capability from [Discord webhooks](#discord-webhooks-opti
 - **Never touches admin-assigned rows.** If an admin assigns or edits a department row in User Management, that row is tagged `admin` and is **never** overwritten by a sync. See the table in [Permissions](#permissions) for how the source tags interact.
 
 #### **Requirements**
-
 {: .no_toc }
 
 
@@ -558,7 +501,6 @@ This is a **separate** capability from [Discord webhooks](#discord-webhooks-opti
 
 
 #### **Set it up**
-
 {: .no_toc }
 
 All of this is done **inside the MDT admin panel** — no `config.lua` changes needed.
@@ -570,13 +512,11 @@ All of this is done **inside the MDT admin panel** — no `config.lua` changes n
 5. **Add role → rank mappings** with the **Add mapping** button. The role picker lists every Discord role visible to the bot, grouped by guild; the department / rank pickers list everything you have configured in the MDT. Use the **Bulk add** dialog when seeding many ranks for one department in one go.
 
 That’s it — the next time an affected player connects (or in the next 5-minute background sweep, whichever comes first), they’ll be assigned the matching department and rank and the home page will reflect it.
-
 {: .tip }
 
 > Map the **role ID** (the dropdown does this automatically when `night_discordapi` ≥ 2.3 is running). Discord role **names** can be renamed at any time and the mapping list will flag renamed or missing roles with badges so you can clean them up.
 
 #### **Refreshing roles**
-
 {: .no_toc }
 
 
@@ -592,7 +532,6 @@ That’s it — the next time an affected player connects (or in the next 5-minu
 The two manual buttons exist so you don’t have to wait up to 5 minutes after a Discord-side change. They don’t conflict with the background sweep — `night_discordapi` collapses overlapping requests for the same player.
 
 #### **Disabling the integration**
-
 {: .no_toc }
 
 Flipping the master switch off does **two** things immediately:
@@ -603,7 +542,6 @@ Flipping the master switch off does **two** things immediately:
 This is intentional — leaving Discord-granted access in place after disabling the integration would mean players keep permissions you can no longer manage from Discord. If you want to keep specific people in their departments, re-add them via **User Management** before turning the integration off, and they’ll be tagged `admin` and protected.
 
 #### **Who can use the page**
-
 {: .no_toc }
 
 The Discord Integration admin page is gated by the new **Discord Integration** module in the [Admin Permissions editor](#permissions). Defaults:
@@ -620,7 +558,6 @@ Each action is editable per level by a Super Admin, so e.g. a Moderator can be g
 ---
 
 ### **Discord webhooks (optional)**
-
 {: .no_toc #discord-webhooks-optional }
 
 **Different mechanism** to the [Discord integration](#discord-integration) above — webhooks **post messages out** of the MDT to a Discord channel (dispatch alerts, admin audit), they do **not** read Discord roles or affect access. You can run either, both, or neither.
@@ -642,7 +579,6 @@ set nsmdt_discord_webhook_admin "https://discord.com/api/webhooks/…"
 If a convar is empty or missing, the MDT **skips** posting for that channel (same behaviour as documented in the Lua comments above those convar names).
 
 ### **Calling the MDT from other resources**
-
 {: .no_toc }
 
 Other scripts can use `exports['night_shifts_mdt']` (name must match your resource folder). See [Exports](#exports) below.
@@ -650,7 +586,6 @@ Other scripts can use `exports['night_shifts_mdt']` (name must match your resour
 ---
 
 ## 📊 Exports
-
 {: #exports }
 
 {: .warning }
@@ -658,7 +593,6 @@ Other scripts can use `exports['night_shifts_mdt']` (name must match your resour
 > **Developers / integrators only.** This section documents **Lua `exports`** for people writing **other FiveM resources** that talk to the MDT. **Players** and **server owners** doing a normal install and in-tablet setup **do not** need it—skip unless you are calling `exports` from code.
 
 ### **How this section is organised**
-
 {: .no_toc }
 
 
@@ -672,11 +606,9 @@ Other scripts can use `exports['night_shifts_mdt']` (name must match your resour
 ---
 
 ### **Server — integration exports**
-
 {: .no_toc }
 
 #### **Getters**
-
 {: .no_toc }
 
 ##### `GetUserShiftData(targetServerId)`
@@ -859,7 +791,6 @@ local seconds = exports['night_shifts_mdt']:GetCurrentShiftDurationByServerId(so
 ```
 
 #### **Actions — Shift**
-
 {: .no_toc }
 
 ##### `StartShiftByServerId(serverId, departmentId, subDepartmentId, rankId, callsign)`
@@ -937,7 +868,6 @@ exports['night_shifts_mdt']:UpdateCallsignByServerId(source, "L-99")
 ```
 
 #### **Actions — Dispatch**
-
 {: .no_toc }
 
 ##### `ForwardCallToMDT(callData [, callback])`
@@ -990,11 +920,9 @@ end)
 ---
 
 ### **Client — integration exports**
-
 {: .no_toc }
 
 #### **Getters**
-
 {: .no_toc }
 
 ##### `IsMenuOpen()`
@@ -1054,7 +982,6 @@ end
 ```
 
 #### **Actions (tablet / UI)**
-
 {: .no_toc }
 
 ##### `OpenMenu()` · `CloseMenu()` · `ToggleMenu()`
@@ -1072,7 +999,6 @@ exports['night_shifts_mdt']:OpenMenu()
 ```
 
 #### **Actions (dispatch)**
-
 {: .no_toc }
 
 ##### `ForwardCallToMDT(callData)`
@@ -1101,7 +1027,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 ## 🛠️ Troubleshooting
 
 ### **Common Issues**
-
 {: .no_toc }
 
 {: .warning }
@@ -1110,7 +1035,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 >
 > - Ensure files are transferred in binary mode via FTP
 > - Follow the installation order: ZIP → Unpack → Binary FTP → Resources → server.cfg
-
 {: .warning }
 
 > **Database Connection Issues**
@@ -1118,7 +1042,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 > - Verify MySQL connection string is correct
 > - Check database credentials and accessibility
 > - Ensure oxmysql is properly installed and started before the scripts that use it.
-
 {: .warning }
 
 > **FiveM ID Not Found**
@@ -1126,7 +1049,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 > - Log into FiveM app when inside the app
 > - Close and reopen FiveM app
 > - Join server as a logged in user
-
 {: .warning }
 
 > **Resource Naming**
@@ -1139,7 +1061,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 ## 💡 Best Practices
 
 ### **Configuration Tips**
-
 {: .no_toc }
 
 - **Role Planning** - Plan departments, ranks, and in-tablet permission matrices before go-live
@@ -1148,7 +1069,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 - **Backup Configurations** - Keep backups of working configurations
 
 ### **Database Management**
-
 {: .no_toc }
 
 - **Regular Backups** - Backup your database regularly
@@ -1156,7 +1076,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 - **Table Maintenance** - Periodically optimize database tables
 
 ### **User Experience**
-
 {: .no_toc }
 
 - **Clear Documentation** - Provide users with MDT usage guidelines
