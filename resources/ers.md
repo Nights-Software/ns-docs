@@ -154,7 +154,7 @@ Download these packages from the [CFX Portal](https://portal.cfx.re/assets/grant
 7. **Night Shifts MDT** (Optional - Included with ERS Plus and Ultimate)
    - Modern MDT for emergency services management
    - [View Features](https://store.nights-software.com/package/5667103)
-   - [Installation Guide](/resources/nightShifts_mdt_v1)
+   - [Installation Guide](/resources/nightShifts)
 
 8. **Theebu Flatbeds Lite** (Optional - Included with ERS Essential, Plus and Ultimate)
    - Vehicle transport functionality

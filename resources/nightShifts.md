@@ -1,13 +1,11 @@
 ---
-
-## layout: default
+layout: default
 title: "Night Shifts MDT v1"
 nav_order: 5
 has_children: false
 has_toc: true
 last_modified_date: "2026-04-25 20:10:00"
-
-
+---
 
 # Night Shifts - Mobile Data Terminal for FiveM
 
