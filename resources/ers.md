@@ -118,14 +118,15 @@ Download these packages from the [CFX Portal](https://portal.cfx.re/assets/grant
 #### **Core Resources (Required)**
 {: .no_toc }
 
-1. **SmartFiresLite** (Required)
+1. **SmartHoseLite** (Required)
+   - Provided by [London Studios](https://londonstudios.net)
+   - Enables water hose functionality for fire extinguishing
+   - **Must start before `SmartFiresLite`** — `SmartFiresLite` consumes `SmartHose` exports at runtime.
+
+2. **SmartFiresLite** (Required)
    - Provided by [London Studios](https://londonstudios.net)
    - Enables fire spawning functionality
    - **Note:** If you have the full version, rename it to `SmartFires` (case sensitive)
-
-2. **SmartHoseLite** (Required)
-   - Provided by [London Studios](https://londonstudios.net)
-   - Enables water hose functionality for fire extinguishing
 
 3. **Emergency Response Simulator** (Required)
    - Main gamemode with 100+ callouts
@@ -188,8 +189,8 @@ ensure nearest-postal
 ensure map
 
 # Required Resources
+ensure SmartHoseLite   # or SmartHose if you have full version (must start before SmartFiresLite)
 ensure SmartFiresLite  # or SmartFires if you have full version
-ensure SmartHoseLite   # or SmartHose if you have full version
 
 # Core ERS
 ensure night_shifts_mdt

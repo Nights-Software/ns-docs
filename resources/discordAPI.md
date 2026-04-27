@@ -4,7 +4,7 @@ title: "Discord API"
 nav_order: 3
 has_children: false
 has_toc: true
-last_modified_date: "2025-07-22 16:00:00"
+last_modified_date: "2026-04-25 18:40:00"
 ---
 
 <img class="cover-img" src="/assets/img/night_discordapi.png" alt="Discord API Resource" draggable="false">
@@ -310,6 +310,32 @@ if roles then
 end
 ```
 
+{: .note}
+This function returns **role names** filtered through `Config.Discord_Role_Names` — only roles you have mapped in the config will be returned. If you need the **raw Discord role IDs** (so your own resource can match by ID against its own mapping table), use [`GetDiscordMemberRoleIds`](#getdiscordmemberroleidssrc-force-guildnames) instead.
+
+#### `GetDiscordMemberRoleIds(src, force, guildNames)`
+Get the **raw, unfiltered** Discord role IDs for a player across the specified servers. Unlike `GetDiscordMemberRoles`, this **does not** filter against `Config.Discord_Role_Names` — you receive every role ID Discord returns for that member. Useful for downstream resources (e.g. Night Shifts MDT) that maintain their own role-mapping tables and need to match by stable role ID rather than role name.
+
+**Parameters:**
+- `src` (number/string): Player source ID
+- `force` (boolean): Force refresh cache (optional)
+- `guildNames` (table): Array of Discord server names — uses all configured guilds when omitted (optional)
+
+**Returns:** `table` — Array of role ID strings (e.g. `"123456789012345678"`), or `nil` on error. Empty array when the member is in the guild but holds no roles.
+
+**Example:**
+```lua
+local roleIds = exports['night_discordapi']:GetDiscordMemberRoleIds(source, false, {"Your Guild"})
+if roleIds then
+    for _, id in ipairs(roleIds) do
+        print("Role ID: " .. id)
+    end
+end
+```
+
+{: .tip}
+Results are cached separately from `GetDiscordMemberRoles` (same TTL/eviction behaviour), so calling both in the same session does **not** double-spend Discord API requests.
+
 #### `IsMemberPartOfThisRole(src, roleName, force, guildNames)`
 Check if a player has a specific Discord role.
 
@@ -387,6 +413,44 @@ if guildData then
     print("Guild ID: " .. guildData.id)
     print("Guild Name: " .. guildData.name)
     print("Owner ID: " .. guildData.ownerid)
+end
+```
+
+### Configuration Functions
+
+These read straight from `config.lua` so other resources can enumerate the mappings this resource knows about — useful for rendering admin dropdowns ("pick a configured role / guild") without hard-coding lists in every consumer.
+
+#### `GetConfiguredRoles()`
+Returns the configured role-name table from `config.lua` as `{ [roleID] = roleName }`.
+
+**Parameters:** None.
+
+**Returns:** `table` — `{ [roleID] = roleName }`, or `nil` if the resource config is invalid.
+
+**Example:**
+```lua
+local roles = exports['night_discordapi']:GetConfiguredRoles()
+if roles then
+    for roleId, roleName in pairs(roles) do
+        print(roleId, "->", roleName)
+    end
+end
+```
+
+#### `GetConfiguredGuilds()`
+Returns the configured guild table from `config.lua` as `{ [guildID] = guildName }`.
+
+**Parameters:** None.
+
+**Returns:** `table` — `{ [guildID] = guildName }`, or `nil` if the resource config is invalid.
+
+**Example:**
+```lua
+local guilds = exports['night_discordapi']:GetConfiguredGuilds()
+if guilds then
+    for guildId, guildName in pairs(guilds) do
+        print(guildId, "->", guildName)
+    end
 end
 ```
 

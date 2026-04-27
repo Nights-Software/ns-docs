@@ -1,15 +1,16 @@
 ---
-layout: default
+
+## layout: default
 title: "Night Shifts MDT v1"
 nav_order: 5
 has_children: false
 has_toc: true
-last_modified_date: "2026-04-23 20:00:00"
----
+last_modified_date: "2026-04-25 20:10:00"
 
-<img class="cover-img" src="/assets/img/night_shifts_mdt.png" alt="Night Shifts - Mobile Data Terminal Resource" draggable="false">
+
 
 # Night Shifts - Mobile Data Terminal for FiveM
+
 {: .no_toc}
 
 **Welcome to Night Shifts MDT (v1)** — a customizable **Mobile Data Terminal** for your FiveM community. Whether you run **police, fire, EMS, tow, or other emergency services**, Night Shifts helps you **run operations** from one place: **dispatch** (calls, map, units), **shift and status**, and **PNC-style records** (people, vehicles, warrants, cases, ANPR), alongside **civilian council** tools for identity, documents, and vehicles. The MDT is **meant to fit your server** — departments, ranks, permissions, forms, and reference data are managed **in the tablet**, with **languages and settings** so you can align emergency-services roleplay **with any country or region**.
@@ -21,9 +22,11 @@ last_modified_date: "2026-04-23 20:00:00"
 ---
 
 ## 📋 Table of Contents
+
 {: .no_toc .text-delta }
 
 1. TOC
+
 {:toc}
 
 ---
@@ -31,11 +34,13 @@ last_modified_date: "2026-04-23 20:00:00"
 ## 🎯 Overview
 
 {: .warning }
+
 > **Documentation in progress** — This v1 page is being expanded as features and setup flows are finalized. Report inconsistencies or gaps via Discord support.
 
 Night Shifts MDT is a **standalone** emergency-services and civilian registry stack for FiveM: police / fire / EMS / council-style workflows, **rank-based permissions** managed **in the tablet** (database-backed, with super-admin bootstrap in config), and **heavy in-tablet configuration** so server owners can shape departments, forms, penal codes, and lookups without touching the NUI code.
 
 ### **Tablet & UX (v1)**
+
 {: .no_toc }
 
 - **Full tablet NUI** — Large-format interface (modern layout, sounds, toasts, modals, draggable notes taskbar where enabled)
@@ -44,6 +49,7 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Deep linking** — Navigate from dispatch map / alerts into PNC lookups, case files, ANPR, etc. where permissions allow
 
 ### **Dispatch & operations**
+
 {: .no_toc }
 
 - **Dispatch board** — Live incident workflow: calls, unit status, dispatch notes, and integrated **map** (Leaflet) for spatial awareness
@@ -53,6 +59,7 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Statistics** — Department metrics with **Chart.js** dashboards
 
 ### **Police National Computer (PNC) & records**
+
 {: .no_toc }
 
 - **Unified lookups** — Civilian profiles with tabbed detail: personal info, **documents**, **licenses**, **vehicles**, **properties**, **businesses**, **charges/fines**, **criminal history**, **warrants**
@@ -61,12 +68,14 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Penal code browser** — In-tablet reference for charges and sentencing context
 
 ### **Council / civilian registry**
+
 {: .no_toc }
 
 - **Self-service civilian portal** — Profile, documents, licenses, vehicles, properties, businesses (as permitted)
 - **Council administration** — Review queues and staff-side management for pending civilian-side changes (where configured)
 
 ### **Department management (in-tablet)**
+
 {: .no_toc }
 
 - **Roster & fleet** — View and manage unit roster and department vehicles from the MDT
@@ -75,6 +84,7 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Submissions review** — Review form submissions tied to your operations/application workflows
 
 ### **World & identity**
+
 {: .no_toc }
 
 - **Show ID** — Offer your registered ID to the **nearest player** (range-limited), with accept/decline flow for the viewer
@@ -83,6 +93,7 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 - **Framework fines (optional)** — Council-side fine payment can deduct from **bank** or **cash** on **ESX / QBCore / QBox** when configured, or from **your own custom banking system** via the [Custom Banking Bridge](#custom-banking-bridge) on standalone servers
 
 ### **Platform & localization**
+
 {: .no_toc }
 
 - **Multi-language** — Translation-driven UI (per-locale files)
@@ -102,7 +113,9 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 ## ⚠️ Important Pre-Installation Notes
 
 {: .warning }
+
 > **Critical Installation Order:** Always follow this exact sequence to avoid parsing errors in the F8 console:
+>
 > 1. Download ZIP Package from CFX Portal
 > 2. Unpack in a folder on your local machine
 > 3. Set File Transfer Protocol (FTP) type to **binary**
@@ -111,61 +124,68 @@ Night Shifts MDT is a **standalone** emergency-services and civilian registry st
 > 6. Boot up the server
 
 {: .important }
+
 > **Support Policy:** Follow this guide step by step. If you're stuck, ask for support in our Discord and provide the specific step name. Do not skip steps.
 
 {: .warning }
+
 > **Database Requirement:** Night Shifts MDT requires a MySQL database and oxmysql resource to function properly.
 
 {: .tip }
+
 > **Emergency Response Simulator Compatible:** It is possible to search NPCs and their vehicles in the MDT when they have been interacted with via the Emergency Response Simulator.
 
 ---
 
 ## 🔧 System Requirements & Compatibility
+
 {: #system-requirements }
 
 ### **OneSync Compatibility**
+
 {: .no_toc }
 
 - **✅ OneSync Legacy:** Fully tested and compatible
 - **✅ OneSync Infinity:** Fully tested and compatible
 
 ### **Framework Compatibility**
+
 {: .no_toc #framework-compatibility }
 
 - **✅ Standalone:** If no supported framework resource is running, the MDT runs in **standalone** mode: **no automatic civilian generation** from characters (players use council registration / staff workflows as you configure).
+- **✅ Auto civilian generation (framework bridge):** When a supported framework is detected **and started before or with the MDT**, the resource syncs each loaded character into `nsmdt_civilians` (create or update by framework id). Supported stacks (detection order on the server):
 
-- **✅ Auto civilian generation (framework bridge):** When a supported framework is detected **and started before or with the MDT**, the resource syncs each loaded character into **`nsmdt_civilians`** (create or update by framework id). Supported stacks (detection order on the server):
-
-  | Framework | Resource / API | Character id used for sync |
-  |-----------|----------------|----------------------------|
-  | **ESX** | `es_extended` | `identifier` |
-  | **QBox** | `qbx_core` (`GetPlayer`) | `citizenid` |
-  | **QBCore** | `qb-core` | `citizenid` |
+  | Framework  | Resource / API           | Character id used for sync |
+  | ---------- | ------------------------ | -------------------------- |
+  | **ESX**    | `es_extended`            | `identifier`               |
+  | **QBox**   | `qbx_core` (`GetPlayer`) | `citizenid`                |
+  | **QBCore** | `qb-core`                | `citizenid`                |
 
   On first sync, a council-style **personal id** (e.g. `CIV-`…) can be issued; **identity documents** may be auto-generated when your document types and council rules allow (see server logs for `[MDT Framework]`). Existing civilians are **updated** on subsequent loads (name, job, phone, etc., per bridge data).
-
 - **✅ Framework fines:** Optional **bank/cash** deduction for council fines when a framework player pays—configure `Config.FrameworkFineAccount` in `config.lua` (`ESX` / `QBCore` / `QBox`).
-
 - **✅ Custom banking (standalone):** If you run a **standalone server with your own banking resource** (or want to override one specific operation on a framework server), the **banking bridge** exposes a `BankingBridge.Custom` slot you can plug into. Council fines, balance reads and any future money-moving feature will then go through your code instead of (or in addition to) the framework path. See [Custom Banking Bridge](#custom-banking-bridge) below.
 
 {: .note }
-> Run **`es_extended`**, **`qbx_core`**, or **`qb-core`** on the **same server** as Night Shifts MDT if you want automatic civilian sync. Only one framework path is selected (ESX → QBox → QBCore in that order if multiple were present).
+
+> Run `es_extended`, `qbx_core`, or `qb-core` on the **same server** as Night Shifts MDT if you want automatic civilian sync. Only one framework path is selected (ESX → QBox → QBCore in that order if multiple were present).
 
 ### **Dependencies**
+
 {: .no_toc }
 
 - **✅ MySQL Database** - Required for data storage
 - **✅ oxmysql** - Required database API
 
 {: .tip }
-> **Note:** Database setup (MySQL + oxmysql) is required regardless of framework. Permissions and departments are configured **inside the MDT** (and initial super-admins in `config.lua`); **Night Discord API** is **not** part of the v1 install path. Framework features are **optional**: standalone operation, **auto civilian sync** on supported frameworks, and **fine payments** through the framework account when enabled.
+
+> **Note:** Database setup (MySQL + oxmysql) is required regardless of framework. Permissions and departments are configured **inside the MDT** (and initial super-admins in `config.lua`). Optional integrations include: **auto civilian sync** on supported frameworks, **fine payments** through the framework account, and **Discord-driven department assignment** via the separate [Night Discord API](/resources/discordAPI/) resource — see [Discord integration](#discord-integration) below.
 
 ---
 
 ## 📦 Installation Process
 
 ### **Step 1: Database Setup (Required)**
+
 {: .no_toc }
 
 We assume you have a database for your FiveM server. If you do not have one, contact your hosting providers' documentation on how to get and build one. This is a dependency for Night Shifts MDT to work.
@@ -179,17 +199,21 @@ set mysql_connection_string "user=Your_Database_Username;password=Your_Database_
 ```
 
 {: .tip }
+
 > **Localhost Example:**
+>
 > ```conf
 > set mysql_connection_string "user=root;password=;host=localhost;port=3306;database=Your_Database_Name;charset=utf8mb4_general_ci"
 > ```
 
-4. **Automatic Table Installation** - When you boot up the server, the code will run queries to install required tables
+1. **Automatic Table Installation** - When you boot up the server, the code will run queries to install required tables
 
 {: .note }
+
 > **Manual Installation:** The files include a `datatables.sql` file if you prefer to manually install the tables.
 
 ### **Step 2: Install oxmysql (Required)**
+
 {: .no_toc }
 
 If you don't have oxmysql installed, download it from:
@@ -203,27 +227,31 @@ ensure oxmysql
 ```
 
 {: .tip }
+
 > **Documentation:** For oxmysql questions, visit [oxmysql documentation](https://overextended.github.io/docs/oxmysql/)
 
 ### **Step 3: Test Database Connection**
+
 {: .no_toc }
 
 Start your server and check the console for oxmysql connection messages. You should see:
+
 ```conf
 [script:oxmysql] Database server connection established!
 ```
 
 ### **Step 4: Postal codes (optional — auto-detect)**
+
 {: .no_toc #step-4-postal-codes }
 
 Night Shifts MDT **does not require** a specific postal resource name. It **auto-detects** which postal / map data is available on your server and uses it for **player** and **world** lookups (dispatch, addresses, etc.).
 
 **How it works**
 
-1. **HUD-first (player position)** — If a supported HUD exposes postal for the local player, that is preferred: **`rhud`** (`get_postal`), then **`SimpleHUD`** / **`ModernHUD`** (`getPostal`), in that order.
-2. **World coordinates** — For map pins and coordinates, the MDT tries **`rhud`** world APIs first, then **hinted** postal resources in order: **`mnr_postals`**, **`nearest-postal`**.
-3. **Multiple formats** — The same hints are probed for several backends: JSON lists referenced by the resource **`postal_file`** manifest metadata, **MNR-style** Lua data (config + data files), **export**-based nearest-postal (`getNearestPostal`, `getPostalAtCoords`, etc.), and similar. You can ship **different postal file packs** (or forks of nearest-postal / MNR) as long as the resource exposes one of these patterns; the MDT picks the **first working** match at runtime.
-4. **Dependencies of postal resources** — Some MNR builds need **`ox_lib`** running. Install what your chosen postal resource documents.
+1. **HUD-first (player position)** — If a supported HUD exposes postal for the local player, that is preferred: `rhud` (`get_postal`), then `SimpleHUD` / `ModernHUD` (`getPostal`), in that order.
+2. **World coordinates** — For map pins and coordinates, the MDT tries `rhud` world APIs first, then **hinted** postal resources in order: `mnr_postals`, `nearest-postal`.
+3. **Multiple formats** — The same hints are probed for several backends: JSON lists referenced by the resource `postal_file` manifest metadata, **MNR-style** Lua data (config + data files), **export**-based nearest-postal (`getNearestPostal`, `getPostalAtCoords`, etc.), and similar. You can ship **different postal file packs** (or forks of nearest-postal / MNR) as long as the resource exposes one of these patterns; the MDT picks the **first working** match at runtime.
+4. **Dependencies of postal resources** — Some MNR builds need `ox_lib` running. Install what your chosen postal resource documents.
 
 You typically **ensure** your postal / map stack **before** Night Shifts MDT in `server.cfg`, for example:
 
@@ -235,9 +263,11 @@ ensure nearest-postal
 ```
 
 {: .tip }
+
 > **No extra bridge resource** — Integration is built into the MDT client; you do **not** need a separate “MDT ↔ postal” bridge. If nothing matches, postal-dependent UI may show blanks until a compatible resource is added.
 
 ### **Step 5: Install Night Shifts MDT**
+
 {: .no_toc }
 
 1. **Download** from [CFX Portal Assets](https://portal.cfx.re/assets/granted-assets)
@@ -249,12 +279,14 @@ ensure nearest-postal
 ensure night_shifts_mdt
 ```
 
-5. **Verify startup** — Check console for oxmysql and `night_shifts_mdt` starting without errors
+1. **Verify startup** — Check console for oxmysql and `night_shifts_mdt` starting without errors
 
 {: .note }
-> **Using ERS?** In `server.cfg`, **`ensure night_ers` before** your MDT resource so shift sync and other MDT → ERS exports work. See **Emergency Response Simulator Integration** below for config and behaviour.
+
+> **Using ERS?** In `server.cfg`, `ensure night_shifts_mdt` **before** `ensure night_ers` — ERS calls MDT exports at startup, so the MDT must already be running. See **Emergency Response Simulator Integration** below for config and behaviour.
 
 {: .note }
+
 > **First start & database setup:** When the resource starts, it runs a **sequence of MySQL queries** to create or update the required **tables, columns, and indexes** automatically. That work can take a **short time** (often a few seconds; longer on a slow database or a very first install). Let the **server console** finish this phase before deciding something failed—brief delays here are normal.
 
 ---
@@ -262,31 +294,39 @@ ensure night_shifts_mdt
 ## ⚙️ Configuration Setup
 
 ### **Required Tools**
+
 {: .no_toc }
 
 {: .tip }
+
 > **Visual Studio Code:** We strongly recommend downloading [VS Code](https://code.visualstudio.com/download) for editing Lua files.
 
 ### **Configuration Files**
+
 {: .no_toc }
 
-Paths below use **`night_shifts_mdt`** as the resource folder name—use the same name you deploy and `ensure` in `server.cfg` (some installs rename the folder; paths are always relative to that folder).
+Paths below use `night_shifts_mdt` as the resource folder name—use the same name you deploy and `ensure` in `server.cfg` (some installs rename the folder; paths are always relative to that folder).
 
-| Path | Purpose |
-|------|---------|
-| `night_shifts_mdt/config/config.lua` | **Main config** — tablet prop/animations, ERS link (`Enable_ERS`), framework fine account, hotkeys, civilian emergency call, Show ID, initial super-admins, and other core toggles |
-| `night_shifts_mdt/config/config_anpr.lua` | **ANPR** — static camera positions, scan radii, and related ANPR vehicle/hash lists |
-| `night_shifts_mdt/config/config_npc_pool.lua` | **ERS NPC pool** — fictive NPC identities and vehicle-record probabilities for Emergency Response Simulator / PNC integration |
-| `night_shifts_mdt/config/translations/<locale>.lua` | **Languages** — one file per locale (e.g. `en.lua`, `de.lua`, `fr.lua`, …) |
+
+| Path                                                | Purpose                                                                                                                                                                            |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `night_shifts_mdt/config/config.lua`                | **Main config** — tablet prop/animations, ERS link (`Enable_ERS`), framework fine account, hotkeys, civilian emergency call, Show ID, initial super-admins, and other core toggles |
+| `night_shifts_mdt/config/config_anpr.lua`           | **ANPR** — static camera positions, scan radii, and related ANPR vehicle/hash lists                                                                                                |
+| `night_shifts_mdt/config/config_npc_pool.lua`       | **ERS NPC pool** — fictive NPC identities and vehicle-record probabilities for Emergency Response Simulator / PNC integration                                                      |
+| `night_shifts_mdt/config/translations/<locale>.lua` | **Languages** — one file per locale (e.g. `en.lua`, `de.lua`, `fr.lua`, …)                                                                                                         |
+
 
 Optional files some servers customize:
 
-| Path | Purpose |
-|------|---------|
-| `night_shifts_mdt/client/c_functions.lua` | Client helpers (e.g. postal auto-detect, shared utilities) |
+
+| Path                                      | Purpose                                                                                                                 |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `night_shifts_mdt/client/c_functions.lua` | Client helpers (e.g. postal auto-detect, shared utilities)                                                              |
 | `night_shifts_mdt/server/s_functions.lua` | Server helpers, Discord webhook implementation, and the optional [Custom Banking Bridge](#custom-banking-bridge) preset |
 
+
 ### **Configuration Process**
+
 {: .no_toc }
 
 1. **Open VS Code** and navigate to the config files
@@ -296,6 +336,7 @@ Optional files some servers customize:
 5. **Test frequently** - use F8 console and server console for error checking
 
 {: .tip }
+
 > **Time Investment:** Plan adequate time for configuration. Each variable is named descriptively to help you understand its purpose.
 
 ---
@@ -303,6 +344,7 @@ Optional files some servers customize:
 ## 🎮 How It Works
 
 ### **Civilian-facing**
+
 {: .no_toc }
 
 - **Emergency call (e.g. F3)** — Quick civilian emergency call into the dispatch ecosystem (subject to cooldowns and “on shift” rules in config)
@@ -310,6 +352,7 @@ Optional files some servers customize:
 - **Show ID** — Present government ID to a nearby player for RP identity checks
 
 ### **Emergency services (in the tablet)**
+
 {: .no_toc }
 
 - **Shift & status** — Clock in/out, department selection, status codes, **panic** (command or MDT) as configured
@@ -319,17 +362,30 @@ Optional files some servers customize:
 - **Management** — Roster, fleet, bulletins, certifications, and submission review for leadership roles
 
 ### **Permissions**
-{: .no_toc }
+
+{: .no_toc #permissions }
 
 Two layers work together: **who can open admin tools** vs **what each job role may do in the MDT while on shift**.
 
 - **Admin permissions** — A **global admin level** (0–3: regular user, moderator, admin, super admin) decides whether someone can use the **admin panel** at all, and **which admin areas** they get (users, departments, MDT settings, penal code editor, license/document/flag types, forms, system logs, emergency-wide actions, bug reports, and the admin-permissions editor for super admins). Moderators and up can have **granular actions** inside those modules (for example view vs edit on penal codes, or which settings tabs they may change). Levels are assigned when a super admin edits **user management**; initial super-admins can be seeded in `config.lua` for first-time setup.
-
 - **Rank permissions** — Separate from admin level: each **rank** inside a **department** has its own **permission strings** (for example PNC lookups, dispatch features, council administration). Super admins or department managers assign these when configuring **ranks**. Permissions can **inherit** from other ranks in the same department via **rank hierarchy**, so a sergeant can automatically include patrol allowances without duplicating every flag. The MDT **resolves** a player’s effective permissions when they **clock in** to a department (and refreshes when ranks or hierarchy change).
 
 **In practice:** Admin level answers “May this person run the **server / MDT configuration** UI?” Rank permissions answer “Once clocked in as this **job role**, which **operational** menus and actions (dispatch, PNC, ANPR, …) are allowed?” A user can be a high **rank** in police without any **admin** level, and an **admin** can configure the server without needing a department rank.
 
+**Where department + rank assignments come from.** A user’s rows in `nsmdt_user_departments` are tagged with an `assignmentSource` that records who put them there:
+
+
+| Source      | Set by                                                                                                                 | Removable by                                                                                                                       |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `admin`     | A super admin / admin assigns the user via **User Management** in the admin panel                                      | Admin only — never overwritten by automatic syncs                                                                                  |
+| `open_join` | The user joins a department configured as **open join** from the home page                                             | Admin, or the user leaves voluntarily                                                                                              |
+| `discord`   | The optional [Discord integration](#discord-integration) maps a Discord role the user holds to that (department, rank) | Admin (manually), or removed automatically when the user loses the Discord role / the mapping is deleted / integration is disabled |
+
+
+Admin assignments take precedence: if an admin edits a row that started life as `discord`, it is promoted to `admin` and stays put across syncs.
+
 ### **Server owners & admins**
+
 {: .no_toc }
 
 - **First-run & roles** — Initial super-admins and tiered admin levels (moderator / admin / super admin) in config; ongoing **user management** and **permission matrices** in-tablet
@@ -343,58 +399,69 @@ Two layers work together: **who can open admin tools** vs **what each job role m
 How Night Shifts MDT fits next to other resources. **Required** pieces are under [System Requirements](#system-requirements) (OneSync, MySQL, oxmysql).
 
 ### **Frameworks (optional)**
+
 {: .no_toc }
 
 - **Standalone** — MDT works with **no** ESX / QBCore / QBox; civilians are created through council flows and staff tools unless you add a framework.
-- **ESX / QBox / QBCore** — When `es_extended`, `qbx_core`, or `qb-core` is running, the **framework bridge** syncs characters into **`nsmdt_civilians`** and the **banking bridge** can charge **council fines** to the player’s **bank** or **cash** (`Config.FrameworkFineAccount`). Details and detection order: [Framework Compatibility](#framework-compatibility) (earlier on this page).
+- **ESX / QBox / QBCore** — When `es_extended`, `qbx_core`, or `qb-core` is running, the **framework bridge** syncs characters into `nsmdt_civilians` and the **banking bridge** can charge **council fines** to the player’s **bank** or **cash** (`Config.FrameworkFineAccount`). Details and detection order: [Framework Compatibility](#framework-compatibility) (earlier on this page).
 
 ### **Custom Banking Bridge**
+
 {: .no_toc #custom-banking-bridge }
 
 The MDT’s **banking bridge** (`server/server_banking_bridge.lua`) handles **ESX, QBox and QBCore** out of the box. For everything else — a **standalone server with your own banking resource**, a heavily modified framework, or a server that just wants to **override one specific operation** — you can register handlers on `BankingBridge.Custom`. Anywhere the MDT moves money (today: **council fine payments**) will then go through your code.
 
-A ready-to-uncomment **preset** is provided at the bottom of **`server/s_functions.lua`** (which is escrow-ignored and ships open). That is the recommended place to register your handlers; the file is reloaded on every resource restart and survives MDT updates.
+A ready-to-uncomment **preset** is provided at the bottom of `server/s_functions.lua` (which is escrow-ignored and ships open). That is the recommended place to register your handlers; the file is reloaded on every resource restart and survives MDT updates.
 
 #### **When the custom path runs (and when it doesn’t)**
+
 {: .no_toc }
 
 Selection happens **per call**, not globally — you can override only the operations you care about and let the framework keep handling the rest.
 
-| Situation | What runs |
-|---|---|
-| `BankingBridge.Custom.<Op>` is registered as a function | **Your handler** runs first. Its return value is what callers receive. |
-| Your handler **throws** an error | Bridge logs `^1[MDT Banking]^7 BankingBridge.Custom.<Op> threw: …` and **falls through** to the framework path (or STANDALONE). MDT never crashes from a buggy handler. |
-| `BankingBridge.Custom.<Op>` is `nil` / not a function | Falls through to the **framework path** for that op (`ESX → QBox → QBCore`), or **STANDALONE** if no framework is detected. |
-| `BankingBridge.Custom` is `nil` entirely | Same as above — pure framework / STANDALONE behaviour, identical to MDT’s pre-custom default. |
-| Standalone server, no custom registered | `GetPlayerMoney` returns **`0`**. `AddMoney` / `RemoveMoney` are **no-ops returning `true`** so caller flow (e.g. fine "paid") is not blocked. The council fine UI **skips** the deduction call entirely in this case. |
-| Standalone server, custom **is** registered | Council fines and other money calls **do** invoke your handler. The bridge’s `HasActiveBackend()` reports `true` once any custom handler is present, which is what gates the fine deduction. |
+
+| Situation                                               | What runs                                                                                                                                                                                                              |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BankingBridge.Custom.<Op>` is registered as a function | **Your handler** runs first. Its return value is what callers receive.                                                                                                                                                 |
+| Your handler **throws** an error                        | Bridge logs `^1[MDT Banking]^7 BankingBridge.Custom.<Op> threw: …` and **falls through** to the framework path (or STANDALONE). MDT never crashes from a buggy handler.                                                |
+| `BankingBridge.Custom.<Op>` is `nil` / not a function   | Falls through to the **framework path** for that op (`ESX → QBox → QBCore`), or **STANDALONE** if no framework is detected.                                                                                            |
+| `BankingBridge.Custom` is `nil` entirely                | Same as above — pure framework / STANDALONE behaviour, identical to MDT’s pre-custom default.                                                                                                                          |
+| Standalone server, no custom registered                 | `GetPlayerMoney` returns `0`. `AddMoney` / `RemoveMoney` are **no-ops returning `true`** so caller flow (e.g. fine "paid") is not blocked. The council fine UI **skips** the deduction call entirely in this case. |
+| Standalone server, custom **is** registered             | Council fines and other money calls **do** invoke your handler. The bridge’s `HasActiveBackend()` reports `true` once any custom handler is present, which is what gates the fine deduction.                           |
+
 
 {: .tip }
+
 > The custom check happens **per operation**. If you implement only `AddMoney`, calls to `GetPlayerMoney` / `RemoveMoney` will still hit the detected framework (or STANDALONE no-op). Implement all three for a fully self-contained custom backend.
 
 #### **Handler signatures**
+
 {: .no_toc }
 
-| Handler | Signature | Return |
-|---|---|---|
-| `GetPlayerMoney` | `function(source, account)` | **Number** — current balance for that account. Return `0` if the player is unknown. |
-| `RemoveMoney` | `function(source, amount, reason, account)` | **Boolean** — `true` on success; `false` on failure (e.g. insufficient funds). On `false` the council UI shows the localised "insufficient funds" toast. |
-| `AddMoney` | `function(source, amount, reason, account)` | **Boolean** — `true` on success. |
+
+| Handler          | Signature                                   | Return                                                                                                                                                   |
+| ---------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GetPlayerMoney` | `function(source, account)`                 | **Number** — current balance for that account. Return `0` if the player is unknown.                                                                      |
+| `RemoveMoney`    | `function(source, amount, reason, account)` | **Boolean** — `true` on success; `false` on failure (e.g. insufficient funds). On `false` the council UI shows the localised "insufficient funds" toast. |
+| `AddMoney`       | `function(source, amount, reason, account)` | **Boolean** — `true` on success.                                                                                                                         |
+
 
 Parameters:
 
-- **`source`** — player server id (`number`).
-- **`amount`** — already validated > 0 by the bridge before your handler runs (`number`, integer once normalised).
-- **`reason`** — human-readable string the MDT supplies (e.g. `"MDT Fine #42"`). Forward to your banking transaction history.
-- **`account`** — one of `'cash'`, `'bank'`, `'crypto'`. The MDT itself uses `'bank'` for fines (configurable via `Config.FrameworkFineAccount`).
+- `source` — player server id (`number`).
+- `amount` — already validated > 0 by the bridge before your handler runs (`number`, integer once normalised).
+- `reason` — human-readable string the MDT supplies (e.g. `"MDT Fine #42"`). Forward to your banking transaction history.
+- `account` — one of `'cash'`, `'bank'`, `'crypto'`. The MDT itself uses `'bank'` for fines (configurable via `Config.FrameworkFineAccount`).
 
 {: .note }
-> **`reason`** is also the second argument to ESX `xPlayer.removeMoney` / QBCore `Player.Functions.RemoveMoney` for parity. If your banking system has no concept of a transaction reason, you can ignore the parameter — the MDT does not inspect what you do with it.
+
+> `reason` is also the second argument to ESX `xPlayer.removeMoney` / QBCore `Player.Functions.RemoveMoney` for parity. If your banking system has no concept of a transaction reason, you can ignore the parameter — the MDT does not inspect what you do with it.
 
 #### **Minimal example**
+
 {: .no_toc }
 
-In **`server/s_functions.lua`**, uncomment the preset block at the bottom and replace the `exports['my_banking']:…` calls with whatever your banking resource exposes:
+In `server/s_functions.lua`, uncomment the preset block at the bottom and replace the `exports['my_banking']:…` calls with whatever your banking resource exposes:
 
 ```lua
 Citizen.CreateThread(function()
@@ -425,38 +492,149 @@ end)
 The `Citizen.CreateThread` + polling wrapper is intentional — `s_functions.lua` loads **before** `server_banking_bridge.lua`, so the `BankingBridge` global does not exist yet at the top of this file. Polling (rather than a single `Wait(0)`) makes the registration robust against any boot-order shuffle and gives a clear console error if the bridge is somehow missing.
 
 {: .warning }
+
 > Do **not** call `BankingBridge.Custom.<Op>(…)` recursively from inside your own handler — that will infinite-loop. Always call your underlying banking resource’s exports directly.
 
 #### **What currently uses the bridge**
+
 {: .no_toc }
 
 Today the bridge is exercised by **council fine payments** (`server/server_council.lua`). Any future feature that moves money will go through the same three functions, so registering custom handlers now future-proofs your standalone setup.
 
 ### **Emergency Response Simulator (`night_ers`)**
+
 {: .no_toc }
 
 Optional integration for servers that run **[Emergency Response Simulator](/resources/ers/)** (`night_ers`).
 
-- **MDT → ERS** — With **`Config.Enable_ERS`** in the MDT, clock-in/out can call **`night_ers`** so ERS shift state stays aligned (set **`ManageShiftsByMDT`** in ERS where applicable so the MDT owns shift toggles).
-- **PNC & world** — ERS-driven NPCs and vehicles can appear in **lookups**, **ANPR**, and related flows according to your **`config_npc_pool.lua`** and ERS settings.
-- **`server.cfg`** — **`ensure night_ers` before `ensure night_shifts_mdt`** so shift sync and other MDT ↔ ERS calls resolve. If you do not run ERS, omit it.
+- **MDT → ERS** — With `Config.Enable_ERS` in the MDT, clock-in/out can call `night_ers` so ERS shift state stays aligned (set `ManageShiftsByMDT` in ERS where applicable so the MDT owns shift toggles).
+- **PNC & world** — ERS-driven NPCs and vehicles can appear in **lookups**, **ANPR**, and related flows according to your `config_npc_pool.lua` and ERS settings.
+- `server.cfg` — `ensure night_shifts_mdt` before `ensure night_ers`. ERS calls MDT exports (PNC lookups, ped interactions, call forwarding, …) at startup, so the MDT has to be running first. If you do not run ERS, omit it.
+
+#### **Requirements**
+
+{: .no_toc }
+
+
+| Requirement                                                          | Notes                                                                                                                                                                                       |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `oxmysql` ≥ **2.12.0**                                               | `night_ers` requires **oxmysql v2.12.0 or newer**. We recommend running the **latest** [oxmysql release](https://github.com/overextended/oxmysql/releases/latest) on any server using ERS. |
+| `night_shifts_mdt` started before `night_ers` in `server.cfg`        | Boot order matters — `night_ers` calls MDT exports (PNC lookups, ped interactions, call forwarding, …) on its own startup, so the MDT must already be running. The MDT probes `night_ers` lazily at runtime, so it does not need ERS up first. |
+| `Config.Enable_ERS = true` in the MDT                                | Toggles the integration. With it off, the MDT ignores ERS entirely even if the resource is running.                                                                                         |
+| `ManageShiftsByMDT` enabled on the ERS side (where applicable)       | Lets the MDT own clock-in/out so ERS shift state stays aligned with MDT shifts instead of fighting them.                                                                                    |
 
 ### **Postal codes & HUD (optional)**
+
 {: .no_toc }
 
-The MDT **auto-detects** postal data from common resources (`rhud`, `SimpleHUD`, `ModernHUD`, `mnr_postals`, `nearest-postal`, JSON `postal_file` data, etc.)—**no** separate MDT bridge resource. See [Step 4: Postal codes](#step-4-postal-codes). Some MNR setups need **`ox_lib`**.
+The MDT **auto-detects** postal data from common resources (`rhud`, `SimpleHUD`, `ModernHUD`, `mnr_postals`, `nearest-postal`, JSON `postal_file` data, etc.)—**no** separate MDT bridge resource. See [Step 4: Postal codes](#step-4-postal-codes). Some MNR setups need `ox_lib`.
+
+### **Discord integration (`night_discordapi`)**
+
+{: .no_toc #discord-integration }
+
+Optional integration that lets the MDT **grant department + rank automatically** based on the **Discord roles** a player holds. Intended for servers that already manage their roster in Discord and don’t want to mirror every promotion by hand in the admin panel.
+
+This is a **separate** capability from [Discord webhooks](#discord-webhooks-optional) below — webhooks **post messages out** of the MDT, this integration **reads roles in** to decide who has access to what.
+
+#### **What it does**
+
+{: .no_toc }
+
+- **Maps Discord roles → (department, rank)**. Optionally also a **sub-department** and an `isPrimary` flag. One Discord role can map to one (department, rank) pair; one user can have many mapped roles and gets all of the assignments.
+- **Syncs automatically** when a player connects, when the Discord role list changes server-side (5-minute background sweep), and on demand from buttons described below.
+- **Removes access automatically** when a Discord role is taken away, when its mapping is deleted in the admin panel, or when the master integration switch is turned off.
+- **Never touches admin-assigned rows.** If an admin assigns or edits a department row in User Management, that row is tagged `admin` and is **never** overwritten by a sync. See the table in [Permissions](#permissions) for how the source tags interact.
+
+#### **Requirements**
+
+{: .no_toc }
+
+
+| Requirement                                                                                                                                          | Notes                                                                                                                                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `night_discordapi` ≥ **2.3.0**                                                                                                                       | The MDT calls `GetDiscordMemberRoleIds` (added in 2.3) to read raw role IDs. Older builds will start, but mapping by **role ID** is unavailable and only legacy name-based matching works. **Recommended:** upgrade. |
+| `night_discordapi` started before `night_shifts_mdt` in `server.cfg`                                                                                 | Boot order matters — the MDT probes `GetResourceState('night_discordapi')` on connect.                                                                                                                               |
+| Each player has **linked their Discord account in the FiveM app**                                                                                    | Without a Discord identifier (`GetPlayerIdentifierByType(src, 'discord')`), the integration silently skips that player. The admin panel surfaces unlinked online players so you can ask them to fix it.              |
+| `night_discordapi` is configured with the **bot token + guild(s) + role table** described in its [Discord API documentation](/resources/discordAPI/) | The MDT only consumes data the API exposes; if the bot can’t see a guild or role, the MDT can’t map it.                                                                                                              |
+
+
+#### **Set it up**
+
+{: .no_toc }
+
+All of this is done **inside the MDT admin panel** — no `config.lua` changes needed.
+
+1. **Install and configure `night_discordapi`** as documented on its [own page](/resources/discordAPI/). Add `ensure night_discordapi` **before** `ensure night_shifts_mdt` in `server.cfg`. Restart the server.
+2. **Open the MDT** as a Super Admin, go to **Admin Panel → Discord Integration**.
+3. **Toggle the master switch on**. If `night_discordapi` isn’t started, the page will tell you so and the toggle stays disabled.
+4. **(Optional) Restrict to specific guilds.** By default the integration reads role data from every guild your bot knows about. If you want to scope it to one or two specific Discord servers, list their **guild names** (the friendly names defined in `night_discordapi`’s `Discord_Guild_Names`).
+5. **Add role → rank mappings** with the **Add mapping** button. The role picker lists every Discord role visible to the bot, grouped by guild; the department / rank pickers list everything you have configured in the MDT. Use the **Bulk add** dialog when seeding many ranks for one department in one go.
+
+That’s it — the next time an affected player connects (or in the next 5-minute background sweep, whichever comes first), they’ll be assigned the matching department and rank and the home page will reflect it.
+
+{: .tip }
+
+> Map the **role ID** (the dropdown does this automatically when `night_discordapi` ≥ 2.3 is running). Discord role **names** can be renamed at any time and the mapping list will flag renamed or missing roles with badges so you can clean them up.
+
+#### **Refreshing roles**
+
+{: .no_toc }
+
+
+| Trigger                                           | Who        | Cooldown | Forces a fresh Discord fetch?        |
+| ------------------------------------------------- | ---------- | -------- | ------------------------------------ |
+| Player connects                                   | Automatic  | —        | Yes (initial seed)                   |
+| Player opens the MDT                              | Automatic  | —        | No (uses cached roles)               |
+| **5-minute background sweep**                     | Automatic  | —        | Yes                                  |
+| **"Refresh roles" button** on the home page       | Per-player | 30 s     | Yes                                  |
+| **"Resync all online" button** in the admin panel | Per-admin  | 30 s     | Yes (for every linked online player) |
+
+
+The two manual buttons exist so you don’t have to wait up to 5 minutes after a Discord-side change. They don’t conflict with the background sweep — `night_discordapi` collapses overlapping requests for the same player.
+
+#### **Disabling the integration**
+
+{: .no_toc }
+
+Flipping the master switch off does **two** things immediately:
+
+1. Stops all future Discord syncs (the home-page Refresh button hides itself for every online player).
+2. **Bulk-deletes every department row tagged `assignmentSource = 'discord'`** so any access that was granted via Discord is revoked at once. **Admin** and **open-join** rows are untouched.
+
+This is intentional — leaving Discord-granted access in place after disabling the integration would mean players keep permissions you can no longer manage from Discord. If you want to keep specific people in their departments, re-add them via **User Management** before turning the integration off, and they’ll be tagged `admin` and protected.
+
+#### **Who can use the page**
+
+{: .no_toc }
+
+The Discord Integration admin page is gated by the new **Discord Integration** module in the [Admin Permissions editor](#permissions). Defaults:
+
+
+| Level                   | Page access | manage_settings | manage_mappings | resync |
+| ----------------------- | ----------- | --------------- | --------------- | ------ |
+| 0 User · 1 Moderator    | ✗           | ✗               | ✗               | ✗      |
+| 2 Admin · 3 Super Admin | ✓           | ✓               | ✓               | ✓      |
+
+
+Each action is editable per level by a Super Admin, so e.g. a Moderator can be granted **resync** alone (handy after a Discord-side restructure) without being able to alter mappings or flip the master switch.
+
+---
 
 ### **Discord webhooks (optional)**
-{: .no_toc }
 
-This is **not** the old Discord API permission resource. The **implementation** (reading URLs and posting embeds) lives in **`server/s_functions.lua`**; you do **not** paste webhook URLs into that file on a normal install.
+{: .no_toc #discord-webhooks-optional }
+
+**Different mechanism** to the [Discord integration](#discord-integration) above — webhooks **post messages out** of the MDT to a Discord channel (dispatch alerts, admin audit), they do **not** read Discord roles or affect access. You can run either, both, or neither.
+
+The **implementation** (reading URLs and posting embeds) lives in `server/s_functions.lua`; you do **not** paste webhook URLs into that file on a normal install.
 
 **URLs** are read from **server convars** at runtime:
 
 - `nsmdt_discord_webhook_dispatch` — dispatch-related notifications  
-- `nsmdt_discord_webhook_admin` — admin audit–style notifications  
+- `nsmdt_discord_webhook_admin` — admin audit–style notifications
 
-Set them in **`server.cfg`** (or any supported way you set FiveM convars), for example:
+Set them in `server.cfg` (or any supported way you set FiveM convars), for example:
 
 ```conf
 set nsmdt_discord_webhook_dispatch "https://discord.com/api/webhooks/…"
@@ -466,42 +644,52 @@ set nsmdt_discord_webhook_admin "https://discord.com/api/webhooks/…"
 If a convar is empty or missing, the MDT **skips** posting for that channel (same behaviour as documented in the Lua comments above those convar names).
 
 ### **Calling the MDT from other resources**
+
 {: .no_toc }
 
-Other scripts can use **`exports['night_shifts_mdt']`** (name must match your resource folder). See [Exports](#exports) below.
+Other scripts can use `exports['night_shifts_mdt']` (name must match your resource folder). See [Exports](#exports) below.
 
 ---
 
 ## 📊 Exports
+
 {: #exports }
 
 {: .warning }
+
 > **Developers / integrators only.** This section documents **Lua `exports`** for people writing **other FiveM resources** that talk to the MDT. **Players** and **server owners** doing a normal install and in-tablet setup **do not** need it—skip unless you are calling `exports` from code.
 
 ### **How this section is organised**
+
 {: .no_toc }
 
-| Kind | Meaning |
-|------|---------|
-| **Getter** | Read-only; returns data (or calls your **callback** with data). |
-| **Setter / mutator** | Writes or updates server-side state (DB and/or cache). |
-| **Action** | Performs a side effect (create call, relay event, open UI). Check return values and callbacks where documented. |
+
+| Kind                 | Meaning                                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Getter**           | Read-only; returns data (or calls your **callback** with data).                                                 |
+| **Setter / mutator** | Writes or updates server-side state (DB and/or cache).                                                          |
+| **Action**           | Performs a side effect (create call, relay event, open UI). Check return values and callbacks where documented. |
+
 
 ---
 
 ### **Server — integration exports**
+
 {: .no_toc }
 
 #### **Getters**
+
 {: .no_toc }
 
 ##### `GetUserShiftData(targetServerId)`
 
-| | |
-|---|--|
-| **Parameters** | `targetServerId` (number) — FiveM player **server id** (`source` from events, or any valid id). |
-| **Returns** | **Single table** (not an array). Empty `{}` if the player cannot be resolved or has no session. Keys (values may be `nil` when not on shift or not yet pushed): **`serverId`**, **`rockstarLicense`**, **`userName`**, **`nickName`**, **`adminLevel`**, **`isOnShift`**, **`departmentId`**, **`subDepartmentId`**, **`rankId`**, **`callsign`**, **`statusCode`**, **`statusLabel`**, **`statusColor`**, **`shiftDuration`** (seconds), **`totalShiftTime`**, **`shiftTimeByDepartment`** (table), **`location`**, **`speed`**, **`heading`**, **`compassDirection`**, **`postal`**, **`distanceToNearestPostal`**, **`street`**, **`zone`**, **`modeOfTransport`**, **`sirens`**, **`plate`**. |
-| **Limitations** | **Server-only.** Location fields depend on the client having pushed location while on shift; they may be empty/nil shortly after clock-in. |
+
+|                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `targetServerId` (number) — FiveM player **server id** (`source` from events, or any valid id).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| **Returns**     | **Single table** (not an array). Empty `{}` if the player cannot be resolved or has no session. Keys (values may be `nil` when not on shift or not yet pushed): `serverId`, `rockstarLicense`, `userName`, `nickName`, `adminLevel`, `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusLabel`, `statusColor`, `shiftDuration` (seconds), `totalShiftTime`, `shiftTimeByDepartment` (table), `location`, `speed`, `heading`, `compassDirection`, `postal`, `distanceToNearestPostal`, `street`, `zone`, `modeOfTransport`, `sirens`, `plate`. |
+| **Limitations** | **Server-only.** Location fields depend on the client having pushed location while on shift; they may be empty/nil shortly after clock-in.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+
 
 ```lua
 local mdt = exports['night_shifts_mdt']
@@ -514,17 +702,19 @@ end
 
 ##### `GetPostalForPlayer(source)`
 
-| | |
-|---|--|
-| **Parameters** | `source` (number) — player server id. Invalid id returns the translated unknown postal string. |
-| **Returns** | **String** — postal / zone code for that player’s **current ped position**. |
-| **Limitations** | **Server-only.** Without a supported postal backend, you only get the unknown label. |
+
+|                 |                                                                                                |
+| --------------- | ---------------------------------------------------------------------------------------------- |
+| **Parameters**  | `source` (number) — player server id. Invalid id returns the translated unknown postal string. |
+| **Returns**     | **String** — postal / zone code for that player’s **current ped position**.                    |
+| **Limitations** | **Server-only.** Without a supported postal backend, you only get the unknown label.           |
+
 
 Resolution order (same behaviour as [Step 4: Postal codes](#step-4-postal-codes)):
 
-1. **`rhud`** — if started, **`exports.rhud:get_postal`** at the ped’s X/Y.
-2. **`SimpleHUD`** or **`ModernHUD`** — if started, **`getPostal(source)`** on that resource.
-3. **Static postal data** — nearest code from **`mnr_postals`**, **`nearest-postal`**, or JSON via **`postal_file`** metadata, using the ped’s coordinates.
+1. `rhud` — if started, `exports.rhud:get_postal` at the ped’s X/Y.
+2. `SimpleHUD` or `ModernHUD` — if started, `getPostal(source)` on that resource.
+3. **Static postal data** — nearest code from `mnr_postals`, `nearest-postal`, or JSON via `postal_file` metadata, using the ped’s coordinates.
 
 ```lua
 local postal = exports['night_shifts_mdt']:GetPostalForPlayer(source)
@@ -532,11 +722,13 @@ local postal = exports['night_shifts_mdt']:GetPostalForPlayer(source)
 
 ##### `GetDepartments()`
 
-| | |
-|---|--|
-| **Parameters** | None. |
-| **Returns** | **Array table** of **active** department rows from cache (`SELECT *` from `nsmdt_departments`, filtered to `isActive`). Each element is a **table** with at least: **`id`**, **`departmentName`**, **`departmentShortName`**, **`departmentDescription`**, **`departmentIcon`**, **`departmentBanner`**, **`departmentLogo`**, **`departmentType`**, **`departmentColor`**, **`blipColour`**, **`blipSprite`**, **`displayOrder`**, **`isActive`**, **`createdAt`**, **`createdBy`**, **`modifiedAt`**, **`modifiedBy`**. |
-| **Limitations** | **Server-only.** Archived departments (`isActive = 0`) are **omitted** (clock-in pickers only see active rows). |
+
+|                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | None.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Returns**     | **Array table** of **active** department rows from cache (`SELECT *` from `nsmdt_departments`, filtered to `isActive`). Each element is a **table** with at least: `id`, `departmentName`, `departmentShortName`, `departmentDescription`, `departmentIcon`, `departmentBanner`, `departmentLogo`, `departmentType`, `departmentColor`, `blipColour`, `blipSprite`, `displayOrder`, `isActive`, `createdAt`, `createdBy`, `modifiedAt`, `modifiedBy`. |
+| **Limitations** | **Server-only.** Archived departments (`isActive = 0`) are **omitted** (clock-in pickers only see active rows).                                                                                                                                                                                                                                                                                                                                                                                                           |
+
 
 ```lua
 for _, d in ipairs(exports['night_shifts_mdt']:GetDepartments()) do
@@ -546,11 +738,13 @@ end
 
 ##### `GetRanksByDepartmentId(departmentId)`
 
-| | |
-|---|--|
-| **Parameters** | `departmentId` (number). |
-| **Returns** | **Array table** of rank rows for that department from cache. Each element includes: **`id`**, **`departmentId`**, **`departmentName`** (joined from departments), **`rankName`**, **`rankShortName`**, **`rankDescription`**, **`rankOrder`**, **`permissions`** (**array** of permission **strings**, e.g. PNC/dispatch flags — parsed from `nsmdt_rank_permissions`). |
-| **Limitations** | **Server-only.** Empty `{}` if `departmentId` is invalid or there are no ranks. |
+
+|                 |                                                                                                                                                                                                                                                                                                                                                                         |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `departmentId` (number).                                                                                                                                                                                                                                                                                                                                                |
+| **Returns**     | **Array table** of rank rows for that department from cache. Each element includes: `id`, `departmentId`, `departmentName` (joined from departments), `rankName`, `rankShortName`, `rankDescription`, `rankOrder`, `permissions` (**array** of permission **strings**, e.g. PNC/dispatch flags — parsed from `nsmdt_rank_permissions`). |
+| **Limitations** | **Server-only.** Empty `{}` if `departmentId` is invalid or there are no ranks.                                                                                                                                                                                                                                                                                         |
+
 
 ```lua
 local ranks = exports['night_shifts_mdt']:GetRanksByDepartmentId(1)
@@ -558,11 +752,13 @@ local ranks = exports['night_shifts_mdt']:GetRanksByDepartmentId(1)
 
 ##### `GetSubDepartmentsByDepartmentId(departmentId)`
 
-| | |
-|---|--|
-| **Parameters** | `departmentId` (number). |
-| **Returns** | **Array table** of sub-department rows for that department from cache. Each element includes: **`id`**, **`departmentId`**, **`departmentName`** (joined), **`subDepartmentName`**, **`subDepartmentShortName`**, **`subDepartmentDescription`**, **`displayOrder`**, **`createdAt`**. Use **`id`** as `subDepartmentId` when calling **`StartShiftByServerId`**. |
-| **Limitations** | **Server-only.** Empty `{}` if the department has no sub-departments or id is invalid. |
+
+|                 |                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `departmentId` (number).                                                                                                                                                                                                                                                                                                                                          |
+| **Returns**     | **Array table** of sub-department rows for that department from cache. Each element includes: `id`, `departmentId`, `departmentName` (joined), `subDepartmentName`, `subDepartmentShortName`, `subDepartmentDescription`, `displayOrder`, `createdAt`. Use `id` as `subDepartmentId` when calling `StartShiftByServerId`. |
+| **Limitations** | **Server-only.** Empty `{}` if the department has no sub-departments or id is invalid.                                                                                                                                                                                                                                                                            |
+
 
 ```lua
 local sub = exports['night_shifts_mdt']:GetSubDepartmentsByDepartmentId(1)
@@ -570,11 +766,13 @@ local sub = exports['night_shifts_mdt']:GetSubDepartmentsByDepartmentId(1)
 
 ##### `GetSetting(key)`
 
-| | |
-|---|--|
-| **Parameters** | `key` (string) — e.g. `currency`, `currencyPosition`, `timeFormat`, `dateFormat`, `speedUnit`, `vehicleInspectionEnabled`, `vehicleInspectionLabel`, alert duration keys. |
-| **Returns** | Value for that setting (type depends on key). |
-| **Limitations** | **Server-only.** Read-only. |
+
+|                 |                                                                                                                                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `key` (string) — e.g. `currency`, `currencyPosition`, `timeFormat`, `dateFormat`, `speedUnit`, `vehicleInspectionEnabled`, `vehicleInspectionLabel`, alert duration keys. |
+| **Returns**     | Value for that setting (type depends on key).                                                                                                                             |
+| **Limitations** | **Server-only.** Read-only.                                                                                                                                               |
+
 
 ```lua
 local mdt = exports['night_shifts_mdt']
@@ -583,11 +781,13 @@ print(mdt:GetSetting('currency'), mdt:GetSetting('speedUnit'))
 
 ##### `GetAllSettings()`
 
-| | |
-|---|--|
-| **Parameters** | None. |
-| **Returns** | **Table** — full settings (defaults merged with DB), including `alertDurations` and similar. |
-| **Limitations** | **Server-only.** Read-only. |
+
+|                 |                                                                                              |
+| --------------- | -------------------------------------------------------------------------------------------- |
+| **Parameters**  | None.                                                                                        |
+| **Returns**     | **Table** — full settings (defaults merged with DB), including `alertDurations` and similar. |
+| **Limitations** | **Server-only.** Read-only.                                                                  |
+
 
 ```lua
 local settings = exports['night_shifts_mdt']:GetAllSettings()
@@ -595,11 +795,13 @@ local settings = exports['night_shifts_mdt']:GetAllSettings()
 
 ##### `GetCurrencySymbol()`
 
-| | |
-|---|--|
-| **Parameters** | None. |
-| **Returns** | **String** — display symbol (e.g. `$`, `€`). |
-| **Limitations** | **Server-only.** |
+
+|                 |                                              |
+| --------------- | -------------------------------------------- |
+| **Parameters**  | None.                                        |
+| **Returns**     | **String** — display symbol (e.g. `$`, `€`). |
+| **Limitations** | **Server-only.**                             |
+
 
 ```lua
 local symbol = exports['night_shifts_mdt']:GetCurrencySymbol()
@@ -607,19 +809,23 @@ local symbol = exports['night_shifts_mdt']:GetCurrencySymbol()
 
 ##### `GetCurrentLanguage()`
 
-| | |
-|---|--|
-| **Parameters** | None. |
-| **Returns** | **String** — language code (e.g. `en`). |
-| **Limitations** | **Server-only.** |
+
+|                 |                                         |
+| --------------- | --------------------------------------- |
+| **Parameters**  | None.                                   |
+| **Returns**     | **String** — language code (e.g. `en`). |
+| **Limitations** | **Server-only.**                        |
+
 
 ##### `GetAvailableLanguages()`
 
-| | |
-|---|--|
-| **Parameters** | None. |
-| **Returns** | **Table** — array of language codes. |
-| **Limitations** | **Server-only.** |
+
+|                 |                                      |
+| --------------- | ------------------------------------ |
+| **Parameters**  | None.                                |
+| **Returns**     | **Table** — array of language codes. |
+| **Limitations** | **Server-only.**                     |
+
 
 ```lua
 for _, code in ipairs(exports['night_shifts_mdt']:GetAvailableLanguages()) do print(code) end
@@ -627,11 +833,13 @@ for _, code in ipairs(exports['night_shifts_mdt']:GetAvailableLanguages()) do pr
 
 ##### `GetActiveShiftByServerId(serverId)`
 
-| | |
-|---|--|
-| **Parameters** | `serverId` (number) — player server id. |
-| **Returns** | Active shift **table**, or **`nil`** if not on shift. |
-| **Limitations** | **Server-only.** Raw shift object (internal shape). |
+
+|                 |                                                       |
+| --------------- | ----------------------------------------------------- |
+| **Parameters**  | `serverId` (number) — player server id.               |
+| **Returns**     | Active shift **table**, or `nil` if not on shift. |
+| **Limitations** | **Server-only.** Raw shift object (internal shape).   |
+
 
 ```lua
 local shift = exports['night_shifts_mdt']:GetActiveShiftByServerId(source)
@@ -640,26 +848,31 @@ if shift then print(shift.callsign, shift.departmentId, shift.statusCode) end
 
 ##### `GetCurrentShiftDurationByServerId(serverId)`
 
-| | |
-|---|--|
-| **Parameters** | `serverId` (number) — player server id. |
-| **Returns** | **Number** — seconds in the current shift; **`0`** if not on shift. |
-| **Limitations** | **Server-only.** |
+
+|                 |                                                                     |
+| --------------- | ------------------------------------------------------------------- |
+| **Parameters**  | `serverId` (number) — player server id.                             |
+| **Returns**     | **Number** — seconds in the current shift; `0` if not on shift. |
+| **Limitations** | **Server-only.**                                                    |
+
 
 ```lua
 local seconds = exports['night_shifts_mdt']:GetCurrentShiftDurationByServerId(source)
 ```
 
 #### **Actions — Shift**
+
 {: .no_toc }
 
 ##### `StartShiftByServerId(serverId, departmentId, subDepartmentId, rankId, callsign)`
 
-| | |
-|---|--|
-| **Parameters** | `serverId` — player server id. `departmentId`, `subDepartmentId`, `rankId` — from **`GetDepartments`** / **`GetRanksByDepartmentId`** / **`GetSubDepartmentsByDepartmentId`**. `callsign` — string you want for this shift (export does **not** load a saved callsign from the DB; empty → **`"UNASSIGNED"`**). |
-| **Returns** | **`success` (boolean)**, **`result`** (table or error string). On success, `result.callsign` reflects what was stored. |
-| **Limitations** | **Server-only.** Player must already have an MDT session. |
+
+|                 |                                                                                                                                                                                                                                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `serverId` — player server id. `departmentId`, `subDepartmentId`, `rankId` — from `GetDepartments` / `GetRanksByDepartmentId` / `GetSubDepartmentsByDepartmentId`. `callsign` — string you want for this shift (export does **not** load a saved callsign from the DB; empty → `"UNASSIGNED"`). |
+| **Returns**     | `success` (boolean), `result` (table or error string). On success, `result.callsign` reflects what was stored.                                                                                                                                                                                  |
+| **Limitations** | **Server-only.** Player must already have an MDT session.                                                                                                                                                                                                                                                       |
+
 
 ```lua
 local mdt = exports['night_shifts_mdt']
@@ -681,11 +894,13 @@ if success then print("Clocked in:", result.callsign) else print("Failed:", tost
 
 ##### `EndShiftByServerId(serverId [, callback])`
 
-| | |
-|---|--|
-| **Parameters** | `serverId` (number). `callback` (optional) — `function(success, durationOrError, totalTime)`. |
-| **Returns** | **`success` (boolean)**, **`duration`** (number or error string), **`totalTime`** (number). |
-| **Limitations** | **Server-only.** |
+
+|                 |                                                                                               |
+| --------------- | --------------------------------------------------------------------------------------------- |
+| **Parameters**  | `serverId` (number). `callback` (optional) — `function(success, durationOrError, totalTime)`. |
+| **Returns**     | `success` (boolean), `duration` (number or error string), `totalTime` (number).   |
+| **Limitations** | **Server-only.**                                                                              |
+
 
 ```lua
 local mdt = exports['night_shifts_mdt']
@@ -697,11 +912,13 @@ end)
 
 ##### `UpdateShiftStatusByServerId(serverId, statusCode [, callback])`
 
-| | |
-|---|--|
-| **Parameters** | `serverId` (number). `statusCode` (string) — e.g. `10-8`, `10-6` (must exist for the department). |
-| **Returns** | **`success` (boolean)**, **`result`** (string or nil). |
-| **Limitations** | **Server-only.** |
+
+|                 |                                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `serverId` (number). `statusCode` (string) — e.g. `10-8`, `10-6` (must exist for the department). |
+| **Returns**     | `success` (boolean), `result` (string or nil).                                            |
+| **Limitations** | **Server-only.**                                                                                  |
+
 
 ```lua
 local ok, err = exports['night_shifts_mdt']:UpdateShiftStatusByServerId(source, "10-8")
@@ -709,46 +926,55 @@ local ok, err = exports['night_shifts_mdt']:UpdateShiftStatusByServerId(source, 
 
 ##### `UpdateCallsignByServerId(serverId, newCallsign)`
 
-| | |
-|---|--|
-| **Parameters** | `serverId` (number). `newCallsign` (string) — alphanumeric, spaces, hyphens; max **20** characters. |
-| **Returns** | **`success` (boolean)**, **`result`** (table or error string). |
-| **Limitations** | **Server-only.** |
+
+|                 |                                                                                                     |
+| --------------- | --------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `serverId` (number). `newCallsign` (string) — alphanumeric, spaces, hyphens; max **20** characters. |
+| **Returns**     | `success` (boolean), `result` (table or error string).                                      |
+| **Limitations** | **Server-only.**                                                                                    |
+
 
 ```lua
 exports['night_shifts_mdt']:UpdateCallsignByServerId(source, "L-99")
 ```
 
 #### **Actions — Dispatch**
+
 {: .no_toc }
 
 ##### `ForwardCallToMDT(callData [, callback])`
 
-| | |
-|---|--|
-| **Parameters** | `callData` (table) — see required fields below. `callback` (optional) — `function(success, callId)`. |
-| **Returns** | Nothing useful synchronously; use **`callback`** when you need **`callId`**. |
-| **Limitations** | **Server-only.** Validation **rejects** if `callType` or `description` is empty; `x`/`y` missing or both zero; or **no** routing flag is set. At least one of `requiresPolice`, `requiresAmbulance`, `requiresFire`, `requiresTow`, `requiresCouncil` must be **`1`**. |
+
+|                 |                                                                                                                                                                                                                                                                        |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `callData` (table) — see required fields below. `callback` (optional) — `function(success, callId)`.                                                                                                                                                                   |
+| **Returns**     | Nothing useful synchronously; use `callback` when you need `callId`.                                                                                                                                                                                                   |
+| **Limitations** | **Server-only.** Validation **rejects** if `callType` or `description` is empty; `x`/`y` missing or both zero; or **no** routing flag is set. At least one of `requiresPolice`, `requiresAmbulance`, `requiresFire`, `requiresTow`, `requiresCouncil` must be `1`.     |
+
 
 **Required `callData`**
 
-| Field | Rule |
-|-------|------|
-| `callType` | Non-empty string |
-| `description` | Non-empty string |
-| `x`, `y` | Numbers; **not** both zero |
-| `requiresPolice` / `requiresAmbulance` / `requiresFire` / `requiresTow` / `requiresCouncil` | At least one **`1`** |
+
+| Field                                                                                       | Rule                       |
+| ------------------------------------------------------------------------------------------- | -------------------------- |
+| `callType`                                                                                  | Non-empty string           |
+| `description`                                                                               | Non-empty string           |
+| `x`, `y`                                                                                    | Numbers; **not** both zero |
+| `requiresPolice` / `requiresAmbulance` / `requiresFire` / `requiresTow` / `requiresCouncil` | At least one `1`           |
+
 
 **Optional `callData` (examples)**
 
-| Field | Notes |
-|-------|--------|
-| `priority` | Default **3** (grades 1–5). |
-| `priorityLabel`, `priorityColor` | Override from settings. |
-| `incidentRef` | Dispatcher reference (e.g. CAD). |
-| `callerName`, `contactDetails` | Reporting party. |
-| `z` | Optional height. |
-| `street`, `postal`, `zone` | Display on call card. |
+
+| Field                            | Notes                            |
+| -------------------------------- | -------------------------------- |
+| `priority`                       | Default **3** (grades 1–5).      |
+| `priorityLabel`, `priorityColor` | Override from settings.          |
+| `incidentRef`                    | Dispatcher reference (e.g. CAD). |
+| `callerName`, `contactDetails`   | Reporting party.                 |
+| `z`                              | Optional height.                 |
+| `street`, `postal`, `zone`       | Display on call card.            |
+
 
 ```lua
 exports['night_shifts_mdt']:ForwardCallToMDT({
@@ -766,17 +992,21 @@ end)
 ---
 
 ### **Client — integration exports**
+
 {: .no_toc }
 
 #### **Getters**
+
 {: .no_toc }
 
 ##### `IsMenuOpen()`
 
-| | |
-|---|--|
-| **Returns** | **Boolean** — whether the MDT NUI/tablet is considered open. |
-| **Limitations** | **Client-only.** |
+
+|                 |                                                              |
+| --------------- | ------------------------------------------------------------ |
+| **Returns**     | **Boolean** — whether the MDT NUI/tablet is considered open. |
+| **Limitations** | **Client-only.**                                             |
+
 
 ```lua
 if exports['night_shifts_mdt']:IsMenuOpen() then
@@ -786,10 +1016,12 @@ end
 
 ##### `IsOnPoliceShift()` · `IsOnAmbulanceShift()` · `IsOnFireShift()` · `IsOnTowShift()` · `IsOnCouncilShift()`
 
-| | |
-|---|--|
-| **Returns** | **Boolean** each — whether the **local player** is clocked into that department **type** (synced from MDT state). |
-| **Limitations** | **Client-only.** At most **one** shift type at a time. Cached; MDT does not need to be open. |
+
+|                 |                                                                                                                   |
+| --------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Returns**     | **Boolean** each — whether the **local player** is clocked into that department **type** (synced from MDT state). |
+| **Limitations** | **Client-only.** At most **one** shift type at a time. Cached; MDT does not need to be open.                      |
+
 
 ```lua
 local mdt = exports['night_shifts_mdt']
@@ -800,31 +1032,60 @@ elseif mdt:IsOnAmbulanceShift() then
 end
 ```
 
+##### `GetPlayerCallsign()`
+
+
+|                 |                                                                                                                                                                                                                                                                                                    |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | None.                                                                                                                                                                                                                                                                                              |
+| **Returns**     | **String** — the local player's current shift callsign (e.g. `"L-42"`), or `nil` when the player is not on shift.                                                                                                                                                                                  |
+| **Limitations** | **Client-only.** Cached from `receiveShiftData`, `shiftStarted`, and `callsignUpdated` events; the MDT does not need to be open. The player must have opened the MDT at least once during the session for the server to start sending shift updates (same constraint as the `IsOn*Shift` exports). |
+
+
+```lua
+if GetResourceState("night_shifts_mdt") == "started" then
+    local callsign = exports['night_shifts_mdt']:GetPlayerCallsign()
+    if callsign then
+        print("Callsign: " .. callsign)
+    else
+        print("Player is not on shift")
+    end
+else
+    print("[ERROR] You have enabled the callsign feature but night_shifts_mdt is not started.")
+end
+```
+
 #### **Actions (tablet / UI)**
+
 {: .no_toc }
 
 ##### `OpenMenu()` · `CloseMenu()` · `ToggleMenu()`
 
-| | |
-|---|--|
-| **Parameters** | None. |
-| **Returns** | Depends on internal helpers; use for **control flow**, not strict contracts. |
-| **Limitations** | **Client-only.** May interact with focus/NUI; avoid re-entrancy spam. |
+
+|                 |                                                                              |
+| --------------- | ---------------------------------------------------------------------------- |
+| **Parameters**  | None.                                                                        |
+| **Returns**     | Depends on internal helpers; use for **control flow**, not strict contracts. |
+| **Limitations** | **Client-only.** May interact with focus/NUI; avoid re-entrancy spam.        |
+
 
 ```lua
 exports['night_shifts_mdt']:OpenMenu()
 ```
 
 #### **Actions (dispatch)**
+
 {: .no_toc }
 
 ##### `ForwardCallToMDT(callData)`
 
-| | |
-|---|--|
-| **Parameters** | Same **validation rules** as the **server** export (`callType`, `description`, `x`/`y`, at least one **`requires*`** = **`1`**). Optional: `attachCreatingUnit = true` or **`1`** — attach the **local player** as a unit on the new call (must be clocked in). |
-| **Returns** | Nothing. |
-| **Limitations** | **Client-only.** **No callback** — cannot read `callId` here. Use **server** `ForwardCallToMDT` if you need **`callId`**. Server receives attach intent as **`1`/`0`** for reliable serialization. |
+
+|                 |                                                                                                                                                                                                                                                                 |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | Same **validation rules** as the **server** export (`callType`, `description`, `x`/`y`, at least one `requires*` = `1`). Optional: `attachCreatingUnit = true` or `1` — attach the **local player** as a unit on the new call (must be clocked in). |
+| **Returns**     | Nothing.                                                                                                                                                                                                                                                        |
+| **Limitations** | **Client-only.** **No callback** — cannot read `callId` here. Use **server** `ForwardCallToMDT` if you need `callId`. Server receives attach intent as `1`/`0` for reliable serialization.                                                                      |
+
 
 ```lua
 exports['night_shifts_mdt']:ForwardCallToMDT({
@@ -842,28 +1103,37 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 ## 🛠️ Troubleshooting
 
 ### **Common Issues**
+
 {: .no_toc }
 
 {: .warning }
+
 > **Parsing Errors in F8 Console**
+>
 > - Ensure files are transferred in binary mode via FTP
 > - Follow the installation order: ZIP → Unpack → Binary FTP → Resources → server.cfg
 
 {: .warning }
+
 > **Database Connection Issues**
+>
 > - Verify MySQL connection string is correct
 > - Check database credentials and accessibility
-> - Ensure oxmysql is properly installed and started
+> - Ensure oxmysql is properly installed and started before the scripts that use it.
 
 {: .warning }
+
 > **FiveM ID Not Found**
+>
 > - Log into FiveM app when inside the app
 > - Close and reopen FiveM app
 > - Join server as a logged in user
 
 {: .warning }
+
 > **Resource Naming**
-> - Use the **shipped** resource folder name (v1 default: **`night_shifts_mdt`**). Renaming breaks **`exports['…']`** calls and **ERS** checks that expect the MDT resource name.
+>
+> - Use the **shipped** resource folder name (v1 default: `night_shifts_mdt`). Renaming breaks `exports['…']` calls and **ERS** checks that expect the MDT resource name.
 > - Keep `config/`, `client/`, `server/`, and `fxmanifest.lua` layout intact.
 
 ---
@@ -871,6 +1141,7 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 ## 💡 Best Practices
 
 ### **Configuration Tips**
+
 {: .no_toc }
 
 - **Role Planning** - Plan departments, ranks, and in-tablet permission matrices before go-live
@@ -879,6 +1150,7 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 - **Backup Configurations** - Keep backups of working configurations
 
 ### **Database Management**
+
 {: .no_toc }
 
 - **Regular Backups** - Backup your database regularly
@@ -886,6 +1158,7 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 - **Table Maintenance** - Periodically optimize database tables
 
 ### **User Experience**
+
 {: .no_toc }
 
 - **Clear Documentation** - Provide users with MDT usage guidelines
