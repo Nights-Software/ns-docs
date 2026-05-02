@@ -4,15 +4,14 @@ title: "Night Shifts MDT v1"
 nav_order: 5
 has_children: false
 has_toc: true
-last_modified_date: "2026-04-25 20:10:00"
+last_modified_date: "2026-05-02"
 ---
 
 # Night Shifts - Mobile Data Terminal for FiveM
 {: .no_toc}
 
-**Welcome to Night Shifts MDT (v1)** — a customizable **Mobile Data Terminal** for your FiveM community. Whether you run **police, fire, EMS, tow, or other emergency services**, Night Shifts helps you **run operations** from one place: **dispatch** (calls, map, units), **shift and status**, and **PNC-style records** (people, vehicles, warrants, cases, ANPR), alongside **civilian council** tools for identity, documents, and vehicles. The MDT is **meant to fit your server** — departments, ranks, permissions, forms, and reference data are managed **in the tablet**, with **languages and settings** so you can align emergency-services roleplay **with any country or region**.
-
-**v1** provides **in-game tablet** with modern looks and has a responsive feel with endless features.
+Installation and integration guide for **Night Shifts MDT (v1)** on FiveM.
+- *Crafted by [Nights Software](https://store.nights-software.com/)*
 {: .fs-5 .fw-300 }
 
 ---
@@ -22,69 +21,6 @@ last_modified_date: "2026-04-25 20:10:00"
 
 1. TOC
 {:toc}
-
----
-
-## 🎯 Overview
-{: .warning }
-
-> **Documentation in progress** — This v1 page is being expanded as features and setup flows are finalized. Report inconsistencies or gaps via Discord support.
-
-Night Shifts MDT is a **standalone** emergency-services and civilian registry stack for FiveM: police / fire / EMS / council-style workflows, **rank-based permissions** managed **in the tablet** (database-backed, with super-admin bootstrap in config), and **heavy in-tablet configuration** so server owners can shape departments, forms, penal codes, and lookups without touching the NUI code.
-
-### **Tablet & UX (v1)**
-{: .no_toc }
-
-- **Full tablet NUI** — Large-format interface (modern layout, sounds, toasts, modals, draggable notes taskbar where enabled)
-- **Physical tablet prop & animations** — Optional handheld tablet model and show/hide animations (configurable)
-- **In-tablet admin & setup** — User management, departments/ranks, permissions editor, MDT settings, form builder, penal code and reference data managers, system logs, emergency actions, bug-report inbox, and more
-- **Deep linking** — Navigate from dispatch map / alerts into PNC lookups, case files, ANPR, etc. where permissions allow
-
-### **Dispatch & operations**
-{: .no_toc }
-
-- **Dispatch board** — Live incident workflow: calls, unit status, dispatch notes, and integrated **map** (Leaflet) for spatial awareness
-- **Communications** — In-MDT comms channel for coordinated response
-- **Hotline & civilian emergency flow** — Emergency hotline integration; **F3 (or configured key) civilian 911-style calls** that create real dispatch traffic (with cooldowns / shift rules as configured)
-- **Operations & applications** — **Configurable forms** for operations and job applications; staff review pipelines (linked to admin form builder and submissions review)
-- **Statistics** — Department metrics with **Chart.js** dashboards
-
-### **Police National Computer (PNC) & records**
-{: .no_toc }
-
-- **Unified lookups** — Civilian profiles with tabbed detail: personal info, **documents**, **licenses**, **vehicles**, **properties**, **businesses**, **charges/fines**, **criminal history**, **warrants**
-- **Vehicle & registration tools** — Plate search, registration flows, **flags**, **case files**, **warrant** management
-- **ANPR** — In-MDT ANPR workspace plus optional **ANPR HUD** and camera lock hotkeys for patrol vehicles
-- **Penal code browser** — In-tablet reference for charges and sentencing context
-
-### **Council / civilian registry**
-{: .no_toc }
-
-- **Self-service civilian portal** — Profile, documents, licenses, vehicles, properties, businesses (as permitted)
-- **Council administration** — Review queues and staff-side management for pending civilian-side changes (where configured)
-
-### **Department management (in-tablet)**
-{: .no_toc }
-
-- **Roster & fleet** — View and manage unit roster and department vehicles from the MDT
-- **Bulletins** — Internal announcements for your department
-- **Certifications** — Track certification types and member compliance where enabled
-- **Submissions review** — Review form submissions tied to your operations/application workflows
-
-### **World & identity**
-{: .no_toc }
-
-- **Show ID** — Offer your registered ID to the **nearest player** (range-limited), with accept/decline flow for the viewer
-- **Emergency Response Simulator** — Optional integration: search **ERS NPCs** and linked vehicles in the MDT when `night_ers` is configured accordingly
-- **Framework-linked civilians (optional)** — With **ESX**, **QBox** (`qbx_core`), or **QBCore** (`qb-core`) running, the MDT can **create or update** a council civilian record from the player’s framework character on load (name, DOB, sex, phone, job, etc.) and optionally **stamp identity documents** when your admin rules allow—see **Framework compatibility** below
-- **Framework fines (optional)** — Council-side fine payment can deduct from **bank** or **cash** on **ESX / QBCore / QBox** when configured, or from **your own custom banking system** via the [Custom Banking Bridge](#custom-banking-bridge) on standalone servers
-
-### **Platform & localization**
-{: .no_toc }
-
-- **Multi-language** — Translation-driven UI (per-locale files)
-- **MySQL + oxmysql** — Server-side persistence and migrations
-- **Escrow protection** — Product delivery model as published on the store
 
 ---
 
@@ -353,7 +289,7 @@ Admin assignments take precedence: if an admin edits a row that started life as 
 
 ## 🔗 Integration & Compatibility
 
-How Night Shifts MDT fits next to other resources. **Required** pieces are under [System Requirements](#system-requirements) (OneSync, MySQL, oxmysql).
+How Night Shifts MDT fits next to other resources. **Required** pieces are under [System Requirements](#system-requirements) (OneSync, MySQL, oxmysql). **Postal / HUD data** for addresses and map context (optional): see [Step 4: Postal codes](#step-4-postal-codes) — the MDT auto-detects supported resources on the client and does **not** use a separate postal bridge.
 
 ### **Frameworks (optional)**
 {: .no_toc }
@@ -467,11 +403,6 @@ Optional integration for servers that run **[Emergency Response Simulator](/reso
 | `night_shifts_mdt` started before `night_ers` in `server.cfg`        | Boot order matters — `night_ers` calls MDT exports (PNC lookups, ped interactions, call forwarding, …) on its own startup, so the MDT must already be running. The MDT probes `night_ers` lazily at runtime, so it does not need ERS up first. |
 | `Config.Enable_ERS = true` in the MDT                                | Toggles the integration. With it off, the MDT ignores ERS entirely even if the resource is running.                                                                                         |
 | `ManageShiftsByMDT` enabled on the ERS side (where applicable)       | Lets the MDT own clock-in/out so ERS shift state stays aligned with MDT shifts instead of fighting them.                                                                                    |
-
-### **Postal codes & HUD (optional)**
-{: .no_toc }
-
-The MDT **auto-detects** postal data from common resources (`rhud`, `SimpleHUD`, `ModernHUD`, `mnr_postals`, `nearest-postal`, JSON `postal_file` data, etc.)—**no** separate MDT bridge resource. See [Step 4: Postal codes](#step-4-postal-codes). Some MNR setups need `ox_lib`.
 
 ### **Discord integration (`night_discordapi`)**
 {: .no_toc #discord-integration }
@@ -1021,6 +952,93 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
     callerName = "Civilian", contactDetails = "555-0199",
 })
 ```
+
+---
+
+## 🚑 Medical Records (Ambulance Panel)
+
+The Medical Records panel is an **ambulance-only** module accessible from the MDT sidebar when a user is on shift in a department of type `ambulance` and holds the `medical_records.view` permission. It mirrors the PNC structure (search → patient detail → tabbed file) and provides:
+
+- **Patient search** — find civilians by name, phone, or personal id.
+- **Patient file** with five tabs: **Overview/Vitals**, **Diagnoses**, **Treatments**, **Medications**, and **Immunizations**.
+- **Medical alerts banner** at the top of every patient file (DNR, contagious, organ donor, …).
+
+### Tiered permissions
+
+Granted per rank under **Admin Panel → Departments → Edit ranks → Permissions** (only ambulance departments expose these):
+
+| Permission                      | Grants                                                                 |
+|---------------------------------|------------------------------------------------------------------------|
+| `medical_records.view`          | Page access + read-only of all patient files                           |
+| `medical_records.add_treatment` | Log treatments, allergies, vitals, immunizations (operational ranks)   |
+| `medical_records.diagnose`      | Add diagnoses + prescriptions (paramedic+, standing-order scope)        |
+| `medical_records.flags`         | Add/remove medical alerts (supervisory)                                 |
+| `medical_records.delete`        | Delete records (top brass — destructive corrections / cleanup)         |
+
+### 🩺 Configuring medical types (admin)
+
+Two of the dropdowns and the alert-banner styling are **admin-curated** rather than hardcoded so each server can model the alert types and treatment categories that fit their RP setting.
+
+**Where:** Admin Panel → **Medical Types** (requires `medical_types.view`; create / edit / delete are separately gated).
+
+**Sub-tabs:**
+
+- **Alert Types** — drives the patient-file alert banner and the *Add Medical Alert* dropdown. Each type has an identifier (immutable string id used to link existing records), a **label**, a **FontAwesome icon** (e.g. `fa-ban`, `fa-virus`), a **hex color** for the badge, a display order, and an enabled toggle.
+- **Treatment Types** — drives the *Log Treatment* dropdown. Slimmer fields: identifier, label, display order, enabled.
+
+**What is configurable:**
+
+| Type / scale                                  | Configurable?                                                                                       |
+|-----------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| Alert types (DNR / Pregnant / …)              | ✅ Add, edit, disable, delete from the admin panel.                                                 |
+| Treatment categories (On scene / Transport / …) | ✅ Same.                                                                                             |
+| Allergy severity (mild / moderate / …)        | ❌ Hardcoded — clinical standard. Localize via translation keys `medical.severity_*`.               |
+| Diagnosis status (active / chronic / resolved) | ❌ Hardcoded — clinical standard. Localize via translation keys `medical.diagnosis_status_*`.       |
+| Prescription status (active / discontinued / completed) | ❌ Hardcoded — clinical standard. Localize via translation keys `medical.prescription_status_*`. |
+| Blood types (A+, A-, …)                       | ❌ Hardcoded — universal biological set.                                                            |
+
+**Default seed:** On first install (when the lookup tables are empty) the MDT seeds the seven default alert types and six default treatment types from `server/presets/medical_flag_type_presets.lua` and `server/presets/medical_treatment_type_presets.lua`. After that, only the admin panel writes to those tables — the preset files are ignored, so editing them on a live server has no effect.
+
+**Creating a custom alert type:**
+
+1. Open Admin Panel → **Medical Types** → **Alert Types** tab.
+2. Click **Add Alert Type**.
+3. Fill in:
+   - **Label** — e.g. *Mental Health Hold*. The identifier is auto-derived (`mental_health_hold`).
+   - **Icon** — any FontAwesome 6 free class without the `fas ` prefix (e.g. `fa-brain`).
+   - **Color** — any hex code; the live preview shows exactly how the banner will render it.
+   - **Display order** — lower numbers appear first in the dropdown.
+4. Save. The new type is immediately available the next time medical staff open a patient file.
+
+**Disabling vs deleting:**
+
+- **Disabling** keeps every existing record's tag intact and only hides the type from new-entry dropdowns. Safe and reversible.
+- **Deleting** is **blocked** if any patient records still reference the type — the toast will tell you how many. To delete a type that's in use, either reassign those records first or simply disable it instead.
+
+**Translations:**
+
+Each preset id has a matching translation key (`medical.flag_type_<id>`, `medical.type_<id>`). When you add a custom type, the admin label is shown until you also add a translation key — useful if your server runs multiple languages. The lookup order for a given type id is:
+
+1. Translation key (if defined) — wins.
+2. Admin-configured label.
+3. Raw id (last resort).
+
+### Database
+
+The medical records system uses six patient-record tables and two admin-curated lookup tables, all auto-created on first start:
+
+| Table                                   | Purpose                                                  |
+|-----------------------------------------|----------------------------------------------------------|
+| `nsmdt_medical_allergies`               | Per-civilian allergies + severity                        |
+| `nsmdt_medical_diagnoses`               | Active / chronic / resolved diagnoses                    |
+| `nsmdt_medical_treatments`              | Chronological treatment log                              |
+| `nsmdt_medical_prescriptions`           | Active / discontinued / completed prescriptions          |
+| `nsmdt_medical_immunizations`           | Vaccination records                                      |
+| `nsmdt_medical_flags`                   | Medical alerts (DNR, contagious, …)                      |
+| `nsmdt_medical_flag_types` *(admin)*    | Curated alert type registry (label + icon + color)       |
+| `nsmdt_medical_treatment_types` *(admin)* | Curated treatment category registry                    |
+
+All patient-record tables `CASCADE` on civilian delete, so the **Purge NPC Data** admin action automatically cleans NPC medical history. The lookup tables are referenced by string id (not hard FK) so renaming or re-creating a preset doesn't orphan history.
 
 ---
 

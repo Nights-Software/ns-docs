@@ -4,7 +4,7 @@ title: "Emergency Response Simulator"
 nav_order: 4
 has_children: false
 has_toc: true
-last_modified_date: "2025-08-15 11:15:00"
+last_modified_date: "2026-05-02"
 ---
 
 <img class="cover-img" src="/assets/img/ers.png" alt="Emergency Response Simulator for FiveM" draggable="false">
@@ -370,6 +370,18 @@ end)
 -- @param src number The source ID of the user who interacted with the NPC.
 -- @param pedData table The complete data table of the NPC being interacted with.
 -- @param context string The interaction context:
+--
+-- Timing & data source:
+--   * Without night_shifts_mdt, this event fires immediately with ERS-generated
+--     random identity data — legacy behaviour.
+--   * With night_shifts_mdt running, this event fires ONCE per first interaction,
+--     AFTER the MDT identity lookup has merged into pedData. Identity fields come
+--     from the MDT's persistent civilian record — the same values the officer sees
+--     in the MDT UI.
+--   * License_* and FlagsOrMarkers will be nil when the MDT is active. Query the
+--     MDT exports for warrants/flags/licenses instead.
+--   * If the MDT identity never resolves within ~5s, the event still fires
+--     once with the partial pedData and identity fields stay nil.
 RegisterServerEvent("ErsIntegration::OnFirstNPCInteraction")
 AddEventHandler("ErsIntegration::OnFirstNPCInteraction", function(source, pedData, context)
     -- Add your custom NPC interaction logic here
@@ -389,6 +401,17 @@ end)
 -- @param src number The source ID of the user who interacted with the vehicle.
 -- @param vehicleData table The complete data table of the vehicle being interacted with.
 -- @param context string The interaction context:
+--
+-- Timing & data source:
+--   * Without night_shifts_mdt, this event fires immediately with ERS-rolled
+--     random compliance data — legacy behaviour.
+--   * With night_shifts_mdt running, this event fires ONCE per first interaction,
+--     AFTER the MDT vehicle lookup has merged into vehicleData. Compliance fields
+--     and owner_name come from the MDT's persistent vehicle record. For stolen
+--     vehicles, owner_name is the victim's name (taken from identity.owner)
+--     rather than the driver.
+--   * If the MDT identity never resolves within ~5s, the event still fires
+--     once with the partial vehicleData (compliance fields stay nil).
 RegisterServerEvent("ErsIntegration::OnFirstVehicleInteraction")
 AddEventHandler("ErsIntegration::OnFirstVehicleInteraction", function(source, vehicleData, context)
     -- Add your custom vehicle interaction logic here
@@ -491,6 +514,58 @@ end)
 
 ---
 
+## 🔗 night_shifts_mdt Integration — Field Ownership
+
+When the optional `night_shifts_mdt` resource is running, the MDT becomes the
+single source of truth for identity and vehicle compliance data. ERS resolves
+the MDT identity **on the client, BEFORE** asking the server for `pedData` /
+`vehicleData`, then forwards the resolved identity inline so the server can
+merge it synchronously. The `OnFirstNPCInteraction` /
+`OnFirstVehicleInteraction` events fire **once, in the same tick** as the
+underlying request, with MDT-authoritative values already overlaid into the
+existing ERS field shape — external integrations that subscribe to these
+events keep working without any code changes and never see an unmerged placeholder payload.
+
+### NPC payload (`pedData`)
+
+| Field | With night_shifts_mdt | Without night_shifts_mdt |
+|-------|----------------------|--------------------------|
+| `FirstName`, `LastName`, `DOB`, `Gender` | MDT (persistent civilian record) | ERS (random rolls) |
+| `Address`, `City`, `PostalCode`, `State`, `Country` | MDT | ERS |
+| `Email`, `PhoneNumber`, `Nationality` | MDT | ERS |
+| `ProfilePicture` | MDT (`pictureUrl`) | ERS (model-derived) |
+| `License_*`, `FlagsOrMarkers` | **`nil`** — query MDT exports | ERS (random rolls) |
+| `AddressType` | ERS (always — situational) | ERS |
+| `Inventory`, `isDrunk`, `isDrugged`, `BehaviourState` | ERS (always — situational) | ERS |
+| `MassiveBleeding`, `Airway`, `Breathing`, `Circulation`, `Hypothermia`, `CPR` | ERS (always — medical) | ERS |
+
+### Vehicle payload (`vehicleData`)
+
+| Field | With night_shifts_mdt | Without night_shifts_mdt |
+|-------|----------------------|--------------------------|
+| `tax`, `mot`, `insurance`, `stolen`, `bolo`, `bolo_description` | MDT (persistent vehicle record) | ERS (random rolls) |
+| `owner_name` | MDT (`identity.owner.firstName + lastName` — falls back to driver name) | ERS (driver / random) |
+| `build_year` | MDT if known (`vehicle.buildYear`), else ERS roll | ERS (random roll) |
+| `make`, `model`, `color`, `vehicle_class`, `license_plate`, `vehicle_picture_url` | ERS (vehicle attributes) | ERS |
+| `inventory` | ERS (always — situational) | ERS |
+
+### Debug printing
+
+When `Config.Debug = true`, every `OnFirst*` event payload is pretty-printed
+to the server console with a `mode` tag indicating how the data was
+sourced:
+
+| Mode | Meaning |
+|------|---------|
+| `mdt-merged` | MDT identity resolved on the client and merged into the payload before firing. The common path when night_shifts_mdt is running. |
+| `mdt-disabled` | night_shifts_mdt is not running. ERS data fired immediately (legacy behaviour). |
+| `mdt-no-civilian` | Ped data was requested without an MDT-merged civilian id (non-standard integration path). |
+| `mdt-no-vehicle` | Vehicle data was requested without MDT-backed vehicle identity (non-standard integration path). |
+
+Use these tags when debugging server-side integrations to confirm which sourcing path fired for each `OnFirst*` event.
+
+---
+
 ## 🛠️ ERS Functions Reference
 
 ### **Client Functions**
@@ -562,14 +637,49 @@ exports['night_ers']:trackPlayerCallout(targetSource)
 exports['night_ers']:ERS_PedEquipWeapon(pedEntityId, weaponModelName, ammo)
 exports['night_ers']:SetERSVehicleInfoDisplay(display) -- Sets the display for vehicle information on traffic stops to true or false.
 exports['night_ers']:SetERSIDCardInfoDisplay(display) -- Sets the display for ID cards to true or false.
+```
 
--- NPC Pursuit Backup Requests
-exports['night_ers']:ERS_RequestOrCancelPursuitBackupByType(unitType)-- Available unit types: "light", "medium", "heavy", "air", "army" (only during pursuit mode)
+#### **NPC backup — pursuit & service** (other resources)
+{: .no_toc }
 
--- NPC Backup Requests
-exports['night_ers']:RequestNPCBackupByType(backupType) -- Available backup types: "ambulance", "police", "taxi", "tow", "roadservice", "coroner", "animalrescue", "mechanic", "fire"
-exports['night_ers']:CancelNPCBackupByType(backupType, mustNotify) -- Available backup types: "ambulance", "police", "taxi", "tow", "roadservice", "coroner", "animalrescue", "mechanic", "fire" (string) | notify the user (bool)
+Use these from **client** scripts in resources that `ensure` / `dependency` on `night_ers`. Pursuit backup exports only work while the player is in **pursuit mode**.
 
+| Export | Notes |
+|--------|--------|
+| `RequestNPCPursuitBackup(unitType)` | Request pursuit NPC backup, or toggle-cancel by calling again with the same `unitType` while pending. Returns `dispatched`, `reason`. |
+| `CancelNPCPursuitBackup(serverDeleteDelayMs?)` | Cancels active pursuit NPC backup without a `unitType`. Optional delay (ms) for server-side cleanup; omit or `0` for immediate. |
+| `RequestNPCBackup(backupType)` | Service / road NPC backup. Returns `dispatched`, `reason`; when `dispatched` is false, `reason` is `"unknown_backup_type"`. |
+| `CancelNPCBackup(backupType, mustNotify)` | Cancels matching service backup. `mustNotify` controls in-game notification behaviour (bool). |
+
+**Pursuit `unitType`** must match `night_ers/config/pursuit-config.lua` → `Config.PursuitBackupTypes[].PursuitType` (stock values, all lowercase):
+
+`"light"`, `"medium"`, `"heavy"`, `"air"`, `"army"`
+
+**Service `backupType`** identifiers:
+
+`"ambulance"`, `"police"`, `"taxi"`, `"tow"`, `"roadservice"`, `"coroner"`, `"animalrescue"`, `"mechanic"`, `"fire"`
+
+{: .note }
+> **Service backup casing:** You can pass any casing (e.g. `"Tow"` or `"TOW"`). `night_ers` normalizes `backupType` internally for both request and cancel. Pursuit `unitType` still must match config exactly unless you customize `PursuitType` strings.
+
+{: .tip }
+> **Toggle cancel (pursuit):** Calling `RequestNPCPursuitBackup` again with the **same** `unitType` while a pursuit backup is already pending **cancels** that request (returns `dispatched`, `reason`). Use `CancelNPCPursuitBackup` when you want to cancel without knowing the pending type.
+
+```lua
+-- Pursuit NPC backup — only during pursuit mode; returns dispatched, reason
+local dispatched, reason = exports['night_ers']:RequestNPCPursuitBackup('light')
+
+-- Toggle-cancel: call again with same unitType while pending
+-- local dispatched2, reason2 = exports['night_ers']:RequestNPCPursuitBackup('light')
+
+-- Explicit pursuit cancel (optional server purge delay in ms)
+exports['night_ers']:CancelNPCPursuitBackup()
+-- exports['night_ers']:CancelNPCPursuitBackup(5000)
+
+-- Service NPC backup — returns dispatched, reason (second value set when not dispatched, e.g. "unknown_backup_type")
+local dispatched, reason = exports['night_ers']:RequestNPCBackup('tow')
+
+exports['night_ers']:CancelNPCBackup('tow', true)
 ```
 
 ### **Server Exports** (`night_ers/server/exports_server.lua`)
