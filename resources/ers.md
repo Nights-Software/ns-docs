@@ -4,7 +4,7 @@ title: "Emergency Response Simulator"
 nav_order: 4
 has_children: false
 has_toc: true
-last_modified_date: "2026-05-02"
+last_modified_date: "2026-05-04"
 ---
 
 <img class="cover-img" src="/assets/img/ers.png" alt="Emergency Response Simulator for FiveM" draggable="false">
@@ -515,6 +515,7 @@ end)
 ---
 
 ## 🔗 night_shifts_mdt Integration — Field Ownership
+{: #ers-mdt-field-ownership }
 
 When the optional `night_shifts_mdt` resource is running, the MDT becomes the
 single source of truth for identity and vehicle compliance data. ERS resolves
@@ -534,7 +535,9 @@ events keep working without any code changes and never see an unmerged placehold
 | `Address`, `City`, `PostalCode`, `State`, `Country` | MDT | ERS |
 | `Email`, `PhoneNumber`, `Nationality` | MDT | ERS |
 | `ProfilePicture` | MDT (`pictureUrl`) | ERS (model-derived) |
-| `License_*`, `FlagsOrMarkers` | **`nil`** — query MDT exports | ERS (random rolls) |
+| `License_Car`, `License_Bike`, `License_Boat`, `License_Truck`, `License_Pilot` (+ `_Is_Valid` / `_Colour` / `_Icon` per line, e.g. `License_Car_Is_Valid`) | **Same shape as plain ERS** — same `pedData` keys. With MDT, each line is filled from the civilian’s PNC licence row for that **fixed** type id: `License_Car` → `driver_license`, `License_Bike` → `motorcycle_license`, `License_Boat` → `boat_license`, `License_Truck` → `commercial_driver_license`, `License_Pilot` → `pilot_license`. Those ids are **not** configurable (only the **labels** in admin). If there is no row for a type, the card still shows the slot, usually as no licence. Without MDT, ERS random rolls. | ERS (random rolls) |
+| `FlagsOrMarkers` | **Use it like vanilla ERS.** Keep reading `pedData.FlagsOrMarkers` on your existing server events (`OnFirstNPCInteraction`, pullover, etc.). With the MDT on, that object reflects the civilian’s **Important Notices** from the MDT instead of a random roll. You do **not** need a different field or a second integration path. | ERS (random rolls) |
+| `mdtCivilianId`, `mdtPersonalId` | Set on **`mdt-merged`** payloads — MDT civilian PK and dossier id for integrations | *(n/a — MDT not running)* |
 | `AddressType` | ERS (always — situational) | ERS |
 | `Inventory`, `isDrunk`, `isDrugged`, `BehaviourState` | ERS (always — situational) | ERS |
 | `MassiveBleeding`, `Airway`, `Breathing`, `Circulation`, `Hypothermia`, `CPR` | ERS (always — medical) | ERS |
@@ -639,10 +642,26 @@ exports['night_ers']:SetERSVehicleInfoDisplay(display) -- Sets the display for v
 exports['night_ers']:SetERSIDCardInfoDisplay(display) -- Sets the display for ID cards to true or false.
 ```
 
+#### **Start pursuit** (callouts & other integrations)
+{: .no_toc }
+
+Use from **client** Lua in resources that `ensure` / `dependency` on `night_ers`. There is no server export for this; if your logic runs on the server, trigger the officer’s client (e.g. your own event) and call the export there.
+
+| Export | Notes |
+|--------|--------|
+| `StartPursuit(pedNetId)` | `pedNetId` is the suspect’s **network id** (e.g. `NetworkGetNetworkIdFromEntity(suspectPed)`). Returns **`true`** if ERS entered pursuit mode, **`false`** if it refused (pursuit disabled in config, player not on **police** service, invalid net id, already in a pursuit or cancel-in-progress, or ped / vehicle data could not be resolved for pursuit init). |
+
+After a successful start, the player is in **pursuit mode** and you can use **`RequestNPCPursuitBackup`** / **`CancelNPCPursuitBackup`** as documented below.
+
+```lua
+local netId = NetworkGetNetworkIdFromEntity(suspectPed)
+local started = exports['night_ers']:StartPursuit(netId)
+```
+
 #### **NPC backup — pursuit & service** (other resources)
 {: .no_toc }
 
-Use these from **client** scripts in resources that `ensure` / `dependency` on `night_ers`. Pursuit backup exports only work while the player is in **pursuit mode**.
+Use these from **client** scripts in resources that `ensure` / `dependency` on `night_ers`. Pursuit backup exports only work while the player is in **pursuit mode** (including after a successful **`StartPursuit`** from another resource).
 
 | Export | Notes |
 |--------|--------|

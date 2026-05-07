@@ -4,7 +4,7 @@ title: "Night Shifts MDT v1"
 nav_order: 5
 has_children: false
 has_toc: true
-last_modified_date: "2026-05-02"
+last_modified_date: "2026-05-03"
 ---
 
 # Night Shifts - Mobile Data Terminal for FiveM
@@ -209,7 +209,7 @@ Paths below use `night_shifts_mdt` as the resource folder name—use the same na
 
 | Path                                                | Purpose                                                                                                                                                                            |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `night_shifts_mdt/config/config.lua`                | **Main config** — tablet prop/animations, ERS link (`Enable_ERS`), framework fine account, hotkeys, civilian emergency call, Show ID, initial super-admins, and other core toggles |
+| `night_shifts_mdt/config/config.lua`                | **Main config** — tablet prop/animations, ERS link (`Enable_ERS`), framework fine account, hotkeys, civilian emergency call, Show ID, initial super-admins, and other core toggles. |
 | `night_shifts_mdt/config/config_anpr.lua`           | **ANPR** — static camera positions, scan radii, and related ANPR vehicle/hash lists                                                                                                |
 | `night_shifts_mdt/config/config_npc_pool.lua`       | **ERS NPC pool** — fictive NPC identities and vehicle-record probabilities for Emergency Response Simulator / PNC integration                                                      |
 | `night_shifts_mdt/config/translations/<locale>.lua` | **Languages** — one file per locale (e.g. `en.lua`, `de.lua`, `fr.lua`, …)                                                                                                         |
@@ -514,6 +514,22 @@ If a convar is empty or missing, the MDT **skips** posting for that channel (sam
 
 Other scripts can use `exports['night_shifts_mdt']` (name must match your resource folder). See [Exports](#exports) below.
 
+### **ERS + CAD / other scripts (summary for server owners)**
+{: .no_toc #ers-peddata-enrichment }
+
+If you run **[Emergency Response Simulator](/resources/ers/)** together with Night Shifts MDT, you usually **do not need to change anything** for in-game ID checks: ERS keeps showing the same licence lines on the NPC card; the values now come from the **MDT** when a civilian is linked.
+
+**Setup you should know about**
+
+- **`server.cfg`:** keep **`ensure night_shifts_mdt` before `ensure night_ers`**, as in both guides.
+- **Licence types:** The five **ERS** licence types (driver, motorcycle, boat, pilot, commercial) use **fixed internal ids** so NPC pools and the ERS ped card stay consistent. In **Admin → License Types** they show a small **lock** icon; you can edit the **display name** for localization, but **delete** and changing **prefix / behaviour / id** are blocked. Other licence types (hunting, fishing, etc.) work as before.
+- **PNC flag types (Important Notices):** Preset types used with ERS show a small **lock** icon in **Admin → Flag Types** (same idea as ERS licence types). You can still **edit labels** and settings; **deleting** those preset types is **blocked** (a migration may re-add any missing presets on upgrade). **Custom** flag types behave as before in the MDT; on the NPC card, keep using **`pedData.FlagsOrMarkers`** like plain ERS — see **[ERS → Field ownership](/resources/ers/#ers-mdt-field-ownership)**.
+- **CAD or custom resources** listening to ERS events: see **[ERS → Field ownership](/resources/ers/#ers-mdt-field-ownership)** for which fields come from the MDT vs ERS. **`mdtCivilianId`** on the ped payload is the MDT civilian record number; **`mdtPersonalId`** is the public dossier id when present (e.g. `CIV-…`).
+
+**Licences on the ped card** — With the MDT on, the **`License_*`** fields match what ERS has always used (including valid/invalid styling). With the MDT off, ERS still generates random licence results as before.
+
+**“Flags / markers” on the ped card** — Same as ERS without the MDT: your scripts keep using **`pedData.FlagsOrMarkers`**. With the MDT on, that data comes from the civilian’s **Important Notices** instead of being rolled at random. See [ERS — field ownership / NPC payload](/resources/ers/#ers-mdt-field-ownership) for the full `pedData` table.
+
 ---
 
 ## 📊 Exports
@@ -521,7 +537,7 @@ Other scripts can use `exports['night_shifts_mdt']` (name must match your resour
 
 {: .warning }
 
-> **Developers / integrators only.** This section documents **Lua `exports`** for people writing **other FiveM resources** that talk to the MDT. **Players** and **server owners** doing a normal install and in-tablet setup **do not** need it—skip unless you are calling `exports` from code.
+> **For developers only.** Use this section if you are **writing or integrating another FiveM resource** (e.g. CAD, dispatch bridge) that must call the MDT from Lua. **Normal install:** set up `server.cfg`, configure the MDT in-game, and edit the Lua config files above—you can **ignore Exports** unless your team is adding custom code.
 
 ### **How this section is organised**
 {: .no_toc }
@@ -580,6 +596,28 @@ Resolution order (same behaviour as [Step 4: Postal codes](#step-4-postal-codes)
 ```lua
 local postal = exports['night_shifts_mdt']:GetPostalForPlayer(source)
 ```
+
+##### `GetCivilianIntegrationSnapshot(civId, callback)`
+
+**When you need this:** Only if you run **custom server-side code** (for example a CAD or bridge) that must load PNC **licences**, **flags/markers**, and **police records** for one civilian using their MDT **`nsmdt_civilians.id`**—often the same number as **`mdtCivilianId`** on an ERS ped after MDT merge. Standard installs and in-game play do **not** call this export.
+
+|                 |                                                                                                                                                                                                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `civId` (number) — `nsmdt_civilians.id` (e.g. `pedData.mdtCivilianId` from ERS after an MDT merge). `callback` (function) — `callback(snapshot)`.                                                                                                                                       |
+| **Returns**     | Nothing synchronously. `callback` receives **`snapshot`**: `civilianId`, **`licenses`** (array, from MySQL — same shape as in-tablet PNC; overlaps summary fields on `pedData.License_*` but includes full rows), **`flagsMarkers`** (array — **all** cached rows for this civilian), **`policeRecords`** (array, from cache). |
+| **Limitations** | **Server-only.** **Async.** Invalid `civId` or non-function `callback` → ignored. **`flagsMarkers`** / **`policeRecords`** follow the **MDT cache**. **Granular only:** `GetLicensesByCivilianId`, `GetAllFlagsMarkersByCivilianId`, `GetPoliceRecordsByCivilianId` when you do not need the bundle. |
+
+
+```lua
+local cid = pedData.mdtCivilianId
+if cid then
+  exports['night_shifts_mdt']:GetCivilianIntegrationSnapshot(cid, function(s)
+    -- s.licenses, s.flagsMarkers, s.policeRecords
+  end)
+end
+```
+
+See [ERS & CAD — pedData and PNC extras](#ers-peddata-enrichment).
 
 ##### `GetDepartments()`
 
