@@ -1,28 +1,32 @@
 ---
-layout: default
+
+## layout: default
 title: "Emergency Response Simulator"
 nav_order: 4
 has_children: false
 has_toc: true
 last_modified_date: "2026-05-04"
----
 
-<img class="cover-img" src="/assets/img/ers.png" alt="Emergency Response Simulator for FiveM" draggable="false">
+
 
 # Emergency Response Simulator for FiveM
+
 {: .no_toc}
 
 A guide to install Emergency Response Simulator for FiveM
-- *Crafted by [Nights Software](https://store.nights-software.com/) in collaboration with [London Studios](https://londonstudios.net)*
+
+- *Crafted by [Nights Software](https://store.nights-software.com/) in collaboration with [London Studios*](https://londonstudios.net)
 
 {: .fs-5 .fw-300 }
 
 ---
 
 ## 📋 Table of Contents
+
 {: .no_toc .text-delta }
 
 1. TOC
+
 {:toc}
 
 ---
@@ -46,7 +50,9 @@ A guide to install Emergency Response Simulator for FiveM
 ## ⚠️ Important Pre-Installation Notes
 
 {: .warning }
+
 > **Critical Installation Order:** Always follow this exact sequence to avoid parsing errors in the F8 console:
+>
 > 1. Set FTP Transfer Type to **Binary**
 > 2. Download ZIP Package from CFX Portal
 > 3. Unpack in a local folder
@@ -56,6 +62,7 @@ A guide to install Emergency Response Simulator for FiveM
 > 7. Boot up the server
 
 {: .important }
+
 > **Support Policy:** Follow this guide step by step. If you're stuck, ask for support in our Discord and provide the specific step name. Do not skip steps.
 
 ---
@@ -63,6 +70,7 @@ A guide to install Emergency Response Simulator for FiveM
 ## 🔧 System Requirements & Compatibility
 
 ### **fxServer (Artifacts) & Gamebuild version**
+
 {: .no_toc }
 
 - **✅ Recommended Gamebuild:** 3323
@@ -70,36 +78,45 @@ A guide to install Emergency Response Simulator for FiveM
 - **❌ Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts.
 
 {: .note }
+
 > **Important:** If you are using different Gamebuilds or Artifacts, trial and error this. Please inform us of (in)compatibility.
 
 ### **OneSync Requirements**
+
 {: .no_toc }
 
 - **✅ Required:** OneSync Legacy or Infinity
 - **⚠️ Note:** Some hosting companies require setting `Enable Beyond` to 1 in dashboard
 
 ### **Framework Compatibility**
+
 {: .no_toc }
 
 #### **Standalone Mode**
+
 - ✅ Works without any framework
 - ✅ Compatible with most known frameworks
 
 #### **ESX Integration**
+
 - **Permissions:** Configure job-based access in `night_ers/config/config.lua`
 - **Weapons:** Configure in `night_ers/config/gear-config.lua`
 - **Code:** Adjust item distribution in `night_ers/client/c_functions.lua`
 
 #### **QBCore Integration**
+
 - **Permissions:** Configure job-based or QB permissions in `night_ers/config/config.lua`
 - **Weapons:** Configure in `night_ers/config/gear-config.lua`
 - **Code:** Adjust item distribution in `night_ers/client/c_functions.lua`
 
 ### **Known Incompatibilities**
+
 {: .no_toc }
 
 {: .warning }
+
 > **Incompatible Resources:**
+>
 > - RemoveCops-AI
 > - Andrew's Advanced AI
 > - Realistic Euphoria Physics
@@ -116,65 +133,61 @@ A guide to install Emergency Response Simulator for FiveM
 Download these packages from the [CFX Portal](https://portal.cfx.re/assets/granted-assets) in the exact order listed:
 
 #### **Core Resources (Required)**
+
 {: .no_toc }
 
 1. **SmartHoseLite** (Required)
-   - Provided by [London Studios](https://londonstudios.net)
-   - Enables water hose functionality for fire extinguishing
-   - **Must start before `SmartFiresLite`** — `SmartFiresLite` consumes `SmartHose` exports at runtime.
-
+  - Provided by [London Studios](https://londonstudios.net)
+  - Enables water hose functionality for fire extinguishing
+  - **Must start before `SmartFiresLite*`* — `SmartFiresLite` consumes `SmartHose` exports at runtime.
 2. **SmartFiresLite** (Required)
-   - Provided by [London Studios](https://londonstudios.net)
-   - Enables fire spawning functionality
-   - **Note:** If you have the full version, rename it to `SmartFires` (case sensitive)
-
+  - Provided by [London Studios](https://londonstudios.net)
+  - Enables fire spawning functionality
+  - **Note:** Keep Lite named **`SmartFiresLite`**. If you use **full** Smart Fires instead, rename the folder to exactly **`SmartFires`** (case sensitive), per London Studios. This also goes for SmartFires v2: **`SmartFires`**.
 3. **Emergency Response Simulator** (Required)
-   - Main gamemode with 100+ callouts
-   - Supports Police, Fire, Medic, and Tow services
+  - Main gamemode with 100+ callouts
+  - Supports Police, Fire, Medic, and Tow services
 
 #### **Optional Resources**
+
 {: .no_toc }
 
-4. **Night Discord API** (Optional - Included with ERS Essential, Plus and Ultimate)
-   - Enables Discord role-based permissions
-   - [View Features](https://store.nights-software.com/package/5035729)
-   - [Installation Guide](/resources/discordAPI)
-
-5. **Night Subtitles** (Optional - Included with ERS Essential, Plus and Ultimate)
-   - Movie-style subtitle display
-   - [View Features](https://store.nights-software.com/package/6043540)
-   - Drag-and-drop installation
-
-6. **Nearest Postal & Map** (Optional - Free)
-   - Default postal codes with custom map
-   - [CFX Forum Post](https://forum.cfx.re/t/release-postal-code-map-minimap-new-improved-v1-3/147458)
-   - [Direct Download](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip)
-   - [Map Download](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0)
-
-7. **Night Shifts MDT** (Optional - Included with ERS Plus and Ultimate)
-   - Modern MDT for emergency services management
-   - [View Features](https://store.nights-software.com/package/5667103)
-   - [Installation Guide](/resources/nightShifts)
-
-8. **Theebu Flatbeds Lite** (Optional - Included with ERS Essential, Plus and Ultimate)
-   - Vehicle transport functionality
-   - [Full Version](https://store.theebu.net/package/5033826) available
+1. **Night Discord API** (Optional - Included with ERS Essential, Plus and Ultimate)
+  - Enables Discord role-based permissions
+  - [View Features](https://store.nights-software.com/package/5035729)
+  - [Installation Guide](/resources/discordAPI)
+2. **Night Subtitles** (Optional - Included with ERS Essential, Plus and Ultimate)
+  - Movie-style subtitle display
+  - [View Features](https://store.nights-software.com/package/6043540)
+  - Drag-and-drop installation
+3. **Nearest Postal & Map** (Optional - Free)
+  - Default postal codes with custom map
+  - [CFX Forum Post](https://forum.cfx.re/t/release-postal-code-map-minimap-new-improved-v1-3/147458)
+  - [Direct Download](https://github.com/DevBlocky/nearest-postal/archive/refs/heads/master.zip)
+  - [Map Download](https://www.dropbox.com/s/lb22r7rb4gwh44o/Postal%20Code%20Map.zip?dl=0)
+4. **Night Shifts MDT** (Optional - Included with ERS Plus and Ultimate)
+  - Modern MDT for emergency services management
+  - [View Features](https://store.nights-software.com/package/5667103)
+  - [Installation Guide](/resources/nightShifts)
+5. **Theebu Flatbeds Lite** (Optional - Included with ERS Essential, Plus and Ultimate)
+  - Vehicle transport functionality
+  - [Full Version](https://store.theebu.net/package/5033826) available
 
 #### **Add-on DLCs**
+
 {: .no_toc }
 
-9. **World Events Add-on** (Optional)
-   - [View Features](https://store.nights-software.com/package/6437544)
-
-10. **Dynamic Weighing Stations** (Optional)
-    - [View Features](https://store.nights-software.com/package/6605986)
-
-11. **K9 Dog Handler** (Optional)
-    - [View Features](https://store.nights-software.com/package/6813075)
+1. **World Events Add-on** (Optional)
+  - [View Features](https://store.nights-software.com/package/6437544)
+2. **Dynamic Weighing Stations** (Optional)
+  - [View Features](https://store.nights-software.com/package/6605986)
+3. **K9 Dog Handler** (Optional)
+  - [View Features](https://store.nights-software.com/package/6813075)
 
 ### **Step 2: File Placement**
 
 {: .important }
+
 > **Critical:** Place all resources in your resources folder and **DO NOT RENAME** them. Use exact names as specified in this documentation.
 
 ### **Step 3: Server Configuration**
@@ -208,33 +221,39 @@ ensure night_ers_k9
 ## ⚙️ Configuration Setup
 
 ### **Required Tools**
+
 {: .no_toc }
 
 {: .tip }
+
 > **Visual Studio Code:** We strongly recommend downloading [VS Code](https://code.visualstudio.com/download) for editing Lua files.
 
 ### **Configuration Files**
+
 {: .no_toc }
 
-| File | Purpose |
-|------|---------|
-| `night_ers/config/config.lua` | Main configuration |
-| `night_ers/config/gear-config.lua` | Weapons and clothing |
-| `night_ers/config/impound-config.lua` | Impound settings |
-| `night_ers/config/leaderboard-config.lua` | Leaderboard settings |
-| `night_ers/config/npcbackup-config.lua` | NPC Backup settings |
-| `night_ers/config/persistententity-config.lua` | NPC personal data settings |
-| `night_ers/config/pullover-config.lua` | Traffic stop settings |
-| `night_ers/config/pursuit-config.lua` | Pursuit settings |
-| `night_ers/config/questioning-config.lua` | NPC questioning settings |
-| `night_ers/config/sound-config.lua` | Sound & Voice over settings |
-| `night_ers/config/spikestrip-config.lua` | Spikestrip settings |
-| `night_ers/config/stretcher-config.lua` | Stretcher settings |
-| `night_ers/config/vehinteractions-config.lua` | Vehicle search settings |
-| `night_ers/client/c_functions.lua` | Client-side functions / events |
-| `night_ers/server/s_functions.lua` | Server-side functions / events |
+
+| File                                           | Purpose                        |
+| ---------------------------------------------- | ------------------------------ |
+| `night_ers/config/config.lua`                  | Main configuration             |
+| `night_ers/config/gear-config.lua`             | Weapons and clothing           |
+| `night_ers/config/impound-config.lua`          | Impound settings               |
+| `night_ers/config/leaderboard-config.lua`      | Leaderboard settings           |
+| `night_ers/config/npcbackup-config.lua`        | NPC Backup settings            |
+| `night_ers/config/persistententity-config.lua` | NPC personal data settings     |
+| `night_ers/config/pullover-config.lua`         | Traffic stop settings          |
+| `night_ers/config/pursuit-config.lua`          | Pursuit settings               |
+| `night_ers/config/questioning-config.lua`      | NPC questioning settings       |
+| `night_ers/config/sound-config.lua`            | Sound & Voice over settings    |
+| `night_ers/config/spikestrip-config.lua`       | Spikestrip settings            |
+| `night_ers/config/stretcher-config.lua`        | Stretcher settings             |
+| `night_ers/config/vehinteractions-config.lua`  | Vehicle search settings        |
+| `night_ers/client/c_functions.lua`             | Client-side functions / events |
+| `night_ers/server/s_functions.lua`             | Server-side functions / events |
+
 
 ### **Configuration Process**
+
 {: .no_toc }
 
 1. **Open VS Code** and navigate to the config files [Download Visual Studio Code]()
@@ -244,6 +263,7 @@ ensure night_ers_k9
 5. **Test frequently** - use F8 console and server console for error checking
 
 {: .tip }
+
 > **Time Investment:** Plan adequate time for configuration. Each variable is named descriptively to help you understand its purpose.
 
 ---
@@ -251,17 +271,21 @@ ensure night_ers_k9
 ## 🎯 Creating Custom Callouts
 
 ### **Overview**
+
 {: .no_toc }
 
 ERS includes open-source callout scripts in `night_ers/callouts/plugins/*.lua`. You can add, remove, or edit callouts using built-in ERS functions.
 
 ### **Callout Creator Pack**
+
 {: .no_toc }
 
 {: .tip }
+
 > **Free Resource:** Download our [Callout Creator Pack](https://store.nights-software.com/package/6374594) for examples and documentation.
 
 ### **Development Process**
+
 {: .no_toc }
 
 1. **Copy Template:** Use existing callout file from `night_ers/callouts/plugins/`
@@ -270,6 +294,7 @@ ERS includes open-source callout scripts in `night_ers/callouts/plugins/*.lua`. 
 4. **Test Thoroughly:** Restart script and test with `/requestcallout`
 
 {: .warning }
+
 > **Support Notice:** Nights Software does not provide custom callout creation support beyond this documentation. Ask the community for help!
 
 ---
@@ -277,9 +302,11 @@ ERS includes open-source callout scripts in `night_ers/callouts/plugins/*.lua`. 
 ## 🔧 Open Source Functions / Events
 
 ### **Client Functions / Events** (`night_ers/client/c_functions.lua`)
+
 {: .no_toc }
 
 #### **Event Triggers**
+
 {: .no_toc }
 
 ```lua
@@ -353,6 +380,7 @@ end
 - Explore the file for more...
 
 ### **Server Functions / Events** (`night_ers/server/s_functions.lua`)
+
 {: .no_toc }
 
 ```lua
@@ -515,6 +543,7 @@ end)
 ---
 
 ## 🔗 night_shifts_mdt Integration — Field Ownership
+
 {: #ers-mdt-field-ownership }
 
 When the optional `night_shifts_mdt` resource is running, the MDT becomes the
@@ -529,41 +558,47 @@ events keep working without any code changes and never see an unmerged placehold
 
 ### NPC payload (`pedData`)
 
-| Field | With night_shifts_mdt | Without night_shifts_mdt |
-|-------|----------------------|--------------------------|
-| `FirstName`, `LastName`, `DOB`, `Gender` | MDT (persistent civilian record) | ERS (random rolls) |
-| `Address`, `City`, `PostalCode`, `State`, `Country` | MDT | ERS |
-| `Email`, `PhoneNumber`, `Nationality` | MDT | ERS |
-| `ProfilePicture` | MDT (`pictureUrl`) | ERS (model-derived) |
-| `License_Car`, `License_Bike`, `License_Boat`, `License_Truck`, `License_Pilot` (+ `_Is_Valid` / `_Colour` / `_Icon` per line, e.g. `License_Car_Is_Valid`) | **Same shape as plain ERS** — same `pedData` keys. With MDT, each line is filled from the civilian’s PNC licence row for that **fixed** type id: `License_Car` → `driver_license`, `License_Bike` → `motorcycle_license`, `License_Boat` → `boat_license`, `License_Truck` → `commercial_driver_license`, `License_Pilot` → `pilot_license`. Those ids are **not** configurable (only the **labels** in admin). If there is no row for a type, the card still shows the slot, usually as no licence. Without MDT, ERS random rolls. | ERS (random rolls) |
-| `FlagsOrMarkers` | **Use it like vanilla ERS.** Keep reading `pedData.FlagsOrMarkers` on your existing server events (`OnFirstNPCInteraction`, pullover, etc.). With the MDT on, that object reflects the civilian’s **Important Notices** from the MDT instead of a random roll. You do **not** need a different field or a second integration path. | ERS (random rolls) |
-| `mdtCivilianId`, `mdtPersonalId` | Set on **`mdt-merged`** payloads — MDT civilian PK and dossier id for integrations | *(n/a — MDT not running)* |
-| `AddressType` | ERS (always — situational) | ERS |
-| `Inventory`, `isDrunk`, `isDrugged`, `BehaviourState` | ERS (always — situational) | ERS |
-| `MassiveBleeding`, `Airway`, `Breathing`, `Circulation`, `Hypothermia`, `CPR` | ERS (always — medical) | ERS |
+
+| Field                                                                                                                                                       | With night_shifts_mdt                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Without night_shifts_mdt  |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `FirstName`, `LastName`, `DOB`, `Gender`                                                                                                                    | MDT (persistent civilian record)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | ERS (random rolls)        |
+| `Address`, `City`, `PostalCode`, `State`, `Country`                                                                                                         | MDT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | ERS                       |
+| `Email`, `PhoneNumber`, `Nationality`                                                                                                                       | MDT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | ERS                       |
+| `ProfilePicture`                                                                                                                                            | MDT (`pictureUrl`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | ERS (model-derived)       |
+| `License_Car`, `License_Bike`, `License_Boat`, `License_Truck`, `License_Pilot` (+ `_Is_Valid` / `_Colour` / `_Icon` per line, e.g. `License_Car_Is_Valid`) | **Same shape as plain ERS** — same `pedData` keys. With MDT, each line is filled from the civilian’s PNC licence row for that **fixed** type id: `License_Car` → `driver_license`, `License_Bike` → `motorcycle_license`, `License_Boat` → `boat_license`, `License_Truck` → `commercial_driver_license`, `License_Pilot` → `pilot_license`. Those ids are **not** configurable (only the **labels** in admin). If there is no row for a type, the card still shows the slot, usually as no licence. Without MDT, ERS random rolls. | ERS (random rolls)        |
+| `FlagsOrMarkers`                                                                                                                                            | **Use it like vanilla ERS.** Keep reading `pedData.FlagsOrMarkers` on your existing server events (`OnFirstNPCInteraction`, pullover, etc.). With the MDT on, that object reflects the civilian’s **Important Notices** from the MDT instead of a random roll. You do **not** need a different field or a second integration path.                                                                                                                                                                                                  | ERS (random rolls)        |
+| `mdtCivilianId`, `mdtPersonalId`                                                                                                                            | Set on `**mdt-merged`** payloads — MDT civilian PK and dossier id for integrations                                                                                                                                                                                                                                                                                                                                                                                                                                                  | *(n/a — MDT not running)* |
+| `AddressType`                                                                                                                                               | ERS (always — situational)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ERS                       |
+| `Inventory`, `isDrunk`, `isDrugged`, `BehaviourState`                                                                                                       | ERS (always — situational)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ERS                       |
+| `MassiveBleeding`, `Airway`, `Breathing`, `Circulation`, `Hypothermia`, `CPR`                                                                               | ERS (always — medical)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | ERS                       |
+
 
 ### Vehicle payload (`vehicleData`)
 
-| Field | With night_shifts_mdt | Without night_shifts_mdt |
-|-------|----------------------|--------------------------|
-| `tax`, `mot`, `insurance`, `stolen`, `bolo`, `bolo_description` | MDT (persistent vehicle record) | ERS (random rolls) |
-| `owner_name` | MDT (`identity.owner.firstName + lastName` — falls back to driver name) | ERS (driver / random) |
-| `build_year` | MDT if known (`vehicle.buildYear`), else ERS roll | ERS (random roll) |
-| `make`, `model`, `color`, `vehicle_class`, `license_plate`, `vehicle_picture_url` | ERS (vehicle attributes) | ERS |
-| `inventory` | ERS (always — situational) | ERS |
+
+| Field                                                                             | With night_shifts_mdt                                                   | Without night_shifts_mdt |
+| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------ |
+| `tax`, `mot`, `insurance`, `stolen`, `bolo`, `bolo_description`                   | MDT (persistent vehicle record)                                         | ERS (random rolls)       |
+| `owner_name`                                                                      | MDT (`identity.owner.firstName + lastName` — falls back to driver name) | ERS (driver / random)    |
+| `build_year`                                                                      | MDT if known (`vehicle.buildYear`), else ERS roll                       | ERS (random roll)        |
+| `make`, `model`, `color`, `vehicle_class`, `license_plate`, `vehicle_picture_url` | ERS (vehicle attributes)                                                | ERS                      |
+| `inventory`                                                                       | ERS (always — situational)                                              | ERS                      |
+
 
 ### Debug printing
 
-When `Config.Debug = true`, every `OnFirst*` event payload is pretty-printed
+When `Config.Debug = true`, every `OnFirst`* event payload is pretty-printed
 to the server console with a `mode` tag indicating how the data was
 sourced:
 
-| Mode | Meaning |
-|------|---------|
-| `mdt-merged` | MDT identity resolved on the client and merged into the payload before firing. The common path when night_shifts_mdt is running. |
-| `mdt-disabled` | night_shifts_mdt is not running. ERS data fired immediately (legacy behaviour). |
-| `mdt-no-civilian` | Ped data was requested without an MDT-merged civilian id (non-standard integration path). |
-| `mdt-no-vehicle` | Vehicle data was requested without MDT-backed vehicle identity (non-standard integration path). |
+
+| Mode              | Meaning                                                                                                                          |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `mdt-merged`      | MDT identity resolved on the client and merged into the payload before firing. The common path when night_shifts_mdt is running. |
+| `mdt-disabled`    | night_shifts_mdt is not running. ERS data fired immediately (legacy behaviour).                                                  |
+| `mdt-no-civilian` | Ped data was requested without an MDT-merged civilian id (non-standard integration path).                                        |
+| `mdt-no-vehicle`  | Vehicle data was requested without MDT-backed vehicle identity (non-standard integration path).                                  |
+
 
 Use these tags when debugging server-side integrations to confirm which sourcing path fired for each `OnFirst*` event.
 
@@ -572,56 +607,63 @@ Use these tags when debugging server-side integrations to confirm which sourcing
 ## 🛠️ ERS Functions Reference
 
 ### **Client Functions**
+
 {: .no_toc }
 
-| Function | Description |
-|----------|-------------|
-| `ERS_SetMovementAnimClipSetToPed(ped, clipset)` | Apply movement style |
-| `ERS_SpawnConfiguredWeaponForPed(ped, calloutDataClient)` | Spawn weapon by chance |
-| `ERS_RequestNetControlForEntity(entityId)` | Request entity control |
-| `ERS_PerformTimedActionOnPed(calloutDataClient, pedList)` | Execute pre-configured ped behaviors |
-| `ERS_CreateTemporaryBlipForEntities(entityList, timeoutInMs)` | Create temporary blips |
+
+| Function                                                                                                                              | Description                           |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `ERS_SetMovementAnimClipSetToPed(ped, clipset)`                                                                                       | Apply movement style                  |
+| `ERS_SpawnConfiguredWeaponForPed(ped, calloutDataClient)`                                                                             | Spawn weapon by chance                |
+| `ERS_RequestNetControlForEntity(entityId)`                                                                                            | Request entity control                |
+| `ERS_PerformTimedActionOnPed(calloutDataClient, pedList)`                                                                             | Execute pre-configured ped behaviors  |
+| `ERS_CreateTemporaryBlipForEntities(entityList, timeoutInMs)`                                                                         | Create temporary blips                |
 | `ERS_SpawnParticlesWithinRange(coords, diameter, particleDict, particleName, particleSize, particleAmount, timeout, chanceToExplode)` | Spawn particles with explosion chance |
-| `ERS_GetRandomCoordinateWithinRangeOfCoordinate(coords, diameter)` | Get random coordinates |
-| `ERS_SetPedToFleeFromPlayer(ped)` | Make ped flee |
-| `ERS_SetPedToAttackPlayer(ped)` | Make ped attack |
-| `ERS_SetPedToSurrender(ped)` | Make ped surrender |
-| `ERS_ApplyBloodToPed(ped)` | Apply blood to ped |
-| `ERS_CreateBloodPuddleAtPed(ped)` | Create blood puddle |
-| `ERS_SetPedToPassout(ped)` | Make ped pass out |
-| `ERS_ClearPedTasksAndBlockEvents(ped)` | Clear ped tasks |
-| `ERS_SetPedAsDrunkPed(ped)` | Apply drunk movement |
-| `ERS_GetIsPedADrunkPed(ped)` | Check if ped is drunk |
-| `ERS_CheckIfPedIsAlive(ped)` | Check ped health status |
-| `ERS_IsPedAnAnimalPed(ped)` | Check if ped is animal |
-| `ERS_SetRandomDamageToVehicle(veh)` | Apply vehicle damage |
-| `ERS_CreateFlareAtCoordinate(coords)` | Create red flare |
-| `ERS_GetSafeSpawnPointForNPCVehicle()` | Find safe spawn point |
-| `ERS_SelectRandomMovementClipSet()` | Get random movement style |
-| `ERS_SelectMentalHealthPersonScenario()` | Get mental health scenario |
-| `ERS_SelectRandomBystanderScenario()` | Get bystander scenario |
-| `ERS_SelectRandomProtesterScenario()` | Get protester scenario |
-| `ERS_SelectRandomWoundedPersonScenario()` | Get wounded person scenario |
-| `ERS_SelectStandingByFireScenario()` | Get fire scenario |
-| `ERS_PedEquipWeapon(ped, weaponModel)` | Equip weapon to ped |
-| `ERS_DeleteEntityFromCallout(entityId)` | Delete entity |
+| `ERS_GetRandomCoordinateWithinRangeOfCoordinate(coords, diameter)`                                                                    | Get random coordinates                |
+| `ERS_SetPedToFleeFromPlayer(ped)`                                                                                                     | Make ped flee                         |
+| `ERS_SetPedToAttackPlayer(ped)`                                                                                                       | Make ped attack                       |
+| `ERS_SetPedToSurrender(ped)`                                                                                                          | Make ped surrender                    |
+| `ERS_ApplyBloodToPed(ped)`                                                                                                            | Apply blood to ped                    |
+| `ERS_CreateBloodPuddleAtPed(ped)`                                                                                                     | Create blood puddle                   |
+| `ERS_SetPedToPassout(ped)`                                                                                                            | Make ped pass out                     |
+| `ERS_ClearPedTasksAndBlockEvents(ped)`                                                                                                | Clear ped tasks                       |
+| `ERS_SetPedAsDrunkPed(ped)`                                                                                                           | Apply drunk movement                  |
+| `ERS_GetIsPedADrunkPed(ped)`                                                                                                          | Check if ped is drunk                 |
+| `ERS_CheckIfPedIsAlive(ped)`                                                                                                          | Check ped health status               |
+| `ERS_IsPedAnAnimalPed(ped)`                                                                                                           | Check if ped is animal                |
+| `ERS_SetRandomDamageToVehicle(veh)`                                                                                                   | Apply vehicle damage                  |
+| `ERS_CreateFlareAtCoordinate(coords)`                                                                                                 | Create red flare                      |
+| `ERS_GetSafeSpawnPointForNPCVehicle()`                                                                                                | Find safe spawn point                 |
+| `ERS_SelectRandomMovementClipSet()`                                                                                                   | Get random movement style             |
+| `ERS_SelectMentalHealthPersonScenario()`                                                                                              | Get mental health scenario            |
+| `ERS_SelectRandomBystanderScenario()`                                                                                                 | Get bystander scenario                |
+| `ERS_SelectRandomProtesterScenario()`                                                                                                 | Get protester scenario                |
+| `ERS_SelectRandomWoundedPersonScenario()`                                                                                             | Get wounded person scenario           |
+| `ERS_SelectStandingByFireScenario()`                                                                                                  | Get fire scenario                     |
+| `ERS_PedEquipWeapon(ped, weaponModel)`                                                                                                | Equip weapon to ped                   |
+| `ERS_DeleteEntityFromCallout(entityId)`                                                                                               | Delete entity                         |
+
 
 ### **Server Functions**
+
 {: .no_toc }
 
-| Function | Description |
-|----------|-------------|
-| `ERS_CreatePed(model, coords, heading)` | Create synchronized ped |
-| `ERS_CreateObject(model, coords, heading)` | Create synchronized object |
-| `ERS_CreateVehicle(model, vehType, coords, vehHeading)` | Create synchronized vehicle |
-| `ERS_GetRandomCoordinateWithinRangeOfCoordinate(coords, diameter)` | Get random coordinates |
-| `ERS_GetRandomModel(modelList)` | Select random model |
+
+| Function                                                           | Description                 |
+| ------------------------------------------------------------------ | --------------------------- |
+| `ERS_CreatePed(model, coords, heading)`                            | Create synchronized ped     |
+| `ERS_CreateObject(model, coords, heading)`                         | Create synchronized object  |
+| `ERS_CreateVehicle(model, vehType, coords, vehHeading)`            | Create synchronized vehicle |
+| `ERS_GetRandomCoordinateWithinRangeOfCoordinate(coords, diameter)` | Get random coordinates      |
+| `ERS_GetRandomModel(modelList)`                                    | Select random model         |
+
 
 ---
 
 ## 📤 Exports
 
 ### **Client Exports** (`night_ers/client/exports_client.lua`)
+
 {: .no_toc }
 
 ```lua
@@ -643,15 +685,18 @@ exports['night_ers']:SetERSIDCardInfoDisplay(display) -- Sets the display for ID
 ```
 
 #### **Start pursuit** (callouts & other integrations)
+
 {: .no_toc }
 
 Use from **client** Lua in resources that `ensure` / `dependency` on `night_ers`. There is no server export for this; if your logic runs on the server, trigger the officer’s client (e.g. your own event) and call the export there.
 
-| Export | Notes |
-|--------|--------|
-| `StartPursuit(pedNetId)` | `pedNetId` is the suspect’s **network id** (e.g. `NetworkGetNetworkIdFromEntity(suspectPed)`). Returns **`true`** if ERS entered pursuit mode, **`false`** if it refused (pursuit disabled in config, player not on **police** service, invalid net id, already in a pursuit or cancel-in-progress, or ped / vehicle data could not be resolved for pursuit init). |
 
-After a successful start, the player is in **pursuit mode** and you can use **`RequestNPCPursuitBackup`** / **`CancelNPCPursuitBackup`** as documented below.
+| Export                   | Notes                                                                                                                                                                                                                                                                                                                                                              |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `StartPursuit(pedNetId)` | `pedNetId` is the suspect’s **network id** (e.g. `NetworkGetNetworkIdFromEntity(suspectPed)`). Returns `**true`** if ERS entered pursuit mode, `**false**` if it refused (pursuit disabled in config, player not on **police** service, invalid net id, already in a pursuit or cancel-in-progress, or ped / vehicle data could not be resolved for pursuit init). |
+
+
+After a successful start, the player is in **pursuit mode** and you can use `**RequestNPCPursuitBackup`** / `**CancelNPCPursuitBackup**` as documented below.
 
 ```lua
 local netId = NetworkGetNetworkIdFromEntity(suspectPed)
@@ -659,16 +704,19 @@ local started = exports['night_ers']:StartPursuit(netId)
 ```
 
 #### **NPC backup — pursuit & service** (other resources)
+
 {: .no_toc }
 
-Use these from **client** scripts in resources that `ensure` / `dependency` on `night_ers`. Pursuit backup exports only work while the player is in **pursuit mode** (including after a successful **`StartPursuit`** from another resource).
+Use these from **client** scripts in resources that `ensure` / `dependency` on `night_ers`. Pursuit backup exports only work while the player is in **pursuit mode** (including after a successful `**StartPursuit`** from another resource).
 
-| Export | Notes |
-|--------|--------|
-| `RequestNPCPursuitBackup(unitType)` | Request pursuit NPC backup, or toggle-cancel by calling again with the same `unitType` while pending. Returns `dispatched`, `reason`. |
-| `CancelNPCPursuitBackup(serverDeleteDelayMs?)` | Cancels active pursuit NPC backup without a `unitType`. Optional delay (ms) for server-side cleanup; omit or `0` for immediate. |
-| `RequestNPCBackup(backupType)` | Service / road NPC backup. Returns `dispatched`, `reason`; when `dispatched` is false, `reason` is `"unknown_backup_type"`. |
-| `CancelNPCBackup(backupType, mustNotify)` | Cancels matching service backup. `mustNotify` controls in-game notification behaviour (bool). |
+
+| Export                                         | Notes                                                                                                                                 |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `RequestNPCPursuitBackup(unitType)`            | Request pursuit NPC backup, or toggle-cancel by calling again with the same `unitType` while pending. Returns `dispatched`, `reason`. |
+| `CancelNPCPursuitBackup(serverDeleteDelayMs?)` | Cancels active pursuit NPC backup without a `unitType`. Optional delay (ms) for server-side cleanup; omit or `0` for immediate.       |
+| `RequestNPCBackup(backupType)`                 | Service / road NPC backup. Returns `dispatched`, `reason`; when `dispatched` is false, `reason` is `"unknown_backup_type"`.           |
+| `CancelNPCBackup(backupType, mustNotify)`      | Cancels matching service backup. `mustNotify` controls in-game notification behaviour (bool).                                         |
+
 
 **Pursuit `unitType`** must match `night_ers/config/pursuit-config.lua` → `Config.PursuitBackupTypes[].PursuitType` (stock values, all lowercase):
 
@@ -679,9 +727,11 @@ Use these from **client** scripts in resources that `ensure` / `dependency` on `
 `"ambulance"`, `"police"`, `"taxi"`, `"tow"`, `"roadservice"`, `"coroner"`, `"animalrescue"`, `"mechanic"`, `"fire"`
 
 {: .note }
+
 > **Service backup casing:** You can pass any casing (e.g. `"Tow"` or `"TOW"`). `night_ers` normalizes `backupType` internally for both request and cancel. Pursuit `unitType` still must match config exactly unless you customize `PursuitType` strings.
 
 {: .tip }
+
 > **Toggle cancel (pursuit):** Calling `RequestNPCPursuitBackup` again with the **same** `unitType` while a pursuit backup is already pending **cancels** that request (returns `dispatched`, `reason`). Use `CancelNPCPursuitBackup` when you want to cancel without knowing the pending type.
 
 ```lua
@@ -702,6 +752,7 @@ exports['night_ers']:CancelNPCBackup('tow', true)
 ```
 
 ### **Server Exports** (`night_ers/server/exports_server.lua`)
+
 {: .no_toc }
 
 ```lua
@@ -713,6 +764,57 @@ exports['night_ers']:setPlayerCalloutOffersEnabled(source, enabled)
 -- Advanced programming exports:
 exports['night_ers']:getCallouts() -- Returns a json ready table of all callouts in the callouts/plugins/*.lua folder. (Without functions!)
 exports['night_ers']:createCallout(callout) -- Only use if you know what you are doing, this allows you to adjust some variables to when spawning callouts via an external program.
+
+-- Scripted callout *offer* (recommended for integrations — returns whether the prompt was shown):
+local ok, reason = exports['night_ers']:SendCalloutOfferToPlayer(source, optionalCalloutId, optionalTimeoutMs)
+```
+
+#### `**createCallout` vs `SendCalloutOfferToPlayer**` (server scripts)
+
+{: .no_toc }
+
+{: .note }
+
+> `**createCallout**` clones an existing configured callout definition under a new key and merges **loot / AI odds / weapon fields** (`CalloutLocations`, `PedWeaponData`, behavioural chances). It returns `{ calloutId = "<new-key>" }` only — it **does not** validate the player, job, proximity, duplicates, whether callouts are enabled, or attach anyone to an incident.
+
+If you want the **dispatch offer flow** players get from `/requestcallout` — same internal eligibility as manual requests plus the **real client outcome** (player toggled callouts off, temporary blocks, pursuit / pullover blocks, passenger vehicle, invalid locations vs active incidents, etc.) — use `**SendCalloutOfferToPlayer`**.
+
+
+| Argument            | Meaning                                                                                                                                                                                                                                                                                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source`            | Target player server id.                                                                                                                                                                                                                                                                                                                |
+| `optionalCalloutId` | Omit or pass `nil` / `""` for a random enabled callout for that player’s current service (same pool as `/requestcallout`). Pass a plugins key (`"vehicle_theft"`, DLC pack ids, …) — same case‑insensitive / partial key fallback as `/requestcallout`.                                                                                 |
+| `optionalTimeoutMs` | **Client-ack watchdog** (see below). Omitted ⇒ `**5000` ms**. A **positive number** = custom milliseconds. `**false`** or `**-1**` = **no watchdog** — the export waits until the client acknowledges (⚠️ if the reply never arrives, e.g. crash or disconnect mid-flight, the calling server thread stays blocked on `Citizen.Await`). |
+
+
+**Why a timeout:** the export resolves `ok`/`reason` only after the player’s client runs the same eligibility checks as a normal dispatch offer and posts back `externalCalloutOfferResult`. Without a watchdog, missing that reply leaves the script that called `SendCalloutOfferToPlayer` stalled on `Citizen.Await`.
+
+**Returns:** Lua multiple values `**ok`** (boolean) and `**reason**` (string **only when** `ok` is false).
+
+**Server‑side refusal reasons:** `invalid_player`, `player_not_on_shift`, `no_active_service`, `player_busy_on_callout` (already host or attached to an active incident), `no_callouts_enabled_on_server`, `callout_service_mismatch`, `callout_not_found:<id>`, `no_eligible_callouts_for_service`, `offer_unavailable`, `client_response_timeout` (only when a finite watchdog is used).
+
+**Typical client refusal reasons:** `callouts_disabled_by_player`, `callouts_temporarily_blocked`, `callout_request_cooldown`, `not_on_shift`, `passenger_not_allowed`, `already_offered_or_attached`, `no_valid_locations`.
+
+**Behaviour notes**
+
+- Scripted offers set `**manualRequest` the same way as `/requestcallout`**: `**true**` when you pass an explicit `**calloutId**` to the export (all `CalloutLocations` stay in the candidate pool regardless of configured offer radius), `**false**` for a random offer (only coordinates within `**OfferCalloutsWithinRangeOf**` of the player are considered — same behaviour as `**/requestcallout**` with **no** id).
+- With a finite watchdog, avoid calling this export from fragile server contexts if you dislike blocking; `**false`** / `**-1**` removes the cutoff but shifts risk to indefinite wait if the ack never arrives.
+
+Example:
+
+```lua
+local ok, err = exports['night_ers']:SendCalloutOfferToPlayer(src)
+if not ok then
+    print(('Could not offer callout: %s'):format(err or '?'))
+else
+    -- Player has the accepting / declining timed prompt exactly like `/requestcallout`.
+end
+
+-- Concrete callout definition (same id spelling as `/requestcallout`):
+local ok2, err2 = exports['night_ers']:SendCalloutOfferToPlayer(src, 'callout_vehicle_theft', 6000)
+
+-- No ack watchdog — wait however long until the client responds (use only if acceptable for your scheduler):
+exports['night_ers']:SendCalloutOfferToPlayer(src, nil, false)
 ```
 
 ---
@@ -720,22 +822,26 @@ exports['night_ers']:createCallout(callout) -- Only use if you know what you are
 ## 🎨 Props by NovelaxNeko
 
 ### **10 Free Included Props**
+
 {: .no_toc }
 
-| Name | Prop Model |
-|------|------------|
-| Cone | `neko_night_cone_00` |
-| Barrier | `neko_night_water_barrier_00` |
-| Warning triangle | `neko_night_warning_tri_00` |
-| Rubber barrier | `neko_night_rubber_barrier_00` |
-| Barrier | `neko_night_barrier_00` |
-| Barrier 1 | `neko_night_barrier_01` |
-| Barrier 2 | `neko_night_barrier_02` |
-| Arrow board cross | `neko_night_arrow_board_00` |
-| Arrow board left | `neko_night_arrow_board_00_l` |
-| Arrow board right | `neko_night_arrow_board_00_r` |
+
+| Name              | Prop Model                     |
+| ----------------- | ------------------------------ |
+| Cone              | `neko_night_cone_00`           |
+| Barrier           | `neko_night_water_barrier_00`  |
+| Warning triangle  | `neko_night_warning_tri_00`    |
+| Rubber barrier    | `neko_night_rubber_barrier_00` |
+| Barrier           | `neko_night_barrier_00`        |
+| Barrier 1         | `neko_night_barrier_01`        |
+| Barrier 2         | `neko_night_barrier_02`        |
+| Arrow board cross | `neko_night_arrow_board_00`    |
+| Arrow board left  | `neko_night_arrow_board_00_l`  |
+| Arrow board right | `neko_night_arrow_board_00_r`  |
+
 
 {: .tip }
+
 > **Artist Credit:** Check out [NovelaxNeko](https://novelaxneko.com/)!
 
 ---
@@ -743,27 +849,34 @@ exports['night_ers']:createCallout(callout) -- Only use if you know what you are
 ## 🔧 Troubleshooting
 
 ### **Common Issues**
+
 {: .no_toc }
 
 #### **Fire & Smoke Problems**
+
 {: .no_toc }
 
 {: .warning }
-> **Resource Naming:** SmartFires and SmartHose must be named exactly `SmartFires` and `SmartHose` (case sensitive). Same applies to Lite versions. A common issue is that callouts can no longer be cancelled or will no longer spawn after encountering issues due to faulty naming of the resources
+
+> **Resource Naming:** SmartFires and SmartHose must be named exactly `SmartFires` and `SmartHose` (case sensitive). Same applies to Lite versions. A common issue is that callouts can no longer be cancelled or will no longer spawn after encountering issues due to faulty naming of the resources.
 
 #### **MDT Integration Issues**
+
 {: .no_toc }
 
 {: .tip }
+
 > **Solution:** Enable ERS in `night_shifts_mdt` config and enable Night Shifts in `night_ers` config. Duty can (optionally) toggled through the MDT
 
 #### **Hosting-Specific Issues**
+
 {: .no_toc }
 
 - **Iceline Hosting:** Set `Enable Beyond` to 1 in server dashboard
 - **Entity Spawning:** Ensure OneSync is properly configured in the host dashboard
 
 ### **Compatibility Checklist**
+
 {: .no_toc }
 
 - ✅ **Recommended Gamebuild:** 3323
@@ -782,6 +895,7 @@ exports['night_ers']:createCallout(callout) -- Only use if you know what you are
 ## 💬 Support & Community
 
 ### **Getting Help**
+
 {: .no_toc }
 
 1. **Read Documentation:** Review this guide thoroughly
@@ -789,9 +903,11 @@ exports['night_ers']:createCallout(callout) -- Only use if you know what you are
 3. **Discord Support:** Create a ticket in our Discord
 
 ### **Feedback & Reviews**
+
 {: .no_toc }
 
 We welcome your feedback! Visit our Discord for:
+
 - Support
 - Product reviews
 - Feature suggestions
@@ -800,5 +916,4 @@ We welcome your feedback! Visit our Discord for:
 [Nights Software Discord](https://discord.nights-software.com){: .btn .btn-discord}
 
 ---
-
 
