@@ -20,11 +20,9 @@ A guide to install Emergency Response Simulator for FiveM
 ---
 
 ## 📋 Table of Contents
-
 {: .no_toc .text-delta }
 
 1. TOC
-
 {:toc}
 
 ---
