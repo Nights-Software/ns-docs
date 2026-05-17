@@ -1,21 +1,19 @@
 ---
-
-## layout: default
+layout: default
 title: "Emergency Response Simulator"
 nav_order: 4
 has_children: false
 has_toc: true
 last_modified_date: "2026-05-04"
+---
 
-
+<img class="cover-img" src="/assets/img/ers.png" alt="Emergency Response Simulator for FiveM" draggable="false">
 
 # Emergency Response Simulator for FiveM
-
 {: .no_toc}
 
 A guide to install Emergency Response Simulator for FiveM
-
-- *Crafted by [Nights Software](https://store.nights-software.com/) in collaboration with [London Studios*](https://londonstudios.net)
+- *Crafted by [Nights Software](https://store.nights-software.com/) in collaboration with [London Studios](https://londonstudios.net)*
 
 {: .fs-5 .fw-300 }
 
