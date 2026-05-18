@@ -761,6 +761,8 @@ exports['night_ers']:setPlayerCalloutOffersEnabled(source, enabled)
 exports['night_ers']:getCallouts() -- Returns a json ready table of all callouts in the callouts/plugins/*.lua folder. (Without functions!)
 exports['night_ers']:createCallout(callout) -- Only use if you know what you are doing, this allows you to adjust some variables to when spawning callouts via an external program.
 
+-- Custom callouts / pack server Lua — see **Spawning Smart Fires (server)** for the safe exports.
+
 -- Scripted callout *offer* (recommended for integrations — returns whether the prompt was shown):
 local ok, reason = exports['night_ers']:SendCalloutOfferToPlayer(source, optionalCalloutId, optionalTimeoutMs)
 ```
@@ -812,6 +814,44 @@ local ok2, err2 = exports['night_ers']:SendCalloutOfferToPlayer(src, 'callout_ve
 -- No ack watchdog — wait however long until the client responds (use only if acceptable for your scheduler):
 exports['night_ers']:SendCalloutOfferToPlayer(src, nil, false)
 ```
+
+#### **Spawning Smart Fires (server)**
+
+{: .no_toc }
+
+This is mainly for **custom callouts**: if you write your own Lua (in `night_ers` callout plugins, a **separate callout pack** resource, or any other server script that participates in building a callout) and you need to **start** a Smart Fires fire or smoke.
+
+If you use **Smart Fires** or **Smart Fires Lite** with ERS, **stock callouts** already handle setup and cleanup—you do not need these exports unless **your script** creates the flame or smoke.
+
+From that server Lua, call **`night_ers`** rather than Smart Fires directly. Fires you create this way behave like stock ERS callouts on **your** server—the same cleanup when the incident ends and the same integration with whichever Smart Fires product you run with ERS.
+
+**`GetFireConfig()`:** In custom callouts, call `exports['night_ers']:GetFireConfig()` on the server when you need size/type values. It exposes the **same tables** core fire callouts draw from so your random sizes and fire types stay consistent. The example below uses the returned booleans only to distinguish **full Smart Fires** from **Lite** sizing (you can paste that pattern verbatim).
+
+| Export | What you pass in | What you get back |
+| ------ | ---------------- | ----------------- |
+| `ERS_CreateSmartFireAtCoords` | World position, size (radius number), fire type (string) | **Fire / incident id** to store on your callout, or **nothing** if Smart Fires is turned off in ERS or the fire resource is not running. |
+| `ERS_CreateSmartSmokeAtCoords` | World position, size, smoke type (string) | **Smoke id** (or equivalent), or **nothing** if unavailable. |
+| `ERS_StopSmartFire` | Id you received when creating the fire | Removes that fire the same way ERS would when cleaning up. |
+| `ERS_StopSmartSmoke` | Id you received when creating the smoke | Removes that smoke the same way ERS would. |
+
+```lua
+-- Example pattern for custom callouts (your coordinates and lists).
+local fireCfg = exports['night_ers']:GetFireConfig()
+if fireCfg.UsingSmartFiresV2 or fireCfg.UsingSmartFires then
+    local fireSize = fireCfg.RandomMediumFireOrSmokeSize[math.random(#fireCfg.RandomMediumFireOrSmokeSize)]
+    local fireType = fireCfg.NormalFireTypes[math.random(#fireCfg.NormalFireTypes)]
+    local fireId = exports['night_ers']:ERS_CreateSmartFireAtCoords(vector3(x, y, z), fireSize, fireType)
+    if fireId ~= nil then table.insert(fireList, fireId) end
+else
+    local fireSize = fireCfg.RandomSmallFireOrSmokeSize[math.random(#fireCfg.RandomSmallFireOrSmokeSize)]
+    local fireId = exports['night_ers']:ERS_CreateSmartFireAtCoords(vector3(x, y, z), fireSize, "normal")
+    if fireId ~= nil then table.insert(fireList, fireId) end
+end
+```
+
+{: .tip }
+
+> **When the callout ends:** If you add the returned id to the incident **`fireList`** or **`smokeList`**, ERS normally removes the fire or smoke for you. Use **`ERS_StopSmartFire`** / **`ERS_StopSmartSmoke`** only if **your script** puts the fire out or removes it **before** the callout cleanup runs.
 
 ---
 
