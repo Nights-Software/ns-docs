@@ -210,6 +210,9 @@ ensure ebu_flatbeds_ers
 ensure night_ers_worldevents
 ensure night_ers_weighstation
 ensure night_ers_k9
+
+# Optional Callout Packs
+ensure night_ers_cp1
 ```
 
 ---
@@ -767,36 +770,46 @@ exports['night_ers']:createCallout(callout) -- Only use if you know what you are
 local ok, reason = exports['night_ers']:SendCalloutOfferToPlayer(source, optionalCalloutId, optionalTimeoutMs)
 ```
 
-#### `**createCallout` vs `SendCalloutOfferToPlayer**` (server scripts)
+#### `createCallout` vs `SendCalloutOfferToPlayer` (server scripts)
 
 {: .no_toc }
 
 {: .note }
 
-> `**createCallout**` clones an existing configured callout definition under a new key and merges **loot / AI odds / weapon fields** (`CalloutLocations`, `PedWeaponData`, behavioural chances). It returns `{ calloutId = "<new-key>" }` only — it **does not** validate the player, job, proximity, duplicates, whether callouts are enabled, or attach anyone to an incident.
+> **`createCallout`** makes a **new** callout preset in memory by copying an existing definition. It merges things like **`CalloutLocations`**, **`PedWeaponData`**, and AI / loot rolls. You only get `{ calloutId = "<new-key>" }`. It never checks the player — not shift, job, distance, “already busy”, or whether callouts are on. Nobody gets a popup; **you** spawn or drive the scenario from your own script.
 
-If you want the **dispatch offer flow** players get from `/requestcallout` — same internal eligibility as manual requests plus the **real client outcome** (player toggled callouts off, temporary blocks, pursuit / pullover blocks, passenger vehicle, invalid locations vs active incidents, etc.) — use `**SendCalloutOfferToPlayer`**.
-
-
-| Argument            | Meaning                                                                                                                                                                                                                                                                                                                                 |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `source`            | Target player server id.                                                                                                                                                                                                                                                                                                                |
-| `optionalCalloutId` | Omit or pass `nil` / `""` for a random enabled callout for that player’s current service (same pool as `/requestcallout`). Pass a plugins key (`"vehicle_theft"`, DLC pack ids, …) — same case‑insensitive / partial key fallback as `/requestcallout`.                                                                                 |
-| `optionalTimeoutMs` | **Client-ack watchdog** (see below). Omitted ⇒ `**5000` ms**. A **positive number** = custom milliseconds. `**false`** or `**-1**` = **no watchdog** — the export waits until the client acknowledges (⚠️ if the reply never arrives, e.g. crash or disconnect mid-flight, the calling server thread stays blocked on `Citizen.Await`). |
+Use **`SendCalloutOfferToPlayer`** when you want the **same thing as `/requestcallout`**: eligibility runs on server + client (shift, cooldown, blocks, passenger, valid spots, …) and the player sees the normal **accept / decline** dispatch prompt.
 
 
-**Why a timeout:** the export resolves `ok`/`reason` only after the player’s client runs the same eligibility checks as a normal dispatch offer and posts back `externalCalloutOfferResult`. Without a watchdog, missing that reply leaves the script that called `SendCalloutOfferToPlayer` stalled on `Citizen.Await`.
+| Argument | Meaning |
+| -------- | ------- |
+| `source` | Player’s **server id**. |
+| `optionalCalloutId` | Leave off or use `nil` / `""` for a **random** callout (same idea as typing **`/requestcallout`** with no id). Or pass a callout id string (same loose matching as **`/requestcallout`**). |
+| `optionalTimeoutMs` | How many **milliseconds** to wait for that player’s client to answer. **Default is 5000** if you skip this argument. |
 
-**Returns:** Lua multiple values `**ok`** (boolean) and `**reason**` (string **only when** `ok` is false).
+**Waiting on the player**
 
-**Server‑side refusal reasons:** `invalid_player`, `player_not_on_shift`, `no_active_service`, `player_busy_on_callout` (already host or attached to an active incident), `no_callouts_enabled_on_server`, `callout_service_mismatch`, `callout_not_found:<id>`, `no_eligible_callouts_for_service`, `offer_unavailable`, `client_response_timeout` (only when a finite watchdog is used).
+This export talks to their **client**. Your server script pauses until the client answers **or** the wait time runs out.
 
-**Typical client refusal reasons:** `callouts_disabled_by_player`, `callouts_temporarily_blocked`, `callout_request_cooldown`, `not_on_shift`, `passenger_not_allowed`, `already_offered_or_attached`, `no_valid_locations`.
+1. Omit the third argument → wait **5000 ms** (5 seconds) at most.
+2. Pass a positive number → wait that many milliseconds (e.g. `15000` = 15 seconds).
+3. If time runs out with no reply → you get **`ok = false`** and **`reason = "client_response_timeout"`** (crash, disconnect, extreme lag).
 
-**Behaviour notes**
+**Returns**
 
-- Scripted offers set `**manualRequest` the same way as `/requestcallout`**: `**true**` when you pass an explicit `**calloutId**` to the export (all `CalloutLocations` stay in the candidate pool regardless of configured offer radius), `**false**` for a random offer (only coordinates within `**OfferCalloutsWithinRangeOf**` of the player are considered — same behaviour as `**/requestcallout**` with **no** id).
-- With a finite watchdog, avoid calling this export from fragile server contexts if you dislike blocking; `**false`** / `**-1**` removes the cutoff but shifts risk to indefinite wait if the ack never arrives.
+- **`ok`** — `true` if the offer went through.
+- **`reason`** — only when **`ok`** is `false`; log it to see what blocked the offer.
+
+**Spawn spots (matches `/requestcallout`)**
+
+- **Random offer** (`nil` / `""`) → spawn must be **within range** of the player (see **`OfferCalloutsWithinRangeOf`** in config).
+- **You pass a specific id** → any spawn listed for that callout can be used **(range filter off).**
+
+**When `ok` is false — common `reason` values**
+
+*Server:* `invalid_player`, `player_not_on_shift`, `no_active_service`, `player_busy_on_callout`, `no_callouts_enabled_on_server`, `callout_service_mismatch`, `callout_not_found:...`, `no_eligible_callouts_for_service`, `offer_unavailable`, `client_response_timeout`
+
+*Client / player-side:* `callouts_disabled_by_player`, `callouts_temporarily_blocked`, `callout_request_cooldown`, `not_on_shift`, `passenger_not_allowed`, `already_offered_or_attached`, `no_valid_locations`
 
 Example:
 
@@ -808,11 +821,7 @@ else
     -- Player has the accepting / declining timed prompt exactly like `/requestcallout`.
 end
 
--- Concrete callout definition (same id spelling as `/requestcallout`):
 local ok2, err2 = exports['night_ers']:SendCalloutOfferToPlayer(src, 'callout_vehicle_theft', 6000)
-
--- No ack watchdog — wait however long until the client responds (use only if acceptable for your scheduler):
-exports['night_ers']:SendCalloutOfferToPlayer(src, nil, false)
 ```
 
 #### **Spawning Smart Fires (server)**
@@ -851,7 +860,9 @@ end
 
 {: .tip }
 
-> **When the callout ends:** If you add the returned id to the incident **`fireList`** or **`smokeList`**, ERS normally removes the fire or smoke for you. Use **`ERS_StopSmartFire`** / **`ERS_StopSmartSmoke`** only if **your script** puts the fire out or removes it **before** the callout cleanup runs.
+> **Auto cleanup:** The example **`table.insert(fireList, fireId)`** is how you register “this incident owns that fire”. When your callout is torn down normally, ERS walks **`fireList`** / **`smokeList`** and stops anything still listed.
+>
+> **Manual stop:** Use **`ERS_StopSmartFire`** / **`ERS_StopSmartSmoke`** only when **you** extinguish or remove smoke **in the middle** of the callout (your script clears it early). Otherwise you don’t need those calls—the end-of-callout cleanup handles it **if** the id stays in **`fireList`** / **`smokeList`**.
 
 ---
 
