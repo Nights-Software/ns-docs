@@ -828,41 +828,54 @@ local ok2, err2 = exports['night_ers']:SendCalloutOfferToPlayer(src, 'callout_ve
 
 {: .no_toc }
 
-This is mainly for **custom callouts**: if you write your own Lua (in `night_ers` callout plugins, a **separate callout pack** resource, or any other server script that participates in building a callout) and you need to **start** a Smart Fires fire or smoke.
+This is for **custom callouts**: if you write your own Lua (in `night_ers` callout plugins, a **separate callout pack** resource, or any other server script that participates in building a callout) and you need to **start** a Smart Fires fire or smoke.
 
 If you use **Smart Fires** or **Smart Fires Lite** with ERS, **stock callouts** already handle setup and cleanup—you do not need these exports unless **your script** creates the flame or smoke.
 
-From that server Lua, call **`night_ers`** rather than Smart Fires directly. Fires you create this way behave like stock ERS callouts on **your** server—the same cleanup when the incident ends and the same integration with whichever Smart Fires product you run with ERS.
+Use the **bridge helpers** below. They are the **only** sanctioned way to spawn callout fires: they pick the right Smart Fires version (full / Lite / v2), pace creation safely on v2, and validate that Smart Fires is actually running. **You** then append the returned id to your `fireList` / `smokeList` so ERS can track it for the HUD, NPC backup and end-of-scene cleanup. Calling `exports['SmartFires']:CreateFire(...)` directly inside a callout will spawn a fire that **ERS does not track**: no HUD slot, no NPC backup, no cleanup at the end of the scene.
 
-**`GetFireConfig()`:** In custom callouts, call `exports['night_ers']:GetFireConfig()` on the server when you need size/type values. It exposes the **same tables** core fire callouts draw from so your random sizes and fire types stay consistent. The example below uses the returned booleans only to distinguish **full Smart Fires** from **Lite** sizing (you can paste that pattern verbatim).
+**`GetFireConfig()`:** Call `exports['night_ers']:GetFireConfig()` on the server when you need size/type values. It exposes the **same tables** core fire callouts draw from so your random sizes and fire types stay consistent. The example below uses the returned booleans only to distinguish **full Smart Fires** from **Lite** sizing (you can paste that pattern verbatim).
 
 | Export | What you pass in | What you get back |
 | ------ | ---------------- | ----------------- |
-| `ERS_CreateSmartFireAtCoords` | World position, size (radius number), fire type (string) | **Fire / incident id** to store on your callout, or **nothing** if Smart Fires is turned off in ERS or the fire resource is not running. |
-| `ERS_CreateSmartSmokeAtCoords` | World position, size, smoke type (string) | **Smoke id** (or equivalent), or **nothing** if unavailable. |
-| `ERS_StopSmartFire` | Id you received when creating the fire | Removes that fire the same way ERS would when cleaning up. |
-| `ERS_StopSmartSmoke` | Id you received when creating the smoke | Removes that smoke the same way ERS would. |
+| `ERS_AddCalloutFire` | World position, fire type (string), size, optional `{ interiorId = number }` | **Fire / incident id** — append it to your `fireList` yourself (`fireList[#fireList + 1] = id`). Returns **nothing** if Smart Fires is turned off in ERS or the fire resource is not running. |
+| `ERS_AddCalloutSmoke` | World position, smoke type (string), size | **Smoke id** — append it to your `smokeList` yourself. Returns **nothing** if unavailable. |
+| `ERS_StopCalloutFire` | Id you received when creating the fire | Stops the fire mid-callout. Returns `true` on success. **You** remove the id from your `fireList` if you want it gone from ERS's tracking. On **Smart Fires v2**, pass the **exact string** the helper returned (e.g. `"o9"`). |
+| `ERS_GetSmartFireIncidentStatus` | Same id string as above | **Smart Fires v2 only** — whether that id is still active, merged into another fire, or gone (for custom callout scripts). |
+| `ERS_CountOutstandingFireTargets` | `fireList` table from your callout | **Smart Fires v2 only** — how many **live `fireList` slots** remain. |
+
+{: .warning }
+
+> **Why you append the id yourself.** FiveM serializes table arguments across resources via msgpack — when a callout pack calls `exports['night_ers']:ERS_AddCalloutFire(...)`, any table the helper mutates is a **copy** that never propagates back to the pack's `fireList`. The only pattern that works correctly for both in-resource callouts and external packs is: helper returns the id, **caller** appends it to its own list in its own VM. Do not skip the append step — without it, ERS sees an empty `fireList` and the HUD will display `0/0` even though Smart Fires has live incidents.
+
+**Fire merging (Smart Fires v2):** every fire you spawn uses Smart Fires' default behaviour, which includes **native merge** — when two `ERS_AddCalloutFire` calls land close enough to each other, Smart Fires absorbs one into the other and the bridge tracks the surviving host id. The HUD then shows one task for the merged front, not two. If your callout needs each spawn to stay a distinct front on the HUD, space the coords **beyond the merge radius** rather than fighting the merge. On **Smart Fires** (full v1) and **Smart Fires Lite** there is no merge to worry about — those products treat each `CreateFire` as independent.
+
+**Indoor fires (Smart Fires v2):** indoor placement is automatic. Spawn your fire at the **interior coords** you want it at and Smart Fires probes the interior itself — the resulting incident behaves like an indoor fire (smoke vents, no wind spread, indoor preset). You can also pass `"indoors"` as the fire type to **force** indoor classification regardless of what the probe finds at those coords. ERS counts, NPC backup, and cleanup all work the same as outdoor fires. As an escape hatch, `{ interiorId = <id> }` lets you anchor the incident to a specific interior — only needed when the auto-probe misses the right one (rare; custom MLOs). On **Smart Fires** (full v1) and **Smart Fires Lite** there is no indoor concept and the option is ignored.
 
 ```lua
--- Example pattern for custom callouts (your coordinates and lists).
+-- Pattern for custom callouts (your coordinates and lists).
 local fireCfg = exports['night_ers']:GetFireConfig()
 if fireCfg.UsingSmartFiresV2 or fireCfg.UsingSmartFires then
     local fireSize = fireCfg.RandomMediumFireOrSmokeSize[math.random(#fireCfg.RandomMediumFireOrSmokeSize)]
     local fireType = fireCfg.NormalFireTypes[math.random(#fireCfg.NormalFireTypes)]
-    local fireId = exports['night_ers']:ERS_CreateSmartFireAtCoords(vector3(x, y, z), fireSize, fireType)
-    if fireId ~= nil then table.insert(fireList, fireId) end
-else
+    fireList[#fireList + 1] = exports['night_ers']:ERS_AddCalloutFire(vector3(x, y, z), fireType, fireSize)
+elseif fireCfg.UsingSmartFiresLite then
     local fireSize = fireCfg.RandomSmallFireOrSmokeSize[math.random(#fireCfg.RandomSmallFireOrSmokeSize)]
-    local fireId = exports['night_ers']:ERS_CreateSmartFireAtCoords(vector3(x, y, z), fireSize, "normal")
-    if fireId ~= nil then table.insert(fireList, fireId) end
+    fireList[#fireList + 1] = exports['night_ers']:ERS_AddCalloutFire(vector3(x, y, z), "normal", fireSize)
 end
 ```
 
 {: .tip }
 
-> **Auto cleanup:** The example **`table.insert(fireList, fireId)`** is how you register “this incident owns that fire”. When your callout is torn down normally, ERS walks **`fireList`** / **`smokeList`** and stops anything still listed.
+> **You append the id, ERS does the rest.** `fireList[#fireList + 1] = ERS_AddCalloutFire(...)` is safe even when the helper returns nil — Lua treats `t[#t + 1] = nil` as a no-op, so a Smart Fires outage silently skips the entry instead of leaving a hole. ERS stops everything still listed when the callout ends.
 >
-> **Manual stop:** Use **`ERS_StopSmartFire`** / **`ERS_StopSmartSmoke`** only when **you** extinguish or remove smoke **in the middle** of the callout (your script clears it early). Otherwise you don’t need those calls—the end-of-callout cleanup handles it **if** the id stays in **`fireList`** / **`smokeList`**.
+> Call **`ERS_StopCalloutFire`** only if your script removes a fire before the callout ends (e.g. one fire is extinguished by a scripted suppression while the rest of the scene keeps burning). The helper returns `true` on success; remove the id from your `fireList` yourself if you want ERS to forget it (otherwise teardown will see the already-stopped id and skip it silently).
+>
+> **Smart Fires v2:** the id the helper returns is the **exact string** Smart Fires returned from `CreateFire` (e.g. `"o9"`). Keep it intact if you store it elsewhere.
+>
+> **Task list / HUD (v2):** ERS counts **one task per distinct incident** (matches the Smart Fires blip on the minimap). If your callout spawns 4 fires spaced far enough apart that none of them merge, the HUD shows `4/4` and the numerator drops to `3/4` when the first incident's last flame dies. When spawns are close enough that Smart Fires merges them, the merged front counts as **one** slot on the HUD, not two — the bridge resolves the canonical incident id via Smart Fires' `GetCanonicalIncidentId` export and dedupes before counting. The baseline can grow if a callout discovers additional incidents at runtime but it never shrinks until cancel. Callout completion fires when every incident is fully out.
+>
+> Spread children (the extra flames wind blows into nearby trees / cars) share their parent incident, so they don't increment the HUD. They still **count** in the sense that firefighters fight them and the incident stays on the HUD until they're all out — but a spread child burning itself out from `airDecay` won't make the HUD jump.
 
 ---
 
