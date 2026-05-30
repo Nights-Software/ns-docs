@@ -374,6 +374,12 @@ function OnPursuitEnded(pedData)
     -- Add your custom pursuit ended logic here or trigger (and build) a server event to handle it.
     TriggerServerEvent('ErsIntegration::OnPursuitEnded', pedData)
 end
+
+--- Handles when an AI person is delivered to hospital.
+-- @param pedData table The data of the ped.
+function OnPersonDeliveredToHospital(pedData)
+    TriggerServerEvent('ErsIntegration::OnPersonDeliveredToHospital', pedData)
+end
 ```
 
 - Explore the file for more...
@@ -535,9 +541,49 @@ AddEventHandler("ErsIntegration::OnPursuitEnded", function(pedData)
     -- Add your custom pursuit ended logic here, note that it's possible that the ped is being deleted on losing the target.
     -- print(src, pedData)
 end)
+
+--- Handles when an AI person is delivered to hospital.
+-- @param src number Player who completed the drop-off.
+-- @param pedData table NPC data (nil if no interaction record exists).
+AddEventHandler("ErsIntegration::OnPersonDeliveredToHospital", function(src, pedData)
+    -- Add your custom hospital delivery logic here.
+    -- print(src, pedData)
+end)
 ```
 
 - Explore the file for more...
+
+### **Hospital drop-off (stretcher)**
+
+{: .no_toc }
+
+Drop-off zones: `night_ers/config/stretcher-config.lua` (`StretcherDropOffLocations`, `StretcherDropOffRadius`).
+
+#### **Third-party stretcher**
+
+Trigger on the **player’s client** when at a drop-off zone:
+
+```lua
+TriggerEvent('ErsIntegration::DeliverPedToHospital', NetworkGetNetworkIdFromEntity(pedEntity))
+```
+
+Server must accept the request: player **on shift**, inside drop-off radius, within **25 m** of the patient, patient is an **ERS NPC** (not a player).
+
+#### **Built-in ERS stretcher**
+
+Use **`dropoffped`** (default: **Enter**) at the same drop-off zones. Patient must be on your stretcher.
+
+#### **On success**
+
+Server event (listen in `s_functions.lua` or your resource):
+
+```lua
+AddEventHandler("ErsIntegration::OnPersonDeliveredToHospital", function(src, pedData)
+    -- rewards, logs, etc.
+end)
+```
+
+ERS removes the NPC and updates **`persons_delivered_to_hospital`** when leaderboard stats are enabled.
 
 ---
 
