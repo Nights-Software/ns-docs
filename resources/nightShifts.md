@@ -252,8 +252,8 @@ Optional files some servers customize:
 
 - **Shift & status** — Clock in/out, department selection, status codes, **panic** (command or MDT) as configured
 - **Dispatch** — Call board, units, notes, and **map-backed** situational awareness; quick-respond and communications as set up on your server
-- **PNC** — Full lookup stack: people, plates, warrants, case files, flags, ANPR, and penal code reference
-- **Operations & forms** — Department-specific **configurable forms** and workflows; applications and internal operations tied to the same form system
+- **PNC** — Full lookup stack: people, plates, warrants, case files, flags, ANPR, and penal code reference. **Linked Reports** on civilian/vehicle profiles show **approved** operation forms only when the form template is marked **PNC-visible** in Admin → Form Builder (`pnc.reports.view` / `pnc.reports.view_all_department`).
+- **Operations & forms** — Department-specific **configurable forms** and workflows; applications and internal operations tied to the same form system. Operation forms can link civilians/vehicles; visibility on PNC is **opt-in per template** (defaults: internal). Applications and medical department forms stay department-internal.
 - **Management** — Roster, fleet, bulletins, certifications, and submission review for leadership roles
 
 ### **Permissions**
@@ -820,6 +820,24 @@ end)
 
 ```lua
 local ok, err = exports['night_shifts_mdt']:UpdateShiftStatusByServerId(source, "10-8")
+```
+
+##### `UpdateShiftStatusByBindingByServerId(serverId, binding [, callback])`
+
+
+|                 |                                                                                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Parameters**  | `serverId` (number). `binding` (string) — one of `available`, `responding`, `on_scene`, `panic`. `callback` (optional) — `function(success, resultOrError)`. |
+| **Returns**     | `success` (boolean), `resultOrError` (string or nil). On success, the resolved `statusCode`.                                                                 |
+| **Limitations** | **Server-only.** Silent no-op when the department has no status configured for the binding. Requires `night_shifts_mdt` v1.4.1+.                             |
+
+
+```lua
+local mdt = exports['night_shifts_mdt']
+mdt:UpdateShiftStatusByBindingByServerId(source, 'responding')
+mdt:UpdateShiftStatusByBindingByServerId(source, 'on_scene')
+mdt:UpdateShiftStatusByBindingByServerId(source, 'available')
+mdt:UpdateShiftStatusByBindingByServerId(source, 'panic')
 ```
 
 ##### `UpdateCallsignByServerId(serverId, newCallsign)`
