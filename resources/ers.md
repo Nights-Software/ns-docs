@@ -27,14 +27,6 @@ A guide to install Emergency Response Simulator for FiveM
 
 ---
 
-## 🎥 Installation Tutorial
-
-**Watch our comprehensive installation guide:**
-
-[Installation Tutorial by Skull](https://youtu.be/qPSKlMGHoX8){: .btn .btn-red}
-
----
-
 ## 🛒 Purchase Information
 
 **Get Emergency Response Simulator:**
