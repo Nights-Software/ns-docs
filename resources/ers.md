@@ -61,9 +61,9 @@ A guide to install Emergency Response Simulator for FiveM
 
 {: .no_toc }
 
-- **✅ Recommended Gamebuild:** 3323
-- **✅ Recommended Artifacts:** 21703(+)
-- **❌ Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts.
+- **✅ Recommended Gamebuild:** 3323 or 3570
+- **✅ Recommended Artifacts:** 25770(+)
+- **❌ Considered Not Compatible:** Other Gamebuilds than 3323 or 3570
 
 {: .note }
 
@@ -405,7 +405,7 @@ end)
 --     in the MDT UI.
 --   * License_* and FlagsOrMarkers will be nil when the MDT is active. Query the
 --     MDT exports for warrants/flags/licenses instead.
---   * If the MDT identity never resolves within ~5s, the event still fires
+--   * If the MDT identity never resolves within ~12s, the event still fires
 --     once with the partial pedData and identity fields stay nil.
 RegisterServerEvent("ErsIntegration::OnFirstNPCInteraction")
 AddEventHandler("ErsIntegration::OnFirstNPCInteraction", function(source, pedData, context)
@@ -435,7 +435,7 @@ end)
 --     and owner_name come from the MDT's persistent vehicle record. For stolen
 --     vehicles, owner_name is the victim's name (taken from identity.owner)
 --     rather than the driver.
---   * If the MDT identity never resolves within ~5s, the event still fires
+--   * If the MDT vehicle lookup never resolves within ~12s, the event still fires
 --     once with the partial vehicleData (compliance fields stay nil).
 RegisterServerEvent("ErsIntegration::OnFirstVehicleInteraction")
 AddEventHandler("ErsIntegration::OnFirstVehicleInteraction", function(source, vehicleData, context)
@@ -621,6 +621,11 @@ events keep working without any code changes and never see an unmerged placehold
 | `make`, `model`, `color`, `vehicle_class`, `license_plate`, `vehicle_picture_url` | ERS (vehicle attributes)                                                | ERS                      |
 | `inventory`                                                                       | ERS (always — situational)                                              | ERS                      |
 
+{: .tip }
+
+> **ANPR watchlist vs vehicle flags:** The patrol **ANPR HUD** can show an **ANPR HIT** from the MDT **watchlist** (registry). That is separate from `stolen` / `bolo` on the **PNC vehicle record** returned in `vehicleData` and pullover/MDT lookups. With the MDT running, NPC auto-watchlist entries are scoped to **plate + vehicle model** so recycled GTA plates do not false-flag a different car; officer-added watchlist plates remain plate-wide. The ANPR **hit log** is historical — a past detection does not mean the plate is still flagged. See [Night Shifts — ANPR & NPC traffic](/resources/nightShifts/#anpr-npc-traffic) for the full picture.
+
+When `night_shifts_mdt` is active, ERS waits up to **~12 seconds** on the client for the MDT identity/vehicle lookup to merge before firing `OnFirst*` events with partial data.
 
 ### Debug printing
 
@@ -964,7 +969,13 @@ end
 
 {: .tip }
 
-> **Solution:** Enable ERS in `night_shifts_mdt` config and enable Night Shifts in `night_ers` config. Duty can (optionally) toggled through the MDT
+> **Solution:** Enable ERS in `night_shifts_mdt` config (`Config.Enable_ERS = true`) and enable Night Shifts in `night_ers` config. Duty can optionally be toggled through the MDT (`ManageShiftsByMDT` on the ERS side where applicable). Ensure `ensure night_shifts_mdt` appears **before** `ensure night_ers` in `server.cfg`.
+
+{: .tip }
+
+> **ANPR HUD hit but PNC vehicle looks clean (or the opposite):** The watchlist, vehicle record, and hit log are three different layers. An **ANPR HIT** means an active watchlist entry; **vehicle BOLO/stolen** on lookup refers to the PNC vehicle file; the **hit log** is audit history only. After GTA reuses a plate on another model, an old watchlist flag should not follow the new car — if behaviour looks wrong, confirm both resources are updated and see [Night Shifts — ANPR & NPC traffic](/resources/nightShifts/#anpr-npc-traffic).
+
+> **Partial `pedData` / `vehicleData` on first interaction:** If MDT lookup takes longer than ~12s (heavy server load or first NPC pool generation), ERS still fires `OnFirst*` once with nil compliance/identity fields. Retry the interaction or check server console with `Config.Debug = true` on both resources.
 
 #### **Hosting-Specific Issues**
 
@@ -977,16 +988,16 @@ end
 
 {: .no_toc }
 
-- ✅ **Recommended Gamebuild:** 3323
-- ✅ **Recommended Artifacts:** 21703(+)
-- ❌ **QBox important note; NPC Backup doesn't spawn:** Remove blocked ped & vehicle model names, like `s_m_y_cop_01` or `FIRETRUK` from `qbx_smallresources/qbx_entitiesblacklist/config.lua` and your backup peds will spawn again.
-- ❌ **Considered Not Compatible:** Other Gamebuilds below 2944 and above 3323 and Artifacts.
-- ❌ **RemoveCops-AI:** We recommend to disable this resource when using ERS.
-- ❌ **Andrew's Advanced AI:** We recommend to disable this resource when using ERS.
-- ❌ **Realistic Euphoria Physics:** We recommend to disable this resource when using ERS.
-- ❌ **RedSaints Stretcher/Ambulance:** We recommend to disable this resource when using ERS.
-- ❌ **Improved-Seat-Shuffle-FiveM by Dalrae1:** We recommend to disable this resource when using ERS.
-- ⚠️ **Anti-cheat:** May cause entity deletion issues. This can be prevented via your anti-cheat settings. Contact your provider.
+- ✅ **Recommended Gamebuild:** 3323 or 3570
+- ✅ **Recommended Artifacts:** 25770(+)
+- ❌ **QBox important note; NPC Backup doesn't spawn:** Remove blocked ped & vehicle model names, like `s_m_y_cop_01` or `FIRETRUK` from `qbx_smallresources/qbx_entitiesblacklist/config.lua` and your backup peds will spawn again
+- ❌ **Considered Not Compatible:** Other Gamebuilds other than 3323 or 3570
+- ❌ **RemoveCops-AI:** We recommend to disable this resource when using ERS
+- ❌ **Andrew's Advanced AI:** We recommend to disable this resource when using ERS
+- ❌ **Realistic Euphoria Physics:** We recommend to disable this resource when using ERS
+- ❌ **RedSaints Stretcher/Ambulance:** We recommend to disable this resource when using ERS
+- ❌ **Improved-Seat-Shuffle-FiveM by Dalrae1:** We recommend to disable this resource when using ERS
+- ⚠️ **Anti-cheat:** May cause entity deletion issues. This can be prevented via your anti-cheat settings. Contact your provider
 
 ---
 

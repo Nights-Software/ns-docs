@@ -210,7 +210,7 @@ Paths below use `night_shifts_mdt` as the resource folder name—use the same na
 | Path                                                | Purpose                                                                                                                                                                            |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `night_shifts_mdt/config/config.lua`                | **Main config** — tablet prop/animations, ERS link (`Enable_ERS`), framework fine account, hotkeys, civilian emergency call, Show ID, initial super-admins, and other core toggles. |
-| `night_shifts_mdt/config/config_anpr.lua`           | **ANPR** — static camera positions, scan radii, and related ANPR vehicle/hash lists                                                                                                |
+| `night_shifts_mdt/config/config_anpr.lua`           | **ANPR** — static cameras, patrol HUD scan settings, officer watchlist expiry, patrol-registry-only mode, and `NpcRegistryScopedToModel` (NPC auto-flags scoped to plate + vehicle model) |
 | `night_shifts_mdt/config/config_npc_pool.lua`       | **ERS NPC pool** — fictive NPC identities and vehicle-record probabilities for Emergency Response Simulator / PNC integration                                                      |
 | `night_shifts_mdt/config/translations/<locale>.lua` | **Languages** — one file per locale (e.g. `en.lua`, `de.lua`, `fr.lua`, …)                                                                                                         |
 
@@ -255,6 +255,41 @@ Optional files some servers customize:
 - **PNC** — Full lookup stack: people, plates, warrants, case files, flags, ANPR, and penal code reference. **Linked Reports** on civilian/vehicle profiles show **approved** operation forms only when the form template is marked **PNC-visible** in Admin → Form Builder (`pnc.reports.view` / `pnc.reports.view_all_department`).
 - **Operations & forms** — Department-specific **configurable forms** and workflows; applications and internal operations tied to the same form system. Operation forms can link civilians/vehicles; visibility on PNC is **opt-in per template** (defaults: internal). Applications and medical department forms stay department-internal.
 - **Management** — Roster, fleet, bulletins, certifications, and submission review for leadership roles
+
+### **ANPR & NPC traffic**
+{: .no_toc #anpr-npc-traffic }
+
+Patrol **ANPR** (in-vehicle HUD and static cameras) and **PNC → ANPR** (watchlist, hit log) work alongside the **NPC pool** when [ERS integration](#emergency-response-simulator-night_ers) is enabled. Three ideas help avoid confusion in roleplay:
+
+**Three separate layers**
+
+| Layer | What it means | Typical lifetime |
+| ----- | ------------- | ---------------- |
+| **PNC vehicle record** | Owner, tax/MOT/insurance, stolen/BOLO on the **vehicle file** | NPC rows: ~90 min per **plate + model** encounter (`plateTTLMinutes` in `config_npc_pool.lua`) |
+| **ANPR watchlist (registry)** | What triggers a red **ANPR HIT** on the patrol HUD | Officer flags: **plate-wide**, ~10 days (`RegistryExpiryDays`). NPC auto-flags: **plate + GTA model**, same ~90 min as the NPC vehicle row |
+| **Hit log** | Audit of past detections | Historical only — a past hit does **not** mean the plate is still flagged |
+
+**ANPR HIT vs vehicle BOLO/stolen**
+
+- **ANPR HIT** = plate is on the **watchlist right now** (officer added it, or NPC pool auto-flagged stolen/BOLO when the record was created).
+- **Vehicle BOLO/stolen** on a PNC lookup = flags on that **specific vehicle record**.
+- Those can differ: e.g. active watchlist hit but a clean vehicle file after plate recycle, or a historic hit in the log with no active watchlist entry.
+
+**NPC behaviour (GTA plate reuse)**
+
+- GTA reuses the same plate string on different cars. NPC vehicle stories and NPC auto-ANPR flags are keyed by **plate + model hash**, so a recycled plate on a **different** model does not inherit the previous car’s watchlist hit.
+- **Officer watchlist** entries you add in PNC/ANPR remain **plate-wide** by design (manual BOLO on a plate follows that plate until removed or expired).
+- **Driver ≠ registered owner** is normal (~25% by default via `probOwnsVehicle` in `config_npc_pool.lua`) — especially on ERS callouts and borrowed/rental-style NPC stories.
+
+**Tuning encounter rates**
+
+In `config/config_npc_pool.lua` (defaults shown):
+
+- `probStolenVehicle` — chance a **new** NPC vehicle record is stolen (stolen always includes BOLO on the vehicle file and ANPR auto-flag when resolved).
+- `probBOLO` — additional BOLO chance on **non-stolen** NPC vehicles.
+- `plateTTLMinutes` — how long NPC plate+model vehicle rows (and matching NPC ANPR auto-flags) stay active.
+
+Patrol scan behaviour (cone dwell, equipped vehicle hashes, static cameras) is in `config/config_anpr.lua`. Set `PatrolRegistryOnly = true` there if you only want watchlist hits on the HUD with no NPC/PNC vehicle resolution for ambient traffic.
 
 ### **Permissions**
 {: .no_toc #permissions }
@@ -385,7 +420,7 @@ The `Citizen.CreateThread` + polling wrapper is intentional — `s_functions.lua
 Today the bridge is exercised by **council fine payments** (`server/server_council.lua`). Any future feature that moves money will go through the same three functions, so registering custom handlers now future-proofs your standalone setup.
 
 ### **Emergency Response Simulator (`night_ers`)**
-{: .no_toc }
+{: .no_toc #emergency-response-simulator-night_ers }
 
 Optional integration for servers that run **[Emergency Response Simulator](/resources/ers/)** (`night_ers`).
 
