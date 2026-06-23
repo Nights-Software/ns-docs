@@ -277,8 +277,12 @@ Patrol **ANPR** (in-vehicle HUD and static cameras) and **PNC → ANPR** (watchl
 
 **NPC behaviour (GTA plate reuse)**
 
-- GTA reuses the same plate string on different cars. NPC vehicle stories and NPC auto-ANPR flags are keyed by **plate + model hash**, so a recycled plate on a **different** model does not inherit the previous car’s watchlist hit.
-- **Officer watchlist** entries you add in PNC/ANPR remain **plate-wide** by design (manual BOLO on a plate follows that plate until removed or expired).
+- **Any plate format works.** Ambient NPC vehicles get a full fictional record (owner, tax/MOT/insurance, stolen/BOLO) regardless of plate layout — custom plate-changer formats included. There is no "native plate pattern" list to configure anymore.
+- GTA reuses the same plate string on different cars. NPC vehicle stories and NPC auto-ANPR flags are keyed by **plate + model hash**, so a recycled plate on a **different** model is a separate story and does not inherit the previous car's watchlist hit.
+- **New story on driver change.** If the same plate + model turns up driven by a **different** NPC, it is treated as a different car (sold/recycled): a fresh vehicle story is generated and the previous NPC row for that plate is replaced. Recurring **peds** keep their own identity across encounters.
+- **Owners are recurring residents.** When a vehicle's registered owner differs from the driver, the MDT reuses an existing NPC resident as the owner instead of inventing a brand-new person every time, so the world feels populated by the same faces.
+- **Officer watchlist** entries you add in PNC/ANPR remain **plate-wide** by design and are **overlays** on the vehicle file — they no longer stop the NPC pool from generating a record.
+- **Player-registered plates always win.** A plate registered in MDT Vehicle Registration uses that record and clears any NPC rows for the plate; registering a plate afterwards removes its NPC entry.
 - **Driver ≠ registered owner** is normal (~25% by default via `probOwnsVehicle` in `config_npc_pool.lua`) — especially on ERS callouts and borrowed/rental-style NPC stories.
 
 **Tuning encounter rates**
