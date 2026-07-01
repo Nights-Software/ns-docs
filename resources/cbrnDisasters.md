@@ -37,15 +37,16 @@ CBRN Disasters brings large-scale emergency scenarios to your FiveM server: rogu
 
 - ✅ **Multiple disaster types** — Warheads, power-plant incidents, radiologic leaks, transport spills, biological outbreaks, and more
 - ✅ **Admin control panel** — Spawn, stop, and schedule disasters with permission gating
-- ✅ **Public emergency alerts** — On-screen warnings when a scenario starts (multi-language)
+- ✅ **Public emergency alerts** — On-screen warnings when a scenario starts
 - ✅ **Hazmat response gameplay** — Suit trucks, field decontamination, material recovery, and depot haul delivery
 - ✅ **Fallout & dosimeter HUD** — Radiation exposure, shelter mechanics, and configurable damage
 - ✅ **Air Raid Sirens integration** — Optional siren triggers during applicable disasters
 - ✅ **Natural Disasters integration** — Grid blackout hooks for nuclear scenarios (when ND is installed)
 - ✅ **Framework compatibility** — ESX, QBCore/Qbox, Discord API, Ace, and standalone setups
-- ✅ **OneSync compatible** — Legacy and Infinity support
+- ✅ **OneSync compatible** — Infinity support
 - ✅ **Server exports** — Start/stop disasters and query active runs from other resources
 - ✅ **Client exports** — Fallout shelter hooks for housing and custom MLO shells
+- ✅ **Multi-Language support**
 - ✅ **Escrow protection**
 
 ---
