@@ -46,7 +46,7 @@ CBRN Disasters brings large-scale emergency scenarios to your FiveM server: rogu
 - ✅ **OneSync compatible** — Legacy and Infinity support
 - ✅ **Server exports** — Start/stop disasters and query active runs from other resources
 - ✅ **Client exports** — Fallout shelter hooks for housing and custom MLO shells
-- ✅ **Escrow protection** — Secure resource protection; owner config under `config/` stays clear-text
+- ✅ **Escrow protection**
 
 ---
 
@@ -54,7 +54,7 @@ CBRN Disasters brings large-scale emergency scenarios to your FiveM server: rogu
 
 **Get CBRN Disasters for FiveM:**
 
-[Purchase on Nights Software Store](https://store.nights-software.com){: .btn .btn-blue}
+[Purchase on Nights Software Store](https://store.nights-software.com/package/7534031){: .btn .btn-blue}
 
 ### **Optional integrations**
 {: .no_toc }
