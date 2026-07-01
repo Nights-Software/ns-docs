@@ -40,6 +40,8 @@
       url: /resources/smokeScreen
     - title: Air Raid Sirens
       url: /resources/airRaidSirens
+    - title: CBRN Disasters
+      url: /resources/cbrnDisasters
     - title: Landing Zone Alarm
       url: /resources/landingZoneAlarm
 
