@@ -4,7 +4,7 @@ title: "Night Shifts MDT v1"
 nav_order: 5
 has_children: false
 has_toc: true
-last_modified_date: "2026-05-03"
+last_modified_date: "2026-07-29"
 ---
 
 # Night Shifts - Mobile Data Terminal for FiveM
@@ -551,7 +551,7 @@ If a convar is empty or missing, the MDT **skips** posting for that channel (sam
 ### **Calling the MDT from other resources**
 {: .no_toc }
 
-Other scripts can use `exports['night_shifts_mdt']` (name must match your resource folder). See [Exports](#exports) below.
+Other scripts can use `exports['night_shifts_mdt']` (folder name must match). Use this page’s [Exports](#exports) section for signatures, rules, and examples. The same integration guide also ships in the resource as **`docs/EXPOSED_EXPORTS.md`** (the only docs file included in the production pack).
 
 ### **ERS + CAD / other scripts (summary for server owners)**
 {: .no_toc #ers-peddata-enrichment }
@@ -578,9 +578,10 @@ If you run **[Emergency Response Simulator](/resources/ers/)** together with Nig
 
 > **For developers only.** Use this section if you are **writing or integrating another FiveM resource** (e.g. CAD, dispatch bridge) that must call the MDT from Lua. **Normal install:** set up `server.cfg`, configure the MDT in-game, and edit the Lua config files above—you can **ignore Exports** unless your team is adding custom code.
 
+> **Support rule:** Exports documented in this section (and in the resource file `docs/EXPOSED_EXPORTS.md`) are the **supported integration API**. The resource registers many other exports for internal / ERS / admin use — if it is **not** documented here, treat it as **unsupported** (may change without notice).
+
 ### **How this section is organised**
 {: .no_toc }
-
 
 | Kind                 | Meaning                                                                                                         |
 | -------------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -588,6 +589,38 @@ If you run **[Emergency Response Simulator](/resources/ers/)** together with Nig
 | **Setter / mutator** | Writes or updates server-side state (DB and/or cache).                                                          |
 | **Action**           | Performs a side effect (create call, relay event, open UI). Check return values and callbacks where documented. |
 
+#### **Quick start**
+{: .no_toc }
+
+```lua
+local mdt = exports['night_shifts_mdt']
+
+-- Optional: resource version string
+local version = mdt:GetVersion()
+
+-- Prefer callbacks for civilians / vehicles / flags / licenses / roster / hit log
+-- (sync without a callback is warm-cache only and often empty)
+mdt:GetVehiclesByCivilianId(civId, function(vehicles)
+  print(#vehicles)
+end)
+
+-- First arg of *ByServerId = acting officer (source); targets go in data
+mdt:CreateFlagByServerId(source, {
+  civId = 42,
+  flagType = 'other',
+  description = 'Terminal note',
+  severity = 'low',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print('flagId', result.flagId)
+end)
+```
+
+**Rules of thumb**
+
+1. **Callback = MySQL SSOT** for person-file reads (civilians, vehicles, flags, criminal records, licenses, roster, ANPR hit log, plate lookup). Sync without a callback only sees warm cache.
+2. **`…ByServerId` first argument** = the **acting officer’s** FiveM server id (`source`) — auth + audit. Warrant / flag / civilian / vehicle targets are always in `data`.
+3. **Permission keys** match Admin → ranks (e.g. `pnc.flags`, `pnc.registration`, `pnc.anpr.manage`). Use `HasPermissionByServerId` to hide UI before writes fail.
 
 ---
 
@@ -657,6 +690,349 @@ end
 ```
 
 See [ERS & CAD — pedData and PNC extras](#ers-peddata-enrichment).
+
+##### `GetLicensesByCivilianId(civId, callback)`
+
+|                 |                                                                                                                                 |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | `civId` (number) — `nsmdt_civilians.id`. `callback` (function) — `callback(licenses)`.                                          |
+| **Returns**     | Nothing synchronously. `callback` receives an **array** of `nsmdt_licenses` rows (plus `officerFirstName` / `officerLastName`). |
+| **Limitations** | **Server-only.** **Async.** Invalid `civId` or non-function `callback` → ignored.                                               |
+
+```lua
+exports['night_shifts_mdt']:GetLicensesByCivilianId(cid, function(licenses)
+  for _, lic in ipairs(licenses) do
+    print(lic.licenseType, lic.licenseNumber, lic.status)
+  end
+end)
+```
+
+##### `GetAllFlagsMarkersByCivilianId(civId [, callback])`
+
+|                 |                                                                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Parameters**  | `civId` (number) — `nsmdt_civilians.id`. Optional `callback(flags)`.                                                                 |
+| **Returns**     | Sync without callback: warm-cache array (often empty). **With callback:** all `nsmdt_flags_markers` rows for that civilian (active + inactive) — same source as the PNC profile. Prefer over `GetFlagsMarkersByCivilianId`. |
+| **Limitations** | **Server-only.** Always pass a callback for SSOT.                                                                                    |
+
+```lua
+exports['night_shifts_mdt']:GetAllFlagsMarkersByCivilianId(cid, function(flags)
+  for _, f in ipairs(flags) do
+    print(f.id, f.flagType, f.isActive, f.description)
+  end
+end)
+```
+
+##### `GetPoliceRecordsByCivilianId(civId [, callback])`
+
+|                 |                                                                                          |
+| --------------- | ---------------------------------------------------------------------------------------- |
+| **Parameters**  | `civId` (number) — `nsmdt_civilians.id`. Optional `callback(records)`.                   |
+| **Returns**     | Sync without callback: warm-cache array (often empty). **With callback:** rows from `nsmdt_criminal_records` for that civilian. Export name is legacy (there is no `nsmdt_police_records` table). |
+| **Limitations** | **Server-only.** Always pass a callback for SSOT.                                        |
+
+```lua
+exports['night_shifts_mdt']:GetPoliceRecordsByCivilianId(cid, function(records)
+  for _, r in ipairs(records) do
+    print(r.id, r.recordNumber, r.caseStatus)
+  end
+end)
+```
+
+##### `GetActiveWarrants(limitOrOpts, callback)`
+
+|                 |                                                                                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Parameters**  | Optional `limit` (number, 1–1000, default 500) or a table with a `limit` field, then `callback(warrants)`. Or just `callback(warrants)`.                 |
+| **Returns**     | Nothing synchronously. `callback` receives active, non-expired warrant rows (joined display fields such as `civDisplayId`, `issuedByDisplayName`).     |
+| **Limitations** | **Server-only.** **Async MySQL** (warrants are not fully cached). Ungated read for integrators — enforce your own officer auth at the terminal.         |
+
+```lua
+exports['night_shifts_mdt']:GetActiveWarrants(function(warrants)
+  print(#warrants)
+end)
+```
+
+##### Board list getters (flags, vehicle BOLOs, ANPR)
+
+| Export | Returns |
+| ------ | ------- |
+| `GetActiveFlagsMarkers([callback])` | Sync = warm cache; **callback = active flags from MySQL** (limit 500) |
+| `GetActiveVehicleBolos()` | Cached vehicles with `bolo == 1` |
+| `GetActiveANPRRegistry()` | Snapshot of active ANPR **watchlist** (loaded at boot) |
+| `GetANPRHitLog([limit], callback)` | Async hit **history** from `nsmdt_anpr_hit_log` (distinct from the watchlist) |
+| `GetVehiclesByCivilianId(civId [, callback])` | Sync = warm cache (often empty); **callback = MySQL SSOT** |
+| `GetVersion()` | Sync resource metadata version string |
+
+```lua
+local mdt = exports['night_shifts_mdt']
+print(mdt:GetVersion())
+mdt:GetActiveFlagsMarkers(function(flags)
+  print('active flags', #flags)
+end)
+mdt:GetVehiclesByCivilianId(cid, function(vehicles)
+  for _, v in ipairs(vehicles) do
+    print(v.id, v.licensePlate, v.bolo)
+  end
+end)
+mdt:GetANPRHitLog(50, function(hits)
+  print(#hits)
+end)
+```
+
+**Limitations:** **Server-only.** Civilian / vehicle / flag tables are **not** fully loaded into cache at boot — pass a callback for SSOT.
+
+##### Identity, search & bridges
+{: .no_toc }
+
+| Token | Meaning |
+| ----- | ------- |
+| `civilianId` / `civId` | Numeric `nsmdt_civilians.id` — PNC person-file key |
+| `personalId` | Display `CIV-…` |
+| `frameworkId` | ESX/QB character id (unique when set; auto-sync) |
+| `isFrameworkLinked` | On list rows: `true` when `frameworkId` is set |
+| `rockstarLicense` | Rockstar account on the civilian row |
+
+MDT does **not** store an “active civilian” on a player. Resolve identity with the exports below.
+
+| Export | Notes |
+| ------ | ----- |
+| `SearchCivilians(query, limit, cb)` | Async PNC search (min 2 chars) |
+| `GetCiviliansByServerId` / `GetCiviliansByLicense` | SSOT list for that Rockstar license; filter `isFrameworkLinked` for characters only |
+| `ResolveFrameworkLinkedCivilianByServerId(serverId [, cb])` | Live framework character → one civilian (no “pick one by license” fallback) |
+| `GetCivilianByFrameworkId` / `GetCivilianByPersonalId` / `GetCivilianByIdentifier` | Exact lookups (prefer callback). `GetCivilianByIdentifier` is an alias of framework id lookup. |
+| `GetActiveShifts()` / `GetAllActiveShifts()` | Duty-only feed (who's clocked in); rows may include `serverId` |
+| `GetDepartmentRoster(departmentId, cb)` | Full department membership (Management roster SSOT) including offline; `onShift` / `connected` / certifications |
+| `HasPermissionByServerId(officerServerId, permission)` | Sync boolean for UI button hiding. Permission keys = rank keys (e.g. `pnc.flags`, `pnc.registration`, `pnc.anpr.manage`) |
+
+```lua
+local mdt = exports['night_shifts_mdt']
+
+mdt:SearchCivilians('Lowly', 20, function(rows)
+  for _, r in ipairs(rows) do print(r.civilianId, r.lastName) end
+end)
+
+mdt:GetCiviliansByServerId(source, function(list)
+  for _, c in ipairs(list) do
+    if c.isFrameworkLinked then
+      print('character', c.civilianId, c.frameworkId)
+    end
+  end
+end)
+
+mdt:ResolveFrameworkLinkedCivilianByServerId(source, function(civ)
+  if civ then print('linked', civ.civilianId) end
+end)
+
+-- Duty vs full roster
+for _, row in ipairs(mdt:GetActiveShifts()) do
+  print(row.userName, row.serverId)
+end
+mdt:GetDepartmentRoster(deptId, function(result)
+  if not result.success then return end
+  for _, m in ipairs(result.members) do
+    print(m.userName, m.onShift, m.connected)
+  end
+end)
+
+if mdt:HasPermissionByServerId(source, 'pnc.flags') then
+  -- show Add / Clear flag
+end
+```
+
+> **`…ByServerId` naming:** first arg is the **acting officer’s** FiveM server id (auth/audit), not the warrant/flag target. Targets are always in `data` (`warrantId`, `flagId`, `civId`, `vehicleId`/`plate`, …).
+
+> Do not use singular `GetCivilianByLicense` (first match only). Vehicle BOLO writes require a specific `vehicleId` or `plate`.
+
+##### `LookupVehicleByPlate(plate [, callback])` and `GetCivilianByPlate(plate [, callback])`
+
+|                 |                                                                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Parameters**  | `plate` (string) — display or normalised plate. Optional `callback(result)`.                                                         |
+| **Returns**     | `LookupVehicleByPlate` → `{ vehicle, civilian }` or nil. `GetCivilianByPlate` → civilian or nil. Sync = cache only; **callback = DB fallback**. |
+| **Limitations** | **Server-only.** Match is normalised (trim, upper, strip spaces/hyphens). Prefer the callback.                                       |
+
+```lua
+exports['night_shifts_mdt']:LookupVehicleByPlate('AB12 CDE', function(hit)
+  if hit and hit.civilian then
+    print(hit.vehicle.id, hit.civilian.firstName, hit.civilian.lastName)
+  end
+end)
+```
+
+#### **Write reference lookups**
+{: .no_toc }
+
+Load these **before** building write UIs. Do not hardcode type strings — servers customise warrant/flag catalogs and the full penal code list.
+
+| Export | Sync/async | Returns |
+| ------ | ---------- | ------- |
+| `GetWarrantTypes()` | Sync | Enabled types: `{ id, label, description }` (defaults: `arrest`, `search`, `bench`) |
+| `GetFlagTypes(callback)` | Async MySQL | `callback(types)` — enabled `{ flagTypeId, label, displayOrder, showInFilter }` |
+| `GetPenalCodes(callback)` | Async MySQL | `callback(codes)` — active codes (`id`, `codeNumber`, `title`, `minFine`/`maxFine`, category fields, …) |
+
+**Fixed enums** (no lookup export):
+
+| Field | Allowed values |
+| ----- | -------------- |
+| Flag `severity` | `low`, `medium`, `high`, `critical` (default `medium`) |
+| ANPR `reasonType` | `stolen`, `bolo`, `custom` (unknown values coerce to `custom`) |
+
+Use `id` from `GetWarrantTypes` as `warrantType`, `flagTypeId` as `flagType`, and numeric `id` from `GetPenalCodes` as `penalCodeId` / entries in `penalCodeIds`. `civId` is always numeric `nsmdt_civilians.id`.
+
+```lua
+local mdt = exports['night_shifts_mdt']
+local warrantTypes = mdt:GetWarrantTypes()
+mdt:GetFlagTypes(function(types)
+  -- populate flag-type dropdown from types[].flagTypeId
+end)
+mdt:GetPenalCodes(function(codes)
+  -- optional fine / ANPR charge pickers
+end)
+```
+
+#### **Mutators (officer-scoped writes)**
+{: .no_toc }
+
+These require the **officer’s server id** as the first argument. The officer must be on shift with the listed permission. Same validation as the in-tablet PNC. Constrained fields must come from [Write reference lookups](#write-reference-lookups) or the fixed enums above.
+
+##### Callback contract
+{: .no_toc }
+
+All mutators are async: `callback(ok, resultOrError)`.
+
+| `ok` | Second argument |
+| ---- | --------------- |
+| `true` | Result **table** (ids / numbers — see success shapes below) |
+| `false` | Error **string** (show or log it; do not assume a fixed enum for every path) |
+
+**Typical failure strings**
+
+| Situation | Warrant / flag / fine | ANPR |
+| --------- | --------------------- | ---- |
+| Off shift | English, e.g. `You must be on shift to create warrants` | Machine code `no_active_shift` |
+| Missing permission | English, e.g. `You do not have permission to create flags` | Machine code `no_permission` |
+| Bad catalog key | `Invalid warrant type` / `Invalid flag type` | — |
+| Bad severity | `Invalid severity level` | — |
+| Duplicate active flag | `This person already has an active flag of this type` | — |
+| Bad / missing plate or id | — | `invalid_plate` / `invalid_id` / `not_found` |
+
+Unknown ANPR `reasonType` values are **not** rejected — they coerce to `custom`.
+
+##### Exports
+{: .no_toc }
+
+| Export | Permission | Payload (high level) |
+| ------ | ---------- | -------------------- |
+| `CreateWarrantByServerId(serverId, data, cb)` | `pnc.registration` | `civId`, `warrantType` (from `GetWarrantTypes`), `reason` (max 2000), optional `expiresAt`, linked charge/record ids |
+| `CreateFlagByServerId(serverId, data, cb)` | `pnc.flags` | `civId`, `flagType` (from `GetFlagTypes`), `description`, optional `severity`, `expiresAt`. **One active flag per `flagType` per civilian.** |
+| `CreateFineByServerId(serverId, data, cb)` | `pnc.registration` | `civId`, `fineDescription`, `fineAmount`, `fineLocation`, optional `fineDueDate`, `penalCodeId` (from `GetPenalCodes`; amount checked against min/max when set), vehicle / property / business / licence links |
+| `AddANPRRegistryByServerId(serverId, data, cb)` | `pnc.anpr.manage` | `plate`, `reason`, optional `penalCodeIds` (array of ids from `GetPenalCodes`), `reasonType` (`stolen` / `bolo` / `custom`) |
+| `RemoveANPRRegistryByServerId(serverId, data, cb)` | `pnc.anpr.manage` | Prefer `entryId` from the add result, **or** `plate` (deactivates all active rows for that plate) |
+| `CancelWarrantByServerId(officerServerId, data, cb)` | `pnc.registration` | Officer cancels warrant; `data.warrantId` |
+| `SetFlagActiveByServerId(officerServerId, data, cb)` | `pnc.flags` | Officer updates flag; `data.flagId`, `data.isActive` (clear = `false`) |
+| `SetVehicleBoloByServerId(officerServerId, data, cb)` | `pnc.registration` | Officer sets vehicle-file BOLO; `vehicleId` and/or `plate`, `bolo`, optional `boloDescription` |
+| `AssignUnitToCallByServerId(officerServerId, data, cb)` | on-shift | Officer assigns unit; `callId`, optional `targetServerId` (default self) |
+
+##### Success shapes (`ok == true`)
+{: .no_toc }
+
+| Export | Result table (main fields) |
+| ------ | -------------------------- |
+| `CreateWarrantByServerId` | `{ warrantId, warrantNumber }` |
+| `CreateFlagByServerId` | `{ flagId }` |
+| `CreateFineByServerId` | `{ fineId, fineNumber }` |
+| `AddANPRRegistryByServerId` | `{ success = true, action = 'added', entry = { id, plate, reason, reasonType, charges, … } }` — use `entry.id` as `entryId` for remove |
+| `RemoveANPRRegistryByServerId` | `{ success = true, action = 'removed', entryId = … }` **or** `{ …, plate = …, normPlate = … }` when removed by plate |
+
+```lua
+local mdt = exports['night_shifts_mdt']
+local types = mdt:GetWarrantTypes()
+local warrantType = types[1] and types[1].id or 'arrest'
+
+-- Create warrant (officer = source)
+mdt:CreateWarrantByServerId(source, {
+  civId = 42,
+  warrantType = warrantType,
+  reason = 'Failure to appear',
+}, function(ok, result)
+  if not ok then
+    print('warrant failed', result) -- string
+    return
+  end
+  print(result.warrantId, result.warrantNumber)
+end)
+
+-- Lifecycle: clear flag / vehicle BOLO / cancel warrant — target in data
+mdt:SetFlagActiveByServerId(source, { flagId = 12, isActive = false }, function(ok, err)
+  print(ok, err)
+end)
+mdt:SetVehicleBoloByServerId(source, {
+  plate = 'AB12CDE',
+  bolo = true,
+  boloDescription = 'Wanted for questioning',
+}, function(ok, err) end)
+mdt:CancelWarrantByServerId(source, { warrantId = 55 }, function(ok, err) end)
+
+-- ANPR add then remove by entryId
+mdt:GetPenalCodes(function(codes)
+  local codeId = codes[1] and codes[1].id
+  mdt:AddANPRRegistryByServerId(source, {
+    plate = 'AB12CDE',
+    reason = 'Suspect vehicle',
+    reasonType = 'bolo',
+    penalCodeIds = codeId and { codeId } or {},
+  }, function(ok, result)
+    if not ok then return print(result) end
+    local entryId = result.entry and result.entry.id
+    mdt:RemoveANPRRegistryByServerId(source, { entryId = entryId }, function(rmOk, rm)
+      print(rmOk, rm)
+    end)
+  end)
+end)
+```
+
+> **BOLO note:** There is no separate BOLO table. Person alerts = flags; plate watchlist = ANPR registry; vehicle-file BOLO bit = `GetActiveVehicleBolos()`.
+
+#### **Dispatch board poll + live updates**
+{: .no_toc }
+
+##### `GetActiveCalls()` / `GetCallById(callId)`
+
+|                 |                                                                 |
+| --------------- | --------------------------------------------------------------- |
+| **Parameters**  | `GetCallById`: `callId` (number).                               |
+| **Returns**     | `GetActiveCalls` → array of non-archived calls from cache. `GetCallById` → one call table or `nil`. |
+| **Limitations** | **Server-only.** **Sync** cache snapshots. Prefer the events below for live updates; use these for initial poll / catch-up. |
+
+```lua
+local mdt = exports['night_shifts_mdt']
+for _, call in ipairs(mdt:GetActiveCalls()) do
+  print(call.id, call.callType, call.status)
+end
+local one = mdt:GetCallById(callId)
+```
+
+##### Server events
+
+Listen with **`AddEventHandler`** on the **server** (not net events):
+
+| Event | Args |
+| ----- | ---- |
+| `nightshifts:mdt:server:callCreated` | `callId`, `callPayload` (cache-shaped call table) |
+| `nightshifts:mdt:server:callUpdated` | `callId`, `callPayloadOrNil` |
+
+```lua
+AddEventHandler('nightshifts:mdt:server:callCreated', function(callId, call)
+  print('new call', callId, call.callType)
+end)
+
+AddEventHandler('nightshifts:mdt:server:callUpdated', function(callId, call)
+  print('call updated', callId)
+end)
+```
+
+> **Third-party terminal adapters:** Detect resource name **`night_shifts_mdt`**. Prefer these documented exports over direct `nsmdt_*` SQL. Raw table reads are best-effort only (additive migrations); do not write MDT tables from outside the resource.
 
 ##### `GetDepartments()`
 
