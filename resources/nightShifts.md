@@ -592,6 +592,8 @@ If you run **[Emergency Response Simulator](/resources/ers/)** together with Nig
 #### **Quick start**
 {: .no_toc }
 
+Use the **colon** call form: `exports['night_shifts_mdt']:ExportName(...)`. Dot/bracket calls (`exports.res.Name(...)`) can drop the first argument on CitizenFX (e.g. `serverId`), so ByServerId exports look like “invalid server id” / off-shift.
+
 ```lua
 local mdt = exports['night_shifts_mdt']
 
@@ -618,7 +620,7 @@ end)
 
 **Rules of thumb**
 
-1. **Callback = MySQL SSOT** for person-file reads (civilians, vehicles, flags, criminal records, licenses, roster, ANPR hit log, plate lookup). Sync without a callback only sees warm cache.
+1. **Callback = MySQL SSOT** for person-file reads (civilians, vehicles, flags, criminal records, licenses, roster, ANPR hit log, plate lookup). Sync without a callback only sees warm cache. Callbacks from another resource are supported (CitizenFX funcref). Board / lookup reads do not require a connected player or open MDT session.
 2. **`…ByServerId` first argument** = the **acting officer’s** FiveM server id (`source`) — auth + audit. Warrant / flag / civilian / vehicle targets are always in `data`.
 3. **Permission keys** match Admin → ranks (e.g. `pnc.flags`, `pnc.registration`, `pnc.anpr.manage`). Use `HasPermissionByServerId` to hide UI before writes fail.
 
@@ -636,7 +638,7 @@ end)
 |                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Parameters**  | `targetServerId` (number) — FiveM player **server id** (`source` from events, or any valid id).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **Returns**     | **Single table** (not an array). Empty `{}` if the player cannot be resolved or has no session. Keys (values may be `nil` when not on shift or not yet pushed): `serverId`, `rockstarLicense`, `userName`, `nickName`, `adminLevel`, `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusLabel`, `statusColor`, `shiftDuration` (seconds), `totalShiftTime`, `shiftTimeByDepartment` (table), `location`, `speed`, `heading`, `compassDirection`, `postal`, `distanceToNearestPostal`, `street`, `zone`, `modeOfTransport`, `sirens`, `plate`. |
+| **Returns**     | **Single table** (not an array). Empty `{}` if the player cannot be resolved or has no session. Keys (values may be `nil` when not on shift or not yet pushed): `serverId`, `rockstarLicense`, `userName`, `nickName`, `adminLevel`, `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusLabel`, `statusColor`, `shiftDuration` (seconds), `totalShiftTime`, `shiftTimeByDepartment` (table), `location`, `speed`, `heading`, `compassDirection`, `postal`, `distanceToNearestPostal`, `street`, `zone`, `modeOfTransport`, `sirens`, `plate`. `location` is a plain `{ x, y, z }` table when present (not a `vector3`). |
 | **Limitations** | **Server-only.** Location fields depend on the client having pushed location while on shift; they may be empty/nil shortly after clock-in.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
 
@@ -1151,8 +1153,8 @@ for _, code in ipairs(exports['night_shifts_mdt']:GetAvailableLanguages()) do pr
 |                 |                                                       |
 | --------------- | ----------------------------------------------------- |
 | **Parameters**  | `serverId` (number) — player server id.               |
-| **Returns**     | Active shift **table**, or `nil` if not on shift. |
-| **Limitations** | **Server-only.** Raw shift object (internal shape).   |
+| **Returns**     | Plain active-shift **table**, or `nil` if not on shift. Fields: `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusColor`, `statusLabel`, `startTime`, `pausedTime`. |
+| **Limitations** | **Server-only.** Cross-resource safe (no `vector3`, no nested `locationData`). For location while on shift, use `GetUserShiftData`. |
 
 
 ```lua
