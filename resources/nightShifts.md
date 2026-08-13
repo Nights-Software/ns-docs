@@ -608,19 +608,13 @@ There is no extra dispatcher login and no hidden dispatcher-only API. Dispatch f
 
 #### How to read a card
 
-Every export below is a **server** Lua call unless the heading says Client.
+Every export below is a **server** Lua call unless the heading says Client. Each card has a **copy-paste Example** under the tables — that is the call you write.
 
 | Word on the card | What you write | What you get |
 | ---------------- | -------------- | ------------ |
-| **sync** | `local x = mdt:GetVersion()` | The value is the **return** of the export. No callback. |
-| **callback** (reads) | `mdt:GetPenalCodes(function(rows) … end)` | The list arrives **inside** that function. The export itself returns nothing useful. |
-| **callback ok / fail** (writes) | `mdt:SetCallStatus({ … }, function(ok, result) … end)` | `ok == true` → `result` is a table. `ok == false` → `result` is an error string. |
-
-Always start with:
-
-```lua
-local mdt = exports['night_shifts_mdt']
-```
+| **sync** | `local x = exports['night_shifts_mdt']:GetVersion()` | The value is the **return** of the export. No callback. |
+| **callback** (reads) | `exports['night_shifts_mdt']:GetPenalCodes(function(rows) … end)` | The list arrives **inside** that function. The export itself returns nothing useful. |
+| **callback ok / fail** (writes) | `exports['night_shifts_mdt']:SetCallStatus({ … }, function(ok, result) … end)` | `ok == true` → `result` is a table. `ok == false` → `result` is an error string. |
 
 #### Pairing index (same job, two exports)
 
@@ -729,35 +723,6 @@ Two styles:
 
 These are **sync** except the three catalogues at the bottom (`GetPenalCodes`, `GetFlagTypes`, `GetLicenseTypes`).
 
-```lua
-local mdt = exports['night_shifts_mdt']
-
-print(mdt:GetVersion())                    -- "1.4.9"
-print(mdt:GetCurrencySymbol())             -- "$" (from the currency setting)
-print(mdt:GetCurrentLanguage())            -- "en"
-
-local settings = mdt:GetAllSettings()
-print(settings.currency, settings.timeFormat)
--- Do not use #settings — this table is keyed by name, so # is always 0.
-for key, value in pairs(settings) do
-  -- key = "currency", value = "USD", …
-end
-
-print(mdt:GetSetting('currency'))          -- same as settings.currency
-
-local depts = mdt:GetDepartments()
-print(#depts, depts[1] and depts[1].departmentName)   -- 3  "LSPD"
-local ranks = mdt:GetRanksByDepartmentId(depts[1].id)
-print(ranks[1] and ranks[1].rankName)
-
--- Catalogues: data is the argument to your function, not a return value
-mdt:GetPenalCodes(function(codes)
-  print('penal codes', #codes, codes[1] and codes[1].codeNumber)
-end)
-mdt:GetFlagTypes(function(types) print('flag types', #types) end)
-mdt:GetLicenseTypes(function(rows) print('license types', #rows) end)
-```
-
 ##### GetVersion
 
 Resource version from `fxmanifest.lua`. Use it to require a minimum MDT build.
@@ -765,6 +730,13 @@ Resource version from `fxmanifest.lua`. Use it to require a minimum MDT build.
 **Parameters:** none.
 
 **Returns:** sync string, e.g. `"1.4.9"`.
+
+**Example**
+
+```lua
+local version = exports['night_shifts_mdt']:GetVersion()
+print(version)
+```
 
 ##### GetSetting
 
@@ -789,6 +761,13 @@ Common keys (not a complete list — `GetAllSettings` has every key):
 | `speedUnit` | `mph` or `kmh` |
 | `tempUnit` | `celsius` or `fahrenheit` |
 
+**Example**
+
+```lua
+local currency = exports['night_shifts_mdt']:GetSetting('currency')
+print(currency)
+```
+
 ##### GetAllSettings
 
 Same values as `GetSetting`, all at once. This is a **dictionary** (`settings.currency`), not a list. `#settings` is always `0` even when it is full — iterate with `pairs`.
@@ -796,6 +775,16 @@ Same values as `GetSetting`, all at once. This is a **dictionary** (`settings.cu
 **Parameters:** none.
 
 **Returns:** sync table keyed by setting name. Also includes assembled `alertDurations` and normalized `cursorAwayEnabled` / `infoHudEnabled` flags for the tablet.
+
+**Example**
+
+```lua
+local settings = exports['night_shifts_mdt']:GetAllSettings()
+print(settings.currency, settings.timeFormat)
+for key, value in pairs(settings) do
+  print(key, value)
+end
+```
 
 ##### GetCurrencySymbol
 
@@ -805,6 +794,13 @@ Display symbol for `GetSetting('currency')`. Prefer this over hard-coding `$`.
 
 **Returns:** sync string (`$`, `€`, `£`, `kr`, …). Unknown codes fall back to `$`.
 
+**Example**
+
+```lua
+local symbol = exports['night_shifts_mdt']:GetCurrencySymbol()
+print(symbol)
+```
+
 ##### GetCurrentLanguage
 
 Active translation code.
@@ -813,6 +809,13 @@ Active translation code.
 
 **Returns:** sync string (`en`, `de`, `fr`, …).
 
+**Example**
+
+```lua
+local lang = exports['night_shifts_mdt']:GetCurrentLanguage()
+print(lang)
+```
+
 ##### GetAvailableLanguages
 
 Every locale file the resource loaded.
@@ -820,6 +823,13 @@ Every locale file the resource loaded.
 **Parameters:** none.
 
 **Returns:** sync array of language-code strings.
+
+**Example**
+
+```lua
+local languages = exports['night_shifts_mdt']:GetAvailableLanguages()
+print(languages[1])
+```
 
 ##### GetDepartments
 
@@ -838,6 +848,13 @@ Active departments only (clock-in pickers). Archived departments stay in cache f
 | `departmentColor` | string | hex |
 | `isActive` | number/bool | always on in this list |
 
+**Example**
+
+```lua
+local depts = exports['night_shifts_mdt']:GetDepartments()
+print(#depts, depts[1] and depts[1].departmentName)
+```
+
 ##### GetRanksByDepartmentId
 
 Ranks for one department (clock-in / `StartShiftByServerId`).
@@ -850,6 +867,14 @@ Ranks for one department (clock-in / `StartShiftByServerId`).
 
 **Returns:** sync array of rank rows (`id`, `departmentId`, `rankName`, `rankShortName`, …). Empty `{}` if the id is unknown.
 
+**Example**
+
+```lua
+local depts = exports['night_shifts_mdt']:GetDepartments()
+local ranks = exports['night_shifts_mdt']:GetRanksByDepartmentId(depts[1].id)
+print(ranks[1] and ranks[1].rankName)
+```
+
 ##### GetSubDepartmentsByDepartmentId
 
 **Parameters**
@@ -859,6 +884,14 @@ Ranks for one department (clock-in / `StartShiftByServerId`).
 | departmentId | number | yes | |
 
 **Returns:** sync array of sub-department rows (`id`, `departmentId`, `subDepartmentName`, `subDepartmentShortName`, …). Empty `{}` if none.
+
+**Example**
+
+```lua
+local depts = exports['night_shifts_mdt']:GetDepartments()
+local subs = exports['night_shifts_mdt']:GetSubDepartmentsByDepartmentId(depts[1].id)
+print(#subs)
+```
 
 ##### GetPenalCodes
 
@@ -872,6 +905,14 @@ Charge / fine pick-list. **Callback required.**
 
 **Returns:** none as a return value. `callback` receives an array of penal-code rows (`id`, `codeNumber`, `title`, …). Use `id` as `penalCodeId` on fines and charges.
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetPenalCodes(function(codes)
+  print(#codes, codes[1] and codes[1].codeNumber)
+end)
+```
+
 ##### GetFlagTypes
 
 Enabled PNC flag types. **Callback required.**
@@ -884,6 +925,14 @@ Enabled PNC flag types. **Callback required.**
 
 **Returns:** none as a return value. `callback` receives enabled flag-type rows. Use the type id/string as `flagType` on `CreateFlag`.
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetFlagTypes(function(types)
+  print(#types, types[1] and types[1].id)
+end)
+```
+
 ##### GetLicenseTypes
 
 Enabled license types. **Callback required** — same pattern as `GetPenalCodes` / `GetFlagTypes`. No useful return value.
@@ -895,6 +944,14 @@ Enabled license types. **Callback required** — same pattern as `GetPenalCodes`
 | callback | function | yes | `function(rows)` |
 
 **Returns:** none as a return value. `callback` receives license-type rows. Use the type id/string as `licenseType` on `IssueLicense`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetLicenseTypes(function(rows)
+  print(#rows, rows[1] and rows[1].id)
+end)
+```
 
 #### Identity and PNC boards
 
@@ -915,6 +972,14 @@ Full civilian plus related snapshot (licenses, vehicles, …).
 | ---- | ----- |
 | callback | snapshot table, or empty / nil if unknown |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetCivilianIntegrationSnapshot(42, function(snapshot)
+  print(snapshot and snapshot.id)
+end)
+```
+
 ##### GetCivilianByPersonalId
 
 Lookup by public dossier id (e.g. `CIV-…`).
@@ -932,6 +997,14 @@ Lookup by public dossier id (e.g. `CIV-…`).
 | ---- | ----- |
 | callback | civilian row (`id`, `civilianId`, `personalId`, `isFrameworkLinked`, …) or nil |
 | sync | same row from cache, or nil |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetCivilianByPersonalId('CIV-1001', function(civ)
+  print(civ and civ.id, civ and civ.firstName)
+end)
+```
 
 ##### GetCivilianByFrameworkId
 
@@ -951,6 +1024,14 @@ Alias: `GetCivilianByIdentifier`.
 | callback | decorated civilian row or nil |
 | sync | cache hit or nil |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetCivilianByFrameworkId('char1:abc123', function(civ)
+  print(civ and civ.id)
+end)
+```
+
 ##### GetCiviliansByServerId
 
 All MDT person-files linked to that player’s Rockstar license.
@@ -969,6 +1050,14 @@ All MDT person-files linked to that player’s Rockstar license.
 | callback | array of decorated civilian rows |
 | sync | cache array (may be empty) |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetCiviliansByServerId(source, function(civs)
+  print(#civs, civs[1] and civs[1].personalId)
+end)
+```
+
 ##### GetCiviliansByLicense
 
 Same as `GetCiviliansByServerId`, but you pass the license string.
@@ -981,6 +1070,14 @@ Same as `GetCiviliansByServerId`, but you pass the license string.
 | callback | function | recommended | `function(civs)` |
 
 **Returns:** same as `GetCiviliansByServerId`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetCiviliansByLicense('license:abc123', function(civs)
+  print(#civs)
+end)
+```
 
 ##### ResolveFrameworkLinkedCivilianByServerId
 
@@ -999,6 +1096,14 @@ Best framework-linked civilian for that player. No license fallback — `framewo
 | ---- | ----- |
 | callback | one civilian row or nil |
 | sync | one civilian row or nil |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ResolveFrameworkLinkedCivilianByServerId(source, function(civ)
+  print(civ and civ.id)
+end)
+```
 
 ##### SearchCivilians
 
@@ -1019,6 +1124,14 @@ Substring search. Query must be at least 2 characters. Limit capped at 50.
 | callback | array of `{ civilianId, firstName, lastName, personalId, frameworkId, isFrameworkLinked }` |
 | sync | none |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SearchCivilians('Smith', 20, function(rows)
+  print(#rows, rows[1] and rows[1].personalId)
+end)
+```
+
 ##### GetVehiclesByCivilianId
 
 **Parameters**
@@ -1035,6 +1148,14 @@ Substring search. Query must be at least 2 characters. Limit capped at 50.
 | callback | array of vehicle rows |
 | sync | cache array |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetVehiclesByCivilianId(42, function(vehicles)
+  print(#vehicles, vehicles[1] and vehicles[1].licensePlate)
+end)
+```
+
 ##### GetLicensesByCivilianId
 
 **Parameters**
@@ -1049,6 +1170,14 @@ Substring search. Query must be at least 2 characters. Limit capped at 50.
 | Path | Value |
 | ---- | ----- |
 | callback | array of issued license rows |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetLicensesByCivilianId(42, function(licenses)
+  print(#licenses, licenses[1] and licenses[1].licenseNumber)
+end)
+```
 
 ##### GetAllFlagsMarkersByCivilianId
 
@@ -1068,6 +1197,14 @@ All flags for a civilian (active and inactive).
 | callback | array of flag rows |
 | sync | cache array |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetAllFlagsMarkersByCivilianId(42, function(flags)
+  print(#flags)
+end)
+```
+
 ##### GetPoliceRecordsByCivilianId
 
 Criminal records for a civilian (`nsmdt_criminal_records`).
@@ -1085,6 +1222,14 @@ Criminal records for a civilian (`nsmdt_criminal_records`).
 | ---- | ----- |
 | callback | array of record rows (MySQL) |
 | sync | warm-cache array |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetPoliceRecordsByCivilianId(42, function(records)
+  print(#records)
+end)
+```
 
 ##### GetActiveWarrants
 
@@ -1104,6 +1249,14 @@ Every **active** warrant in the database (all departments, no 31-day cut). The t
 | callback | array of active warrant rows |
 | sync | none |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetActiveWarrants(500, function(warrants)
+  print(#warrants)
+end)
+```
+
 ##### GetActiveFlagsMarkers
 
 Active, unexpired PNC flags.
@@ -1119,6 +1272,14 @@ Active, unexpired PNC flags.
 | Path | Value |
 | ---- | ----- |
 | callback | array of flag rows (MySQL, up to 500) |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetActiveFlagsMarkers(function(flags)
+  print(#flags)
+end)
+```
 
 ##### GetActiveVehicleBolos
 
@@ -1136,6 +1297,14 @@ Vehicles with BOLO set.
 | ---- | ----- |
 | callback | array of vehicle rows (`bolo = 1`) |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetActiveVehicleBolos(function(bolos)
+  print(#bolos)
+end)
+```
+
 ##### GetActiveANPRRegistry
 
 Active ANPR watchlist plates.
@@ -1151,6 +1320,14 @@ Active ANPR watchlist plates.
 | Path | Value |
 | ---- | ----- |
 | callback | array of registry rows |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetActiveANPRRegistry(function(plates)
+  print(#plates)
+end)
+```
 
 ##### LookupVehicleByPlate
 
@@ -1170,6 +1347,14 @@ Plate to vehicle record.
 | callback | vehicle row or nil |
 | sync | cache hit or nil |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:LookupVehicleByPlate('ABC 123', function(vehicle)
+  print(vehicle and vehicle.id, vehicle and vehicle.licensePlate)
+end)
+```
+
 ##### GetCivilianByPlate
 
 Plate to registered owner.
@@ -1188,6 +1373,14 @@ Plate to registered owner.
 | callback | civilian row or nil |
 | sync | cache hit or nil |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetCivilianByPlate('ABC 123', function(civ)
+  print(civ and civ.id)
+end)
+```
+
 ##### GetANPRHitLog
 
 Recent ANPR detections.
@@ -1205,19 +1398,13 @@ Recent ANPR detections.
 | ---- | ----- |
 | callback | array of hit-log rows |
 
-<details markdown="block">
-<summary>Example — boards via callback</summary>
+**Example**
 
 ```lua
-local mdt = exports['night_shifts_mdt']
-mdt:GetActiveWarrants(500, function(warrants) print('warrants', #warrants) end)
-mdt:GetActiveFlagsMarkers(function(flags) print('flags', #flags) end)
-mdt:GetActiveVehicleBolos(function(bolos) print('bolos', #bolos) end)
-mdt:GetActiveANPRRegistry(function(plates) print('anpr', #plates) end)
-mdt:SearchCivilians('Smith', 20, function(rows) print('search', #rows) end)
+exports['night_shifts_mdt']:GetANPRHitLog({ limit = 50 }, function(hits)
+  print(#hits)
+end)
 ```
-
-</details>
 
 #### Duty, roster, and calls
 
@@ -1235,6 +1422,13 @@ Shift plus identity for one player. Empty-ish table if they have no session (`is
 
 `serverId`, `rockstarLicense`, `userName`, `nickName`, `adminLevel`, `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusLabel`, `statusColor`, `shiftDuration`, `totalShiftTime`, `shiftTimeByDepartment`, `location` (`{ x, y, z }`, not `vector3`), `speed`, `heading`, `compassDirection`, `postal`, `street`, `zone`, `modeOfTransport`, `sirens`, `plate`.
 
+**Example**
+
+```lua
+local shift = exports['night_shifts_mdt']:GetUserShiftData(source)
+print(shift.isOnShift, shift.callsign, shift.location and shift.location.x)
+```
+
 ##### GetActiveShiftByServerId
 
 **Parameters**
@@ -1248,6 +1442,13 @@ Shift plus identity for one player. Empty-ish table if they have no session (`is
 | Path | Value |
 | ---- | ----- |
 | sync | active shift row or nil |
+
+**Example**
+
+```lua
+local row = exports['night_shifts_mdt']:GetActiveShiftByServerId(source)
+print(row and row.callsign)
+```
 
 ##### GetCurrentShiftDurationByServerId
 
@@ -1263,6 +1464,13 @@ Shift plus identity for one player. Empty-ish table if they have no session (`is
 | ---- | ----- |
 | sync | number of seconds (0 if off shift) |
 
+**Example**
+
+```lua
+local seconds = exports['night_shifts_mdt']:GetCurrentShiftDurationByServerId(source)
+print(seconds)
+```
+
 ##### GetPostalForPlayer
 
 **Parameters**
@@ -1276,6 +1484,13 @@ Shift plus identity for one player. Empty-ish table if they have no session (`is
 | Path | Value |
 | ---- | ----- |
 | sync | nearest postal string or nil |
+
+**Example**
+
+```lua
+local postal = exports['night_shifts_mdt']:GetPostalForPlayer(source)
+print(postal)
+```
 
 ##### HasPermissionByServerId
 
@@ -1294,6 +1509,14 @@ Rank permission check for the player’s **current** department. Off-shift is al
 | ---- | ----- |
 | sync | boolean |
 
+**Example**
+
+```lua
+if exports['night_shifts_mdt']:HasPermissionByServerId(source, 'pnc.registration') then
+  print('officer can register PNC')
+end
+```
+
 ##### GetActiveShifts / GetOnDutyUnits
 
 Same data: every clocked-in unit. `GetOnDutyUnits` is an alias.
@@ -1305,6 +1528,15 @@ Same data: every clocked-in unit. `GetOnDutyUnits` is an alias.
 | Path | Value |
 | ---- | ----- |
 | sync | array of `{ serverId, rockstarLicense, userName, nickName, shift, location, postal, street, … }` |
+
+**Example**
+
+```lua
+local units = exports['night_shifts_mdt']:GetActiveShifts()
+print(#units, units[1] and units[1].callsign)
+-- alias:
+-- local units = exports['night_shifts_mdt']:GetOnDutyUnits()
+```
 
 ##### GetDepartmentRoster
 
@@ -1322,6 +1554,14 @@ Same data: every clocked-in unit. `GetOnDutyUnits` is an alias.
 | callback | array of roster members |
 | sync | depends on implementation; prefer the callback |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetDepartmentRoster(1, function(members)
+  print(#members)
+end)
+```
+
 ##### GetActiveCalls
 
 Cache snapshot of **active, non-archived** calls. Use this for event catch-up. Live board source.
@@ -1333,6 +1573,13 @@ Cache snapshot of **active, non-archived** calls. Use this for event catch-up. L
 | Path | Value |
 | ---- | ----- |
 | sync | array of call rows (`id`, `callType`, `callStatus`, `x`, `y`, `z`, `postal`, …) |
+
+**Example**
+
+```lua
+local calls = exports['night_shifts_mdt']:GetActiveCalls()
+print(#calls, calls[1] and calls[1].callType)
+```
 
 ##### GetCallById
 
@@ -1349,6 +1596,13 @@ One call from the live cache (may be nil if archived or unknown).
 | Path | Value |
 | ---- | ----- |
 | sync | call row or nil |
+
+**Example**
+
+```lua
+local call = exports['night_shifts_mdt']:GetCallById(1842)
+print(call and call.callStatus)
+```
 
 ##### GetCallNotes
 
@@ -1368,6 +1622,14 @@ Notes oldest-first.
 | ---- | ----- |
 | callback | array of `{ id, callId, noteText, createdAt, createdBy }` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:GetCallNotes({ callId = 1842, limit = 50 }, function(notes)
+  print(#notes)
+end)
+```
+
 ##### GetAllActiveUnits
 
 On-shift units with distance to the call.
@@ -1384,6 +1646,13 @@ On-shift units with distance to the call.
 | ---- | ----- |
 | sync | array of `{ serverId, rockstarLicense, userName, nickName, callsign, departmentId, statusCode, location, postal, street, distance }` |
 
+**Example**
+
+```lua
+local units = exports['night_shifts_mdt']:GetAllActiveUnits(1842)
+print(#units, units[1] and units[1].distance)
+```
+
 ##### GetNearbyUnits
 
 Same as `GetAllActiveUnits`, distance-filtered.
@@ -1397,24 +1666,12 @@ Same as `GetAllActiveUnits`, distance-filtered.
 
 **Returns:** same unit shape as `GetAllActiveUnits`, filtered by distance.
 
-<details markdown="block">
-<summary>Example — duty and calls</summary>
+**Example**
 
 ```lua
-local mdt = exports['night_shifts_mdt']
-local shift = mdt:GetUserShiftData(source)
-print(shift.isOnShift, shift.callsign, shift.location and shift.location.x)
-
-local calls = mdt:GetActiveCalls()
-local call = mdt:GetCallById(calls[1] and calls[1].id)
-if call then
-  mdt:GetCallNotes({ callId = call.id, limit = 50 }, function(notes)
-    print(#notes)
-  end)
-end
+local nearby = exports['night_shifts_mdt']:GetNearbyUnits({ callId = 1842, maxDistance = 2000 })
+print(#nearby)
 ```
-
-</details>
 
 ### Events
 
@@ -1486,8 +1743,7 @@ Create a new dispatch call with no acting officer.
 | callback fail | `nil` |
 | sync | none |
 
-<details markdown="block">
-<summary>Example</summary>
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:ForwardCallToMDT({
@@ -1504,8 +1760,6 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
   print('callId', callId)
 end)
 ```
-
-</details>
 
 #### AssignUnitToCall
 
@@ -1528,8 +1782,7 @@ Attach an on-shift unit. Accepts **either** `targetServerId` **or** `callsign` (
 | callback fail | error string, e.g. `callsign not found or unit not on shift`, `callsign is not unique`, `target player not found` |
 | sync | none |
 
-<details markdown="block">
-<summary>Example</summary>
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:AssignUnitToCall({
@@ -1539,8 +1792,6 @@ exports['night_shifts_mdt']:AssignUnitToCall({
   if not ok then return print(result) end
 end)
 ```
-
-</details>
 
 #### DetachUnitFromCall
 
@@ -1562,6 +1813,17 @@ Release a unit. They go **available**.
 | callback ok | `{ callId, message }` |
 | callback fail | error string |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DetachUnitFromCall({
+  callId = 1842,
+  callsign = 'L-42',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
 #### SetCallStatus
 
 Resolve or reopen. Resolve **auto-detaches every unit** and sets them available. Reopen (`active`) does **not** re-attach anyone.
@@ -1581,8 +1843,7 @@ Resolve or reopen. Resolve **auto-detaches every unit** and sets them available.
 | callback ok | `{ callId, status, message }` |
 | callback fail | error string, e.g. `status must be active or resolved` |
 
-<details markdown="block">
-<summary>Example</summary>
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:SetCallStatus({
@@ -1592,8 +1853,6 @@ exports['night_shifts_mdt']:SetCallStatus({
   if not ok then return print(result) end
 end)
 ```
-
-</details>
 
 #### ArchiveCall
 
@@ -1613,6 +1872,17 @@ Call must already be `resolved`. Will not silently archive an active call. `arch
 | ---- | ----- |
 | callback ok | `{ callId, archived = true }` |
 | callback fail | `Call not found`, `Call already archived`, `Call must be resolved before archive` |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ArchiveCall({
+  callId = 1842,
+  reason = 'Complete',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 #### EditCall
 
@@ -1645,6 +1915,18 @@ Update type, description, location, caller, services, or priority.
 | callback ok | `{ callId }` |
 | callback fail | `Call not found` or `Failed to edit call` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:EditCall({
+  callId = 1842,
+  description = 'Updated: two vehicles, one blocking the lane.',
+  priority = 2,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
 #### AddCallNote
 
 `createdBy` on the note row is `NULL` (FK-safe). Put your resource name in the text so the board is not a blank actor.
@@ -1664,6 +1946,18 @@ Update type, description, location, caller, services, or priority.
 | callback ok | `{ callId, noteId }` |
 | callback fail | `callId required` or `note required` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddCallNote({
+  callId = 1842,
+  note = 'Assigned by AI CAD (my_ai_dispatch)',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print(result.noteId)
+end)
+```
+
 #### DeleteCallNote
 
 **Parameters**
@@ -1680,6 +1974,17 @@ Update type, description, location, caller, services, or priority.
 | ---- | ----- |
 | callback ok | `{ noteId, callId }` |
 | callback fail | `Note not found` |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DeleteCallNote({
+  noteId = 91,
+  callId = 1842,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 #### SetUnitOnCallStatus
 
@@ -1699,6 +2004,18 @@ Update type, description, location, caller, services, or priority.
 | ---- | ----- |
 | callback ok | `{ callId, unitStatus, message }` |
 | callback fail | error string |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SetUnitOnCallStatus({
+  callId = 1842,
+  callsign = 'L-42',
+  unitStatus = 'en_route',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 ### System writes — PNC, medical, licenses, notes, bulletins, council
 
@@ -1732,8 +2049,7 @@ FK rule: `issuedBy` / `createdBy` / `executedBy` on warrants, flags, and fines s
 | callback ok | `{ warrantId, warrantNumber }` |
 | callback fail | error string |
 
-<details markdown="block">
-<summary>Example</summary>
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:CreateWarrant({
@@ -1747,8 +2063,6 @@ exports['night_shifts_mdt']:CreateWarrant({
   print(result.warrantId, result.warrantNumber)
 end)
 ```
-
-</details>
 
 #### UpdateWarrant
 
@@ -1770,6 +2084,18 @@ Active warrants only.
 | callback ok | `{ warrantId }` |
 | callback fail | `Failed to update warrant (not found or not active)` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateWarrant({
+  warrantId = 15,
+  reason = 'Updated: still outstanding after court date',
+  expiresAt = '2027-12-31 23:59:59',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
 #### ExecuteWarrant
 
 `executedBy` stays `NULL`.
@@ -1788,6 +2114,16 @@ Active warrants only.
 | callback ok | `{ warrantId, warrantStatus = 'executed' }` |
 | callback fail | `Failed to execute warrant` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ExecuteWarrant({
+  warrantId = 15,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
 #### CancelWarrant
 
 **Parameters**
@@ -1803,6 +2139,16 @@ Active warrants only.
 | ---- | ----- |
 | callback ok | `{ warrantId, warrantStatus = 'cancelled' }` |
 | callback fail | `Failed to cancel warrant` |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CancelWarrant({
+  warrantId = 15,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 #### CreateFlag
 
@@ -1824,8 +2170,7 @@ Active warrants only.
 | callback ok | `{ flagId }` |
 | callback fail | error string |
 
-<details markdown="block">
-<summary>Example</summary>
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:CreateFlag({
@@ -1838,8 +2183,6 @@ exports['night_shifts_mdt']:CreateFlag({
   if not ok then return print(result) end
 end)
 ```
-
-</details>
 
 #### SetFlagActive
 
@@ -1857,6 +2200,17 @@ end)
 | ---- | ----- |
 | callback ok | `{ flagId, isActive }` (`isActive` is boolean) |
 | callback fail | `flagId and isActive required` |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SetFlagActive({
+  flagId = 88,
+  isActive = false,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 #### CreateFine
 
@@ -1879,8 +2233,7 @@ end)
 | callback ok | `{ fineId, fineNumber }` |
 | callback fail | error string |
 
-<details markdown="block">
-<summary>Example</summary>
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:CreateFine({
@@ -1892,10 +2245,9 @@ exports['night_shifts_mdt']:CreateFine({
   penalCodeId = 12,
 }, function(ok, result)
   if not ok then return print(result) end
+  print(result.fineNumber)
 end)
 ```
-
-</details>
 
 #### MarkFinePaid
 
@@ -1912,6 +2264,16 @@ end)
 | ---- | ----- |
 | callback ok | `{ fineId, finePaid = true }` |
 | callback fail | `Failed to mark fine paid` |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:MarkFinePaid({
+  fineId = 301,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 #### CreateCriminalRecord
 
@@ -1936,6 +2298,21 @@ end)
 | callback ok | `{ recordId, recordNumber }` |
 | callback fail | `location required`, `incidentDate required`, `departmentId required` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CreateCriminalRecord({
+  civId = 42,
+  location = 'Olympic Fwy',
+  incidentDate = '2026-08-13',
+  description = 'Traffic stop — resisted arrest',
+  departmentId = 1,
+}, function(ok, result)
+  if not ok then return print(result) end
+  print(result.recordId, result.recordNumber)
+end)
+```
+
 #### AddCharge
 
 **Parameters**
@@ -1958,6 +2335,21 @@ end)
 | callback ok | `{ chargeId, criminalRecordId }` |
 | callback fail | `criminalRecordId required` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddCharge({
+  criminalRecordId = 77,
+  penalCodeId = 12,
+  chargeTitle = 'Speeding',
+  fineAmount = 250,
+  chargeStatus = 'pending',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print(result.chargeId)
+end)
+```
+
 #### UpdateCharge
 
 **Parameters**
@@ -1977,6 +2369,18 @@ end)
 | callback ok | `{ chargeId }` |
 | callback fail | `Failed to update charge` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateCharge({
+  chargeId = 19,
+  chargeStatus = 'convicted',
+  fineAmount = 500,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
 #### SetVehicleBolo
 
 **Parameters**
@@ -1995,6 +2399,18 @@ end)
 | ---- | ----- |
 | callback ok | `{ vehicleId, bolo }` (`bolo` is boolean) |
 | callback fail | `vehicleId or plate required`, `Vehicle not found` |
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SetVehicleBolo({
+  plate = 'ABC 123',
+  bolo = true,
+  boloDescription = 'Used in a robbery',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 #### AddANPRRegistry
 
@@ -2018,6 +2434,19 @@ end)
 | callback ok | `{ success = true, action = 'added', entry = { id, plate, reason, reasonType, … } }` |
 | callback fail | error string, e.g. `invalid_plate` |
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddANPRRegistry({
+  plate = 'ABC 123',
+  reason = 'Stolen vehicle',
+  reasonType = 'stolen',
+  departmentId = 1,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
 #### RemoveANPRRegistry
 
 **Parameters**
@@ -2035,29 +2464,25 @@ end)
 | callback ok | `{ success = true, action = 'removed', entryId }` or `{ success = true, action = 'removed', plate }` |
 | callback fail | error string |
 
-#### Medical writes
+**Example**
 
-Patient writes on `civId`. System path: `createdBy` / `diagnosedBy` / `treatedBy` / `prescribedBy` / `administeredBy` stay `NULL`. Allergy severity is `mild`, `moderate`, or `severe` (default `moderate`). Diagnosis status is `active`, `chronic`, or `resolved` (default `active`).
+```lua
+exports['night_shifts_mdt']:RemoveANPRRegistry({
+  plate = 'ABC 123',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
-| Export | Required params | Callback ok |
-| ------ | --------------- | ----------- |
-| `AddMedicalAllergy` | `civId`, `allergen`; optional `severity`, `reaction`, `notes` | `{ allergyId, civId }` |
-| `RemoveMedicalAllergy` | `id` (allergy row) | `{ id, civId }` |
-| `AddMedicalDiagnosis` | `civId`, `condition`; optional `status`, `notes` | `{ diagnosisId, civId }` |
-| `UpdateMedicalDiagnosis` | `id`; optional `status`, `notes` | `{ id }` |
-| `RemoveMedicalDiagnosis` | `id` | `{ id }` |
-| `AddMedicalTreatment` | `civId`, `treatment` (or `summary`); optional `treatmentType`, `notes`, `departmentId` | `{ treatmentId, civId }` |
-| `AddMedicalPrescription` | `civId`, `medication`; optional `dosage`, `notes` | `{ prescriptionId, civId }` |
-| `DiscontinueMedicalPrescription` | `id` | `{ id }` |
-| `AddMedicalImmunization` | `civId`, `vaccine`; optional `notes` | `{ immunizationId, civId }` |
-| `AddMedicalFlag` | `civId`, `flagType`; optional `details` / `notes` | `{ flagId, civId }` |
-| `RemoveMedicalFlag` | `id` | `{ id }` |
-| `UpdateMedicalVitals` | `civId`; optional `bloodType`, `height`, `weight` | `{ civId }` |
+#### AddMedicalAllergy
 
-Each also takes an optional `callback` (`function(ok, resultOrError)`). Fail strings include `civId and allergen required`, `Allergy not found`, and the matching “not found” / “required” messages.
+Patient writes on `civId`. System path: `createdBy` stays `NULL`. Severity is `mild`, `moderate`, or `severe` (default `moderate`).
 
-<details markdown="block">
-<summary>Example</summary>
+**Parameters:** `civId`, `allergen` required; optional `severity`, `reaction`, `notes`, `callback`.
+
+**Returns:** callback ok `{ allergyId, civId }`.
+
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalAllergy({
@@ -2071,24 +2496,208 @@ exports['night_shifts_mdt']:AddMedicalAllergy({
 end)
 ```
 
-</details>
+#### RemoveMedicalAllergy
 
-#### License writes
+**Parameters:** `id` (allergy row) required; optional `callback`.
 
-`issuedBy` / `suspendedBy` / `revokedBy` stay `NULL`.
+**Returns:** callback ok `{ id, civId }`.
 
-| Export | Required params | Callback ok |
-| ------ | --------------- | ----------- |
-| `IssueLicense` | `civId`, `licenseType`; optional `validYears`, `maxPoints`, `notes` | `{ licenseId, licenseNumber }` |
-| `SuspendLicense` | `licenseId`; optional `reason`, `suspensionDays` | `{ licenseId, licenseStatus = 'suspended' }` |
-| `ReinstateLicense` | `licenseId` | `{ licenseId, licenseStatus = 'valid' }` |
-| `RevokeLicense` | `licenseId`; optional `reason` | `{ licenseId, licenseStatus = 'revoked' }` |
-| `AdjustLicensePoints` | `licenseId`, `pointsChange` (signed number); optional `reason` | `{ licenseId, pointsChange }` |
+**Example**
 
-Optional `callback` on each: `function(ok, resultOrError)`.
+```lua
+exports['night_shifts_mdt']:RemoveMedicalAllergy({
+  id = 9,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
-<details markdown="block">
-<summary>Example</summary>
+#### AddMedicalDiagnosis
+
+Diagnosis status is `active`, `chronic`, or `resolved` (default `active`). `diagnosedBy` stays `NULL`.
+
+**Parameters:** `civId`, `condition` required; optional `status`, `notes`, `callback`.
+
+**Returns:** callback ok `{ diagnosisId, civId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalDiagnosis({
+  civId = 42,
+  condition = 'Asthma',
+  status = 'chronic',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateMedicalDiagnosis
+
+**Parameters:** `id` required; optional `status`, `notes`, `callback`.
+
+**Returns:** callback ok `{ id }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateMedicalDiagnosis({
+  id = 4,
+  status = 'resolved',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RemoveMedicalDiagnosis
+
+**Parameters:** `id` required; optional `callback`.
+
+**Returns:** callback ok `{ id }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RemoveMedicalDiagnosis({
+  id = 4,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalTreatment
+
+**Parameters:** `civId` and `treatment` (or `summary`) required; optional `treatmentType`, `notes`, `departmentId`, `callback`.
+
+**Returns:** callback ok `{ treatmentId, civId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalTreatment({
+  civId = 42,
+  treatment = 'Oxygen on scene',
+  treatmentType = 'on_scene',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalPrescription
+
+**Parameters:** `civId`, `medication` required; optional `dosage`, `notes`, `callback`.
+
+**Returns:** callback ok `{ prescriptionId, civId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalPrescription({
+  civId = 42,
+  medication = 'Albuterol',
+  dosage = '2 puffs',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### DiscontinueMedicalPrescription
+
+**Parameters:** `id` required; optional `callback`.
+
+**Returns:** callback ok `{ id }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DiscontinueMedicalPrescription({
+  id = 6,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalImmunization
+
+**Parameters:** `civId`, `vaccine` required; optional `notes`, `callback`.
+
+**Returns:** callback ok `{ immunizationId, civId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalImmunization({
+  civId = 42,
+  vaccine = 'Tetanus',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalFlag
+
+**Parameters:** `civId`, `flagType` required; optional `details` / `notes`, `callback`.
+
+**Returns:** callback ok `{ flagId, civId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalFlag({
+  civId = 42,
+  flagType = 'dnr',
+  notes = 'On file from hospital',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RemoveMedicalFlag
+
+**Parameters:** `id` required; optional `callback`.
+
+**Returns:** callback ok `{ id }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RemoveMedicalFlag({
+  id = 3,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateMedicalVitals
+
+Updates the civilian row.
+
+**Parameters:** `civId` required; optional `bloodType`, `height`, `weight`, `callback`.
+
+**Returns:** callback ok `{ civId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateMedicalVitals({
+  civId = 42,
+  bloodType = 'O+',
+  height = 178,
+  weight = 82,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### IssueLicense
+
+`issuedBy` stays `NULL`.
+
+**Parameters:** `civId`, `licenseType` required; optional `validYears`, `maxPoints`, `notes`, `callback`.
+
+**Returns:** callback ok `{ licenseId, licenseNumber }`.
+
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:IssueLicense({
@@ -2102,46 +2711,192 @@ exports['night_shifts_mdt']:IssueLicense({
 end)
 ```
 
-</details>
+#### SuspendLicense
 
-#### PNC notes
+**Parameters:** `licenseId` required; optional `reason`, `suspensionDays`, `callback`.
 
-| Export | Required params | Callback ok |
-| ------ | --------------- | ----------- |
-| `AddPNCNote` | `entityType` (`civilian` or `vehicle`), `title`, `description`; plus `civId` or `vehicleId` | `{ noteId }` |
-| `DeletePNCNote` | `noteId` | `{ noteId }` |
+**Returns:** callback ok `{ licenseId, licenseStatus = 'suspended' }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SuspendLicense({
+  licenseId = 11,
+  reason = 'Too many points',
+  suspensionDays = 30,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### ReinstateLicense
+
+**Parameters:** `licenseId` required; optional `callback`.
+
+**Returns:** callback ok `{ licenseId, licenseStatus = 'valid' }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ReinstateLicense({
+  licenseId = 11,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RevokeLicense
+
+**Parameters:** `licenseId` required; optional `reason`, `callback`.
+
+**Returns:** callback ok `{ licenseId, licenseStatus = 'revoked' }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RevokeLicense({
+  licenseId = 11,
+  reason = 'Fraudulent application',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AdjustLicensePoints
+
+**Parameters:** `licenseId`, `pointsChange` (signed number) required; optional `reason`, `callback`.
+
+**Returns:** callback ok `{ licenseId, pointsChange }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AdjustLicensePoints({
+  licenseId = 11,
+  pointsChange = -3,
+  reason = 'Court reduction',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddPNCNote
 
 `createdBy` is `NULL`. `createdByName` is your resource folder.
 
-#### Bulletins
+**Parameters:** `entityType` (`civilian` or `vehicle`), `title`, `description`, plus `civId` or `vehicleId`; optional `callback`.
 
-`nsmdt_bulletins.createdBy` is NOT NULL + FK to `nsmdt_users`. The system path **cannot** stamp `system:<resource>` there.
+**Returns:** callback ok `{ noteId }`.
 
-| Export | Required params | Callback ok |
-| ------ | --------------- | ----------- |
-| `CreateBulletin` | `departmentId`, `title`, `content`, **`createdByLicense`**; optional `priority`, `isPinned`, `expiresAt` | `{ bulletinId }` |
-| `UpdateBulletin` | `bulletinId`; optional `title`, `content`, `priority`, `isPinned` | `{ bulletinId }` |
-| `DeleteBulletin` | `bulletinId` | `{ bulletinId }` |
-| `TogglePinBulletin` | `bulletinId` | `{ bulletinId }` |
+**Example**
 
-`CreateBulletin` fails with `createdByLicense required (bulletins.createdBy FK to nsmdt_users)` if you omit the license.
+```lua
+exports['night_shifts_mdt']:AddPNCNote({
+  entityType = 'civilian',
+  civId = 42,
+  title = 'Known associate',
+  description = 'Seen with a wanted suspect last week.',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
-#### Council register
+#### DeletePNCNote
 
-| Export | Required params | Callback ok |
-| ------ | --------------- | ----------- |
-| `RegisterCivilian` | `firstName`, `lastName`; optional `personalId`, `dateOfBirth`, `phoneNumber`, `address` | `{ civilianId }` |
-| `RegisterVehicle` | `civId`, `licensePlate`; optional `make`, `model`, `color`, `buildYear` | `{ vehicleId }` |
-| `RegisterProperty` | `civId`, `address`; optional `propertyType`, `houseNumber`, `city`, `state`, `zone`, `postal`, `description`, `price`, `buildYear` | `{ propertyId }` |
-| `RegisterBusiness` | `civId`, `businessName`; optional `businessType`, `address`, `state`, `city`, `zone`, `postal` | `{ businessId }` |
-| `UpdateCivilianAddress` | `civId`, `address` (writes `addressLine1`) | `{ civId }` |
-| `ApproveLicenseRequest` | `licenseId` | `{ licenseId }` |
-| `RejectLicenseRequest` | `licenseId`; optional `reason` | `{ licenseId }` |
+**Parameters:** `noteId` required; optional `callback`.
 
-`RegisterCivilian` auto-generates `personalId` if omitted (`SYS-<timestamp>…`).
+**Returns:** callback ok `{ noteId }`.
 
-<details markdown="block">
-<summary>Example</summary>
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DeletePNCNote({
+  noteId = 55,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### CreateBulletin
+
+`nsmdt_bulletins.createdBy` is NOT NULL + FK to `nsmdt_users`. The system path **cannot** stamp `system:<resource>` there. Fails with `createdByLicense required (bulletins.createdBy FK to nsmdt_users)` if you omit the license.
+
+**Parameters:** `departmentId`, `title`, `content`, **`createdByLicense`** required; optional `priority`, `isPinned`, `expiresAt`, `callback`.
+
+**Returns:** callback ok `{ bulletinId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CreateBulletin({
+  departmentId = 1,
+  title = 'BOL for silver Sultan',
+  content = 'Last seen on Olympic Fwy heading east.',
+  createdByLicense = 'license:27df0c159452c84a9a51a91020d54f0f3077d30f',
+  isPinned = true,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateBulletin
+
+**Parameters:** `bulletinId` required; optional `title`, `content`, `priority`, `isPinned`, `callback`.
+
+**Returns:** callback ok `{ bulletinId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateBulletin({
+  bulletinId = 8,
+  content = 'Updated: vehicle recovered.',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### DeleteBulletin
+
+**Parameters:** `bulletinId` required; optional `callback`.
+
+**Returns:** callback ok `{ bulletinId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DeleteBulletin({
+  bulletinId = 8,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### TogglePinBulletin
+
+**Parameters:** `bulletinId` required; optional `callback`.
+
+**Returns:** callback ok `{ bulletinId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:TogglePinBulletin({
+  bulletinId = 8,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RegisterCivilian
+
+Auto-generates `personalId` if omitted (`SYS-<timestamp>…`).
+
+**Parameters:** `firstName`, `lastName` required; optional `personalId`, `dateOfBirth`, `phoneNumber`, `address`, `callback`.
+
+**Returns:** callback ok `{ civilianId }`.
+
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:RegisterCivilian({
@@ -2151,11 +2906,118 @@ exports['night_shifts_mdt']:RegisterCivilian({
   address = '1 San Andreas Ave',
 }, function(ok, result)
   if not ok then return print(result) end
-  print('civ', result.civilianId)
+  print(result.civilianId)
 end)
 ```
 
-</details>
+#### RegisterVehicle
+
+**Parameters:** `civId`, `licensePlate` required; optional `make`, `model`, `color`, `buildYear`, `callback`.
+
+**Returns:** callback ok `{ vehicleId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RegisterVehicle({
+  civId = 42,
+  licensePlate = 'ABC 123',
+  make = 'Karin',
+  model = 'Sultan',
+  color = 'Silver',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RegisterProperty
+
+**Parameters:** `civId`, `address` required; optional `propertyType`, `houseNumber`, `city`, `state`, `zone`, `postal`, `description`, `price`, `buildYear`, `callback`.
+
+**Returns:** callback ok `{ propertyId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RegisterProperty({
+  civId = 42,
+  address = '1 San Andreas Ave',
+  city = 'Los Santos',
+  propertyType = 'house',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RegisterBusiness
+
+**Parameters:** `civId`, `businessName` required; optional `businessType`, `address`, `state`, `city`, `zone`, `postal`, `callback`.
+
+**Returns:** callback ok `{ businessId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RegisterBusiness({
+  civId = 42,
+  businessName = 'Rivera Auto',
+  address = '12 Popular St',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateCivilianAddress
+
+Writes `addressLine1`.
+
+**Parameters:** `civId`, `address` required; optional `callback`.
+
+**Returns:** callback ok `{ civId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateCivilianAddress({
+  civId = 42,
+  address = '9 Palomino Ave',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### ApproveLicenseRequest
+
+**Parameters:** `licenseId` required; optional `callback`.
+
+**Returns:** callback ok `{ licenseId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ApproveLicenseRequest({
+  licenseId = 11,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RejectLicenseRequest
+
+**Parameters:** `licenseId` required; optional `reason`, `callback`.
+
+**Returns:** callback ok `{ licenseId }`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RejectLicenseRequest({
+  licenseId = 11,
+  reason = 'Failed driving test',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 ### Officer writes — shift
 
@@ -2181,8 +3043,11 @@ end)
 | ---- | ----- |
 | sync | `success, result` — `success` is boolean |
 
+**Example**
+
 ```lua
-local ok, result = exports['night_shifts_mdt']:StartShiftByServerId(source, deptId, nil, rankId, 'L-42')
+local ok, result = exports['night_shifts_mdt']:StartShiftByServerId(source, 1, nil, 3, 'L-42')
+if not ok then return print(result) end
 ```
 
 #### EndShiftByServerId
@@ -2201,6 +3066,13 @@ local ok, result = exports['night_shifts_mdt']:StartShiftByServerId(source, dept
 | sync | `success, duration, totalTime` |
 | callback | same three values |
 
+**Example**
+
+```lua
+local ok, duration, totalTime = exports['night_shifts_mdt']:EndShiftByServerId(source)
+print(ok, duration, totalTime)
+```
+
 #### UpdateShiftStatusByServerId
 
 **Parameters**
@@ -2212,6 +3084,14 @@ local ok, result = exports['night_shifts_mdt']:StartShiftByServerId(source, dept
 | callback | function | no | |
 
 **Returns:** `success` plus result via sync and optional callback.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateShiftStatusByServerId(source, 'available', function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 #### UpdateShiftStatusByBindingByServerId
 
@@ -2225,6 +3105,14 @@ local ok, result = exports['night_shifts_mdt']:StartShiftByServerId(source, dept
 
 **Returns:** `success` plus result via sync and optional callback.
 
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateShiftStatusByBindingByServerId(source, 'busy', function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
 #### UpdateCallsignByServerId
 
 **Parameters**
@@ -2235,6 +3123,13 @@ local ok, result = exports['night_shifts_mdt']:StartShiftByServerId(source, dept
 | newCallsign | string | yes | |
 
 **Returns:** sync `success, result`.
+
+**Example**
+
+```lua
+local ok, result = exports['night_shifts_mdt']:UpdateCallsignByServerId(source, 'L-21')
+if not ok then return print(result) end
+```
 
 ### Officer writes — dispatch, PNC, ops
 
@@ -2253,21 +3148,13 @@ Payloads match the system cards above. Extra arguments and stamps:
 | Fail (not on shift) | `You must be on shift` / `No MDT session` / `invalid_server_id` |
 | Fail (permission) | `You do not have permission` |
 
-#### Dispatch twins
+Same payload as the matching system export, plus `source` first. Medical `*ByServerId` stamps that player’s license (ambulance staff). `CreateBulletinByServerId` fills `createdByLicense` from the officer.
 
-| Export | Typical permission | Difference from system |
-| ------ | ------------------ | ---------------------- |
-| `AssignUnitToCallByServerId` | `dispatch.assign_units` | Omit `callsign` / `targetServerId` to **self-assign** |
-| `DetachUnitFromCallByServerId` | `dispatch.assign_units` | Omit target to detach self |
-| `SetCallStatusByServerId` | `dispatch.resolve_call` or `hotline.resolve_call` | Same payload |
-| `ArchiveCallByServerId` | `dispatch.archive_call` or `hotline.archive_calls` | Same payload |
-| `EditCallByServerId` | `dispatch.edit_call` | Same payload |
-| `AddCallNoteByServerId` | `dispatch.add_note` | Same payload |
-| `DeleteCallNoteByServerId` | `dispatch.delete_note` | Same payload |
-| `SetUnitOnCallStatusByServerId` | on-shift (no extra perm) | Omit target to update self |
+#### AssignUnitToCallByServerId
 
-<details markdown="block">
-<summary>Example</summary>
+Permission: `dispatch.assign_units`. Omit `callsign` / `targetServerId` to self-assign.
+
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:AssignUnitToCallByServerId(source, {
@@ -2278,34 +3165,119 @@ exports['night_shifts_mdt']:AssignUnitToCallByServerId(source, {
 end)
 ```
 
-</details>
+#### DetachUnitFromCallByServerId
 
-#### PNC twins
+Permission: `dispatch.assign_units`. Omit target to detach self.
 
-| Export | Typical permission | Difference from system |
-| ------ | ------------------ | ---------------------- |
-| `CreateWarrantByServerId` | `pnc.registration` | `issuedBy` = that officer. No `departmentId` required |
-| `CancelWarrantByServerId` | `pnc.registration` | Same payload |
-| `ExecuteWarrantByServerId` | `pnc.registration` | Same payload (some twins still audit as system — check the log) |
-| `UpdateWarrantByServerId` | `pnc.registration` | Same payload |
-| `CreateFlagByServerId` | `pnc.flags` | Department from shift |
-| `SetFlagActiveByServerId` | `pnc.flags` | Same payload |
-| `CreateFineByServerId` | `pnc.registration` | Department from shift |
-| `MarkFinePaidByServerId` | `pnc.registration` | Same payload |
-| `CreateCriminalRecordByServerId` | `pnc.registration` | Department from shift |
-| `AddChargeByServerId` | `pnc.registration` | Same payload |
-| `UpdateChargeByServerId` | `pnc.registration` | Same payload |
-| `SetVehicleBoloByServerId` | `pnc.registration` | Same payload |
-| `AddANPRRegistryByServerId` | `pnc.anpr.manage` | Same payload |
-| `RemoveANPRRegistryByServerId` | `pnc.anpr.manage` | Same payload |
-
-<details markdown="block">
-<summary>Example</summary>
+**Example**
 
 ```lua
-local mdt = exports['night_shifts_mdt']
-if not mdt:HasPermissionByServerId(source, 'pnc.registration') then return end
-mdt:CreateWarrantByServerId(source, {
+exports['night_shifts_mdt']:DetachUnitFromCallByServerId(source, {
+  callId = 1842,
+  callsign = 'L-21',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### SetCallStatusByServerId
+
+Permission: `dispatch.resolve_call` or `hotline.resolve_call`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SetCallStatusByServerId(source, {
+  callId = 1842,
+  status = 'resolved',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### ArchiveCallByServerId
+
+Permission: `dispatch.archive_call` or `hotline.archive_calls`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ArchiveCallByServerId(source, {
+  callId = 1842,
+  reason = 'Complete',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### EditCallByServerId
+
+Permission: `dispatch.edit_call`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:EditCallByServerId(source, {
+  callId = 1842,
+  description = 'Updated from the CAD terminal',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddCallNoteByServerId
+
+Permission: `dispatch.add_note`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddCallNoteByServerId(source, {
+  callId = 1842,
+  note = 'Unit advised, en route',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### DeleteCallNoteByServerId
+
+Permission: `dispatch.delete_note`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DeleteCallNoteByServerId(source, {
+  noteId = 91,
+  callId = 1842,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### SetUnitOnCallStatusByServerId
+
+On-shift only. Omit target to update self.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SetUnitOnCallStatusByServerId(source, {
+  callId = 1842,
+  unitStatus = 'on_scene',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### CreateWarrantByServerId
+
+Permission: `pnc.registration`. `issuedBy` = that officer. No `departmentId` required.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CreateWarrantByServerId(source, {
   civId = 42,
   warrantType = 'arrest',
   reason = 'Assault — issued from CAD terminal',
@@ -2316,40 +3288,212 @@ mdt:CreateWarrantByServerId(source, {
 end)
 ```
 
-</details>
+#### CancelWarrantByServerId
 
-#### Medical, license, note, bulletin, council twins
+Permission: `pnc.registration`.
 
-Same payloads as the system exports, plus leading `serverId`.
+**Example**
 
-| Family | Permission | Stamp difference |
-| ------ | ---------- | ---------------- |
-| Medical `*ByServerId` | `medical_records.add_treatment`, `medical_records.diagnose`, `medical_records.flags`, or `medical_records.delete` (see table below) | FK + audit = that player’s license. Notes say `Staff …` (ambulance staff, not a police officer). Police without medical perms are denied. |
-| Licenses `*ByServerId` | typically `licenses.create` / `suspend` / `revoke` / `update` | Same payload. Some twins still run the system write after the player check. |
-| `AddPNCNoteByServerId` / `DeletePNCNoteByServerId` | `pnc.notes.manage` | Same payload |
-| `CreateBulletinByServerId` | `management.bulletins.create` | Fills `createdByLicense` from the officer automatically |
-| Other bulletin `*ByServerId` | bulletin manage | Same payload |
-| Council `*ByServerId` | council / registration perms | Same payload |
+```lua
+exports['night_shifts_mdt']:CancelWarrantByServerId(source, {
+  warrantId = 15,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
-Medical permission per twin:
+#### ExecuteWarrantByServerId
 
-| Export | Permission |
-| ------ | ---------- |
-| `AddMedicalAllergyByServerId` | `medical_records.add_treatment` |
-| `RemoveMedicalAllergyByServerId` | `medical_records.delete` |
-| `AddMedicalDiagnosisByServerId` | `medical_records.diagnose` |
-| `UpdateMedicalDiagnosisByServerId` | `medical_records.diagnose` |
-| `RemoveMedicalDiagnosisByServerId` | `medical_records.delete` |
-| `AddMedicalTreatmentByServerId` | `medical_records.add_treatment` |
-| `AddMedicalPrescriptionByServerId` | `medical_records.diagnose` |
-| `DiscontinueMedicalPrescriptionByServerId` | `medical_records.diagnose` |
-| `AddMedicalImmunizationByServerId` | `medical_records.add_treatment` |
-| `AddMedicalFlagByServerId` | `medical_records.flags` |
-| `RemoveMedicalFlagByServerId` | `medical_records.flags` |
-| `UpdateMedicalVitalsByServerId` | `medical_records.add_treatment` |
+Permission: `pnc.registration`.
 
-<details markdown="block">
-<summary>Example — ambulance staff allergy</summary>
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ExecuteWarrantByServerId(source, {
+  warrantId = 15,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateWarrantByServerId
+
+Permission: `pnc.registration`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateWarrantByServerId(source, {
+  warrantId = 15,
+  reason = 'Updated from CAD',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### CreateFlagByServerId
+
+Permission: `pnc.flags`. Department from the officer’s shift.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CreateFlagByServerId(source, {
+  civId = 42,
+  flagType = 'other',
+  description = 'Flagged from CAD',
+  severity = 'medium',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### SetFlagActiveByServerId
+
+Permission: `pnc.flags`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SetFlagActiveByServerId(source, {
+  flagId = 88,
+  isActive = false,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### CreateFineByServerId
+
+Permission: `pnc.registration`. Department from the officer’s shift.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CreateFineByServerId(source, {
+  civId = 42,
+  fineDescription = 'Speeding',
+  fineAmount = 250,
+  fineLocation = 'Olympic Fwy',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### MarkFinePaidByServerId
+
+Permission: `pnc.registration`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:MarkFinePaidByServerId(source, {
+  fineId = 301,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### CreateCriminalRecordByServerId
+
+Permission: `pnc.registration`. Department from the officer’s shift.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CreateCriminalRecordByServerId(source, {
+  civId = 42,
+  location = 'Olympic Fwy',
+  incidentDate = '2026-08-13',
+  description = 'Resisted arrest',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddChargeByServerId
+
+Permission: `pnc.registration`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddChargeByServerId(source, {
+  criminalRecordId = 77,
+  penalCodeId = 12,
+  chargeTitle = 'Speeding',
+  fineAmount = 250,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateChargeByServerId
+
+Permission: `pnc.registration`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateChargeByServerId(source, {
+  chargeId = 19,
+  chargeStatus = 'convicted',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### SetVehicleBoloByServerId
+
+Permission: `pnc.registration`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SetVehicleBoloByServerId(source, {
+  plate = 'ABC 123',
+  bolo = true,
+  boloDescription = 'Used in a robbery',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddANPRRegistryByServerId
+
+Permission: `pnc.anpr.manage`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddANPRRegistryByServerId(source, {
+  plate = 'ABC 123',
+  reason = 'Stolen vehicle',
+  reasonType = 'stolen',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RemoveANPRRegistryByServerId
+
+Permission: `pnc.anpr.manage`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RemoveANPRRegistryByServerId(source, {
+  plate = 'ABC 123',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalAllergyByServerId
+
+Permission: `medical_records.add_treatment`. FK + audit = that player’s license. Notes say `Staff …`.
+
+**Example**
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalAllergyByServerId(source, {
@@ -2361,7 +3505,423 @@ exports['night_shifts_mdt']:AddMedicalAllergyByServerId(source, {
 end)
 ```
 
-</details>
+#### RemoveMedicalAllergyByServerId
+
+Permission: `medical_records.delete`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RemoveMedicalAllergyByServerId(source, {
+  id = 9,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalDiagnosisByServerId
+
+Permission: `medical_records.diagnose`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalDiagnosisByServerId(source, {
+  civId = 42,
+  condition = 'Asthma',
+  status = 'chronic',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateMedicalDiagnosisByServerId
+
+Permission: `medical_records.diagnose`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateMedicalDiagnosisByServerId(source, {
+  id = 4,
+  status = 'resolved',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RemoveMedicalDiagnosisByServerId
+
+Permission: `medical_records.delete`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RemoveMedicalDiagnosisByServerId(source, {
+  id = 4,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalTreatmentByServerId
+
+Permission: `medical_records.add_treatment`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalTreatmentByServerId(source, {
+  civId = 42,
+  treatment = 'Oxygen on scene',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalPrescriptionByServerId
+
+Permission: `medical_records.diagnose`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalPrescriptionByServerId(source, {
+  civId = 42,
+  medication = 'Albuterol',
+  dosage = '2 puffs',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### DiscontinueMedicalPrescriptionByServerId
+
+Permission: `medical_records.diagnose`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DiscontinueMedicalPrescriptionByServerId(source, {
+  id = 6,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalImmunizationByServerId
+
+Permission: `medical_records.add_treatment`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalImmunizationByServerId(source, {
+  civId = 42,
+  vaccine = 'Tetanus',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddMedicalFlagByServerId
+
+Permission: `medical_records.flags`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddMedicalFlagByServerId(source, {
+  civId = 42,
+  flagType = 'dnr',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RemoveMedicalFlagByServerId
+
+Permission: `medical_records.flags`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RemoveMedicalFlagByServerId(source, {
+  id = 3,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateMedicalVitalsByServerId
+
+Permission: `medical_records.add_treatment`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateMedicalVitalsByServerId(source, {
+  civId = 42,
+  bloodType = 'O+',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### IssueLicenseByServerId
+
+Permission: typically `licenses.create`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:IssueLicenseByServerId(source, {
+  civId = 42,
+  licenseType = 'driver',
+  validYears = 5,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### SuspendLicenseByServerId
+
+Permission: typically `licenses.suspend`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:SuspendLicenseByServerId(source, {
+  licenseId = 11,
+  reason = 'Too many points',
+  suspensionDays = 30,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### ReinstateLicenseByServerId
+
+Permission: typically `licenses.update`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ReinstateLicenseByServerId(source, {
+  licenseId = 11,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RevokeLicenseByServerId
+
+Permission: typically `licenses.revoke`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RevokeLicenseByServerId(source, {
+  licenseId = 11,
+  reason = 'Fraudulent application',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AdjustLicensePointsByServerId
+
+Permission: typically `licenses.update`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AdjustLicensePointsByServerId(source, {
+  licenseId = 11,
+  pointsChange = -3,
+  reason = 'Court reduction',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### AddPNCNoteByServerId
+
+Permission: `pnc.notes.manage`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:AddPNCNoteByServerId(source, {
+  entityType = 'civilian',
+  civId = 42,
+  title = 'Known associate',
+  description = 'Seen with a wanted suspect last week.',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### DeletePNCNoteByServerId
+
+Permission: `pnc.notes.manage`.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DeletePNCNoteByServerId(source, {
+  noteId = 55,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### CreateBulletinByServerId
+
+Permission: `management.bulletins.create`. Fills `createdByLicense` from the officer.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CreateBulletinByServerId(source, {
+  departmentId = 1,
+  title = 'BOL for silver Sultan',
+  content = 'Last seen on Olympic Fwy heading east.',
+  isPinned = true,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateBulletinByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateBulletinByServerId(source, {
+  bulletinId = 8,
+  content = 'Updated: vehicle recovered.',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### DeleteBulletinByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:DeleteBulletinByServerId(source, {
+  bulletinId = 8,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### TogglePinBulletinByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:TogglePinBulletinByServerId(source, {
+  bulletinId = 8,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RegisterCivilianByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RegisterCivilianByServerId(source, {
+  firstName = 'Alex',
+  lastName = 'Rivera',
+  dateOfBirth = '1994-03-12',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RegisterVehicleByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RegisterVehicleByServerId(source, {
+  civId = 42,
+  licensePlate = 'ABC 123',
+  make = 'Karin',
+  model = 'Sultan',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RegisterPropertyByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RegisterPropertyByServerId(source, {
+  civId = 42,
+  address = '1 San Andreas Ave',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RegisterBusinessByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RegisterBusinessByServerId(source, {
+  civId = 42,
+  businessName = 'Rivera Auto',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### UpdateCivilianAddressByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:UpdateCivilianAddressByServerId(source, {
+  civId = 42,
+  address = '9 Palomino Ave',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### ApproveLicenseRequestByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ApproveLicenseRequestByServerId(source, {
+  licenseId = 11,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+#### RejectLicenseRequestByServerId
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:RejectLicenseRequestByServerId(source, {
+  licenseId = 11,
+  reason = 'Failed driving test',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
 
 ### Client
 
@@ -2375,11 +3935,49 @@ end)
 
 **Returns:** sync boolean — is the MDT tablet open?
 
-#### OpenMenu / CloseMenu / ToggleMenu
+**Example**
+
+```lua
+if exports['night_shifts_mdt']:IsMenuOpen() then
+  print('tablet is open')
+end
+```
+
+#### OpenMenu
 
 **Parameters:** none.
 
-**Returns:** none (opens, closes, or toggles the tablet).
+**Returns:** none.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:OpenMenu()
+```
+
+#### CloseMenu
+
+**Parameters:** none.
+
+**Returns:** none.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:CloseMenu()
+```
+
+#### ToggleMenu
+
+**Parameters:** none.
+
+**Returns:** none.
+
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ToggleMenu()
+```
 
 #### ForwardCallToMDT (client)
 
@@ -2393,11 +3991,70 @@ Client helper; still creates the call **server-side**. Same `callData` fields as
 
 **Returns:** none on the client (the server creates the call).
 
-#### IsOnPoliceShift / IsOnAmbulanceShift / IsOnFireShift / IsOnTowShift / IsOnCouncilShift
+**Example**
+
+```lua
+exports['night_shifts_mdt']:ForwardCallToMDT({
+  callType = 'Traffic Collision',
+  description = 'Two-vehicle RTC',
+  x = 215.4, y = -810.2, z = 30.7,
+  requiresPolice = 1, requiresAmbulance = 1,
+})
+```
+
+#### IsOnPoliceShift
 
 **Parameters:** none.
 
-**Returns:** sync boolean for the local player’s current department type.
+**Returns:** sync boolean for the local player.
+
+**Example**
+
+```lua
+if exports['night_shifts_mdt']:IsOnPoliceShift() then
+  exports['night_shifts_mdt']:OpenMenu()
+end
+```
+
+#### IsOnAmbulanceShift
+
+**Example**
+
+```lua
+if exports['night_shifts_mdt']:IsOnAmbulanceShift() then
+  print('on ambulance shift')
+end
+```
+
+#### IsOnFireShift
+
+**Example**
+
+```lua
+if exports['night_shifts_mdt']:IsOnFireShift() then
+  print('on fire shift')
+end
+```
+
+#### IsOnTowShift
+
+**Example**
+
+```lua
+if exports['night_shifts_mdt']:IsOnTowShift() then
+  print('on tow shift')
+end
+```
+
+#### IsOnCouncilShift
+
+**Example**
+
+```lua
+if exports['night_shifts_mdt']:IsOnCouncilShift() then
+  print('on council shift')
+end
+```
 
 #### GetPlayerCallsign
 
@@ -2405,14 +4062,39 @@ Client helper; still creates the call **server-side**. Same `callData` fields as
 
 **Returns:** sync string or nil.
 
-#### GetCurrentLanguage / GetAvailableLanguages / GetDepartments (client)
-
-Also available client-side. Same return shapes as the server reads.
+**Example**
 
 ```lua
-if exports['night_shifts_mdt']:IsOnPoliceShift() then
-  exports['night_shifts_mdt']:OpenMenu()
-end
+local callsign = exports['night_shifts_mdt']:GetPlayerCallsign()
+print(callsign)
+```
+
+#### GetCurrentLanguage (client)
+
+Same return as the server read.
+
+**Example**
+
+```lua
+print(exports['night_shifts_mdt']:GetCurrentLanguage())
+```
+
+#### GetAvailableLanguages (client)
+
+**Example**
+
+```lua
+local languages = exports['night_shifts_mdt']:GetAvailableLanguages()
+print(languages[1])
+```
+
+#### GetDepartments (client)
+
+**Example**
+
+```lua
+local depts = exports['night_shifts_mdt']:GetDepartments()
+print(#depts)
 ```
 
 ---
