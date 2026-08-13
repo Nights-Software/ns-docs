@@ -4,7 +4,7 @@ title: "Night Shifts MDT v1"
 nav_order: 5
 has_children: false
 has_toc: true
-last_modified_date: "2026-07-29"
+last_modified_date: "2026-08-13"
 ---
 
 # Night Shifts - Mobile Data Terminal for FiveM
@@ -16,11 +16,14 @@ Installation and integration guide for **Night Shifts MDT (v1)** on FiveM.
 
 ---
 
-## 📋 Table of Contents
-{: .no_toc .text-delta }
-
+<details open markdown="block">
+  <summary>
+    Table of contents
+  </summary>
+  {: .text-delta }
 1. TOC
 {:toc}
+</details>
 
 ---
 
@@ -33,7 +36,6 @@ Installation and integration guide for **Night Shifts MDT (v1)** on FiveM.
 ---
 
 ## ⚠️ Important Pre-Installation Notes
-{: .warning }
 
 > **Critical Installation Order:** Always follow this exact sequence to avoid parsing errors in the F8 console:
 >
@@ -197,9 +199,8 @@ ensure night_shifts_mdt
 ### **Required Tools**
 {: .no_toc }
 
-{: .tip }
-
 > **Visual Studio Code:** We strongly recommend downloading [VS Code](https://code.visualstudio.com/download) for editing Lua files.
+{: .tip }
 
 ### **Configuration Files**
 {: .no_toc }
@@ -574,856 +575,1825 @@ If you run **[Emergency Response Simulator](/resources/ers/)** together with Nig
 ## 📊 Exports
 {: #exports }
 
+> **For developers only.** Use this section if you are writing or integrating another FiveM resource (CAD, dispatch bridge, AI) that must call the MDT from Lua. Normal install: set up `server.cfg`, configure the MDT in-game, and edit the Lua config files above. You can ignore Exports unless your team is adding custom code.
 {: .warning }
 
-> **For developers only.** Use this section if you are **writing or integrating another FiveM resource** (e.g. CAD, dispatch bridge) that must call the MDT from Lua. **Normal install:** set up `server.cfg`, configure the MDT in-game, and edit the Lua config files above—you can **ignore Exports** unless your team is adding custom code.
+> **Support rule:** Exports documented here (and in the resource file `docs/EXPOSED_EXPORTS.md`) are the supported integration API. If it is not documented here, treat it as unsupported (it may change without notice).
+{: .note }
 
-> **Support rule:** Exports documented in this section (and in the resource file `docs/EXPOSED_EXPORTS.md`) are the **supported integration API**. The resource registers many other exports for internal / ERS / admin use — if it is **not** documented here, treat it as **unsupported** (may change without notice).
+### Which path
 
-### **How this section is organised**
-{: .no_toc }
+Pick a path **before** you pick a function name.
 
-| Kind                 | Meaning                                                                                                         |
-| -------------------- | --------------------------------------------------------------------------------------------------------------- |
-| **Getter**           | Read-only; returns data (or calls your **callback** with data).                                                 |
-| **Setter / mutator** | Writes or updates server-side state (DB and/or cache).                                                          |
-| **Action**           | Performs a side effect (create call, relay event, open UI). Check return values and callbacks where documented. |
+| You are | Use | First argument | Audit stamp |
+| -------- | --- | -------------- | ----------- |
+| A tablet or CAD terminal a player is using | Officer / terminal (`*ByServerId`) | That player’s `source` | Their Rockstar license |
+| Another resource with no player (AI dispatch, ERS, webhook, cron) | System writes (no `ByServerId`, no `source`) | Payload table only | `system:<your resource>` |
+| Only reading or listening | Reads and Events | None | None |
 
-#### **Quick start**
-{: .no_toc }
+> Do not `UPDATE nsmdt_calls` or write `assignedUnits` yourself — that is why open MDTs go stale. `assignedUnits` is a denormalized object blob plus `nsmdt_call_units` rows, not a JSON array of callsign strings. Do not fire internal NUI/net events to “refresh”. Do not pass a fake `source` into `*ByServerId` to impersonate a dispatcher. Do not call a system export from a terminal when the click must be that officer. Shift clock-in/out, callsign, and own status have no system twin — `serverId` is the subject.
+{: .warning }
 
-Use the **colon** call form: `exports['night_shifts_mdt']:ExportName(...)`. Dot/bracket calls (`exports.res.Name(...)`) can drop the first argument on CitizenFX (e.g. `serverId`), so ByServerId exports look like “invalid server id” / off-shift.
+There is no extra dispatcher login and no hidden dispatcher-only API. Dispatch for a human is rank permissions on a clocked-in officer (`dispatch.assign_units`, `dispatch.resolve_call`, …). An automated dispatcher is the system path.
 
-```lua
-local mdt = exports['night_shifts_mdt']
+#### Shared contracts
 
--- Optional: resource version string
-local version = mdt:GetVersion()
+- **Call pattern:** `exports['night_shifts_mdt']:ExportName(...)` — use the **colon**. Dot or bracket calls can drop the first argument on CitizenFX.
+- **Writes:** `callback(ok, resultOrError)` — `ok == true` and `result` is a table, or `ok == false` and the second arg is an error string. Exception: `ForwardCallToMDT` returns the new call id as a **number** in the second arg.
+- **Board / catalogue reads:** pass a callback. The list arrives in that function (MySQL). Do not document or rely on the no-callback memory snapshot.
+- **System audit:** `performedBy` is `system:<your resource folder>`. User FK columns (`issuedBy`, `createdBy`, `executedBy`, …) stay `NULL`.
+- **Officer:** first arg is a connected, clocked-in `source`. Audit is that player’s license. Creates infer `departmentId` from the active shift.
+- **Trust model:** any started server resource can call these. There is no allowlist.
+- **Identity:** civilians are `nsmdt_civilians` rows (`id` / `personalId`). Vehicles belong to a civilian (`civId`). Warrants, flags, and fines target `civId`. Do not invent rows with SQL.
 
--- Prefer callbacks for civilians / vehicles / flags / licenses / roster / hit log
--- (sync without a callback is warm-cache only and often empty)
-mdt:GetVehiclesByCivilianId(civId, function(vehicles)
-  print(#vehicles)
-end)
+#### Pairing index (same job, two exports)
 
--- First arg of *ByServerId = acting officer (source); targets go in data
-mdt:CreateFlagByServerId(source, {
-  civId = 42,
-  flagType = 'other',
-  description = 'Terminal note',
-  severity = 'low',
-}, function(ok, result)
-  if not ok then return print(result) end
-  print('flagId', result.flagId)
-end)
-```
+| Job | System (no player) | Officer / terminal |
+| --- | ------------------ | ------------------ |
+| Assign unit to call | `AssignUnitToCall` | `AssignUnitToCallByServerId` |
+| Detach unit | `DetachUnitFromCall` | `DetachUnitFromCallByServerId` |
+| Resolve or reopen call | `SetCallStatus` | `SetCallStatusByServerId` |
+| Archive resolved call | `ArchiveCall` | `ArchiveCallByServerId` |
+| Edit call details | `EditCall` | `EditCallByServerId` |
+| Add or delete call note | `AddCallNote` / `DeleteCallNote` | `AddCallNoteByServerId` / `DeleteCallNoteByServerId` |
+| Unit on-call status | `SetUnitOnCallStatus` | `SetUnitOnCallStatusByServerId` |
+| Create / cancel / execute / update warrant | `CreateWarrant` / `CancelWarrant` / `ExecuteWarrant` / `UpdateWarrant` | same names + `ByServerId` |
+| Create or toggle flag | `CreateFlag` / `SetFlagActive` | same names + `ByServerId` |
+| Create or mark fine paid | `CreateFine` / `MarkFinePaid` | same names + `ByServerId` |
+| Record and charges | `CreateCriminalRecord` / `AddCharge` / `UpdateCharge` | same names + `ByServerId` |
+| Vehicle BOLO | `SetVehicleBolo` | `SetVehicleBoloByServerId` |
+| ANPR registry | `AddANPRRegistry` / `RemoveANPRRegistry` | same names + `ByServerId` |
+| Medical / licenses / notes / bulletins / council | unsuffixed names | same names + `ByServerId` |
 
-**Rules of thumb**
+Create-call has no officer twin: `ForwardCallToMDT` is already a system write.
 
-1. **Callback = MySQL SSOT** for person-file reads (civilians, vehicles, flags, criminal records, licenses, roster, ANPR hit log, plate lookup). Sync without a callback only sees warm cache. Callbacks from another resource are supported (CitizenFX funcref). Board / lookup reads do not require a connected player or open MDT session.
-2. **`…ByServerId` first argument** = the **acting officer’s** FiveM server id (`source`) — auth + audit. Warrant / flag / civilian / vehicle targets are always in `data`.
-3. **Permission keys** match Admin → ranks (e.g. `pnc.flags`, `pnc.registration`, `pnc.anpr.manage`). Use `HasPermissionByServerId` to hide UI before writes fail.
+### Worked scenarios
 
----
-
-### **Server — integration exports**
-{: .no_toc }
-
-#### **Getters**
-{: .no_toc }
-
-##### `GetUserShiftData(targetServerId)`
-
-
-|                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `targetServerId` (number) — FiveM player **server id** (`source` from events, or any valid id).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| **Returns**     | **Single table** (not an array). Empty `{}` if the player cannot be resolved or has no session. Keys (values may be `nil` when not on shift or not yet pushed): `serverId`, `rockstarLicense`, `userName`, `nickName`, `adminLevel`, `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusLabel`, `statusColor`, `shiftDuration` (seconds), `totalShiftTime`, `shiftTimeByDepartment` (table), `location`, `speed`, `heading`, `compassDirection`, `postal`, `distanceToNearestPostal`, `street`, `zone`, `modeOfTransport`, `sirens`, `plate`. `location` is a plain `{ x, y, z }` table when present (not a `vector3`). |
-| **Limitations** | **Server-only.** Location fields depend on the client having pushed location while on shift; they may be empty/nil shortly after clock-in.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-
-
-```lua
-local mdt = exports['night_shifts_mdt']
-local data = mdt:GetUserShiftData(source)
-if data.isOnShift then
-    print(data.userName, data.callsign, data.statusCode or "")
-    print("Location:", data.street or "—", data.postal or "")
-end
-```
-
-##### `GetPostalForPlayer(source)`
-
-
-|                 |                                                                                                |
-| --------------- | ---------------------------------------------------------------------------------------------- |
-| **Parameters**  | `source` (number) — player server id. Invalid id returns the translated unknown postal string. |
-| **Returns**     | **String** — postal / zone code for that player’s **current ped position**.                    |
-| **Limitations** | **Server-only.** Without a supported postal backend, you only get the unknown label.           |
-
-
-Resolution order (same behaviour as [Step 4: Postal codes](#step-4-postal-codes)):
-
-1. `rhud` — if started, `exports.rhud:get_postal` at the ped’s X/Y.
-2. `SimpleHUD` or `ModernHUD` — if started, `getPostal(source)` on that resource.
-3. **Static postal data** — nearest code from `mnr_postals`, `nearest-postal`, or JSON via `postal_file` metadata, using the ped’s coordinates.
-
-```lua
-local postal = exports['night_shifts_mdt']:GetPostalForPlayer(source)
-```
-
-##### `GetCivilianIntegrationSnapshot(civId, callback)`
-
-**When you need this:** Only if you run **custom server-side code** (for example a CAD or bridge) that must load PNC **licences**, **flags/markers**, and **police records** for one civilian using their MDT **`nsmdt_civilians.id`**—often the same number as **`mdtCivilianId`** on an ERS ped after MDT merge. Standard installs and in-game play do **not** call this export.
-
-|                 |                                                                                                                                                                                                                                                                                    |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `civId` (number) — `nsmdt_civilians.id` (e.g. `pedData.mdtCivilianId` from ERS after an MDT merge). `callback` (function) — `callback(snapshot)`.                                                                                                                                       |
-| **Returns**     | Nothing synchronously. `callback` receives **`snapshot`**: `civilianId`, **`licenses`** (array, from MySQL — same shape as in-tablet PNC; overlaps summary fields on `pedData.License_*` but includes full rows), **`flagsMarkers`** (array — **all** cached rows for this civilian), **`policeRecords`** (array, from cache). |
-| **Limitations** | **Server-only.** **Async.** Invalid `civId` or non-function `callback` → ignored. **`flagsMarkers`** / **`policeRecords`** follow the **MDT cache**. **Granular only:** `GetLicensesByCivilianId`, `GetAllFlagsMarkersByCivilianId`, `GetPoliceRecordsByCivilianId` when you do not need the bundle. |
-
-
-```lua
-local cid = pedData.mdtCivilianId
-if cid then
-  exports['night_shifts_mdt']:GetCivilianIntegrationSnapshot(cid, function(s)
-    -- s.licenses, s.flagsMarkers, s.policeRecords
-  end)
-end
-```
-
-See [ERS & CAD — pedData and PNC extras](#ers-peddata-enrichment).
-
-##### `GetLicensesByCivilianId(civId, callback)`
-
-|                 |                                                                                                                                 |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `civId` (number) — `nsmdt_civilians.id`. `callback` (function) — `callback(licenses)`.                                          |
-| **Returns**     | Nothing synchronously. `callback` receives an **array** of `nsmdt_licenses` rows (plus `officerFirstName` / `officerLastName`). |
-| **Limitations** | **Server-only.** **Async.** Invalid `civId` or non-function `callback` → ignored.                                               |
-
-```lua
-exports['night_shifts_mdt']:GetLicensesByCivilianId(cid, function(licenses)
-  for _, lic in ipairs(licenses) do
-    print(lic.licenseType, lic.licenseNumber, lic.status)
-  end
-end)
-```
-
-##### `GetAllFlagsMarkersByCivilianId(civId [, callback])`
-
-|                 |                                                                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| **Parameters**  | `civId` (number) — `nsmdt_civilians.id`. Optional `callback(flags)`.                                                                 |
-| **Returns**     | Sync without callback: warm-cache array (often empty). **With callback:** all `nsmdt_flags_markers` rows for that civilian (active + inactive) — same source as the PNC profile. Prefer over `GetFlagsMarkersByCivilianId`. |
-| **Limitations** | **Server-only.** Always pass a callback for SSOT.                                                                                    |
-
-```lua
-exports['night_shifts_mdt']:GetAllFlagsMarkersByCivilianId(cid, function(flags)
-  for _, f in ipairs(flags) do
-    print(f.id, f.flagType, f.isActive, f.description)
-  end
-end)
-```
-
-##### `GetPoliceRecordsByCivilianId(civId [, callback])`
-
-|                 |                                                                                          |
-| --------------- | ---------------------------------------------------------------------------------------- |
-| **Parameters**  | `civId` (number) — `nsmdt_civilians.id`. Optional `callback(records)`.                   |
-| **Returns**     | Sync without callback: warm-cache array (often empty). **With callback:** rows from `nsmdt_criminal_records` for that civilian. Export name is legacy (there is no `nsmdt_police_records` table). |
-| **Limitations** | **Server-only.** Always pass a callback for SSOT.                                        |
-
-```lua
-exports['night_shifts_mdt']:GetPoliceRecordsByCivilianId(cid, function(records)
-  for _, r in ipairs(records) do
-    print(r.id, r.recordNumber, r.caseStatus)
-  end
-end)
-```
-
-##### `GetActiveWarrants(limitOrOpts, callback)`
-
-|                 |                                                                                                                                                         |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | Optional `limit` (number, 1–1000, default 500) or a table with a `limit` field, then `callback(warrants)`. Or just `callback(warrants)`.                 |
-| **Returns**     | Nothing synchronously. `callback` receives active, non-expired warrant rows (joined display fields such as `civDisplayId`, `issuedByDisplayName`).     |
-| **Limitations** | **Server-only.** **Async MySQL** (warrants are not fully cached). Ungated read for integrators — enforce your own officer auth at the terminal.         |
-
-```lua
-exports['night_shifts_mdt']:GetActiveWarrants(function(warrants)
-  print(#warrants)
-end)
-```
-
-##### Board list getters (flags, vehicle BOLOs, ANPR)
-
-| Export | Returns |
-| ------ | ------- |
-| `GetActiveFlagsMarkers([callback])` | Sync = warm cache; **callback = active flags from MySQL** (limit 500) |
-| `GetActiveVehicleBolos()` | Cached vehicles with `bolo == 1` |
-| `GetActiveANPRRegistry()` | Snapshot of active ANPR **watchlist** (loaded at boot) |
-| `GetANPRHitLog([limit], callback)` | Async hit **history** from `nsmdt_anpr_hit_log` (distinct from the watchlist) |
-| `GetVehiclesByCivilianId(civId [, callback])` | Sync = warm cache (often empty); **callback = MySQL SSOT** |
-| `GetVersion()` | Sync resource metadata version string |
-
-```lua
-local mdt = exports['night_shifts_mdt']
-print(mdt:GetVersion())
-mdt:GetActiveFlagsMarkers(function(flags)
-  print('active flags', #flags)
-end)
-mdt:GetVehiclesByCivilianId(cid, function(vehicles)
-  for _, v in ipairs(vehicles) do
-    print(v.id, v.licensePlate, v.bolo)
-  end
-end)
-mdt:GetANPRHitLog(50, function(hits)
-  print(#hits)
-end)
-```
-
-**Limitations:** **Server-only.** Civilian / vehicle / flag tables are **not** fully loaded into cache at boot — pass a callback for SSOT.
-
-##### Identity, search & bridges
-{: .no_toc }
-
-| Token | Meaning |
-| ----- | ------- |
-| `civilianId` / `civId` | Numeric `nsmdt_civilians.id` — PNC person-file key |
-| `personalId` | Display `CIV-…` |
-| `frameworkId` | ESX/QB character id (unique when set; auto-sync) |
-| `isFrameworkLinked` | On list rows: `true` when `frameworkId` is set |
-| `rockstarLicense` | Rockstar account on the civilian row |
-
-MDT does **not** store an “active civilian” on a player. Resolve identity with the exports below.
-
-| Export | Notes |
-| ------ | ----- |
-| `SearchCivilians(query, limit, cb)` | Async PNC search (min 2 chars) |
-| `GetCiviliansByServerId` / `GetCiviliansByLicense` | SSOT list for that Rockstar license; filter `isFrameworkLinked` for characters only |
-| `ResolveFrameworkLinkedCivilianByServerId(serverId [, cb])` | Live framework character → one civilian (no “pick one by license” fallback) |
-| `GetCivilianByFrameworkId` / `GetCivilianByPersonalId` / `GetCivilianByIdentifier` | Exact lookups (prefer callback). `GetCivilianByIdentifier` is an alias of framework id lookup. |
-| `GetActiveShifts()` / `GetAllActiveShifts()` | Duty-only feed (who's clocked in); rows may include `serverId` |
-| `GetDepartmentRoster(departmentId, cb)` | Full department membership (Management roster SSOT) including offline; `onShift` / `connected` / certifications |
-| `HasPermissionByServerId(officerServerId, permission)` | Sync boolean for UI button hiding. Permission keys = rank keys (e.g. `pnc.flags`, `pnc.registration`, `pnc.anpr.manage`) |
+<details markdown="block">
+<summary>AI / system dispatch</summary>
 
 ```lua
 local mdt = exports['night_shifts_mdt']
 
-mdt:SearchCivilians('Lowly', 20, function(rows)
-  for _, r in ipairs(rows) do print(r.civilianId, r.lastName) end
+AddEventHandler('nightshifts:mdt:server:callCreated', function(callId, call)
+  print(('AI saw call %s (%s)'):format(callId, call.callType))
 end)
 
-mdt:GetCiviliansByServerId(source, function(list)
-  for _, c in ipairs(list) do
-    if c.isFrameworkLinked then
-      print('character', c.civilianId, c.frameworkId)
-    end
-  end
-end)
-
-mdt:ResolveFrameworkLinkedCivilianByServerId(source, function(civ)
-  if civ then print('linked', civ.civilianId) end
-end)
-
--- Duty vs full roster
-for _, row in ipairs(mdt:GetActiveShifts()) do
-  print(row.userName, row.serverId)
-end
-mdt:GetDepartmentRoster(deptId, function(result)
-  if not result.success then return end
-  for _, m in ipairs(result.members) do
-    print(m.userName, m.onShift, m.connected)
-  end
-end)
-
-if mdt:HasPermissionByServerId(source, 'pnc.flags') then
-  -- show Add / Clear flag
-end
-```
-
-> **`…ByServerId` naming:** first arg is the **acting officer’s** FiveM server id (auth/audit), not the warrant/flag target. Targets are always in `data` (`warrantId`, `flagId`, `civId`, `vehicleId`/`plate`, …).
-
-> Do not use singular `GetCivilianByLicense` (first match only). Vehicle BOLO writes require a specific `vehicleId` or `plate`.
-
-##### `LookupVehicleByPlate(plate [, callback])` and `GetCivilianByPlate(plate [, callback])`
-
-|                 |                                                                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| **Parameters**  | `plate` (string) — display or normalised plate. Optional `callback(result)`.                                                         |
-| **Returns**     | `LookupVehicleByPlate` → `{ vehicle, civilian }` or nil. `GetCivilianByPlate` → civilian or nil. Sync = cache only; **callback = DB fallback**. |
-| **Limitations** | **Server-only.** Match is normalised (trim, upper, strip spaces/hyphens). Prefer the callback.                                       |
-
-```lua
-exports['night_shifts_mdt']:LookupVehicleByPlate('AB12 CDE', function(hit)
-  if hit and hit.civilian then
-    print(hit.vehicle.id, hit.civilian.firstName, hit.civilian.lastName)
-  end
-end)
-```
-
-#### **Write reference lookups**
-{: .no_toc }
-
-Load these **before** building write UIs. Do not hardcode type strings — servers customise warrant/flag catalogs and the full penal code list.
-
-| Export | Sync/async | Returns |
-| ------ | ---------- | ------- |
-| `GetWarrantTypes()` | Sync | Enabled types: `{ id, label, description }` (defaults: `arrest`, `search`, `bench`) |
-| `GetFlagTypes(callback)` | Async MySQL | `callback(types)` — enabled `{ flagTypeId, label, displayOrder, showInFilter }` |
-| `GetPenalCodes(callback)` | Async MySQL | `callback(codes)` — active codes (`id`, `codeNumber`, `title`, `minFine`/`maxFine`, category fields, …) |
-
-**Fixed enums** (no lookup export):
-
-| Field | Allowed values |
-| ----- | -------------- |
-| Flag `severity` | `low`, `medium`, `high`, `critical` (default `medium`) |
-| ANPR `reasonType` | `stolen`, `bolo`, `custom` (unknown values coerce to `custom`) |
-
-Use `id` from `GetWarrantTypes` as `warrantType`, `flagTypeId` as `flagType`, and numeric `id` from `GetPenalCodes` as `penalCodeId` / entries in `penalCodeIds`. `civId` is always numeric `nsmdt_civilians.id`.
-
-```lua
-local mdt = exports['night_shifts_mdt']
-local warrantTypes = mdt:GetWarrantTypes()
-mdt:GetFlagTypes(function(types)
-  -- populate flag-type dropdown from types[].flagTypeId
-end)
-mdt:GetPenalCodes(function(codes)
-  -- optional fine / ANPR charge pickers
-end)
-```
-
-#### **Mutators (officer-scoped writes)**
-{: .no_toc }
-
-These require the **officer’s server id** as the first argument. The officer must be on shift with the listed permission. Same validation as the in-tablet PNC. Constrained fields must come from [Write reference lookups](#write-reference-lookups) or the fixed enums above.
-
-##### Callback contract
-{: .no_toc }
-
-All mutators are async: `callback(ok, resultOrError)`.
-
-| `ok` | Second argument |
-| ---- | --------------- |
-| `true` | Result **table** (ids / numbers — see success shapes below) |
-| `false` | Error **string** (show or log it; do not assume a fixed enum for every path) |
-
-**Typical failure strings**
-
-| Situation | Warrant / flag / fine | ANPR |
-| --------- | --------------------- | ---- |
-| Off shift | English, e.g. `You must be on shift to create warrants` | Machine code `no_active_shift` |
-| Missing permission | English, e.g. `You do not have permission to create flags` | Machine code `no_permission` |
-| Bad catalog key | `Invalid warrant type` / `Invalid flag type` | — |
-| Bad severity | `Invalid severity level` | — |
-| Duplicate active flag | `This person already has an active flag of this type` | — |
-| Bad / missing plate or id | — | `invalid_plate` / `invalid_id` / `not_found` |
-
-Unknown ANPR `reasonType` values are **not** rejected — they coerce to `custom`.
-
-##### Exports
-{: .no_toc }
-
-| Export | Permission | Payload (high level) |
-| ------ | ---------- | -------------------- |
-| `CreateWarrantByServerId(serverId, data, cb)` | `pnc.registration` | `civId`, `warrantType` (from `GetWarrantTypes`), `reason` (max 2000), optional `expiresAt`, linked charge/record ids |
-| `CreateFlagByServerId(serverId, data, cb)` | `pnc.flags` | `civId`, `flagType` (from `GetFlagTypes`), `description`, optional `severity`, `expiresAt`. **One active flag per `flagType` per civilian.** |
-| `CreateFineByServerId(serverId, data, cb)` | `pnc.registration` | `civId`, `fineDescription`, `fineAmount`, `fineLocation`, optional `fineDueDate`, `penalCodeId` (from `GetPenalCodes`; amount checked against min/max when set), vehicle / property / business / licence links |
-| `AddANPRRegistryByServerId(serverId, data, cb)` | `pnc.anpr.manage` | `plate`, `reason`, optional `penalCodeIds` (array of ids from `GetPenalCodes`), `reasonType` (`stolen` / `bolo` / `custom`) |
-| `RemoveANPRRegistryByServerId(serverId, data, cb)` | `pnc.anpr.manage` | Prefer `entryId` from the add result, **or** `plate` (deactivates all active rows for that plate) |
-| `CancelWarrantByServerId(officerServerId, data, cb)` | `pnc.registration` | Officer cancels warrant; `data.warrantId` |
-| `SetFlagActiveByServerId(officerServerId, data, cb)` | `pnc.flags` | Officer updates flag; `data.flagId`, `data.isActive` (clear = `false`) |
-| `SetVehicleBoloByServerId(officerServerId, data, cb)` | `pnc.registration` | Officer sets vehicle-file BOLO; `vehicleId` and/or `plate`, `bolo`, optional `boloDescription` |
-| `AssignUnitToCallByServerId(officerServerId, data, cb)` | on-shift | Officer assigns unit; `callId`, optional `targetServerId` (default self) |
-
-##### Success shapes (`ok == true`)
-{: .no_toc }
-
-| Export | Result table (main fields) |
-| ------ | -------------------------- |
-| `CreateWarrantByServerId` | `{ warrantId, warrantNumber }` |
-| `CreateFlagByServerId` | `{ flagId }` |
-| `CreateFineByServerId` | `{ fineId, fineNumber }` |
-| `AddANPRRegistryByServerId` | `{ success = true, action = 'added', entry = { id, plate, reason, reasonType, charges, … } }` — use `entry.id` as `entryId` for remove |
-| `RemoveANPRRegistryByServerId` | `{ success = true, action = 'removed', entryId = … }` **or** `{ …, plate = …, normPlate = … }` when removed by plate |
-
-```lua
-local mdt = exports['night_shifts_mdt']
-local types = mdt:GetWarrantTypes()
-local warrantType = types[1] and types[1].id or 'arrest'
-
--- Create warrant (officer = source)
-mdt:CreateWarrantByServerId(source, {
-  civId = 42,
-  warrantType = warrantType,
-  reason = 'Failure to appear',
-}, function(ok, result)
-  if not ok then
-    print('warrant failed', result) -- string
-    return
-  end
-  print(result.warrantId, result.warrantNumber)
-end)
-
--- Lifecycle: clear flag / vehicle BOLO / cancel warrant — target in data
-mdt:SetFlagActiveByServerId(source, { flagId = 12, isActive = false }, function(ok, err)
-  print(ok, err)
-end)
-mdt:SetVehicleBoloByServerId(source, {
-  plate = 'AB12CDE',
-  bolo = true,
-  boloDescription = 'Wanted for questioning',
-}, function(ok, err) end)
-mdt:CancelWarrantByServerId(source, { warrantId = 55 }, function(ok, err) end)
-
--- ANPR add then remove by entryId
-mdt:GetPenalCodes(function(codes)
-  local codeId = codes[1] and codes[1].id
-  mdt:AddANPRRegistryByServerId(source, {
-    plate = 'AB12CDE',
-    reason = 'Suspect vehicle',
-    reasonType = 'bolo',
-    penalCodeIds = codeId and { codeId } or {},
-  }, function(ok, result)
-    if not ok then return print(result) end
-    local entryId = result.entry and result.entry.id
-    mdt:RemoveANPRRegistryByServerId(source, { entryId = entryId }, function(rmOk, rm)
-      print(rmOk, rm)
+mdt:ForwardCallToMDT({
+  callType = 'Welfare Check',
+  description = 'Neighbour reports no answer at the door.',
+  x = 215.4, y = -810.2, z = 30.7,
+  postal = '7284', street = 'San Andreas Ave', zone = 'Downtown',
+  callerName = 'AI Dispatch', contactDetails = 'system',
+  requiresPolice = 1, requiresAmbulance = 0,
+  requiresFire = 0, requiresTow = 0, requiresCouncil = 0,
+  priority = 3,
+}, function(ok, callId)
+  if not ok then return print(callId) end
+  mdt:AssignUnitToCall({ callId = callId, callsign = 'L-42' }, function(ok2, err)
+    if not ok2 then return print(err) end
+    mdt:AddCallNote({ callId = callId, note = 'Assigned by AI CAD (my_ai_dispatch)' }, function()
+      mdt:SetCallStatus({ callId = callId, status = 'resolved' }, function(ok3)
+        if ok3 then mdt:ArchiveCall({ callId = callId, reason = 'Complete' }) end
+      end)
     end)
   end)
 end)
 ```
 
-> **BOLO note:** There is no separate BOLO table. Person alerts = flags; plate watchlist = ANPR registry; vehicle-file BOLO bit = `GetActiveVehicleBolos()`.
+</details>
 
-#### **Dispatch board poll + live updates**
-{: .no_toc }
-
-##### `GetActiveCalls()` / `GetCallById(callId)`
-
-|                 |                                                                 |
-| --------------- | --------------------------------------------------------------- |
-| **Parameters**  | `GetCallById`: `callId` (number).                               |
-| **Returns**     | `GetActiveCalls` → array of non-archived calls from cache. `GetCallById` → one call table or `nil`. |
-| **Limitations** | **Server-only.** **Sync** cache snapshots. Prefer the events below for live updates; use these for initial poll / catch-up. |
+<details markdown="block">
+<summary>Officer terminal (warrant)</summary>
 
 ```lua
 local mdt = exports['night_shifts_mdt']
-for _, call in ipairs(mdt:GetActiveCalls()) do
-  print(call.id, call.callType, call.status)
-end
-local one = mdt:GetCallById(callId)
+if not mdt:HasPermissionByServerId(source, 'pnc.registration') then return end
+mdt:CreateWarrantByServerId(source, {
+  civId = 42,
+  warrantType = 'arrest',
+  reason = 'Assault — issued from CAD terminal',
+  expiresAt = '2027-06-01 00:00:00',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print('warrant', result.warrantNumber)
+end)
 ```
 
-##### Server events
+</details>
 
-Listen with **`AddEventHandler`** on the **server** (not net events):
+<details markdown="block">
+<summary>Read + event catch-up</summary>
 
-| Event | Args |
-| ----- | ---- |
-| `nightshifts:mdt:server:callCreated` | `callId`, `callPayload` (cache-shaped call table) |
-| `nightshifts:mdt:server:callUpdated` | `callId`, `callPayloadOrNil` |
+```lua
+AddEventHandler('onResourceStart', function(res)
+  if res ~= GetCurrentResourceName() then return end
+  local calls = exports['night_shifts_mdt']:GetActiveCalls()
+  print('catch-up active calls', #calls)
+end)
+AddEventHandler('nightshifts:mdt:server:callUpdated', function(callId, call)
+  print('updated', callId, call.callStatus)
+end)
+```
+
+</details>
+
+### Reads
+
+**When to use:** Look up identity, boards, duty, settings, or catch up after an event.
+
+**When not to:** Do not use reads to mutate state.
+
+Board and person-file reads take a callback. The rows arrive in that function — that is the real data.
+
+#### Version, settings, translations, departments
+
+##### GetVersion
+
+Resource version string from the manifest.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| (none) | | | |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | string, e.g. `1.4.9` |
+
+##### GetSetting
+
+One setting value by key.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| key | string | yes | Setting key |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | the setting value, or nil |
+
+##### GetAllSettings
+
+All settings as a **named bag** (string keys). `#` is always `0` — that does not mean empty.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| (none) | | | |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | table keyed by setting name |
+
+##### GetCurrencySymbol
+
+**Parameters:** none.
+
+**Returns:** sync string (currency symbol).
+
+##### GetCurrentLanguage
+
+**Parameters:** none.
+
+**Returns:** sync language code string.
+
+##### GetAvailableLanguages
+
+**Parameters:** none.
+
+**Returns:** sync list of language codes.
+
+##### GetDepartments
+
+Active departments only.
+
+**Parameters:** none.
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | array of department rows (`id`, `departmentName`, `departmentType`, `isActive`, …) |
+
+##### GetRanksByDepartmentId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| departmentId | number | yes | |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | array of rank rows for that department |
+
+##### GetSubDepartmentsByDepartmentId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| departmentId | number | yes | |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | array of sub-department rows |
+
+##### GetPenalCodes
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callback | function | yes | `function(codes)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of penal-code rows |
+| sync | none |
+
+##### GetFlagTypes
+
+Enabled PNC flag types.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callback | function | yes | `function(types)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of flag-type rows |
+| sync | none |
+
+##### GetLicenseTypes
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callback | function | yes | `function(rows)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of license-type rows |
+| sync | empty table `{}` (ignore it) |
+
+<details markdown="block">
+<summary>Example — settings and catalogues</summary>
+
+```lua
+local mdt = exports['night_shifts_mdt']
+print(mdt:GetVersion())
+local depts = mdt:GetDepartments()
+print(depts[1] and depts[1].departmentName)
+
+mdt:GetPenalCodes(function(codes) print('penal', #codes) end)
+mdt:GetFlagTypes(function(types) print('flag types', #types) end)
+mdt:GetLicenseTypes(function(rows) print('license types', #rows) end)
+```
+
+</details>
+
+#### Identity and PNC boards
+
+##### GetCivilianIntegrationSnapshot
+
+Full civilian plus related snapshot (licenses, vehicles, …).
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| civId | number | yes | `nsmdt_civilians.id` |
+| callback | function | yes | `function(snapshot)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | snapshot table, or empty / nil if unknown |
+
+##### GetCivilianByPersonalId
+
+Lookup by public dossier id (e.g. `CIV-…`).
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| personalId | string | yes | |
+| callback | function | recommended | `function(civ)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | civilian row (`id`, `civilianId`, `personalId`, `isFrameworkLinked`, …) or nil |
+| sync | same row from cache, or nil |
+
+##### GetCivilianByFrameworkId
+
+Alias: `GetCivilianByIdentifier`.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| frameworkId | string | yes | ESX `identifier` or QB/QBox `citizenid` |
+| callback | function | recommended | `function(civ)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | decorated civilian row or nil |
+| sync | cache hit or nil |
+
+##### GetCiviliansByServerId
+
+All MDT person-files linked to that player’s Rockstar license.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | Connected player |
+| callback | function | recommended | `function(civs)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of decorated civilian rows |
+| sync | cache array (may be empty) |
+
+##### GetCiviliansByLicense
+
+Same as `GetCiviliansByServerId`, but you pass the license string.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| rockstarLicense | string | yes | |
+| callback | function | recommended | `function(civs)` |
+
+**Returns:** same as `GetCiviliansByServerId`.
+
+##### ResolveFrameworkLinkedCivilianByServerId
+
+Best framework-linked civilian for that player. No license fallback — `frameworkId` match only.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+| callback | function | recommended | `function(civ)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | one civilian row or nil |
+| sync | one civilian row or nil |
+
+##### SearchCivilians
+
+Substring search. Query must be at least 2 characters. Limit capped at 50.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| query | string | yes | Name, personal id, framework id, or numeric civ id |
+| limitOrOpts | number or table | no | number, or `{ limit = n }` |
+| callback | function | yes | `function(rows)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of `{ civilianId, firstName, lastName, personalId, frameworkId, isFrameworkLinked }` |
+| sync | none |
+
+##### GetVehiclesByCivilianId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| civId | number | yes | |
+| callback | function | recommended | `function(vehicles)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of vehicle rows |
+| sync | cache array |
+
+##### GetLicensesByCivilianId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| civId | number | yes | |
+| callback | function | yes | `function(licenses)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of issued license rows |
+
+##### GetAllFlagsMarkersByCivilianId
+
+All flags for a civilian (active and inactive).
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| civId | number | yes | |
+| callback | function | recommended | `function(flags)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of flag rows |
+| sync | cache array |
+
+##### GetPoliceRecordsByCivilianId
+
+Criminal records for a civilian (`nsmdt_criminal_records`).
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| civId | number | yes | |
+| callback | function | recommended | `function(records)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of record rows (MySQL) |
+| sync | warm-cache array |
+
+##### GetActiveWarrants
+
+Every **active** warrant in the database (all departments, no 31-day cut). The tablet “Active” card is the loaded list for this department — those counts can differ.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| limitOrOpts | number or table | no | e.g. `500` or `{ limit = 500 }` |
+| callback | function | yes | `function(warrants)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of active warrant rows |
+| sync | none |
+
+##### GetActiveFlagsMarkers
+
+Active, unexpired PNC flags.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callback | function | yes | `function(flags)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of flag rows (MySQL, up to 500) |
+
+##### GetActiveVehicleBolos
+
+Vehicles with BOLO set.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callback | function | yes | `function(bolos)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of vehicle rows (`bolo = 1`) |
+
+##### GetActiveANPRRegistry
+
+Active ANPR watchlist plates.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callback | function | yes | `function(plates)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of registry rows |
+
+##### LookupVehicleByPlate
+
+Plate to vehicle record.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| plate | string | yes | Spaces and dashes ignored |
+| callback | function | recommended | `function(vehicle)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | vehicle row or nil |
+| sync | cache hit or nil |
+
+##### GetCivilianByPlate
+
+Plate to registered owner.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| plate | string | yes | |
+| callback | function | recommended | `function(civ)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | civilian row or nil |
+| sync | cache hit or nil |
+
+##### GetANPRHitLog
+
+Recent ANPR detections.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| limitOrOpts | number or table | no | `{ limit, offset }` |
+| callback | function | yes | `function(hits)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of hit-log rows |
+
+<details markdown="block">
+<summary>Example — boards via callback</summary>
+
+```lua
+local mdt = exports['night_shifts_mdt']
+mdt:GetActiveWarrants(500, function(warrants) print('warrants', #warrants) end)
+mdt:GetActiveFlagsMarkers(function(flags) print('flags', #flags) end)
+mdt:GetActiveVehicleBolos(function(bolos) print('bolos', #bolos) end)
+mdt:GetActiveANPRRegistry(function(plates) print('anpr', #plates) end)
+mdt:SearchCivilians('Smith', 20, function(rows) print('search', #rows) end)
+```
+
+</details>
+
+#### Duty, roster, and calls
+
+##### GetUserShiftData
+
+Shift plus identity for one player. Empty-ish table if they have no session (`isOnShift = false`, plus `_error`).
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+
+**Returns** (sync table)
+
+`serverId`, `rockstarLicense`, `userName`, `nickName`, `adminLevel`, `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusLabel`, `statusColor`, `shiftDuration`, `totalShiftTime`, `shiftTimeByDepartment`, `location` (`{ x, y, z }`, not `vector3`), `speed`, `heading`, `compassDirection`, `postal`, `street`, `zone`, `modeOfTransport`, `sirens`, `plate`.
+
+##### GetActiveShiftByServerId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | active shift row or nil |
+
+##### GetCurrentShiftDurationByServerId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | number of seconds (0 if off shift) |
+
+##### GetPostalForPlayer
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | nearest postal string or nil |
+
+##### HasPermissionByServerId
+
+Rank permission check for the player’s **current** department. Off-shift is always `false`.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+| permission | string | yes | e.g. `pnc.registration` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | boolean |
+
+##### GetActiveShifts / GetOnDutyUnits
+
+Same data: every clocked-in unit. `GetOnDutyUnits` is an alias.
+
+**Parameters:** none.
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | array of `{ serverId, rockstarLicense, userName, nickName, shift, location, postal, street, … }` |
+
+##### GetDepartmentRoster
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| departmentId | number | yes | |
+| callback | function | recommended | `function(members)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of roster members |
+| sync | depends on implementation; prefer the callback |
+
+##### GetActiveCalls
+
+Cache snapshot of **active, non-archived** calls. Use this for event catch-up. Live board source.
+
+**Parameters:** none.
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | array of call rows (`id`, `callType`, `callStatus`, `x`, `y`, `z`, `postal`, …) |
+
+##### GetCallById
+
+One call from the live cache (may be nil if archived or unknown).
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callId | number | yes | |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | call row or nil |
+
+##### GetCallNotes
+
+Notes oldest-first.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.callId | number | yes | or pass `callId` as the first number |
+| data.limit | number | no | default 50 |
+| callback | function | yes | `function(notes)` — **not** `(ok, result)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback | array of `{ id, callId, noteText, createdAt, createdBy }` |
+
+##### GetAllActiveUnits
+
+On-shift units with distance to the call.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callId | number | yes | or `{ callId = n }` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | array of `{ serverId, rockstarLicense, userName, nickName, callsign, departmentId, statusCode, location, postal, street, distance }` |
+
+##### GetNearbyUnits
+
+Same as `GetAllActiveUnits`, distance-filtered.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callId | number | yes | or `{ callId, maxDistance }` |
+| data.maxDistance | number | no | default 2000 |
+
+**Returns:** same unit shape as `GetAllActiveUnits`, filtered by distance.
+
+<details markdown="block">
+<summary>Example — duty and calls</summary>
+
+```lua
+local mdt = exports['night_shifts_mdt']
+local shift = mdt:GetUserShiftData(source)
+print(shift.isOnShift, shift.callsign, shift.location and shift.location.x)
+
+local calls = mdt:GetActiveCalls()
+local call = mdt:GetCallById(calls[1] and calls[1].id)
+if call then
+  mdt:GetCallNotes({ callId = call.id, limit = 50 }, function(notes)
+    print(#notes)
+  end)
+end
+```
+
+</details>
+
+### Events
+
+**When to use:** React live when a call or PNC row is created or updated. Subscribe with **server** `AddEventHandler` (not `RegisterNetEvent`).
+
+**When not to:** Do not `TriggerEvent` these yourself to “refresh” the MDT.
+
+| Event | Fired when | Args |
+| ----- | ---------- | ---- |
+| `nightshifts:mdt:server:callCreated` | New call (including `ForwardCallToMDT`) | `callId`, `call` |
+| `nightshifts:mdt:server:callUpdated` | Assign, detach, status, edit, archive, notes | `callId`, `call` |
+| `nightshifts:mdt:server:warrantCreated` | Warrant insert | `warrantId`, `payload` |
+| `nightshifts:mdt:server:warrantUpdated` | Cancel / execute / edit | `warrantId`, `payload` |
+| `nightshifts:mdt:server:flagCreated` | Flag insert | `flagId`, `payload` |
+| `nightshifts:mdt:server:flagUpdated` | Flag active toggle | `flagId`, `payload` |
+| `nightshifts:mdt:server:fineCreated` | Fine insert | `fineId`, `payload` |
+| `nightshifts:mdt:server:fineUpdated` | Mark paid | `fineId`, `payload` |
+| `nightshifts:mdt:server:recordCreated` | Criminal record insert | `recordId`, `payload` |
+| `nightshifts:mdt:server:recordUpdated` | Charge added | `recordId`, `payload` |
 
 ```lua
 AddEventHandler('nightshifts:mdt:server:callCreated', function(callId, call)
   print('new call', callId, call.callType)
 end)
-
-AddEventHandler('nightshifts:mdt:server:callUpdated', function(callId, call)
-  print('call updated', callId)
+AddEventHandler('nightshifts:mdt:server:warrantCreated', function(warrantId, payload)
+  print('warrant', warrantId, payload.warrantNumber)
 end)
 ```
 
-> **Third-party terminal adapters:** Detect resource name **`night_shifts_mdt`**. Prefer these documented exports over direct `nsmdt_*` SQL. Raw table reads are best-effort only (additive migrations); do not write MDT tables from outside the resource.
+Use `GetActiveCalls` / `GetCallById` for catch-up after your resource starts.
 
-##### `GetDepartments()`
+### System writes — dispatch
 
+**When to use:** AI CAD, ERS, webhooks — no player is performing the action. Open MDTs update.
 
-|                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | None.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| **Returns**     | **Array table** of **active** department rows from cache (`SELECT *` from `nsmdt_departments`, filtered to `isActive`). Each element is a **table** with at least: `id`, `departmentName`, `departmentShortName`, `departmentDescription`, `departmentIcon`, `departmentBanner`, `departmentLogo`, `departmentType`, `departmentColor`, `blipColour`, `blipSprite`, `displayOrder`, `isActive`, `createdAt`, `createdBy`, `modifiedAt`, `modifiedBy`. |
-| **Limitations** | **Server-only.** Archived departments (`isActive = 0`) are **omitted** (clock-in pickers only see active rows).                                                                                                                                                                                                                                                                                                                                                                                                           |
+**When not to:** A human dispatcher clicking in your terminal — use the `*ByServerId` twin.
 
+Audit: `system:<GetInvokingResource()>`. Capture happens at export entry (safe across MySQL callbacks). `assignedByLicense` on `nsmdt_call_units` has no FK — the system string is stored. `archivedBy` is an integer user/shift id — left `NULL` for system archive.
 
-```lua
-for _, d in ipairs(exports['night_shifts_mdt']:GetDepartments()) do
-    print(d.id, d.departmentName)
-end
-```
+#### ForwardCallToMDT
 
-##### `GetRanksByDepartmentId(departmentId)`
+Create a new dispatch call with no acting officer.
 
+**Parameters**
 
-|                 |                                                                                                                                                                                                                                                                                                                                                                         |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `departmentId` (number).                                                                                                                                                                                                                                                                                                                                                |
-| **Returns**     | **Array table** of rank rows for that department from cache. Each element includes: `id`, `departmentId`, `departmentName` (joined from departments), `rankName`, `rankShortName`, `rankDescription`, `rankOrder`, `permissions` (**array** of permission **strings**, e.g. PNC/dispatch flags — parsed from `nsmdt_rank_permissions`). |
-| **Limitations** | **Server-only.** Empty `{}` if `departmentId` is invalid or there are no ranks.                                                                                                                                                                                                                                                                                         |
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callData.callType | string | yes | |
+| callData.description | string | yes | |
+| callData.x / y / z | number | yes | World coords (`z` may default) |
+| callData.postal | string | no | |
+| callData.street | string | no | |
+| callData.zone | string | no | |
+| callData.callerName | string | no | |
+| callData.contactDetails | string | no | |
+| callData.requiresPolice | number | no | `0` or `1` |
+| callData.requiresAmbulance | number | no | `0` or `1` |
+| callData.requiresFire | number | no | `0` or `1` |
+| callData.requiresTow | number | no | `0` or `1` |
+| callData.requiresCouncil | number | no | `0` or `1` |
+| callData.priority | number | no | Priority id |
+| callback | function | no | `function(ok, callIdOrNil)` |
 
+**Returns**
 
-```lua
-local ranks = exports['night_shifts_mdt']:GetRanksByDepartmentId(1)
-```
+| Path | Value |
+| ---- | ----- |
+| callback ok | `callId` as a **number** (not a table) |
+| callback fail | `nil` |
+| sync | none |
 
-##### `GetSubDepartmentsByDepartmentId(departmentId)`
-
-
-|                 |                                                                                                                                                                                                                                                                                                                                                                   |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `departmentId` (number).                                                                                                                                                                                                                                                                                                                                          |
-| **Returns**     | **Array table** of sub-department rows for that department from cache. Each element includes: `id`, `departmentId`, `departmentName` (joined), `subDepartmentName`, `subDepartmentShortName`, `subDepartmentDescription`, `displayOrder`, `createdAt`. Use `id` as `subDepartmentId` when calling `StartShiftByServerId`. |
-| **Limitations** | **Server-only.** Empty `{}` if the department has no sub-departments or id is invalid.                                                                                                                                                                                                                                                                            |
-
-
-```lua
-local sub = exports['night_shifts_mdt']:GetSubDepartmentsByDepartmentId(1)
-```
-
-##### `GetSetting(key)`
-
-
-|                 |                                                                                                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `key` (string) — e.g. `currency`, `currencyPosition`, `timeFormat`, `dateFormat`, `speedUnit`, `vehicleInspectionEnabled`, `vehicleInspectionLabel`, alert duration keys. |
-| **Returns**     | Value for that setting (type depends on key).                                                                                                                             |
-| **Limitations** | **Server-only.** Read-only.                                                                                                                                               |
-
-
-```lua
-local mdt = exports['night_shifts_mdt']
-print(mdt:GetSetting('currency'), mdt:GetSetting('speedUnit'))
-```
-
-##### `GetAllSettings()`
-
-
-|                 |                                                                                              |
-| --------------- | -------------------------------------------------------------------------------------------- |
-| **Parameters**  | None.                                                                                        |
-| **Returns**     | **Table** — full settings (defaults merged with DB), including `alertDurations` and similar. |
-| **Limitations** | **Server-only.** Read-only.                                                                  |
-
-
-```lua
-local settings = exports['night_shifts_mdt']:GetAllSettings()
-```
-
-##### `GetCurrencySymbol()`
-
-
-|                 |                                              |
-| --------------- | -------------------------------------------- |
-| **Parameters**  | None.                                        |
-| **Returns**     | **String** — display symbol (e.g. `$`, `€`). |
-| **Limitations** | **Server-only.**                             |
-
-
-```lua
-local symbol = exports['night_shifts_mdt']:GetCurrencySymbol()
-```
-
-##### `GetCurrentLanguage()`
-
-
-|                 |                                         |
-| --------------- | --------------------------------------- |
-| **Parameters**  | None.                                   |
-| **Returns**     | **String** — language code (e.g. `en`). |
-| **Limitations** | **Server-only.**                        |
-
-
-##### `GetAvailableLanguages()`
-
-
-|                 |                                      |
-| --------------- | ------------------------------------ |
-| **Parameters**  | None.                                |
-| **Returns**     | **Table** — array of language codes. |
-| **Limitations** | **Server-only.**                     |
-
-
-```lua
-for _, code in ipairs(exports['night_shifts_mdt']:GetAvailableLanguages()) do print(code) end
-```
-
-##### `GetActiveShiftByServerId(serverId)`
-
-
-|                 |                                                       |
-| --------------- | ----------------------------------------------------- |
-| **Parameters**  | `serverId` (number) — player server id.               |
-| **Returns**     | Plain active-shift **table**, or `nil` if not on shift. Fields: `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusColor`, `statusLabel`, `startTime`, `pausedTime`. |
-| **Limitations** | **Server-only.** Cross-resource safe (no `vector3`, no nested `locationData`). For location while on shift, use `GetUserShiftData`. |
-
-
-```lua
-local shift = exports['night_shifts_mdt']:GetActiveShiftByServerId(source)
-if shift then print(shift.callsign, shift.departmentId, shift.statusCode) end
-```
-
-##### `GetCurrentShiftDurationByServerId(serverId)`
-
-
-|                 |                                                                     |
-| --------------- | ------------------------------------------------------------------- |
-| **Parameters**  | `serverId` (number) — player server id.                             |
-| **Returns**     | **Number** — seconds in the current shift; `0` if not on shift. |
-| **Limitations** | **Server-only.**                                                    |
-
-
-```lua
-local seconds = exports['night_shifts_mdt']:GetCurrentShiftDurationByServerId(source)
-```
-
-#### **Actions — Shift**
-{: .no_toc }
-
-##### `StartShiftByServerId(serverId, departmentId, subDepartmentId, rankId, callsign)`
-
-
-|                 |                                                                                                                                                                                                                                                                                                                 |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `serverId` — player server id. `departmentId`, `subDepartmentId`, `rankId` — from `GetDepartments` / `GetRanksByDepartmentId` / `GetSubDepartmentsByDepartmentId`. `callsign` — string you want for this shift (export does **not** load a saved callsign from the DB; empty → `"UNASSIGNED"`). |
-| **Returns**     | `success` (boolean), `result` (table or error string). On success, `result.callsign` reflects what was stored.                                                                                                                                                                                  |
-| **Limitations** | **Server-only.** Player must already have an MDT session.                                                                                                                                                                                                                                                       |
-
-
-```lua
-local mdt = exports['night_shifts_mdt']
-local depts = mdt:GetDepartments()
-local dept = nil
-for _, d in ipairs(depts) do
-    if d.departmentName == "LSPD" then dept = d; break end
-end
-if not dept then return end
-local ranks = mdt:GetRanksByDepartmentId(dept.id)
-local rank = nil
-for _, r in ipairs(ranks) do
-    if r.rankName == "Officer" then rank = r; break end
-end
-if not rank then return end
-local success, result = mdt:StartShiftByServerId(source, dept.id, nil, rank.id, "L-42")
-if success then print("Clocked in:", result.callsign) else print("Failed:", tostring(result)) end
-```
-
-##### `EndShiftByServerId(serverId [, callback])`
-
-
-|                 |                                                                                               |
-| --------------- | --------------------------------------------------------------------------------------------- |
-| **Parameters**  | `serverId` (number). `callback` (optional) — `function(success, durationOrError, totalTime)`. |
-| **Returns**     | `success` (boolean), `duration` (number or error string), `totalTime` (number).   |
-| **Limitations** | **Server-only.**                                                                              |
-
-
-```lua
-local mdt = exports['night_shifts_mdt']
-local ok, duration, total = mdt:EndShiftByServerId(source)
-mdt:EndShiftByServerId(source, function(success, durationOrErr, totalTime)
-    if success then print("Ended. Duration:", durationOrErr) end
-end)
-```
-
-##### `UpdateShiftStatusByServerId(serverId, statusCode [, callback])`
-
-
-|                 |                                                                                                   |
-| --------------- | ------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `serverId` (number). `statusCode` (string) — e.g. `10-8`, `10-6` (must exist for the department). |
-| **Returns**     | `success` (boolean), `result` (string or nil).                                            |
-| **Limitations** | **Server-only.**                                                                                  |
-
-
-```lua
-local ok, err = exports['night_shifts_mdt']:UpdateShiftStatusByServerId(source, "10-8")
-```
-
-##### `UpdateShiftStatusByBindingByServerId(serverId, binding [, callback])`
-
-
-|                 |                                                                                                                                                              |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Parameters**  | `serverId` (number). `binding` (string) — one of `available`, `responding`, `on_scene`, `panic`. `callback` (optional) — `function(success, resultOrError)`. |
-| **Returns**     | `success` (boolean), `resultOrError` (string or nil). On success, the resolved `statusCode`.                                                                 |
-| **Limitations** | **Server-only.** Silent no-op when the department has no status configured for the binding. Requires `night_shifts_mdt` v1.4.1+.                             |
-
-
-```lua
-local mdt = exports['night_shifts_mdt']
-mdt:UpdateShiftStatusByBindingByServerId(source, 'responding')
-mdt:UpdateShiftStatusByBindingByServerId(source, 'on_scene')
-mdt:UpdateShiftStatusByBindingByServerId(source, 'available')
-mdt:UpdateShiftStatusByBindingByServerId(source, 'panic')
-```
-
-##### `UpdateCallsignByServerId(serverId, newCallsign)`
-
-
-|                 |                                                                                                     |
-| --------------- | --------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `serverId` (number). `newCallsign` (string) — alphanumeric, spaces, hyphens; max **20** characters. |
-| **Returns**     | `success` (boolean), `result` (table or error string).                                      |
-| **Limitations** | **Server-only.**                                                                                    |
-
-
-```lua
-exports['night_shifts_mdt']:UpdateCallsignByServerId(source, "L-99")
-```
-
-#### **Actions — Dispatch**
-{: .no_toc }
-
-##### `ForwardCallToMDT(callData [, callback])`
-
-
-|                 |                                                                                                                                                                                                                                                                        |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | `callData` (table) — see required fields below. `callback` (optional) — `function(success, callId)`.                                                                                                                                                                   |
-| **Returns**     | Nothing useful synchronously; use `callback` when you need `callId`.                                                                                                                                                                                                   |
-| **Limitations** | **Server-only.** Validation **rejects** if `callType` or `description` is empty; `x`/`y` missing or both zero; or **no** routing flag is set. At least one of `requiresPolice`, `requiresAmbulance`, `requiresFire`, `requiresTow`, `requiresCouncil` must be `1`.     |
-
-
-**Required `callData`**
-
-
-| Field                                                                                       | Rule                       |
-| ------------------------------------------------------------------------------------------- | -------------------------- |
-| `callType`                                                                                  | Non-empty string           |
-| `description`                                                                               | Non-empty string           |
-| `x`, `y`                                                                                    | Numbers; **not** both zero |
-| `requiresPolice` / `requiresAmbulance` / `requiresFire` / `requiresTow` / `requiresCouncil` | At least one `1`           |
-
-
-**Optional `callData` (examples)**
-
-
-| Field                            | Notes                            |
-| -------------------------------- | -------------------------------- |
-| `priority`                       | Default **3** (grades 1–5).      |
-| `priorityLabel`, `priorityColor` | Override from settings.          |
-| `incidentRef`                    | Dispatcher reference (e.g. CAD). |
-| `callerName`, `contactDetails`   | Reporting party.                 |
-| `z`                              | Optional height.                 |
-| `street`, `postal`, `zone`       | Display on call card.            |
-
+<details markdown="block">
+<summary>Example</summary>
 
 ```lua
 exports['night_shifts_mdt']:ForwardCallToMDT({
-    callType = "Road Traffic Collision",
-    description = "Two vehicles, one driver unconscious.",
-    x = -561.3, y = -199.7, z = 37.9,
-    requiresPolice = 1, requiresAmbulance = 1,
-    requiresFire = 0, requiresTow = 0, requiresCouncil = 0,
-    priority = 2, callerName = "Dispatch", contactDetails = "555-0100",
-}, function(success, callId)
-    if success then print("Call #" .. tostring(callId)) end
+  callType = 'Traffic Collision',
+  description = 'Two-vehicle RTC on the highway, possible injuries.',
+  x = 215.4, y = -810.2, z = 30.7,
+  postal = '7284', street = 'Olympic Fwy', zone = 'La Mesa',
+  callerName = 'DOT camera', contactDetails = 'auto',
+  requiresPolice = 1, requiresAmbulance = 1,
+  requiresFire = 0, requiresTow = 1, requiresCouncil = 0,
+  priority = 2,
+}, function(ok, callId)
+  if not ok then return print('forward failed') end
+  print('callId', callId)
 end)
 ```
 
----
+</details>
 
-### **Client — integration exports**
-{: .no_toc }
+#### AssignUnitToCall
 
-#### **Getters**
-{: .no_toc }
+Attach an on-shift unit. Accepts **either** `targetServerId` **or** `callsign` (fails if missing, offline, or not unique). Uses the same cross-call detach queue as the board. `byDispatch = true`.
 
-##### `IsMenuOpen()`
+**Parameters**
 
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.callId | number | yes | Active call |
+| data.callsign | string | one of | Must be on shift and unique |
+| data.targetServerId | number | one of | Connected and on shift |
+| callback | function | no | `function(ok, resultOrError)` |
 
-|                 |                                                              |
-| --------------- | ------------------------------------------------------------ |
-| **Returns**     | **Boolean** — whether the MDT NUI/tablet is considered open. |
-| **Limitations** | **Client-only.**                                             |
+**Returns**
 
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ callId, unitLicense, message }` |
+| callback fail | error string, e.g. `callsign not found or unit not on shift`, `callsign is not unique`, `target player not found` |
+| sync | none |
+
+<details markdown="block">
+<summary>Example</summary>
 
 ```lua
-if exports['night_shifts_mdt']:IsMenuOpen() then
-    -- tablet is up
-end
+exports['night_shifts_mdt']:AssignUnitToCall({
+  callId = 1842,
+  callsign = 'L-42',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
 ```
 
-##### `IsOnPoliceShift()` · `IsOnAmbulanceShift()` · `IsOnFireShift()` · `IsOnTowShift()` · `IsOnCouncilShift()`
+</details>
 
+#### DetachUnitFromCall
 
-|                 |                                                                                                                   |
-| --------------- | ----------------------------------------------------------------------------------------------------------------- |
-| **Returns**     | **Boolean** each — whether the **local player** is clocked into that department **type** (synced from MDT state). |
-| **Limitations** | **Client-only.** At most **one** shift type at a time. Cached; MDT does not need to be open.                      |
+Release a unit. They go **available**.
 
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.callId | number | yes | |
+| data.callsign | string | one of | |
+| data.targetServerId | number | one of | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ callId, message }` |
+| callback fail | error string |
+
+#### SetCallStatus
+
+Resolve or reopen. Resolve **auto-detaches every unit** and sets them available. Reopen (`active`) does **not** re-attach anyone.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.callId | number | yes | |
+| data.status | string | yes | `active` or `resolved` |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ callId, status, message }` |
+| callback fail | error string, e.g. `status must be active or resolved` |
+
+<details markdown="block">
+<summary>Example</summary>
+
+```lua
+exports['night_shifts_mdt']:SetCallStatus({
+  callId = 1842,
+  status = 'resolved',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+</details>
+
+#### ArchiveCall
+
+Call must already be `resolved`. Will not silently archive an active call. `archivedBy` stays `NULL`. Reason is stored and added as a system note.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.callId | number | yes | |
+| data.reason | string | no | Default `Archived by <resource>` |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ callId, archived = true }` |
+| callback fail | `Call not found`, `Call already archived`, `Call must be resolved before archive` |
+
+#### EditCall
+
+Update type, description, location, caller, services, or priority.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.callId | number | yes | |
+| data.callType | string | no | |
+| data.description | string | no | |
+| data.zone | string | no | |
+| data.postal | string | no | |
+| data.street | string | no | |
+| data.callerName | string | no | |
+| data.contactDetails | string | no | |
+| data.priority | number | no | |
+| data.requiresPolice | number | no | `0` or `1` |
+| data.requiresAmbulance | number | no | |
+| data.requiresFire | number | no | |
+| data.requiresTow | number | no | |
+| data.requiresCouncil | number | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ callId }` |
+| callback fail | `Call not found` or `Failed to edit call` |
+
+#### AddCallNote
+
+`createdBy` on the note row is `NULL` (FK-safe). Put your resource name in the text so the board is not a blank actor.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.callId | number | yes | |
+| data.note | string | yes | alias `data.text` |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ callId, noteId }` |
+| callback fail | `callId required` or `note required` |
+
+#### DeleteCallNote
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.noteId | number | yes | |
+| data.callId | number | no | Used to invalidate open tablets |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ noteId, callId }` |
+| callback fail | `Note not found` |
+
+#### SetUnitOnCallStatus
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.callId | number | yes | |
+| data.unitStatus | string | yes | `en_route` or `on_scene` |
+| data.callsign | string | one of | |
+| data.targetServerId | number | one of | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ callId, unitStatus, message }` |
+| callback fail | error string |
+
+### System writes — PNC, medical, licenses, notes, bulletins, council
+
+**When to use:** Automated PNC / records / council with no officer.
+
+**When not to:** A terminal click that must show that officer as issuer.
+
+`departmentId` is required on warrant / flag / fine / criminal-record creates (`responsibleDepartmentId` is NOT NULL). Fail with `departmentId required` or `Invalid departmentId` if omitted or unknown.
+
+FK rule: `issuedBy` / `createdBy` / `executedBy` on warrants, flags, and fines stay **NULL**. Audit `performedBy` is `system:<resource>`. PNC “issued by” may show N/A.
+
+#### CreateWarrant
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.civId | number | yes | |
+| data.warrantType | string | yes | e.g. `arrest` |
+| data.reason | string | yes | |
+| data.departmentId | number | yes | |
+| data.expiresAt | string | no | MySQL datetime |
+| data.linkedChargeId | number | no | |
+| data.linkedCriminalRecordId | number | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ warrantId, warrantNumber }` |
+| callback fail | error string |
+
+<details markdown="block">
+<summary>Example</summary>
+
+```lua
+exports['night_shifts_mdt']:CreateWarrant({
+  civId = 42,
+  warrantType = 'arrest',
+  reason = 'Failure to appear — automated warrant',
+  departmentId = 1,
+  expiresAt = '2027-12-31 23:59:59',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print(result.warrantId, result.warrantNumber)
+end)
+```
+
+</details>
+
+#### UpdateWarrant
+
+Active warrants only.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.warrantId | number | yes | |
+| data.reason | string | yes | |
+| data.expiresAt | string | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ warrantId }` |
+| callback fail | `Failed to update warrant (not found or not active)` |
+
+#### ExecuteWarrant
+
+`executedBy` stays `NULL`.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.warrantId | number | yes | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ warrantId, warrantStatus = 'executed' }` |
+| callback fail | `Failed to execute warrant` |
+
+#### CancelWarrant
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.warrantId | number | yes | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ warrantId, warrantStatus = 'cancelled' }` |
+| callback fail | `Failed to cancel warrant` |
+
+#### CreateFlag
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.civId | number | yes | |
+| data.flagType | string | yes | Must exist in flag types |
+| data.description | string | yes | |
+| data.departmentId | number | yes | |
+| data.severity | string | no | e.g. `medium` |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ flagId }` |
+| callback fail | error string |
+
+<details markdown="block">
+<summary>Example</summary>
+
+```lua
+exports['night_shifts_mdt']:CreateFlag({
+  civId = 42,
+  flagType = 'other',
+  description = 'Automated flag',
+  severity = 'medium',
+  departmentId = 1,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+</details>
+
+#### SetFlagActive
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.flagId | number | yes | |
+| data.isActive | boolean or number | yes | `true` / `1` or `false` / `0` |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ flagId, isActive }` (`isActive` is boolean) |
+| callback fail | `flagId and isActive required` |
+
+#### CreateFine
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.civId | number | yes | |
+| data.fineDescription | string | yes | |
+| data.fineAmount | number | yes | |
+| data.fineLocation | string | yes | |
+| data.departmentId | number | yes | |
+| data.penalCodeId | number | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ fineId, fineNumber }` |
+| callback fail | error string |
+
+<details markdown="block">
+<summary>Example</summary>
+
+```lua
+exports['night_shifts_mdt']:CreateFine({
+  civId = 42,
+  fineDescription = 'Speeding',
+  fineAmount = 250,
+  fineLocation = 'Olympic Fwy',
+  departmentId = 1,
+  penalCodeId = 12,
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+</details>
+
+#### MarkFinePaid
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.fineId | number | yes | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ fineId, finePaid = true }` |
+| callback fail | `Failed to mark fine paid` |
+
+#### CreateCriminalRecord
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.location | string | yes | |
+| data.incidentDate | string | yes | Date or datetime |
+| data.departmentId | number | yes | |
+| data.civId | number | no | |
+| data.description | string | no | |
+| data.caseStatus | string | no | default `pending` |
+| data.investigatingOfficer | string | no | |
+| data.courtDate | string | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ recordId, recordNumber }` |
+| callback fail | `location required`, `incidentDate required`, `departmentId required` |
+
+#### AddCharge
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.criminalRecordId | number | yes | |
+| data.penalCodeId | number | no | |
+| data.chargeTitle | string | no | alias `chargeTitleSnapshot` |
+| data.fineAmount | number | no | default 0 |
+| data.jailTime | number | no | |
+| data.chargeStatus | string | no | default `pending` |
+| data.convictionDate | string | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ chargeId, criminalRecordId }` |
+| callback fail | `criminalRecordId required` |
+
+#### UpdateCharge
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.chargeId | number | yes | |
+| data.chargeStatus | string | no | |
+| data.fineAmount | number | no | |
+| data.jailTime | number | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ chargeId }` |
+| callback fail | `Failed to update charge` |
+
+#### SetVehicleBolo
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.vehicleId | number | one of | |
+| data.plate | string | one of | |
+| data.bolo | boolean or number | yes | `true` / `1` to set, `false` / `0` to clear |
+| data.boloDescription | string | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ vehicleId, bolo }` (`bolo` is boolean) |
+| callback fail | `vehicleId or plate required`, `Vehicle not found` |
+
+#### AddANPRRegistry
+
+`added_by_license` stores `system:<resource>` (no FK).
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.plate | string | yes | |
+| data.reason | string | yes | |
+| data.reasonType | string | no | `stolen`, `bolo`, or `custom` |
+| data.penalCodeIds | table | no | |
+| data.departmentId | number | no | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ success = true, action = 'added', entry = { id, plate, reason, reasonType, … } }` |
+| callback fail | error string, e.g. `invalid_plate` |
+
+#### RemoveANPRRegistry
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| data.entryId | number | one of | |
+| data.plate | string | one of | |
+| callback | function | no | `function(ok, resultOrError)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| callback ok | `{ success = true, action = 'removed', entryId }` or `{ success = true, action = 'removed', plate }` |
+| callback fail | error string |
+
+#### Medical writes
+
+Patient writes on `civId`. System path: `createdBy` / `diagnosedBy` / `treatedBy` / `prescribedBy` / `administeredBy` stay `NULL`. Allergy severity is `mild`, `moderate`, or `severe` (default `moderate`). Diagnosis status is `active`, `chronic`, or `resolved` (default `active`).
+
+| Export | Required params | Callback ok |
+| ------ | --------------- | ----------- |
+| `AddMedicalAllergy` | `civId`, `allergen`; optional `severity`, `reaction`, `notes` | `{ allergyId, civId }` |
+| `RemoveMedicalAllergy` | `id` (allergy row) | `{ id, civId }` |
+| `AddMedicalDiagnosis` | `civId`, `condition`; optional `status`, `notes` | `{ diagnosisId, civId }` |
+| `UpdateMedicalDiagnosis` | `id`; optional `status`, `notes` | `{ id }` |
+| `RemoveMedicalDiagnosis` | `id` | `{ id }` |
+| `AddMedicalTreatment` | `civId`, `treatment` (or `summary`); optional `treatmentType`, `notes`, `departmentId` | `{ treatmentId, civId }` |
+| `AddMedicalPrescription` | `civId`, `medication`; optional `dosage`, `notes` | `{ prescriptionId, civId }` |
+| `DiscontinueMedicalPrescription` | `id` | `{ id }` |
+| `AddMedicalImmunization` | `civId`, `vaccine`; optional `notes` | `{ immunizationId, civId }` |
+| `AddMedicalFlag` | `civId`, `flagType`; optional `details` / `notes` | `{ flagId, civId }` |
+| `RemoveMedicalFlag` | `id` | `{ id }` |
+| `UpdateMedicalVitals` | `civId`; optional `bloodType`, `height`, `weight` | `{ civId }` |
+
+Each also takes an optional `callback` (`function(ok, resultOrError)`). Fail strings include `civId and allergen required`, `Allergy not found`, and the matching “not found” / “required” messages.
+
+<details markdown="block">
+<summary>Example</summary>
+
+```lua
+exports['night_shifts_mdt']:AddMedicalAllergy({
+  civId = 42,
+  allergen = 'Penicillin',
+  severity = 'severe',
+  reaction = 'Anaphylaxis',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print(result.allergyId)
+end)
+```
+
+</details>
+
+#### License writes
+
+`issuedBy` / `suspendedBy` / `revokedBy` stay `NULL`.
+
+| Export | Required params | Callback ok |
+| ------ | --------------- | ----------- |
+| `IssueLicense` | `civId`, `licenseType`; optional `validYears`, `maxPoints`, `notes` | `{ licenseId, licenseNumber }` |
+| `SuspendLicense` | `licenseId`; optional `reason`, `suspensionDays` | `{ licenseId, licenseStatus = 'suspended' }` |
+| `ReinstateLicense` | `licenseId` | `{ licenseId, licenseStatus = 'valid' }` |
+| `RevokeLicense` | `licenseId`; optional `reason` | `{ licenseId, licenseStatus = 'revoked' }` |
+| `AdjustLicensePoints` | `licenseId`, `pointsChange` (signed number); optional `reason` | `{ licenseId, pointsChange }` |
+
+Optional `callback` on each: `function(ok, resultOrError)`.
+
+<details markdown="block">
+<summary>Example</summary>
+
+```lua
+exports['night_shifts_mdt']:IssueLicense({
+  civId = 42,
+  licenseType = 'driver',
+  validYears = 5,
+  notes = 'Issued by automated clerk',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print(result.licenseNumber)
+end)
+```
+
+</details>
+
+#### PNC notes
+
+| Export | Required params | Callback ok |
+| ------ | --------------- | ----------- |
+| `AddPNCNote` | `entityType` (`civilian` or `vehicle`), `title`, `description`; plus `civId` or `vehicleId` | `{ noteId }` |
+| `DeletePNCNote` | `noteId` | `{ noteId }` |
+
+`createdBy` is `NULL`. `createdByName` is your resource folder.
+
+#### Bulletins
+
+`nsmdt_bulletins.createdBy` is NOT NULL + FK to `nsmdt_users`. The system path **cannot** stamp `system:<resource>` there.
+
+| Export | Required params | Callback ok |
+| ------ | --------------- | ----------- |
+| `CreateBulletin` | `departmentId`, `title`, `content`, **`createdByLicense`**; optional `priority`, `isPinned`, `expiresAt` | `{ bulletinId }` |
+| `UpdateBulletin` | `bulletinId`; optional `title`, `content`, `priority`, `isPinned` | `{ bulletinId }` |
+| `DeleteBulletin` | `bulletinId` | `{ bulletinId }` |
+| `TogglePinBulletin` | `bulletinId` | `{ bulletinId }` |
+
+`CreateBulletin` fails with `createdByLicense required (bulletins.createdBy FK to nsmdt_users)` if you omit the license.
+
+#### Council register
+
+| Export | Required params | Callback ok |
+| ------ | --------------- | ----------- |
+| `RegisterCivilian` | `firstName`, `lastName`; optional `personalId`, `dateOfBirth`, `phoneNumber`, `address` | `{ civilianId }` |
+| `RegisterVehicle` | `civId`, `licensePlate`; optional `make`, `model`, `color`, `buildYear` | `{ vehicleId }` |
+| `RegisterProperty` | `civId`, `address`; optional `propertyType`, `houseNumber`, `city`, `state`, `zone`, `postal`, `description`, `price`, `buildYear` | `{ propertyId }` |
+| `RegisterBusiness` | `civId`, `businessName`; optional `businessType`, `address`, `state`, `city`, `zone`, `postal` | `{ businessId }` |
+| `UpdateCivilianAddress` | `civId`, `address` (writes `addressLine1`) | `{ civId }` |
+| `ApproveLicenseRequest` | `licenseId` | `{ licenseId }` |
+| `RejectLicenseRequest` | `licenseId`; optional `reason` | `{ licenseId }` |
+
+`RegisterCivilian` auto-generates `personalId` if omitted (`SYS-<timestamp>…`).
+
+<details markdown="block">
+<summary>Example</summary>
+
+```lua
+exports['night_shifts_mdt']:RegisterCivilian({
+  firstName = 'Alex',
+  lastName = 'Rivera',
+  dateOfBirth = '1994-03-12',
+  address = '1 San Andreas Ave',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print('civ', result.civilianId)
+end)
+```
+
+</details>
+
+### Officer writes — shift
+
+**When to use:** Clock **that** player in/out or change *their* status/callsign. `serverId` is the **subject**.
+
+**When not to:** There is no system twin. Do not invent a fake source. The player must already have an MDT session for clock-in.
+
+#### StartShiftByServerId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | Connected player |
+| departmentId | number | yes | |
+| subDepartmentId | number | no | pass `nil` if none |
+| rankId | number | yes | |
+| callsign | string | no | empty becomes `UNASSIGNED` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | `success, result` — `success` is boolean |
+
+```lua
+local ok, result = exports['night_shifts_mdt']:StartShiftByServerId(source, deptId, nil, rankId, 'L-42')
+```
+
+#### EndShiftByServerId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+| callback | function | no | `function(success, duration, totalTime)` |
+
+**Returns**
+
+| Path | Value |
+| ---- | ----- |
+| sync | `success, duration, totalTime` |
+| callback | same three values |
+
+#### UpdateShiftStatusByServerId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+| statusCode | string | yes | Department status code |
+| callback | function | no | |
+
+**Returns:** `success` plus result via sync and optional callback.
+
+#### UpdateShiftStatusByBindingByServerId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+| binding | string | yes | `panic`, `available`, `unavailable`, or `busy` |
+| callback | function | no | |
+
+**Returns:** `success` plus result via sync and optional callback.
+
+#### UpdateCallsignByServerId
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| serverId | number | yes | |
+| newCallsign | string | yes | |
+
+**Returns:** sync `success, result`.
+
+### Officer writes — dispatch, PNC, ops
+
+**When to use:** A clocked-in officer is using your terminal. First arg = their `source`. MDT checks on-shift + rank permission.
+
+**When not to:** No player / AI / webhook — use the unsuffixed system export.
+
+`serverId` is the **acting officer**, not the warrant/flag/vehicle target. Targets live in `data`. Officer creates infer `departmentId` from the active shift — do not require it in `data`.
+
+Payloads match the system cards above. Extra arguments and stamps:
+
+| Extra | Notes |
+| ----- | ----- |
+| First arg `serverId` | Connected, clocked-in player |
+| `callback` | Same `function(ok, resultOrError)` as the system twin |
+| Fail (not on shift) | `You must be on shift` / `No MDT session` / `invalid_server_id` |
+| Fail (permission) | `You do not have permission` |
+
+#### Dispatch twins
+
+| Export | Typical permission | Difference from system |
+| ------ | ------------------ | ---------------------- |
+| `AssignUnitToCallByServerId` | `dispatch.assign_units` | Omit `callsign` / `targetServerId` to **self-assign** |
+| `DetachUnitFromCallByServerId` | `dispatch.assign_units` | Omit target to detach self |
+| `SetCallStatusByServerId` | `dispatch.resolve_call` or `hotline.resolve_call` | Same payload |
+| `ArchiveCallByServerId` | `dispatch.archive_call` or `hotline.archive_calls` | Same payload |
+| `EditCallByServerId` | `dispatch.edit_call` | Same payload |
+| `AddCallNoteByServerId` | `dispatch.add_note` | Same payload |
+| `DeleteCallNoteByServerId` | `dispatch.delete_note` | Same payload |
+| `SetUnitOnCallStatusByServerId` | on-shift (no extra perm) | Omit target to update self |
+
+<details markdown="block">
+<summary>Example</summary>
+
+```lua
+exports['night_shifts_mdt']:AssignUnitToCallByServerId(source, {
+  callId = 1842,
+  callsign = 'L-21',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+</details>
+
+#### PNC twins
+
+| Export | Typical permission | Difference from system |
+| ------ | ------------------ | ---------------------- |
+| `CreateWarrantByServerId` | `pnc.registration` | `issuedBy` = that officer. No `departmentId` required |
+| `CancelWarrantByServerId` | `pnc.registration` | Same payload |
+| `ExecuteWarrantByServerId` | `pnc.registration` | Same payload (some twins still audit as system — check the log) |
+| `UpdateWarrantByServerId` | `pnc.registration` | Same payload |
+| `CreateFlagByServerId` | `pnc.flags` | Department from shift |
+| `SetFlagActiveByServerId` | `pnc.flags` | Same payload |
+| `CreateFineByServerId` | `pnc.registration` | Department from shift |
+| `MarkFinePaidByServerId` | `pnc.registration` | Same payload |
+| `CreateCriminalRecordByServerId` | `pnc.registration` | Department from shift |
+| `AddChargeByServerId` | `pnc.registration` | Same payload |
+| `UpdateChargeByServerId` | `pnc.registration` | Same payload |
+| `SetVehicleBoloByServerId` | `pnc.registration` | Same payload |
+| `AddANPRRegistryByServerId` | `pnc.anpr.manage` | Same payload |
+| `RemoveANPRRegistryByServerId` | `pnc.anpr.manage` | Same payload |
+
+<details markdown="block">
+<summary>Example</summary>
 
 ```lua
 local mdt = exports['night_shifts_mdt']
-if mdt:IsOnPoliceShift() then
-    -- police shift HUD branch
-elseif mdt:IsOnAmbulanceShift() then
-    -- ambulance shift HUD branch
+if not mdt:HasPermissionByServerId(source, 'pnc.registration') then return end
+mdt:CreateWarrantByServerId(source, {
+  civId = 42,
+  warrantType = 'arrest',
+  reason = 'Assault — issued from CAD terminal',
+  expiresAt = '2027-06-01 00:00:00',
+}, function(ok, result)
+  if not ok then return print(result) end
+  print(result.warrantNumber)
+end)
+```
+
+</details>
+
+#### Medical, license, note, bulletin, council twins
+
+Same payloads as the system exports, plus leading `serverId`.
+
+| Family | Permission | Stamp difference |
+| ------ | ---------- | ---------------- |
+| Medical `*ByServerId` | `medical_records.add_treatment`, `medical_records.diagnose`, `medical_records.flags`, or `medical_records.delete` (see table below) | FK + audit = that player’s license. Notes say `Staff …` (ambulance staff, not a police officer). Police without medical perms are denied. |
+| Licenses `*ByServerId` | typically `licenses.create` / `suspend` / `revoke` / `update` | Same payload. Some twins still run the system write after the player check. |
+| `AddPNCNoteByServerId` / `DeletePNCNoteByServerId` | `pnc.notes.manage` | Same payload |
+| `CreateBulletinByServerId` | `management.bulletins.create` | Fills `createdByLicense` from the officer automatically |
+| Other bulletin `*ByServerId` | bulletin manage | Same payload |
+| Council `*ByServerId` | council / registration perms | Same payload |
+
+Medical permission per twin:
+
+| Export | Permission |
+| ------ | ---------- |
+| `AddMedicalAllergyByServerId` | `medical_records.add_treatment` |
+| `RemoveMedicalAllergyByServerId` | `medical_records.delete` |
+| `AddMedicalDiagnosisByServerId` | `medical_records.diagnose` |
+| `UpdateMedicalDiagnosisByServerId` | `medical_records.diagnose` |
+| `RemoveMedicalDiagnosisByServerId` | `medical_records.delete` |
+| `AddMedicalTreatmentByServerId` | `medical_records.add_treatment` |
+| `AddMedicalPrescriptionByServerId` | `medical_records.diagnose` |
+| `DiscontinueMedicalPrescriptionByServerId` | `medical_records.diagnose` |
+| `AddMedicalImmunizationByServerId` | `medical_records.add_treatment` |
+| `AddMedicalFlagByServerId` | `medical_records.flags` |
+| `RemoveMedicalFlagByServerId` | `medical_records.flags` |
+| `UpdateMedicalVitalsByServerId` | `medical_records.add_treatment` |
+
+<details markdown="block">
+<summary>Example — ambulance staff allergy</summary>
+
+```lua
+exports['night_shifts_mdt']:AddMedicalAllergyByServerId(source, {
+  civId = 42,
+  allergen = 'Peanuts',
+  severity = 'severe',
+}, function(ok, result)
+  if not ok then return print(result) end
+end)
+```
+
+</details>
+
+### Client
+
+**When to use:** Client scripts on the same machine as the player.
+
+**When not to:** Server integrations — use server exports.
+
+#### IsMenuOpen
+
+**Parameters:** none.
+
+**Returns:** sync boolean — is the MDT tablet open?
+
+#### OpenMenu / CloseMenu / ToggleMenu
+
+**Parameters:** none.
+
+**Returns:** none (opens, closes, or toggles the tablet).
+
+#### ForwardCallToMDT (client)
+
+Client helper; still creates the call **server-side**. Same `callData` fields as the server export.
+
+**Parameters**
+
+| Name | Type | Required | Notes |
+| ---- | ---- | -------- | ----- |
+| callData | table | yes | Same shape as server `ForwardCallToMDT` |
+
+**Returns:** none on the client (the server creates the call).
+
+#### IsOnPoliceShift / IsOnAmbulanceShift / IsOnFireShift / IsOnTowShift / IsOnCouncilShift
+
+**Parameters:** none.
+
+**Returns:** sync boolean for the local player’s current department type.
+
+#### GetPlayerCallsign
+
+**Parameters:** none.
+
+**Returns:** sync string or nil.
+
+#### GetCurrentLanguage / GetAvailableLanguages / GetDepartments (client)
+
+Also available client-side. Same return shapes as the server reads.
+
+```lua
+if exports['night_shifts_mdt']:IsOnPoliceShift() then
+  exports['night_shifts_mdt']:OpenMenu()
 end
-```
-
-##### `GetPlayerCallsign()`
-
-
-|                 |                                                                                                                                                                                                                                                                                                    |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | None.                                                                                                                                                                                                                                                                                              |
-| **Returns**     | **String** — the local player's current shift callsign (e.g. `"L-42"`), or `nil` when the player is not on shift.                                                                                                                                                                                  |
-| **Limitations** | **Client-only.** Cached from `receiveShiftData`, `shiftStarted`, and `callsignUpdated` events; the MDT does not need to be open. The player must have opened the MDT at least once during the session for the server to start sending shift updates (same constraint as the `IsOn*Shift` exports). |
-
-
-```lua
-if GetResourceState("night_shifts_mdt") == "started" then
-    local callsign = exports['night_shifts_mdt']:GetPlayerCallsign()
-    if callsign then
-        print("Callsign: " .. callsign)
-    else
-        print("Player is not on shift")
-    end
-else
-    print("[ERROR] You have enabled the callsign feature but night_shifts_mdt is not started.")
-end
-```
-
-#### **Actions (tablet / UI)**
-{: .no_toc }
-
-##### `OpenMenu()` · `CloseMenu()` · `ToggleMenu()`
-
-
-|                 |                                                                              |
-| --------------- | ---------------------------------------------------------------------------- |
-| **Parameters**  | None.                                                                        |
-| **Returns**     | Depends on internal helpers; use for **control flow**, not strict contracts. |
-| **Limitations** | **Client-only.** May interact with focus/NUI; avoid re-entrancy spam.        |
-
-
-```lua
-exports['night_shifts_mdt']:OpenMenu()
-```
-
-#### **Actions (dispatch)**
-{: .no_toc }
-
-##### `ForwardCallToMDT(callData)`
-
-
-|                 |                                                                                                                                                                                                                                                                 |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Parameters**  | Same **validation rules** as the **server** export (`callType`, `description`, `x`/`y`, at least one `requires*` = `1`). Optional: `attachCreatingUnit = true` or `1` — attach the **local player** as a unit on the new call (must be clocked in). |
-| **Returns**     | Nothing.                                                                                                                                                                                                                                                        |
-| **Limitations** | **Client-only.** **No callback** — cannot read `callId` here. Use **server** `ForwardCallToMDT` if you need `callId`. Server receives attach intent as `1`/`0` for reliable serialization.                                                                      |
-
-
-```lua
-exports['night_shifts_mdt']:ForwardCallToMDT({
-    callType = "Medical Emergency",
-    description = "Person down near the pier.",
-    x = -1850.0, y = -1230.0, z = 13.0,
-    requiresPolice = 0, requiresAmbulance = 1,
-    requiresFire = 0, requiresTow = 0, requiresCouncil = 0,
-    callerName = "Civilian", contactDetails = "555-0199",
-})
 ```
 
 ---
@@ -1519,8 +2489,6 @@ All patient-record tables `CASCADE` on civilian delete, so the **Purge NPC Data*
 
 ### **Common Issues**
 {: .no_toc }
-
-{: .warning }
 
 > **Parsing Errors in F8 Console**
 >
