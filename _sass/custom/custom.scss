@@ -143,12 +143,44 @@ img.cover-img {
     color: #555;
   }
 
-  // Just the Docs uppercases h4 as a label; keep API names camelCase.
-  // Leave .text-delta alone so the TOC label stays uppercase.
-  h4 {
+  // Export card: ##### `SetCallStatus` is the title.
+  // Parameters / Returns / Example stay .text-delta labels (small caps).
+  h5:has(> code) {
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 2.75rem 0 0.65rem;
+    padding: 1.35rem 0 0;
+    border-top: 1px solid #eeebee;
+  }
+
+  h5 code {
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight: 700;
     text-transform: none;
-    letter-spacing: normal;
-    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: #27262b;
+    background: transparent;
+    padding: 0 0 0 0.7rem;
+    border-left: 3px solid #7253ed;
+    border-radius: 0;
+  }
+
+  p.text-delta {
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #726d7b;
+    margin: 1.5rem 0 0.4rem;
+  }
+
+  h5 + p {
+    margin-top: 0.35rem;
+  }
+
+  table th {
+    text-align: left;
   }
 }
 

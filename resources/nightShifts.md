@@ -723,32 +723,43 @@ Two styles:
 
 These are **sync** except the three catalogues at the bottom (`GetPenalCodes`, `GetFlagTypes`, `GetLicenseTypes`).
 
-##### GetVersion
+##### `GetVersion`
 
 Resource version from `fxmanifest.lua`. Use it to require a minimum MDT build.
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync string, e.g. `"1.4.9"`.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+sync string, e.g. `"1.4.9"`.
+
+Example
+{: .text-delta }
 
 ```lua
 local version = exports['night_shifts_mdt']:GetVersion()
 print(version)
 ```
 
-##### GetSetting
+##### `GetSetting`
 
 One Admin → MDT Settings value.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | key | string | yes | See common keys below |
 
-**Returns:** sync value (string, number, or boolean), or the default, or nil if unknown.
+Returns
+{: .text-delta }
+
+sync value (string, number, or boolean), or the default, or nil if unknown.
 
 Common keys (not a complete list — `GetAllSettings` has every key):
 
@@ -761,22 +772,30 @@ Common keys (not a complete list — `GetAllSettings` has every key):
 | `speedUnit` | `mph` or `kmh` |
 | `tempUnit` | `celsius` or `fahrenheit` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local currency = exports['night_shifts_mdt']:GetSetting('currency')
 print(currency)
 ```
 
-##### GetAllSettings
+##### `GetAllSettings`
 
 Same values as `GetSetting`, all at once. This is a **dictionary** (`settings.currency`), not a list. `#settings` is always `0` even when it is full — iterate with `pairs`.
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync table keyed by setting name. Also includes assembled `alertDurations` and normalized `cursorAwayEnabled` / `infoHudEnabled` flags for the tablet.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+sync table keyed by setting name. Also includes assembled `alertDurations` and normalized `cursorAwayEnabled` / `infoHudEnabled` flags for the tablet.
+
+Example
+{: .text-delta }
 
 ```lua
 local settings = exports['night_shifts_mdt']:GetAllSettings()
@@ -786,58 +805,85 @@ for key, value in pairs(settings) do
 end
 ```
 
-##### GetCurrencySymbol
+##### `GetCurrencySymbol`
 
 Display symbol for `GetSetting('currency')`. Prefer this over hard-coding `$`.
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync string (`$`, `€`, `£`, `kr`, …). Unknown codes fall back to `$`.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+sync string (`$`, `€`, `£`, `kr`, …). Unknown codes fall back to `$`.
+
+Example
+{: .text-delta }
 
 ```lua
 local symbol = exports['night_shifts_mdt']:GetCurrencySymbol()
 print(symbol)
 ```
 
-##### GetCurrentLanguage
+##### `GetCurrentLanguage`
 
 Active translation code.
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync string (`en`, `de`, `fr`, …).
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+sync string (`en`, `de`, `fr`, …).
+
+Example
+{: .text-delta }
 
 ```lua
 local lang = exports['night_shifts_mdt']:GetCurrentLanguage()
 print(lang)
 ```
 
-##### GetAvailableLanguages
+##### `GetAvailableLanguages`
 
 Every locale file the resource loaded.
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync array of language-code strings.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+sync array of language-code strings.
+
+Example
+{: .text-delta }
 
 ```lua
 local languages = exports['night_shifts_mdt']:GetAvailableLanguages()
 print(languages[1])
 ```
 
-##### GetDepartments
+##### `GetDepartments`
 
 Active departments only (clock-in pickers). Archived departments stay in cache for PNC joins but are **not** in this list.
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync array. Each row includes:
+none.
+
+Returns
+{: .text-delta }
+
+sync array. Each row includes:
 
 | Field | Type | Notes |
 | ----- | ---- | ----- |
@@ -848,26 +894,32 @@ Active departments only (clock-in pickers). Archived departments stay in cache f
 | `departmentColor` | string | hex |
 | `isActive` | number/bool | always on in this list |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local depts = exports['night_shifts_mdt']:GetDepartments()
 print(#depts, depts[1] and depts[1].departmentName)
 ```
 
-##### GetRanksByDepartmentId
+##### `GetRanksByDepartmentId`
 
 Ranks for one department (clock-in / `StartShiftByServerId`).
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | departmentId | number | yes | `depts[i].id` |
 
-**Returns:** sync array of rank rows (`id`, `departmentId`, `rankName`, `rankShortName`, …). Empty `{}` if the id is unknown.
+Returns
+{: .text-delta }
 
-**Example**
+sync array of rank rows (`id`, `departmentId`, `rankName`, `rankShortName`, …). Empty `{}` if the id is unknown.
+
+Example
+{: .text-delta }
 
 ```lua
 local depts = exports['night_shifts_mdt']:GetDepartments()
@@ -875,17 +927,22 @@ local ranks = exports['night_shifts_mdt']:GetRanksByDepartmentId(depts[1].id)
 print(ranks[1] and ranks[1].rankName)
 ```
 
-##### GetSubDepartmentsByDepartmentId
+##### `GetSubDepartmentsByDepartmentId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | departmentId | number | yes | |
 
-**Returns:** sync array of sub-department rows (`id`, `departmentId`, `subDepartmentName`, `subDepartmentShortName`, …). Empty `{}` if none.
+Returns
+{: .text-delta }
 
-**Example**
+sync array of sub-department rows (`id`, `departmentId`, `subDepartmentName`, `subDepartmentShortName`, …). Empty `{}` if none.
+
+Example
+{: .text-delta }
 
 ```lua
 local depts = exports['night_shifts_mdt']:GetDepartments()
@@ -893,19 +950,24 @@ local subs = exports['night_shifts_mdt']:GetSubDepartmentsByDepartmentId(depts[1
 print(#subs)
 ```
 
-##### GetPenalCodes
+##### `GetPenalCodes`
 
 Charge / fine pick-list. **Callback required.**
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(codes)` |
 
-**Returns:** none as a return value. `callback` receives an array of penal-code rows (`id`, `codeNumber`, `title`, …). Use `id` as `penalCodeId` on fines and charges.
+Returns
+{: .text-delta }
 
-**Example**
+none as a return value. `callback` receives an array of penal-code rows (`id`, `codeNumber`, `title`, …). Use `id` as `penalCodeId` on fines and charges.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetPenalCodes(function(codes)
@@ -913,19 +975,24 @@ exports['night_shifts_mdt']:GetPenalCodes(function(codes)
 end)
 ```
 
-##### GetFlagTypes
+##### `GetFlagTypes`
 
 Enabled PNC flag types. **Callback required.**
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(types)` |
 
-**Returns:** none as a return value. `callback` receives enabled flag-type rows. Use the type id/string as `flagType` on `CreateFlag`.
+Returns
+{: .text-delta }
 
-**Example**
+none as a return value. `callback` receives enabled flag-type rows. Use the type id/string as `flagType` on `CreateFlag`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetFlagTypes(function(types)
@@ -933,19 +1000,24 @@ exports['night_shifts_mdt']:GetFlagTypes(function(types)
 end)
 ```
 
-##### GetLicenseTypes
+##### `GetLicenseTypes`
 
 Enabled license types. **Callback required** — same pattern as `GetPenalCodes` / `GetFlagTypes`. No useful return value.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(rows)` |
 
-**Returns:** none as a return value. `callback` receives license-type rows. Use the type id/string as `licenseType` on `IssueLicense`.
+Returns
+{: .text-delta }
 
-**Example**
+none as a return value. `callback` receives license-type rows. Use the type id/string as `licenseType` on `IssueLicense`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetLicenseTypes(function(rows)
@@ -955,24 +1027,27 @@ end)
 
 #### Identity and PNC boards
 
-##### GetCivilianIntegrationSnapshot
+##### `GetCivilianIntegrationSnapshot`
 
 Full civilian plus related snapshot (licenses, vehicles, …).
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | civId | number | yes | `nsmdt_civilians.id` |
 | callback | function | yes | `function(snapshot)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | snapshot table, or empty / nil if unknown |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetCivilianIntegrationSnapshot(42, function(snapshot)
@@ -980,25 +1055,28 @@ exports['night_shifts_mdt']:GetCivilianIntegrationSnapshot(42, function(snapshot
 end)
 ```
 
-##### GetCivilianByPersonalId
+##### `GetCivilianByPersonalId`
 
 Lookup by public dossier id (e.g. `CIV-…`).
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | personalId | string | yes | |
 | callback | function | recommended | `function(civ)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | civilian row (`id`, `civilianId`, `personalId`, `isFrameworkLinked`, …) or nil |
 | sync | same row from cache, or nil |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetCivilianByPersonalId('CIV-1001', function(civ)
@@ -1006,25 +1084,28 @@ exports['night_shifts_mdt']:GetCivilianByPersonalId('CIV-1001', function(civ)
 end)
 ```
 
-##### GetCivilianByFrameworkId
+##### `GetCivilianByFrameworkId`
 
 Alias: `GetCivilianByIdentifier`.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | frameworkId | string | yes | ESX `identifier` or QB/QBox `citizenid` |
 | callback | function | recommended | `function(civ)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | decorated civilian row or nil |
 | sync | cache hit or nil |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetCivilianByFrameworkId('char1:abc123', function(civ)
@@ -1032,25 +1113,28 @@ exports['night_shifts_mdt']:GetCivilianByFrameworkId('char1:abc123', function(ci
 end)
 ```
 
-##### GetCiviliansByServerId
+##### `GetCiviliansByServerId`
 
 All MDT person-files linked to that player’s Rockstar license.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | Connected player |
 | callback | function | recommended | `function(civs)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of decorated civilian rows |
 | sync | cache array (may be empty) |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetCiviliansByServerId(source, function(civs)
@@ -1058,20 +1142,25 @@ exports['night_shifts_mdt']:GetCiviliansByServerId(source, function(civs)
 end)
 ```
 
-##### GetCiviliansByLicense
+##### `GetCiviliansByLicense`
 
 Same as `GetCiviliansByServerId`, but you pass the license string.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | rockstarLicense | string | yes | |
 | callback | function | recommended | `function(civs)` |
 
-**Returns:** same as `GetCiviliansByServerId`.
+Returns
+{: .text-delta }
 
-**Example**
+same as `GetCiviliansByServerId`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetCiviliansByLicense('license:abc123', function(civs)
@@ -1079,25 +1168,28 @@ exports['night_shifts_mdt']:GetCiviliansByLicense('license:abc123', function(civ
 end)
 ```
 
-##### ResolveFrameworkLinkedCivilianByServerId
+##### `ResolveFrameworkLinkedCivilianByServerId`
 
 Best framework-linked civilian for that player. No license fallback — `frameworkId` match only.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | |
 | callback | function | recommended | `function(civ)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | one civilian row or nil |
 | sync | one civilian row or nil |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ResolveFrameworkLinkedCivilianByServerId(source, function(civ)
@@ -1105,11 +1197,12 @@ exports['night_shifts_mdt']:ResolveFrameworkLinkedCivilianByServerId(source, fun
 end)
 ```
 
-##### SearchCivilians
+##### `SearchCivilians`
 
 Substring search. Query must be at least 2 characters. Limit capped at 50.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1117,14 +1210,16 @@ Substring search. Query must be at least 2 characters. Limit capped at 50.
 | limitOrOpts | number or table | no | number, or `{ limit = n }` |
 | callback | function | yes | `function(rows)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of `{ civilianId, firstName, lastName, personalId, frameworkId, isFrameworkLinked }` |
 | sync | none |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SearchCivilians('Smith', 20, function(rows)
@@ -1132,23 +1227,26 @@ exports['night_shifts_mdt']:SearchCivilians('Smith', 20, function(rows)
 end)
 ```
 
-##### GetVehiclesByCivilianId
+##### `GetVehiclesByCivilianId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | civId | number | yes | |
 | callback | function | recommended | `function(vehicles)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of vehicle rows |
 | sync | cache array |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetVehiclesByCivilianId(42, function(vehicles)
@@ -1156,22 +1254,25 @@ exports['night_shifts_mdt']:GetVehiclesByCivilianId(42, function(vehicles)
 end)
 ```
 
-##### GetLicensesByCivilianId
+##### `GetLicensesByCivilianId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | civId | number | yes | |
 | callback | function | yes | `function(licenses)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of issued license rows |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetLicensesByCivilianId(42, function(licenses)
@@ -1179,25 +1280,28 @@ exports['night_shifts_mdt']:GetLicensesByCivilianId(42, function(licenses)
 end)
 ```
 
-##### GetAllFlagsMarkersByCivilianId
+##### `GetAllFlagsMarkersByCivilianId`
 
 All flags for a civilian (active and inactive).
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | civId | number | yes | |
 | callback | function | recommended | `function(flags)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of flag rows |
 | sync | cache array |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetAllFlagsMarkersByCivilianId(42, function(flags)
@@ -1205,25 +1309,28 @@ exports['night_shifts_mdt']:GetAllFlagsMarkersByCivilianId(42, function(flags)
 end)
 ```
 
-##### GetPoliceRecordsByCivilianId
+##### `GetPoliceRecordsByCivilianId`
 
 Criminal records for a civilian (`nsmdt_criminal_records`).
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | civId | number | yes | |
 | callback | function | recommended | `function(records)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of record rows (MySQL) |
 | sync | warm-cache array |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetPoliceRecordsByCivilianId(42, function(records)
@@ -1231,25 +1338,28 @@ exports['night_shifts_mdt']:GetPoliceRecordsByCivilianId(42, function(records)
 end)
 ```
 
-##### GetActiveWarrants
+##### `GetActiveWarrants`
 
 Every **active** warrant in the database (all departments, no 31-day cut). The tablet “Active” card is the loaded list for this department — those counts can differ.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | limitOrOpts | number or table | no | e.g. `500` or `{ limit = 500 }` |
 | callback | function | yes | `function(warrants)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of active warrant rows |
 | sync | none |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetActiveWarrants(500, function(warrants)
@@ -1257,23 +1367,26 @@ exports['night_shifts_mdt']:GetActiveWarrants(500, function(warrants)
 end)
 ```
 
-##### GetActiveFlagsMarkers
+##### `GetActiveFlagsMarkers`
 
 Active, unexpired PNC flags.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(flags)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of flag rows (MySQL, up to 500) |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetActiveFlagsMarkers(function(flags)
@@ -1281,23 +1394,26 @@ exports['night_shifts_mdt']:GetActiveFlagsMarkers(function(flags)
 end)
 ```
 
-##### GetActiveVehicleBolos
+##### `GetActiveVehicleBolos`
 
 Vehicles with BOLO set.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(bolos)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of vehicle rows (`bolo = 1`) |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetActiveVehicleBolos(function(bolos)
@@ -1305,23 +1421,26 @@ exports['night_shifts_mdt']:GetActiveVehicleBolos(function(bolos)
 end)
 ```
 
-##### GetActiveANPRRegistry
+##### `GetActiveANPRRegistry`
 
 Active ANPR watchlist plates.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(plates)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of registry rows |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetActiveANPRRegistry(function(plates)
@@ -1329,25 +1448,28 @@ exports['night_shifts_mdt']:GetActiveANPRRegistry(function(plates)
 end)
 ```
 
-##### LookupVehicleByPlate
+##### `LookupVehicleByPlate`
 
 Plate to vehicle record.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | plate | string | yes | Spaces and dashes ignored |
 | callback | function | recommended | `function(vehicle)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | vehicle row or nil |
 | sync | cache hit or nil |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:LookupVehicleByPlate('ABC 123', function(vehicle)
@@ -1355,25 +1477,28 @@ exports['night_shifts_mdt']:LookupVehicleByPlate('ABC 123', function(vehicle)
 end)
 ```
 
-##### GetCivilianByPlate
+##### `GetCivilianByPlate`
 
 Plate to registered owner.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | plate | string | yes | |
 | callback | function | recommended | `function(civ)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | civilian row or nil |
 | sync | cache hit or nil |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetCivilianByPlate('ABC 123', function(civ)
@@ -1381,24 +1506,27 @@ exports['night_shifts_mdt']:GetCivilianByPlate('ABC 123', function(civ)
 end)
 ```
 
-##### GetANPRHitLog
+##### `GetANPRHitLog`
 
 Recent ANPR detections.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | limitOrOpts | number or table | no | `{ limit, offset }` |
 | callback | function | yes | `function(hits)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of hit-log rows |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetANPRHitLog({ limit = 50 }, function(hits)
@@ -1408,108 +1536,125 @@ end)
 
 #### Duty, roster, and calls
 
-##### GetUserShiftData
+##### `GetUserShiftData`
 
 Shift plus identity for one player. Empty-ish table if they have no session (`isOnShift = false`, plus `_error`).
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | |
 
-**Returns** (sync table)
+Returns
+{: .text-delta }
+
+(sync table)
 
 `serverId`, `rockstarLicense`, `userName`, `nickName`, `adminLevel`, `isOnShift`, `departmentId`, `subDepartmentId`, `rankId`, `callsign`, `statusCode`, `statusLabel`, `statusColor`, `shiftDuration`, `totalShiftTime`, `shiftTimeByDepartment`, `location` (`{ x, y, z }`, not `vector3`), `speed`, `heading`, `compassDirection`, `postal`, `street`, `zone`, `modeOfTransport`, `sirens`, `plate`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local shift = exports['night_shifts_mdt']:GetUserShiftData(source)
 print(shift.isOnShift, shift.callsign, shift.location and shift.location.x)
 ```
 
-##### GetActiveShiftByServerId
+##### `GetActiveShiftByServerId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | active shift row or nil |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local row = exports['night_shifts_mdt']:GetActiveShiftByServerId(source)
 print(row and row.callsign)
 ```
 
-##### GetCurrentShiftDurationByServerId
+##### `GetCurrentShiftDurationByServerId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | number of seconds (0 if off shift) |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local seconds = exports['night_shifts_mdt']:GetCurrentShiftDurationByServerId(source)
 print(seconds)
 ```
 
-##### GetPostalForPlayer
+##### `GetPostalForPlayer`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | nearest postal string or nil |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local postal = exports['night_shifts_mdt']:GetPostalForPlayer(source)
 print(postal)
 ```
 
-##### HasPermissionByServerId
+##### `HasPermissionByServerId`
 
 Rank permission check for the player’s **current** department. Off-shift is always `false`.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | |
 | permission | string | yes | e.g. `pnc.registration` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | boolean |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 if exports['night_shifts_mdt']:HasPermissionByServerId(source, 'pnc.registration') then
@@ -1517,19 +1662,24 @@ if exports['night_shifts_mdt']:HasPermissionByServerId(source, 'pnc.registration
 end
 ```
 
-##### GetActiveShifts / GetOnDutyUnits
+##### `GetActiveShifts / GetOnDutyUnits`
 
 Same data: every clocked-in unit. `GetOnDutyUnits` is an alias.
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns**
+none.
+
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | array of `{ serverId, rockstarLicense, userName, nickName, shift, location, postal, street, … }` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local units = exports['night_shifts_mdt']:GetActiveShifts()
@@ -1538,23 +1688,26 @@ print(#units, units[1] and units[1].callsign)
 -- local units = exports['night_shifts_mdt']:GetOnDutyUnits()
 ```
 
-##### GetDepartmentRoster
+##### `GetDepartmentRoster`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | departmentId | number | yes | |
 | callback | function | recommended | `function(members)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of roster members |
 | sync | depends on implementation; prefer the callback |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetDepartmentRoster(1, function(members)
@@ -1562,53 +1715,62 @@ exports['night_shifts_mdt']:GetDepartmentRoster(1, function(members)
 end)
 ```
 
-##### GetActiveCalls
+##### `GetActiveCalls`
 
 Cache snapshot of **active, non-archived** calls. Use this for event catch-up. Live board source.
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns**
+none.
+
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | array of call rows (`id`, `callType`, `callStatus`, `x`, `y`, `z`, `postal`, …) |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local calls = exports['night_shifts_mdt']:GetActiveCalls()
 print(#calls, calls[1] and calls[1].callType)
 ```
 
-##### GetCallById
+##### `GetCallById`
 
 One call from the live cache (may be nil if archived or unknown).
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callId | number | yes | |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | call row or nil |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local call = exports['night_shifts_mdt']:GetCallById(1842)
 print(call and call.callStatus)
 ```
 
-##### GetCallNotes
+##### `GetCallNotes`
 
 Notes oldest-first.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1616,13 +1778,15 @@ Notes oldest-first.
 | data.limit | number | no | default 50 |
 | callback | function | yes | `function(notes)` — **not** `(ok, result)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback | array of `{ id, callId, noteText, createdAt, createdBy }` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:GetCallNotes({ callId = 1842, limit = 50 }, function(notes)
@@ -1630,43 +1794,51 @@ exports['night_shifts_mdt']:GetCallNotes({ callId = 1842, limit = 50 }, function
 end)
 ```
 
-##### GetAllActiveUnits
+##### `GetAllActiveUnits`
 
 On-shift units with distance to the call.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callId | number | yes | or `{ callId = n }` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | array of `{ serverId, rockstarLicense, userName, nickName, callsign, departmentId, statusCode, location, postal, street, distance }` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local units = exports['night_shifts_mdt']:GetAllActiveUnits(1842)
 print(#units, units[1] and units[1].distance)
 ```
 
-##### GetNearbyUnits
+##### `GetNearbyUnits`
 
 Same as `GetAllActiveUnits`, distance-filtered.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callId | number | yes | or `{ callId, maxDistance }` |
 | data.maxDistance | number | no | default 2000 |
 
-**Returns:** same unit shape as `GetAllActiveUnits`, filtered by distance.
+Returns
+{: .text-delta }
 
-**Example**
+same unit shape as `GetAllActiveUnits`, filtered by distance.
+
+Example
+{: .text-delta }
 
 ```lua
 local nearby = exports['night_shifts_mdt']:GetNearbyUnits({ callId = 1842, maxDistance = 2000 })
@@ -1711,11 +1883,12 @@ Use `GetActiveCalls` / `GetCallById` for catch-up after your resource starts.
 
 Audit: `system:<GetInvokingResource()>`. Capture happens at export entry (safe across MySQL callbacks). `assignedByLicense` on `nsmdt_call_units` has no FK — the system string is stored. `archivedBy` is an integer user/shift id — left `NULL` for system archive.
 
-#### ForwardCallToMDT
+##### `ForwardCallToMDT`
 
 Create a new dispatch call with no acting officer.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1735,7 +1908,8 @@ Create a new dispatch call with no acting officer.
 | callData.priority | number | no | Priority id |
 | callback | function | no | `function(ok, callIdOrNil)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
@@ -1743,7 +1917,8 @@ Create a new dispatch call with no acting officer.
 | callback fail | `nil` |
 | sync | none |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ForwardCallToMDT({
@@ -1761,11 +1936,12 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 end)
 ```
 
-#### AssignUnitToCall
+##### `AssignUnitToCall`
 
 Attach an on-shift unit. Accepts **either** `targetServerId` **or** `callsign` (fails if missing, offline, or not unique). Uses the same cross-call detach queue as the board. `byDispatch = true`.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1774,7 +1950,8 @@ Attach an on-shift unit. Accepts **either** `targetServerId` **or** `callsign` (
 | data.targetServerId | number | one of | Connected and on shift |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
@@ -1782,7 +1959,8 @@ Attach an on-shift unit. Accepts **either** `targetServerId` **or** `callsign` (
 | callback fail | error string, e.g. `callsign not found or unit not on shift`, `callsign is not unique`, `target player not found` |
 | sync | none |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AssignUnitToCall({
@@ -1793,11 +1971,12 @@ exports['night_shifts_mdt']:AssignUnitToCall({
 end)
 ```
 
-#### DetachUnitFromCall
+##### `DetachUnitFromCall`
 
 Release a unit. They go **available**.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1806,14 +1985,16 @@ Release a unit. They go **available**.
 | data.targetServerId | number | one of | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ callId, message }` |
 | callback fail | error string |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DetachUnitFromCall({
@@ -1824,11 +2005,12 @@ exports['night_shifts_mdt']:DetachUnitFromCall({
 end)
 ```
 
-#### SetCallStatus
+##### `SetCallStatus`
 
 Resolve or reopen. Resolve **auto-detaches every unit** and sets them available. Reopen (`active`) does **not** re-attach anyone.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1836,14 +2018,16 @@ Resolve or reopen. Resolve **auto-detaches every unit** and sets them available.
 | data.status | string | yes | `active` or `resolved` |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ callId, status, message }` |
 | callback fail | error string, e.g. `status must be active or resolved` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SetCallStatus({
@@ -1854,11 +2038,12 @@ exports['night_shifts_mdt']:SetCallStatus({
 end)
 ```
 
-#### ArchiveCall
+##### `ArchiveCall`
 
 Call must already be `resolved`. Will not silently archive an active call. `archivedBy` stays `NULL`. Reason is stored and added as a system note.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1866,14 +2051,16 @@ Call must already be `resolved`. Will not silently archive an active call. `arch
 | data.reason | string | no | Default `Archived by <resource>` |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ callId, archived = true }` |
 | callback fail | `Call not found`, `Call already archived`, `Call must be resolved before archive` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ArchiveCall({
@@ -1884,11 +2071,12 @@ exports['night_shifts_mdt']:ArchiveCall({
 end)
 ```
 
-#### EditCall
+##### `EditCall`
 
 Update type, description, location, caller, services, or priority.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1908,14 +2096,16 @@ Update type, description, location, caller, services, or priority.
 | data.requiresCouncil | number | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ callId }` |
 | callback fail | `Call not found` or `Failed to edit call` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:EditCall({
@@ -1927,11 +2117,12 @@ exports['night_shifts_mdt']:EditCall({
 end)
 ```
 
-#### AddCallNote
+##### `AddCallNote`
 
 `createdBy` on the note row is `NULL` (FK-safe). Put your resource name in the text so the board is not a blank actor.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1939,14 +2130,16 @@ end)
 | data.note | string | yes | alias `data.text` |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ callId, noteId }` |
 | callback fail | `callId required` or `note required` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddCallNote({
@@ -1958,9 +2151,10 @@ exports['night_shifts_mdt']:AddCallNote({
 end)
 ```
 
-#### DeleteCallNote
+##### `DeleteCallNote`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1968,14 +2162,16 @@ end)
 | data.callId | number | no | Used to invalidate open tablets |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ noteId, callId }` |
 | callback fail | `Note not found` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DeleteCallNote({
@@ -1986,9 +2182,10 @@ exports['night_shifts_mdt']:DeleteCallNote({
 end)
 ```
 
-#### SetUnitOnCallStatus
+##### `SetUnitOnCallStatus`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -1998,14 +2195,16 @@ end)
 | data.targetServerId | number | one of | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ callId, unitStatus, message }` |
 | callback fail | error string |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SetUnitOnCallStatus({
@@ -2027,9 +2226,10 @@ end)
 
 FK rule: `issuedBy` / `createdBy` / `executedBy` on warrants, flags, and fines stay **NULL**. Audit `performedBy` is `system:<resource>`. PNC “issued by” may show N/A.
 
-#### CreateWarrant
+##### `CreateWarrant`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2042,14 +2242,16 @@ FK rule: `issuedBy` / `createdBy` / `executedBy` on warrants, flags, and fines s
 | data.linkedCriminalRecordId | number | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ warrantId, warrantNumber }` |
 | callback fail | error string |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateWarrant({
@@ -2064,11 +2266,12 @@ exports['night_shifts_mdt']:CreateWarrant({
 end)
 ```
 
-#### UpdateWarrant
+##### `UpdateWarrant`
 
 Active warrants only.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2077,14 +2280,16 @@ Active warrants only.
 | data.expiresAt | string | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ warrantId }` |
 | callback fail | `Failed to update warrant (not found or not active)` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateWarrant({
@@ -2096,25 +2301,28 @@ exports['night_shifts_mdt']:UpdateWarrant({
 end)
 ```
 
-#### ExecuteWarrant
+##### `ExecuteWarrant`
 
 `executedBy` stays `NULL`.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | data.warrantId | number | yes | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ warrantId, warrantStatus = 'executed' }` |
 | callback fail | `Failed to execute warrant` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ExecuteWarrant({
@@ -2124,23 +2332,26 @@ exports['night_shifts_mdt']:ExecuteWarrant({
 end)
 ```
 
-#### CancelWarrant
+##### `CancelWarrant`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | data.warrantId | number | yes | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ warrantId, warrantStatus = 'cancelled' }` |
 | callback fail | `Failed to cancel warrant` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CancelWarrant({
@@ -2150,9 +2361,10 @@ exports['night_shifts_mdt']:CancelWarrant({
 end)
 ```
 
-#### CreateFlag
+##### `CreateFlag`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2163,14 +2375,16 @@ end)
 | data.severity | string | no | e.g. `medium` |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ flagId }` |
 | callback fail | error string |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateFlag({
@@ -2184,9 +2398,10 @@ exports['night_shifts_mdt']:CreateFlag({
 end)
 ```
 
-#### SetFlagActive
+##### `SetFlagActive`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2194,14 +2409,16 @@ end)
 | data.isActive | boolean or number | yes | `true` / `1` or `false` / `0` |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ flagId, isActive }` (`isActive` is boolean) |
 | callback fail | `flagId and isActive required` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SetFlagActive({
@@ -2212,9 +2429,10 @@ exports['night_shifts_mdt']:SetFlagActive({
 end)
 ```
 
-#### CreateFine
+##### `CreateFine`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2226,14 +2444,16 @@ end)
 | data.penalCodeId | number | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ fineId, fineNumber }` |
 | callback fail | error string |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateFine({
@@ -2249,23 +2469,26 @@ exports['night_shifts_mdt']:CreateFine({
 end)
 ```
 
-#### MarkFinePaid
+##### `MarkFinePaid`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | data.fineId | number | yes | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ fineId, finePaid = true }` |
 | callback fail | `Failed to mark fine paid` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:MarkFinePaid({
@@ -2275,9 +2498,10 @@ exports['night_shifts_mdt']:MarkFinePaid({
 end)
 ```
 
-#### CreateCriminalRecord
+##### `CreateCriminalRecord`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2291,14 +2515,16 @@ end)
 | data.courtDate | string | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ recordId, recordNumber }` |
 | callback fail | `location required`, `incidentDate required`, `departmentId required` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateCriminalRecord({
@@ -2313,9 +2539,10 @@ exports['night_shifts_mdt']:CreateCriminalRecord({
 end)
 ```
 
-#### AddCharge
+##### `AddCharge`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2328,14 +2555,16 @@ end)
 | data.convictionDate | string | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ chargeId, criminalRecordId }` |
 | callback fail | `criminalRecordId required` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddCharge({
@@ -2350,9 +2579,10 @@ exports['night_shifts_mdt']:AddCharge({
 end)
 ```
 
-#### UpdateCharge
+##### `UpdateCharge`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2362,14 +2592,16 @@ end)
 | data.jailTime | number | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ chargeId }` |
 | callback fail | `Failed to update charge` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateCharge({
@@ -2381,9 +2613,10 @@ exports['night_shifts_mdt']:UpdateCharge({
 end)
 ```
 
-#### SetVehicleBolo
+##### `SetVehicleBolo`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2393,14 +2626,16 @@ end)
 | data.boloDescription | string | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ vehicleId, bolo }` (`bolo` is boolean) |
 | callback fail | `vehicleId or plate required`, `Vehicle not found` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SetVehicleBolo({
@@ -2412,11 +2647,12 @@ exports['night_shifts_mdt']:SetVehicleBolo({
 end)
 ```
 
-#### AddANPRRegistry
+##### `AddANPRRegistry`
 
 `added_by_license` stores `system:<resource>` (no FK).
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2427,14 +2663,16 @@ end)
 | data.departmentId | number | no | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ success = true, action = 'added', entry = { id, plate, reason, reasonType, … } }` |
 | callback fail | error string, e.g. `invalid_plate` |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddANPRRegistry({
@@ -2447,9 +2685,10 @@ exports['night_shifts_mdt']:AddANPRRegistry({
 end)
 ```
 
-#### RemoveANPRRegistry
+##### `RemoveANPRRegistry`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -2457,14 +2696,16 @@ end)
 | data.plate | string | one of | |
 | callback | function | no | `function(ok, resultOrError)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | callback ok | `{ success = true, action = 'removed', entryId }` or `{ success = true, action = 'removed', plate }` |
 | callback fail | error string |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RemoveANPRRegistry({
@@ -2474,15 +2715,22 @@ exports['night_shifts_mdt']:RemoveANPRRegistry({
 end)
 ```
 
-#### AddMedicalAllergy
+##### `AddMedicalAllergy`
 
 Patient writes on `civId`. System path: `createdBy` stays `NULL`. Severity is `mild`, `moderate`, or `severe` (default `moderate`).
 
-**Parameters:** `civId`, `allergen` required; optional `severity`, `reaction`, `notes`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ allergyId, civId }`.
+`civId`, `allergen` required; optional `severity`, `reaction`, `notes`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ allergyId, civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalAllergy({
@@ -2496,13 +2744,20 @@ exports['night_shifts_mdt']:AddMedicalAllergy({
 end)
 ```
 
-#### RemoveMedicalAllergy
+##### `RemoveMedicalAllergy`
 
-**Parameters:** `id` (allergy row) required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ id, civId }`.
+`id` (allergy row) required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ id, civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RemoveMedicalAllergy({
@@ -2512,15 +2767,22 @@ exports['night_shifts_mdt']:RemoveMedicalAllergy({
 end)
 ```
 
-#### AddMedicalDiagnosis
+##### `AddMedicalDiagnosis`
 
 Diagnosis status is `active`, `chronic`, or `resolved` (default `active`). `diagnosedBy` stays `NULL`.
 
-**Parameters:** `civId`, `condition` required; optional `status`, `notes`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ diagnosisId, civId }`.
+`civId`, `condition` required; optional `status`, `notes`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ diagnosisId, civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalDiagnosis({
@@ -2532,13 +2794,20 @@ exports['night_shifts_mdt']:AddMedicalDiagnosis({
 end)
 ```
 
-#### UpdateMedicalDiagnosis
+##### `UpdateMedicalDiagnosis`
 
-**Parameters:** `id` required; optional `status`, `notes`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ id }`.
+`id` required; optional `status`, `notes`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ id }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateMedicalDiagnosis({
@@ -2549,13 +2818,20 @@ exports['night_shifts_mdt']:UpdateMedicalDiagnosis({
 end)
 ```
 
-#### RemoveMedicalDiagnosis
+##### `RemoveMedicalDiagnosis`
 
-**Parameters:** `id` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ id }`.
+`id` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ id }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RemoveMedicalDiagnosis({
@@ -2565,13 +2841,20 @@ exports['night_shifts_mdt']:RemoveMedicalDiagnosis({
 end)
 ```
 
-#### AddMedicalTreatment
+##### `AddMedicalTreatment`
 
-**Parameters:** `civId` and `treatment` (or `summary`) required; optional `treatmentType`, `notes`, `departmentId`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ treatmentId, civId }`.
+`civId` and `treatment` (or `summary`) required; optional `treatmentType`, `notes`, `departmentId`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ treatmentId, civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalTreatment({
@@ -2583,13 +2866,20 @@ exports['night_shifts_mdt']:AddMedicalTreatment({
 end)
 ```
 
-#### AddMedicalPrescription
+##### `AddMedicalPrescription`
 
-**Parameters:** `civId`, `medication` required; optional `dosage`, `notes`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ prescriptionId, civId }`.
+`civId`, `medication` required; optional `dosage`, `notes`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ prescriptionId, civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalPrescription({
@@ -2601,13 +2891,20 @@ exports['night_shifts_mdt']:AddMedicalPrescription({
 end)
 ```
 
-#### DiscontinueMedicalPrescription
+##### `DiscontinueMedicalPrescription`
 
-**Parameters:** `id` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ id }`.
+`id` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ id }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DiscontinueMedicalPrescription({
@@ -2617,13 +2914,20 @@ exports['night_shifts_mdt']:DiscontinueMedicalPrescription({
 end)
 ```
 
-#### AddMedicalImmunization
+##### `AddMedicalImmunization`
 
-**Parameters:** `civId`, `vaccine` required; optional `notes`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ immunizationId, civId }`.
+`civId`, `vaccine` required; optional `notes`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ immunizationId, civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalImmunization({
@@ -2634,13 +2938,20 @@ exports['night_shifts_mdt']:AddMedicalImmunization({
 end)
 ```
 
-#### AddMedicalFlag
+##### `AddMedicalFlag`
 
-**Parameters:** `civId`, `flagType` required; optional `details` / `notes`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ flagId, civId }`.
+`civId`, `flagType` required; optional `details` / `notes`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ flagId, civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalFlag({
@@ -2652,13 +2963,20 @@ exports['night_shifts_mdt']:AddMedicalFlag({
 end)
 ```
 
-#### RemoveMedicalFlag
+##### `RemoveMedicalFlag`
 
-**Parameters:** `id` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ id }`.
+`id` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ id }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RemoveMedicalFlag({
@@ -2668,15 +2986,22 @@ exports['night_shifts_mdt']:RemoveMedicalFlag({
 end)
 ```
 
-#### UpdateMedicalVitals
+##### `UpdateMedicalVitals`
 
 Updates the civilian row.
 
-**Parameters:** `civId` required; optional `bloodType`, `height`, `weight`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ civId }`.
+`civId` required; optional `bloodType`, `height`, `weight`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateMedicalVitals({
@@ -2689,15 +3014,22 @@ exports['night_shifts_mdt']:UpdateMedicalVitals({
 end)
 ```
 
-#### IssueLicense
+##### `IssueLicense`
 
 `issuedBy` stays `NULL`.
 
-**Parameters:** `civId`, `licenseType` required; optional `validYears`, `maxPoints`, `notes`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ licenseId, licenseNumber }`.
+`civId`, `licenseType` required; optional `validYears`, `maxPoints`, `notes`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ licenseId, licenseNumber }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:IssueLicense({
@@ -2711,13 +3043,20 @@ exports['night_shifts_mdt']:IssueLicense({
 end)
 ```
 
-#### SuspendLicense
+##### `SuspendLicense`
 
-**Parameters:** `licenseId` required; optional `reason`, `suspensionDays`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ licenseId, licenseStatus = 'suspended' }`.
+`licenseId` required; optional `reason`, `suspensionDays`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ licenseId, licenseStatus = 'suspended' }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SuspendLicense({
@@ -2729,13 +3068,20 @@ exports['night_shifts_mdt']:SuspendLicense({
 end)
 ```
 
-#### ReinstateLicense
+##### `ReinstateLicense`
 
-**Parameters:** `licenseId` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ licenseId, licenseStatus = 'valid' }`.
+`licenseId` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ licenseId, licenseStatus = 'valid' }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ReinstateLicense({
@@ -2745,13 +3091,20 @@ exports['night_shifts_mdt']:ReinstateLicense({
 end)
 ```
 
-#### RevokeLicense
+##### `RevokeLicense`
 
-**Parameters:** `licenseId` required; optional `reason`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ licenseId, licenseStatus = 'revoked' }`.
+`licenseId` required; optional `reason`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ licenseId, licenseStatus = 'revoked' }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RevokeLicense({
@@ -2762,13 +3115,20 @@ exports['night_shifts_mdt']:RevokeLicense({
 end)
 ```
 
-#### AdjustLicensePoints
+##### `AdjustLicensePoints`
 
-**Parameters:** `licenseId`, `pointsChange` (signed number) required; optional `reason`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ licenseId, pointsChange }`.
+`licenseId`, `pointsChange` (signed number) required; optional `reason`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ licenseId, pointsChange }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AdjustLicensePoints({
@@ -2780,15 +3140,22 @@ exports['night_shifts_mdt']:AdjustLicensePoints({
 end)
 ```
 
-#### AddPNCNote
+##### `AddPNCNote`
 
 `createdBy` is `NULL`. `createdByName` is your resource folder.
 
-**Parameters:** `entityType` (`civilian` or `vehicle`), `title`, `description`, plus `civId` or `vehicleId`; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ noteId }`.
+`entityType` (`civilian` or `vehicle`), `title`, `description`, plus `civId` or `vehicleId`; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ noteId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddPNCNote({
@@ -2801,13 +3168,20 @@ exports['night_shifts_mdt']:AddPNCNote({
 end)
 ```
 
-#### DeletePNCNote
+##### `DeletePNCNote`
 
-**Parameters:** `noteId` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ noteId }`.
+`noteId` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ noteId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DeletePNCNote({
@@ -2817,15 +3191,22 @@ exports['night_shifts_mdt']:DeletePNCNote({
 end)
 ```
 
-#### CreateBulletin
+##### `CreateBulletin`
 
 `nsmdt_bulletins.createdBy` is NOT NULL + FK to `nsmdt_users`. The system path **cannot** stamp `system:<resource>` there. Fails with `createdByLicense required (bulletins.createdBy FK to nsmdt_users)` if you omit the license.
 
-**Parameters:** `departmentId`, `title`, `content`, **`createdByLicense`** required; optional `priority`, `isPinned`, `expiresAt`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ bulletinId }`.
+`departmentId`, `title`, `content`, **`createdByLicense`** required; optional `priority`, `isPinned`, `expiresAt`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ bulletinId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateBulletin({
@@ -2839,13 +3220,20 @@ exports['night_shifts_mdt']:CreateBulletin({
 end)
 ```
 
-#### UpdateBulletin
+##### `UpdateBulletin`
 
-**Parameters:** `bulletinId` required; optional `title`, `content`, `priority`, `isPinned`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ bulletinId }`.
+`bulletinId` required; optional `title`, `content`, `priority`, `isPinned`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ bulletinId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateBulletin({
@@ -2856,13 +3244,20 @@ exports['night_shifts_mdt']:UpdateBulletin({
 end)
 ```
 
-#### DeleteBulletin
+##### `DeleteBulletin`
 
-**Parameters:** `bulletinId` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ bulletinId }`.
+`bulletinId` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ bulletinId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DeleteBulletin({
@@ -2872,13 +3267,20 @@ exports['night_shifts_mdt']:DeleteBulletin({
 end)
 ```
 
-#### TogglePinBulletin
+##### `TogglePinBulletin`
 
-**Parameters:** `bulletinId` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ bulletinId }`.
+`bulletinId` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ bulletinId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:TogglePinBulletin({
@@ -2888,15 +3290,22 @@ exports['night_shifts_mdt']:TogglePinBulletin({
 end)
 ```
 
-#### RegisterCivilian
+##### `RegisterCivilian`
 
 Auto-generates `personalId` if omitted (`SYS-<timestamp>…`).
 
-**Parameters:** `firstName`, `lastName` required; optional `personalId`, `dateOfBirth`, `phoneNumber`, `address`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ civilianId }`.
+`firstName`, `lastName` required; optional `personalId`, `dateOfBirth`, `phoneNumber`, `address`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ civilianId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RegisterCivilian({
@@ -2910,13 +3319,20 @@ exports['night_shifts_mdt']:RegisterCivilian({
 end)
 ```
 
-#### RegisterVehicle
+##### `RegisterVehicle`
 
-**Parameters:** `civId`, `licensePlate` required; optional `make`, `model`, `color`, `buildYear`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ vehicleId }`.
+`civId`, `licensePlate` required; optional `make`, `model`, `color`, `buildYear`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ vehicleId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RegisterVehicle({
@@ -2930,13 +3346,20 @@ exports['night_shifts_mdt']:RegisterVehicle({
 end)
 ```
 
-#### RegisterProperty
+##### `RegisterProperty`
 
-**Parameters:** `civId`, `address` required; optional `propertyType`, `houseNumber`, `city`, `state`, `zone`, `postal`, `description`, `price`, `buildYear`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ propertyId }`.
+`civId`, `address` required; optional `propertyType`, `houseNumber`, `city`, `state`, `zone`, `postal`, `description`, `price`, `buildYear`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ propertyId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RegisterProperty({
@@ -2949,13 +3372,20 @@ exports['night_shifts_mdt']:RegisterProperty({
 end)
 ```
 
-#### RegisterBusiness
+##### `RegisterBusiness`
 
-**Parameters:** `civId`, `businessName` required; optional `businessType`, `address`, `state`, `city`, `zone`, `postal`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ businessId }`.
+`civId`, `businessName` required; optional `businessType`, `address`, `state`, `city`, `zone`, `postal`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ businessId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RegisterBusiness({
@@ -2967,15 +3397,22 @@ exports['night_shifts_mdt']:RegisterBusiness({
 end)
 ```
 
-#### UpdateCivilianAddress
+##### `UpdateCivilianAddress`
 
 Writes `addressLine1`.
 
-**Parameters:** `civId`, `address` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ civId }`.
+`civId`, `address` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ civId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateCivilianAddress({
@@ -2986,13 +3423,20 @@ exports['night_shifts_mdt']:UpdateCivilianAddress({
 end)
 ```
 
-#### ApproveLicenseRequest
+##### `ApproveLicenseRequest`
 
-**Parameters:** `licenseId` required; optional `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ licenseId }`.
+`licenseId` required; optional `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ licenseId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ApproveLicenseRequest({
@@ -3002,13 +3446,20 @@ exports['night_shifts_mdt']:ApproveLicenseRequest({
 end)
 ```
 
-#### RejectLicenseRequest
+##### `RejectLicenseRequest`
 
-**Parameters:** `licenseId` required; optional `reason`, `callback`.
+Parameters
+{: .text-delta }
 
-**Returns:** callback ok `{ licenseId }`.
+`licenseId` required; optional `reason`, `callback`.
 
-**Example**
+Returns
+{: .text-delta }
+
+callback ok `{ licenseId }`.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RejectLicenseRequest({
@@ -3025,9 +3476,10 @@ end)
 
 **When not to:** There is no system twin. Do not invent a fake source. The player must already have an MDT session for clock-in.
 
-#### StartShiftByServerId
+##### `StartShiftByServerId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -3037,45 +3489,51 @@ end)
 | rankId | number | yes | |
 | callsign | string | no | empty becomes `UNASSIGNED` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | `success, result` — `success` is boolean |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local ok, result = exports['night_shifts_mdt']:StartShiftByServerId(source, 1, nil, 3, 'L-42')
 if not ok then return print(result) end
 ```
 
-#### EndShiftByServerId
+##### `EndShiftByServerId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | |
 | callback | function | no | `function(success, duration, totalTime)` |
 
-**Returns**
+Returns
+{: .text-delta }
 
 | Path | Value |
 | ---- | ----- |
 | sync | `success, duration, totalTime` |
 | callback | same three values |
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local ok, duration, totalTime = exports['night_shifts_mdt']:EndShiftByServerId(source)
 print(ok, duration, totalTime)
 ```
 
-#### UpdateShiftStatusByServerId
+##### `UpdateShiftStatusByServerId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -3083,9 +3541,13 @@ print(ok, duration, totalTime)
 | statusCode | string | yes | Department status code |
 | callback | function | no | |
 
-**Returns:** `success` plus result via sync and optional callback.
+Returns
+{: .text-delta }
 
-**Example**
+`success` plus result via sync and optional callback.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateShiftStatusByServerId(source, 'available', function(ok, result)
@@ -3093,9 +3555,10 @@ exports['night_shifts_mdt']:UpdateShiftStatusByServerId(source, 'available', fun
 end)
 ```
 
-#### UpdateShiftStatusByBindingByServerId
+##### `UpdateShiftStatusByBindingByServerId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
@@ -3103,9 +3566,13 @@ end)
 | binding | string | yes | `panic`, `available`, `unavailable`, or `busy` |
 | callback | function | no | |
 
-**Returns:** `success` plus result via sync and optional callback.
+Returns
+{: .text-delta }
 
-**Example**
+`success` plus result via sync and optional callback.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateShiftStatusByBindingByServerId(source, 'busy', function(ok, result)
@@ -3113,18 +3580,23 @@ exports['night_shifts_mdt']:UpdateShiftStatusByBindingByServerId(source, 'busy',
 end)
 ```
 
-#### UpdateCallsignByServerId
+##### `UpdateCallsignByServerId`
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | serverId | number | yes | |
 | newCallsign | string | yes | |
 
-**Returns:** sync `success, result`.
+Returns
+{: .text-delta }
 
-**Example**
+sync `success, result`.
+
+Example
+{: .text-delta }
 
 ```lua
 local ok, result = exports['night_shifts_mdt']:UpdateCallsignByServerId(source, 'L-21')
@@ -3150,11 +3622,12 @@ Payloads match the system cards above. Extra arguments and stamps:
 
 Same payload as the matching system export, plus `source` first. Medical `*ByServerId` stamps that player’s license (ambulance staff). `CreateBulletinByServerId` fills `createdByLicense` from the officer.
 
-#### AssignUnitToCallByServerId
+##### `AssignUnitToCallByServerId`
 
 Permission: `dispatch.assign_units`. Omit `callsign` / `targetServerId` to self-assign.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AssignUnitToCallByServerId(source, {
@@ -3165,11 +3638,12 @@ exports['night_shifts_mdt']:AssignUnitToCallByServerId(source, {
 end)
 ```
 
-#### DetachUnitFromCallByServerId
+##### `DetachUnitFromCallByServerId`
 
 Permission: `dispatch.assign_units`. Omit target to detach self.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DetachUnitFromCallByServerId(source, {
@@ -3180,11 +3654,12 @@ exports['night_shifts_mdt']:DetachUnitFromCallByServerId(source, {
 end)
 ```
 
-#### SetCallStatusByServerId
+##### `SetCallStatusByServerId`
 
 Permission: `dispatch.resolve_call` or `hotline.resolve_call`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SetCallStatusByServerId(source, {
@@ -3195,11 +3670,12 @@ exports['night_shifts_mdt']:SetCallStatusByServerId(source, {
 end)
 ```
 
-#### ArchiveCallByServerId
+##### `ArchiveCallByServerId`
 
 Permission: `dispatch.archive_call` or `hotline.archive_calls`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ArchiveCallByServerId(source, {
@@ -3210,11 +3686,12 @@ exports['night_shifts_mdt']:ArchiveCallByServerId(source, {
 end)
 ```
 
-#### EditCallByServerId
+##### `EditCallByServerId`
 
 Permission: `dispatch.edit_call`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:EditCallByServerId(source, {
@@ -3225,11 +3702,12 @@ exports['night_shifts_mdt']:EditCallByServerId(source, {
 end)
 ```
 
-#### AddCallNoteByServerId
+##### `AddCallNoteByServerId`
 
 Permission: `dispatch.add_note`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddCallNoteByServerId(source, {
@@ -3240,11 +3718,12 @@ exports['night_shifts_mdt']:AddCallNoteByServerId(source, {
 end)
 ```
 
-#### DeleteCallNoteByServerId
+##### `DeleteCallNoteByServerId`
 
 Permission: `dispatch.delete_note`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DeleteCallNoteByServerId(source, {
@@ -3255,11 +3734,12 @@ exports['night_shifts_mdt']:DeleteCallNoteByServerId(source, {
 end)
 ```
 
-#### SetUnitOnCallStatusByServerId
+##### `SetUnitOnCallStatusByServerId`
 
 On-shift only. Omit target to update self.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SetUnitOnCallStatusByServerId(source, {
@@ -3270,11 +3750,12 @@ exports['night_shifts_mdt']:SetUnitOnCallStatusByServerId(source, {
 end)
 ```
 
-#### CreateWarrantByServerId
+##### `CreateWarrantByServerId`
 
 Permission: `pnc.registration`. `issuedBy` = that officer. No `departmentId` required.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateWarrantByServerId(source, {
@@ -3288,11 +3769,12 @@ exports['night_shifts_mdt']:CreateWarrantByServerId(source, {
 end)
 ```
 
-#### CancelWarrantByServerId
+##### `CancelWarrantByServerId`
 
 Permission: `pnc.registration`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CancelWarrantByServerId(source, {
@@ -3302,11 +3784,12 @@ exports['night_shifts_mdt']:CancelWarrantByServerId(source, {
 end)
 ```
 
-#### ExecuteWarrantByServerId
+##### `ExecuteWarrantByServerId`
 
 Permission: `pnc.registration`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ExecuteWarrantByServerId(source, {
@@ -3316,11 +3799,12 @@ exports['night_shifts_mdt']:ExecuteWarrantByServerId(source, {
 end)
 ```
 
-#### UpdateWarrantByServerId
+##### `UpdateWarrantByServerId`
 
 Permission: `pnc.registration`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateWarrantByServerId(source, {
@@ -3331,11 +3815,12 @@ exports['night_shifts_mdt']:UpdateWarrantByServerId(source, {
 end)
 ```
 
-#### CreateFlagByServerId
+##### `CreateFlagByServerId`
 
 Permission: `pnc.flags`. Department from the officer’s shift.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateFlagByServerId(source, {
@@ -3348,11 +3833,12 @@ exports['night_shifts_mdt']:CreateFlagByServerId(source, {
 end)
 ```
 
-#### SetFlagActiveByServerId
+##### `SetFlagActiveByServerId`
 
 Permission: `pnc.flags`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SetFlagActiveByServerId(source, {
@@ -3363,11 +3849,12 @@ exports['night_shifts_mdt']:SetFlagActiveByServerId(source, {
 end)
 ```
 
-#### CreateFineByServerId
+##### `CreateFineByServerId`
 
 Permission: `pnc.registration`. Department from the officer’s shift.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateFineByServerId(source, {
@@ -3380,11 +3867,12 @@ exports['night_shifts_mdt']:CreateFineByServerId(source, {
 end)
 ```
 
-#### MarkFinePaidByServerId
+##### `MarkFinePaidByServerId`
 
 Permission: `pnc.registration`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:MarkFinePaidByServerId(source, {
@@ -3394,11 +3882,12 @@ exports['night_shifts_mdt']:MarkFinePaidByServerId(source, {
 end)
 ```
 
-#### CreateCriminalRecordByServerId
+##### `CreateCriminalRecordByServerId`
 
 Permission: `pnc.registration`. Department from the officer’s shift.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateCriminalRecordByServerId(source, {
@@ -3411,11 +3900,12 @@ exports['night_shifts_mdt']:CreateCriminalRecordByServerId(source, {
 end)
 ```
 
-#### AddChargeByServerId
+##### `AddChargeByServerId`
 
 Permission: `pnc.registration`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddChargeByServerId(source, {
@@ -3428,11 +3918,12 @@ exports['night_shifts_mdt']:AddChargeByServerId(source, {
 end)
 ```
 
-#### UpdateChargeByServerId
+##### `UpdateChargeByServerId`
 
 Permission: `pnc.registration`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateChargeByServerId(source, {
@@ -3443,11 +3934,12 @@ exports['night_shifts_mdt']:UpdateChargeByServerId(source, {
 end)
 ```
 
-#### SetVehicleBoloByServerId
+##### `SetVehicleBoloByServerId`
 
 Permission: `pnc.registration`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SetVehicleBoloByServerId(source, {
@@ -3459,11 +3951,12 @@ exports['night_shifts_mdt']:SetVehicleBoloByServerId(source, {
 end)
 ```
 
-#### AddANPRRegistryByServerId
+##### `AddANPRRegistryByServerId`
 
 Permission: `pnc.anpr.manage`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddANPRRegistryByServerId(source, {
@@ -3475,11 +3968,12 @@ exports['night_shifts_mdt']:AddANPRRegistryByServerId(source, {
 end)
 ```
 
-#### RemoveANPRRegistryByServerId
+##### `RemoveANPRRegistryByServerId`
 
 Permission: `pnc.anpr.manage`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RemoveANPRRegistryByServerId(source, {
@@ -3489,11 +3983,12 @@ exports['night_shifts_mdt']:RemoveANPRRegistryByServerId(source, {
 end)
 ```
 
-#### AddMedicalAllergyByServerId
+##### `AddMedicalAllergyByServerId`
 
 Permission: `medical_records.add_treatment`. FK + audit = that player’s license. Notes say `Staff …`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalAllergyByServerId(source, {
@@ -3505,11 +4000,12 @@ exports['night_shifts_mdt']:AddMedicalAllergyByServerId(source, {
 end)
 ```
 
-#### RemoveMedicalAllergyByServerId
+##### `RemoveMedicalAllergyByServerId`
 
 Permission: `medical_records.delete`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RemoveMedicalAllergyByServerId(source, {
@@ -3519,11 +4015,12 @@ exports['night_shifts_mdt']:RemoveMedicalAllergyByServerId(source, {
 end)
 ```
 
-#### AddMedicalDiagnosisByServerId
+##### `AddMedicalDiagnosisByServerId`
 
 Permission: `medical_records.diagnose`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalDiagnosisByServerId(source, {
@@ -3535,11 +4032,12 @@ exports['night_shifts_mdt']:AddMedicalDiagnosisByServerId(source, {
 end)
 ```
 
-#### UpdateMedicalDiagnosisByServerId
+##### `UpdateMedicalDiagnosisByServerId`
 
 Permission: `medical_records.diagnose`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateMedicalDiagnosisByServerId(source, {
@@ -3550,11 +4048,12 @@ exports['night_shifts_mdt']:UpdateMedicalDiagnosisByServerId(source, {
 end)
 ```
 
-#### RemoveMedicalDiagnosisByServerId
+##### `RemoveMedicalDiagnosisByServerId`
 
 Permission: `medical_records.delete`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RemoveMedicalDiagnosisByServerId(source, {
@@ -3564,11 +4063,12 @@ exports['night_shifts_mdt']:RemoveMedicalDiagnosisByServerId(source, {
 end)
 ```
 
-#### AddMedicalTreatmentByServerId
+##### `AddMedicalTreatmentByServerId`
 
 Permission: `medical_records.add_treatment`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalTreatmentByServerId(source, {
@@ -3579,11 +4079,12 @@ exports['night_shifts_mdt']:AddMedicalTreatmentByServerId(source, {
 end)
 ```
 
-#### AddMedicalPrescriptionByServerId
+##### `AddMedicalPrescriptionByServerId`
 
 Permission: `medical_records.diagnose`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalPrescriptionByServerId(source, {
@@ -3595,11 +4096,12 @@ exports['night_shifts_mdt']:AddMedicalPrescriptionByServerId(source, {
 end)
 ```
 
-#### DiscontinueMedicalPrescriptionByServerId
+##### `DiscontinueMedicalPrescriptionByServerId`
 
 Permission: `medical_records.diagnose`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DiscontinueMedicalPrescriptionByServerId(source, {
@@ -3609,11 +4111,12 @@ exports['night_shifts_mdt']:DiscontinueMedicalPrescriptionByServerId(source, {
 end)
 ```
 
-#### AddMedicalImmunizationByServerId
+##### `AddMedicalImmunizationByServerId`
 
 Permission: `medical_records.add_treatment`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalImmunizationByServerId(source, {
@@ -3624,11 +4127,12 @@ exports['night_shifts_mdt']:AddMedicalImmunizationByServerId(source, {
 end)
 ```
 
-#### AddMedicalFlagByServerId
+##### `AddMedicalFlagByServerId`
 
 Permission: `medical_records.flags`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddMedicalFlagByServerId(source, {
@@ -3639,11 +4143,12 @@ exports['night_shifts_mdt']:AddMedicalFlagByServerId(source, {
 end)
 ```
 
-#### RemoveMedicalFlagByServerId
+##### `RemoveMedicalFlagByServerId`
 
 Permission: `medical_records.flags`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RemoveMedicalFlagByServerId(source, {
@@ -3653,11 +4158,12 @@ exports['night_shifts_mdt']:RemoveMedicalFlagByServerId(source, {
 end)
 ```
 
-#### UpdateMedicalVitalsByServerId
+##### `UpdateMedicalVitalsByServerId`
 
 Permission: `medical_records.add_treatment`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateMedicalVitalsByServerId(source, {
@@ -3668,11 +4174,12 @@ exports['night_shifts_mdt']:UpdateMedicalVitalsByServerId(source, {
 end)
 ```
 
-#### IssueLicenseByServerId
+##### `IssueLicenseByServerId`
 
 Permission: typically `licenses.create`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:IssueLicenseByServerId(source, {
@@ -3684,11 +4191,12 @@ exports['night_shifts_mdt']:IssueLicenseByServerId(source, {
 end)
 ```
 
-#### SuspendLicenseByServerId
+##### `SuspendLicenseByServerId`
 
 Permission: typically `licenses.suspend`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:SuspendLicenseByServerId(source, {
@@ -3700,11 +4208,12 @@ exports['night_shifts_mdt']:SuspendLicenseByServerId(source, {
 end)
 ```
 
-#### ReinstateLicenseByServerId
+##### `ReinstateLicenseByServerId`
 
 Permission: typically `licenses.update`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ReinstateLicenseByServerId(source, {
@@ -3714,11 +4223,12 @@ exports['night_shifts_mdt']:ReinstateLicenseByServerId(source, {
 end)
 ```
 
-#### RevokeLicenseByServerId
+##### `RevokeLicenseByServerId`
 
 Permission: typically `licenses.revoke`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RevokeLicenseByServerId(source, {
@@ -3729,11 +4239,12 @@ exports['night_shifts_mdt']:RevokeLicenseByServerId(source, {
 end)
 ```
 
-#### AdjustLicensePointsByServerId
+##### `AdjustLicensePointsByServerId`
 
 Permission: typically `licenses.update`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AdjustLicensePointsByServerId(source, {
@@ -3745,11 +4256,12 @@ exports['night_shifts_mdt']:AdjustLicensePointsByServerId(source, {
 end)
 ```
 
-#### AddPNCNoteByServerId
+##### `AddPNCNoteByServerId`
 
 Permission: `pnc.notes.manage`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:AddPNCNoteByServerId(source, {
@@ -3762,11 +4274,12 @@ exports['night_shifts_mdt']:AddPNCNoteByServerId(source, {
 end)
 ```
 
-#### DeletePNCNoteByServerId
+##### `DeletePNCNoteByServerId`
 
 Permission: `pnc.notes.manage`.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DeletePNCNoteByServerId(source, {
@@ -3776,11 +4289,12 @@ exports['night_shifts_mdt']:DeletePNCNoteByServerId(source, {
 end)
 ```
 
-#### CreateBulletinByServerId
+##### `CreateBulletinByServerId`
 
 Permission: `management.bulletins.create`. Fills `createdByLicense` from the officer.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CreateBulletinByServerId(source, {
@@ -3793,9 +4307,10 @@ exports['night_shifts_mdt']:CreateBulletinByServerId(source, {
 end)
 ```
 
-#### UpdateBulletinByServerId
+##### `UpdateBulletinByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateBulletinByServerId(source, {
@@ -3806,9 +4321,10 @@ exports['night_shifts_mdt']:UpdateBulletinByServerId(source, {
 end)
 ```
 
-#### DeleteBulletinByServerId
+##### `DeleteBulletinByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:DeleteBulletinByServerId(source, {
@@ -3818,9 +4334,10 @@ exports['night_shifts_mdt']:DeleteBulletinByServerId(source, {
 end)
 ```
 
-#### TogglePinBulletinByServerId
+##### `TogglePinBulletinByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:TogglePinBulletinByServerId(source, {
@@ -3830,9 +4347,10 @@ exports['night_shifts_mdt']:TogglePinBulletinByServerId(source, {
 end)
 ```
 
-#### RegisterCivilianByServerId
+##### `RegisterCivilianByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RegisterCivilianByServerId(source, {
@@ -3844,9 +4362,10 @@ exports['night_shifts_mdt']:RegisterCivilianByServerId(source, {
 end)
 ```
 
-#### RegisterVehicleByServerId
+##### `RegisterVehicleByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RegisterVehicleByServerId(source, {
@@ -3859,9 +4378,10 @@ exports['night_shifts_mdt']:RegisterVehicleByServerId(source, {
 end)
 ```
 
-#### RegisterPropertyByServerId
+##### `RegisterPropertyByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RegisterPropertyByServerId(source, {
@@ -3872,9 +4392,10 @@ exports['night_shifts_mdt']:RegisterPropertyByServerId(source, {
 end)
 ```
 
-#### RegisterBusinessByServerId
+##### `RegisterBusinessByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RegisterBusinessByServerId(source, {
@@ -3885,9 +4406,10 @@ exports['night_shifts_mdt']:RegisterBusinessByServerId(source, {
 end)
 ```
 
-#### UpdateCivilianAddressByServerId
+##### `UpdateCivilianAddressByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:UpdateCivilianAddressByServerId(source, {
@@ -3898,9 +4420,10 @@ exports['night_shifts_mdt']:UpdateCivilianAddressByServerId(source, {
 end)
 ```
 
-#### ApproveLicenseRequestByServerId
+##### `ApproveLicenseRequestByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ApproveLicenseRequestByServerId(source, {
@@ -3910,9 +4433,10 @@ exports['night_shifts_mdt']:ApproveLicenseRequestByServerId(source, {
 end)
 ```
 
-#### RejectLicenseRequestByServerId
+##### `RejectLicenseRequestByServerId`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:RejectLicenseRequestByServerId(source, {
@@ -3929,13 +4453,20 @@ end)
 
 **When not to:** Server integrations — use server exports.
 
-#### IsMenuOpen
+##### `IsMenuOpen`
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync boolean — is the MDT tablet open?
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+sync boolean — is the MDT tablet open?
+
+Example
+{: .text-delta }
 
 ```lua
 if exports['night_shifts_mdt']:IsMenuOpen() then
@@ -3943,55 +4474,81 @@ if exports['night_shifts_mdt']:IsMenuOpen() then
 end
 ```
 
-#### OpenMenu
+##### `OpenMenu`
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** none.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+none.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:OpenMenu()
 ```
 
-#### CloseMenu
+##### `CloseMenu`
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** none.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+none.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:CloseMenu()
 ```
 
-#### ToggleMenu
+##### `ToggleMenu`
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** none.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+none.
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ToggleMenu()
 ```
 
-#### ForwardCallToMDT (client)
+##### `ForwardCallToMDT (client)`
 
 Client helper; still creates the call **server-side**. Same `callData` fields as the server export.
 
-**Parameters**
+Parameters
+{: .text-delta }
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
 | callData | table | yes | Same shape as server `ForwardCallToMDT` |
 
-**Returns:** none on the client (the server creates the call).
+Returns
+{: .text-delta }
 
-**Example**
+none on the client (the server creates the call).
+
+Example
+{: .text-delta }
 
 ```lua
 exports['night_shifts_mdt']:ForwardCallToMDT({
@@ -4002,13 +4559,20 @@ exports['night_shifts_mdt']:ForwardCallToMDT({
 })
 ```
 
-#### IsOnPoliceShift
+##### `IsOnPoliceShift`
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync boolean for the local player.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+sync boolean for the local player.
+
+Example
+{: .text-delta }
 
 ```lua
 if exports['night_shifts_mdt']:IsOnPoliceShift() then
@@ -4016,9 +4580,10 @@ if exports['night_shifts_mdt']:IsOnPoliceShift() then
 end
 ```
 
-#### IsOnAmbulanceShift
+##### `IsOnAmbulanceShift`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 if exports['night_shifts_mdt']:IsOnAmbulanceShift() then
@@ -4026,9 +4591,10 @@ if exports['night_shifts_mdt']:IsOnAmbulanceShift() then
 end
 ```
 
-#### IsOnFireShift
+##### `IsOnFireShift`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 if exports['night_shifts_mdt']:IsOnFireShift() then
@@ -4036,9 +4602,10 @@ if exports['night_shifts_mdt']:IsOnFireShift() then
 end
 ```
 
-#### IsOnTowShift
+##### `IsOnTowShift`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 if exports['night_shifts_mdt']:IsOnTowShift() then
@@ -4046,9 +4613,10 @@ if exports['night_shifts_mdt']:IsOnTowShift() then
 end
 ```
 
-#### IsOnCouncilShift
+##### `IsOnCouncilShift`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 if exports['night_shifts_mdt']:IsOnCouncilShift() then
@@ -4056,41 +4624,51 @@ if exports['night_shifts_mdt']:IsOnCouncilShift() then
 end
 ```
 
-#### GetPlayerCallsign
+##### `GetPlayerCallsign`
 
-**Parameters:** none.
+Parameters
+{: .text-delta }
 
-**Returns:** sync string or nil.
+none.
 
-**Example**
+Returns
+{: .text-delta }
+
+sync string or nil.
+
+Example
+{: .text-delta }
 
 ```lua
 local callsign = exports['night_shifts_mdt']:GetPlayerCallsign()
 print(callsign)
 ```
 
-#### GetCurrentLanguage (client)
+##### `GetCurrentLanguage (client)`
 
 Same return as the server read.
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 print(exports['night_shifts_mdt']:GetCurrentLanguage())
 ```
 
-#### GetAvailableLanguages (client)
+##### `GetAvailableLanguages (client)`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local languages = exports['night_shifts_mdt']:GetAvailableLanguages()
 print(languages[1])
 ```
 
-#### GetDepartments (client)
+##### `GetDepartments (client)`
 
-**Example**
+Example
+{: .text-delta }
 
 ```lua
 local depts = exports['night_shifts_mdt']:GetDepartments()
