@@ -606,6 +606,22 @@ There is no extra dispatcher login and no hidden dispatcher-only API. Dispatch f
 - **Trust model:** any started server resource can call these. There is no allowlist.
 - **Identity:** civilians are `nsmdt_civilians` rows (`id` / `personalId`). Vehicles belong to a civilian (`civId`). Warrants, flags, and fines target `civId`. Do not invent rows with SQL.
 
+#### How to read a card
+
+Every export below is a **server** Lua call unless the heading says Client.
+
+| Word on the card | What you write | What you get |
+| ---------------- | -------------- | ------------ |
+| **sync** | `local x = mdt:GetVersion()` | The value is the **return** of the export. No callback. |
+| **callback** (reads) | `mdt:GetPenalCodes(function(rows) … end)` | The list arrives **inside** that function. The export itself returns nothing useful. |
+| **callback ok / fail** (writes) | `mdt:SetCallStatus({ … }, function(ok, result) … end)` | `ok == true` → `result` is a table. `ok == false` → `result` is an error string. |
+
+Always start with:
+
+```lua
+local mdt = exports['night_shifts_mdt']
+```
+
 #### Pairing index (same job, two exports)
 
 | Job | System (no player) | Officer / terminal |
@@ -704,101 +720,135 @@ end)
 
 **When not to:** Do not use reads to mutate state.
 
-Board and person-file reads take a callback. The rows arrive in that function — that is the real data.
+Two styles:
+
+- **Returns a value** (`GetVersion`, `GetDepartments`, `GetActiveCalls`) — assign it.
+- **Takes a callback** (`GetPenalCodes`, `GetActiveFlagsMarkers`, person-file reads) — the rows arrive in that function. That is the real data (MySQL). Without a callback you only get a warm memory snapshot, which can be empty after a restart.
 
 #### Version, settings, translations, departments
 
+These are **sync** except the three catalogues at the bottom (`GetPenalCodes`, `GetFlagTypes`, `GetLicenseTypes`).
+
+```lua
+local mdt = exports['night_shifts_mdt']
+
+print(mdt:GetVersion())                    -- "1.4.9"
+print(mdt:GetCurrencySymbol())             -- "$" (from the currency setting)
+print(mdt:GetCurrentLanguage())            -- "en"
+
+local settings = mdt:GetAllSettings()
+print(settings.currency, settings.timeFormat)
+-- Do not use #settings — this table is keyed by name, so # is always 0.
+for key, value in pairs(settings) do
+  -- key = "currency", value = "USD", …
+end
+
+print(mdt:GetSetting('currency'))          -- same as settings.currency
+
+local depts = mdt:GetDepartments()
+print(#depts, depts[1] and depts[1].departmentName)   -- 3  "LSPD"
+local ranks = mdt:GetRanksByDepartmentId(depts[1].id)
+print(ranks[1] and ranks[1].rankName)
+
+-- Catalogues: data is the argument to your function, not a return value
+mdt:GetPenalCodes(function(codes)
+  print('penal codes', #codes, codes[1] and codes[1].codeNumber)
+end)
+mdt:GetFlagTypes(function(types) print('flag types', #types) end)
+mdt:GetLicenseTypes(function(rows) print('license types', #rows) end)
+```
+
 ##### GetVersion
 
-Resource version string from the manifest.
+Resource version from `fxmanifest.lua`. Use it to require a minimum MDT build.
 
-**Parameters**
+**Parameters:** none.
 
-| Name | Type | Required | Notes |
-| ---- | ---- | -------- | ----- |
-| (none) | | | |
-
-**Returns**
-
-| Path | Value |
-| ---- | ----- |
-| sync | string, e.g. `1.4.9` |
+**Returns:** sync string, e.g. `"1.4.9"`.
 
 ##### GetSetting
 
-One setting value by key.
+One Admin → MDT Settings value.
 
 **Parameters**
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
-| key | string | yes | Setting key |
+| key | string | yes | See common keys below |
 
-**Returns**
+**Returns:** sync value (string, number, or boolean), or the default, or nil if unknown.
 
-| Path | Value |
-| ---- | ----- |
-| sync | the setting value, or nil |
+Common keys (not a complete list — `GetAllSettings` has every key):
+
+| Key | Typical value |
+| --- | ------------- |
+| `currency` | `USD`, `EUR`, `GBP`, … |
+| `currencyPosition` | `before` or `after` |
+| `timeFormat` | `12h` or `24h` |
+| `dateFormat` | `short`, `long`, `numeric-iso`, … |
+| `speedUnit` | `mph` or `kmh` |
+| `tempUnit` | `celsius` or `fahrenheit` |
 
 ##### GetAllSettings
 
-All settings as a **named bag** (string keys). `#` is always `0` — that does not mean empty.
+Same values as `GetSetting`, all at once. This is a **dictionary** (`settings.currency`), not a list. `#settings` is always `0` even when it is full — iterate with `pairs`.
 
-**Parameters**
+**Parameters:** none.
 
-| Name | Type | Required | Notes |
-| ---- | ---- | -------- | ----- |
-| (none) | | | |
-
-**Returns**
-
-| Path | Value |
-| ---- | ----- |
-| sync | table keyed by setting name |
+**Returns:** sync table keyed by setting name. Also includes assembled `alertDurations` and normalized `cursorAwayEnabled` / `infoHudEnabled` flags for the tablet.
 
 ##### GetCurrencySymbol
 
+Display symbol for `GetSetting('currency')`. Prefer this over hard-coding `$`.
+
 **Parameters:** none.
 
-**Returns:** sync string (currency symbol).
+**Returns:** sync string (`$`, `€`, `£`, `kr`, …). Unknown codes fall back to `$`.
 
 ##### GetCurrentLanguage
 
+Active translation code.
+
 **Parameters:** none.
 
-**Returns:** sync language code string.
+**Returns:** sync string (`en`, `de`, `fr`, …).
 
 ##### GetAvailableLanguages
 
+Every locale file the resource loaded.
+
 **Parameters:** none.
 
-**Returns:** sync list of language codes.
+**Returns:** sync array of language-code strings.
 
 ##### GetDepartments
 
-Active departments only.
+Active departments only (clock-in pickers). Archived departments stay in cache for PNC joins but are **not** in this list.
 
 **Parameters:** none.
 
-**Returns**
+**Returns:** sync array. Each row includes:
 
-| Path | Value |
-| ---- | ----- |
-| sync | array of department rows (`id`, `departmentName`, `departmentType`, `isActive`, …) |
+| Field | Type | Notes |
+| ----- | ---- | ----- |
+| `id` | number | Use this as `departmentId` on writes |
+| `departmentName` | string | e.g. `Los Santos Police Department` |
+| `departmentShortName` | string | e.g. `LSPD` |
+| `departmentType` | string | `police`, `ambulance`, `fire`, `tow`, `council` |
+| `departmentColor` | string | hex |
+| `isActive` | number/bool | always on in this list |
 
 ##### GetRanksByDepartmentId
+
+Ranks for one department (clock-in / `StartShiftByServerId`).
 
 **Parameters**
 
 | Name | Type | Required | Notes |
 | ---- | ---- | -------- | ----- |
-| departmentId | number | yes | |
+| departmentId | number | yes | `depts[i].id` |
 
-**Returns**
-
-| Path | Value |
-| ---- | ----- |
-| sync | array of rank rows for that department |
+**Returns:** sync array of rank rows (`id`, `departmentId`, `rankName`, `rankShortName`, …). Empty `{}` if the id is unknown.
 
 ##### GetSubDepartmentsByDepartmentId
 
@@ -808,13 +858,11 @@ Active departments only.
 | ---- | ---- | -------- | ----- |
 | departmentId | number | yes | |
 
-**Returns**
-
-| Path | Value |
-| ---- | ----- |
-| sync | array of sub-department rows |
+**Returns:** sync array of sub-department rows (`id`, `departmentId`, `subDepartmentName`, `subDepartmentShortName`, …). Empty `{}` if none.
 
 ##### GetPenalCodes
+
+Charge / fine pick-list. **Callback required.**
 
 **Parameters**
 
@@ -822,16 +870,11 @@ Active departments only.
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(codes)` |
 
-**Returns**
-
-| Path | Value |
-| ---- | ----- |
-| callback | array of penal-code rows |
-| sync | none |
+**Returns:** none as a return value. `callback` receives an array of penal-code rows (`id`, `codeNumber`, `title`, …). Use `id` as `penalCodeId` on fines and charges.
 
 ##### GetFlagTypes
 
-Enabled PNC flag types.
+Enabled PNC flag types. **Callback required.**
 
 **Parameters**
 
@@ -839,14 +882,11 @@ Enabled PNC flag types.
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(types)` |
 
-**Returns**
-
-| Path | Value |
-| ---- | ----- |
-| callback | array of flag-type rows |
-| sync | none |
+**Returns:** none as a return value. `callback` receives enabled flag-type rows. Use the type id/string as `flagType` on `CreateFlag`.
 
 ##### GetLicenseTypes
+
+Enabled license types. **Callback required** — same pattern as `GetPenalCodes` / `GetFlagTypes`. No useful return value.
 
 **Parameters**
 
@@ -854,28 +894,7 @@ Enabled PNC flag types.
 | ---- | ---- | -------- | ----- |
 | callback | function | yes | `function(rows)` |
 
-**Returns**
-
-| Path | Value |
-| ---- | ----- |
-| callback | array of license-type rows |
-| sync | empty table `{}` (ignore it) |
-
-<details markdown="block">
-<summary>Example — settings and catalogues</summary>
-
-```lua
-local mdt = exports['night_shifts_mdt']
-print(mdt:GetVersion())
-local depts = mdt:GetDepartments()
-print(depts[1] and depts[1].departmentName)
-
-mdt:GetPenalCodes(function(codes) print('penal', #codes) end)
-mdt:GetFlagTypes(function(types) print('flag types', #types) end)
-mdt:GetLicenseTypes(function(rows) print('license types', #rows) end)
-```
-
-</details>
+**Returns:** none as a return value. `callback` receives license-type rows. Use the type id/string as `licenseType` on `IssueLicense`.
 
 #### Identity and PNC boards
 
