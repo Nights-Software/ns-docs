@@ -142,6 +142,14 @@ img.cover-img {
     font-size: 1.5rem;
     color: #555;
   }
+
+  // Just the Docs uppercases h4 as a label; keep API names camelCase.
+  // Leave .text-delta alone so the TOC label stays uppercase.
+  h4 {
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 1.25rem;
+  }
 }
 
 // Enhanced code blocks
