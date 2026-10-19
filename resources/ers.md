@@ -4,7 +4,7 @@ title: "Emergency Response Simulator"
 nav_order: 4
 has_children: false
 has_toc: true
-last_modified_date: "2026-05-04"
+last_modified_date: "2026-10-19"
 ---
 
 <img class="cover-img" src="/assets/img/ers.png" alt="Emergency Response Simulator for FiveM" draggable="false">
@@ -61,9 +61,9 @@ A guide to install Emergency Response Simulator for FiveM
 
 {: .no_toc }
 
-- **✅ Recommended Gamebuild:** 3323 or 3570
-- **✅ Recommended Artifacts:** 25770(+)
-- **❌ Considered Not Compatible:** Other Gamebuilds than 3323 or 3570
+- **✅ Recommended Gamebuild:** 3323, 3570, or 3889
+- **✅ Minimum FXServer:** 35245 or newer
+- **❌ Considered Not Compatible:** Other Gamebuilds than 3323, 3570, or 3889
 
 {: .note }
 
@@ -110,6 +110,7 @@ A guide to install Emergency Response Simulator for FiveM
 > - Realistic Euphoria Physics
 > - RedSaints Stretcher/Ambulance
 > - Improved-Seat-Shuffle-FiveM by Dalrae1
+> - `esx_policejob` — its object remover (`remove_prop`: “press [E] to delete the object”) treats nearby props as police-spawned objects and conflicts with ERS callout/object cleanup
 > - Clear world commands / Anti-cheat (resolve with your provider)
 
 ---
@@ -230,6 +231,8 @@ ensure night_ers_cp1
 | `night_ers/config/gear-config.lua`             | Weapons and clothing           |
 | `night_ers/config/impound-config.lua`          | Impound settings               |
 | `night_ers/config/leaderboard-config.lua`      | Leaderboard settings           |
+
+Players manage their own stats privacy (opt out of tracking / enable public stats) in the [ERS Discord](https://discord.gg/zVP7xdhQde) with `/ers-stats [me/server]` after linking Discord in FiveM. While opted out, ERS does not send shift stats and `/ersprogression` shows an opt-out notice instead of XP.
 | `night_ers/config/npcbackup-config.lua`        | NPC Backup settings            |
 | `night_ers/config/persistententity-config.lua` | NPC personal data settings     |
 | `night_ers/config/pullover-config.lua`         | Traffic stop settings          |
@@ -713,15 +716,14 @@ Use these tags when debugging server-side integrations to confirm which sourcing
 local isOnShift = exports['night_ers']:getIsPlayerOnShift()
 local getPlayerActiveServiceType = exports['night_ers']:getPlayerActiveServiceType()
 local isPlayerAttachedToCallout = exports['night_ers']:getIsPlayerAttachedToCallout()
-local isPlayerTrackingUnit = exports['night_ers']:getIsPlayerTrackingUnit()
 
 -- Other
 exports['night_ers']:playRadioAnimation()
 exports['night_ers']:toggleDispatchMessages()
 exports['night_ers']:toggleHints()
 exports['night_ers']:toggleShift()
-exports['night_ers']:trackPlayerCallout(targetSource)
 exports['night_ers']:ERS_PedEquipWeapon(pedEntityId, weaponModelName, ammo)
+-- Removed: getIsPlayerTrackingUnit / trackPlayerCallout (legacy track-unit follow). Use Goal 3 Attach instead.
 exports['night_ers']:SetERSVehicleInfoDisplay(display) -- Sets the display for vehicle information on traffic stops to true or false.
 exports['night_ers']:SetERSIDCardInfoDisplay(display) -- Sets the display for ID cards to true or false.
 ```
@@ -800,7 +802,6 @@ exports['night_ers']:CancelNPCBackup('tow', true)
 ```lua
 -- Shift management
 exports['night_ers']:toggleShift(source, shiftType) -- "police", "ambulance", "fire", "tow"
-exports['night_ers']:trackPlayerCallout(source, targetSource)
 exports['night_ers']:setPlayerCalloutOffersEnabled(source, enabled)
 
 -- Advanced programming exports:
@@ -881,8 +882,8 @@ Use the **bridge helpers** below. They are the **only** sanctioned way to spawn 
 
 | Export | What you pass in | What you get back |
 | ------ | ---------------- | ----------------- |
-| `ERS_AddCalloutFire` | World position, fire type (string), size, optional `{ interiorId = number }` | **Fire / incident id** — append it to your `fireList` yourself (`fireList[#fireList + 1] = id`). Returns **nothing** if Smart Fires is turned off in ERS or the fire resource is not running. |
-| `ERS_AddCalloutSmoke` | World position, smoke type (string), size | **Smoke id** — append it to your `smokeList` yourself. Returns **nothing** if unavailable. |
+| `ERS_AddCalloutFire` | World position, fire type (string), size, optional `{ interiorId = number, routingBucket = number }` | **Fire / incident id** — append it to your `fireList` yourself (`fireList[#fireList + 1] = id`). Returns **nothing** if Smart Fires is turned off in ERS or the fire resource is not running. |
+| `ERS_AddCalloutSmoke` | World position, smoke type (string), size, optional `{ routingBucket = number }` | **Smoke id** — append it to your `smokeList` yourself. Returns **nothing** if unavailable. |
 | `ERS_StopCalloutFire` | Id you received when creating the fire | Stops the fire mid-callout. Returns `true` on success. **You** remove the id from your `fireList` if you want it gone from ERS's tracking. On **Smart Fires v2**, pass the **exact string** the helper returned (e.g. `"o9"`). |
 | `ERS_GetSmartFireIncidentStatus` | Same id string as above | **Smart Fires v2 only** — whether that id is still active, merged into another fire, or gone (for custom callout scripts). |
 | `ERS_CountOutstandingFireTargets` | `fireList` table from your callout | **Smart Fires v2 only** — how many **live `fireList` slots** remain. |
@@ -892,6 +893,8 @@ Use the **bridge helpers** below. They are the **only** sanctioned way to spawn 
 > **Why you append the id yourself.** FiveM serializes table arguments across resources via msgpack — when a callout pack calls `exports['night_ers']:ERS_AddCalloutFire(...)`, any table the helper mutates is a **copy** that never propagates back to the pack's `fireList`. The only pattern that works correctly for both in-resource callouts and external packs is: helper returns the id, **caller** appends it to its own list in its own VM. Do not skip the append step — without it, ERS sees an empty `fireList` and the HUD will display `0/0` even though Smart Fires has live incidents.
 
 **Fire merging (Smart Fires v2):** every fire you spawn uses Smart Fires' default behaviour, which includes **native merge** — when two `ERS_AddCalloutFire` calls land close enough to each other, Smart Fires absorbs one into the other and the bridge tracks the surviving host id. The HUD then shows one task for the merged front, not two. If your callout needs each spawn to stay a distinct front on the HUD, space the coords **beyond the merge radius** rather than fighting the merge. On **Smart Fires** (full v1) and **Smart Fires Lite** there is no merge to worry about — those products treat each `CreateFire` as independent.
+
+**Routing buckets:** live callouts omit `routingBucket` (world bucket `0`). Callout Creator Preview passes the author's private bucket so Smart Fires / Lite / v2 isolate the instance. Older Smart Fires builds without `NotifyRoutingBucketChanged` keep Creator Preview on local PTFX.
 
 **Indoor fires (Smart Fires v2):** indoor placement is automatic. Spawn your fire at the **interior coords** you want it at and Smart Fires probes the interior itself — the resulting incident behaves like an indoor fire (smoke vents, no wind spread, indoor preset). You can also pass `"indoors"` as the fire type to **force** indoor classification regardless of what the probe finds at those coords. ERS counts, NPC backup, and cleanup all work the same as outdoor fires. As an escape hatch, `{ interiorId = <id> }` lets you anchor the incident to a specific interior — only needed when the auto-probe misses the right one (rare; custom MLOs). On **Smart Fires** (full v1) and **Smart Fires Lite** there is no indoor concept and the option is ignored.
 
@@ -990,10 +993,10 @@ end
 
 {: .no_toc }
 
-- ✅ **Recommended Gamebuild:** 3323 or 3570
-- ✅ **Recommended Artifacts:** 25770(+)
+- ✅ **Recommended Gamebuild:** 3323, 3570, or 3889
+- ✅ **Minimum FXServer:** 35245 or newer
 - ❌ **QBox important note; NPC Backup doesn't spawn:** Remove blocked ped & vehicle model names, like `s_m_y_cop_01` or `FIRETRUK` from `qbx_smallresources/qbx_entitiesblacklist/config.lua` and your backup peds will spawn again
-- ❌ **Considered Not Compatible:** Other Gamebuilds other than 3323 or 3570
+- ❌ **Considered Not Compatible:** Other Gamebuilds other than 3323, 3570, or 3889
 - ❌ **RemoveCops-AI:** We recommend to disable this resource when using ERS
 - ❌ **Andrew's Advanced AI:** We recommend to disable this resource when using ERS
 - ❌ **Realistic Euphoria Physics:** We recommend to disable this resource when using ERS
