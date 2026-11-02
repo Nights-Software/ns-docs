@@ -4,7 +4,7 @@ title: "Meta Build"
 nav_order: 10
 has_children: false
 has_toc: true
-last_modified_date: "2025-07-22 16:00:00"
+last_modified_date: "2026-11-02 18:30:00"
 ---
 
 <img class="cover-img" src="/assets/img/night_metabuild.png" alt="MetaBuild" draggable="false">
@@ -43,6 +43,7 @@ Take your server customization to the next level with MetaBuild! Whether you're 
 - ✅ **Built-in Door Lock System** - Secure areas with key-based access
 - ✅ **Key Management** - Give, take, or reset duplicate keys
 - ✅ **Object Customization** - Add, edit, and delete objects with ease
+- ✅ **Object Pictures** - A picture for almost every object in the menu
 - ✅ **High Performance Rendering** - Supports up to 1,500 objects per 750 GTA meters
 - ✅ **Custom Object Lifespan** - Define how long objects remain in-game
 - ✅ **Paid Construction Option** - Monetize object placement if desired
@@ -246,6 +247,19 @@ Start your server and check the console for oxmysql connection messages. You sho
 {: .tip }
 > **Time Investment:** Plan adequate time for configuration. Each variable is named descriptively to help you understand its purpose.
 
+### **Discord Webhooks**
+{: .no_toc }
+
+MetaBuild can post to a Discord channel when players place or demolish objects, when objects are added to or removed from the menu, and when keys or objects are deleted in bulk. Webhooks are off by default. To turn them on, set both lines in `config/config.lua`:
+
+```lua
+Config.Enable_Discord_Webhooks = true
+Config.DiscordWebhookUrl = 'https://discord.com/api/webhooks/...'
+```
+
+{: .warning }
+> **Keep your webhook URL private.** Anyone who has it can post to your channel.
+
 ---
 
 ## 🎮 How It Works
@@ -267,6 +281,13 @@ Start your server and check the console for oxmysql connection messages. You sho
 - **Key Management** - Give, take, or reset duplicate keys
 - **Mass Operations** - Bulk delete objects and keys
 - **Statistics Tracking** - Monitor object usage and performance
+
+### **Object Pictures**
+{: .no_toc }
+
+The object menu shows a picture of each object, made by Nights Software. Each player's game downloads them from `assets.nights-software.com` and keeps them, so a picture is downloaded only once. For the few objects without one, the menu uses the picture site set in `Config.ApiUrl` (`config/default-objects-config.lua`).
+
+To use your own picture for an object, open the object's edit menu and put a link to the image in **Custom Picture URL** (use an `https://` link). Leave the field empty to show the default picture.
 
 ### **Permission System**
 {: .no_toc }

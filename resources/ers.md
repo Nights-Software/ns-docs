@@ -146,8 +146,9 @@ Download these packages from the [CFX Portal](https://portal.cfx.re/assets/grant
   - [View Features](https://store.nights-software.com/package/5035729)
   - [Installation Guide](/resources/discordAPI)
 2. **Night Subtitles** (Optional - Included with ERS Essential, Plus and Ultimate)
-  - Movie-style subtitle display
+  - Movie-style subtitle display; 2.0 adds five styles and a queue, and works with this version unchanged
   - [View Features](https://store.nights-software.com/package/6043540)
+  - [Installation Guide](/resources/subtitles)
   - Drag-and-drop installation
 3. **Nearest Postal & Map** (Optional - Free)
   - Default postal codes with custom map
