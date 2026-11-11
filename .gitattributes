@@ -1,3 +1,6 @@
 # Keeps the generated pages at LF on every machine. With automatic line-ending conversion, npm test re-runs the
 # converter and every page would otherwise show as modified with no change in content.
 src/content/docs/resources/*.md text eol=lf
+
+# Sub-pages sit in folders next to their overview; the same line endings apply.
+src/content/docs/resources/**/*.md text eol=lf

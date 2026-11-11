@@ -4,7 +4,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { pages } from './pages.mjs';
+import { pages, addressesOf } from './pages.mjs';
 import { missingAddresses, missingFromSources } from './check-addresses.mjs';
 
 test('exact case is required even on a case-insensitive disk', () => {
@@ -95,7 +95,8 @@ function runCheck(dist, list, extraEnv = {}) {
   return spawnSync(process.execPath, ['tools/check-addresses-cli.mjs'], { env, encoding: 'utf8' });
 }
 
-// A dist folder holding the home page, every registry page (except those named in `omit`) and, when asked, the ers page.
+// A dist folder holding the home page, every registry page and sub-page (except those named in `omit`, a file name or a
+// whole address) and, when asked, the ers page.
 function fixture(addresses, withErs, omit = []) {
   const dir = mkdtempSync(join(tmpdir(), 'addr-'));
   const list = join(dir, 'list.json');
@@ -103,9 +104,11 @@ function fixture(addresses, withErs, omit = []) {
   mkdirSync(join(dir, 'dist'));
   writeFileSync(join(dir, 'dist', 'index.html'), '');
   for (const p of pages) {
-    if (omit.includes(p.file) || (p.file === 'ers' && !withErs)) continue;
-    mkdirSync(join(dir, 'dist', 'resources', p.file), { recursive: true });
-    writeFileSync(join(dir, 'dist', 'resources', p.file, 'index.html'), '');
+    for (const address of addressesOf(p)) {
+      if (omit.includes(p.file) || omit.includes(address) || (address === '/resources/ers/' && !withErs)) continue;
+      mkdirSync(join(dir, 'dist', ...address.split('/').filter(Boolean)), { recursive: true });
+      writeFileSync(join(dir, 'dist', ...address.split('/').filter(Boolean), 'index.html'), '');
+    }
   }
   return { dist: join(dir, 'dist'), list };
 }
@@ -124,6 +127,28 @@ test('a registry page missing from the build fails even when the protected list 
   const r = runCheck(f.dist, f.list);
   assert.equal(r.status, 1);
   assert.match(r.stderr, /resources\/gates\/.*page registry/);
+});
+
+test('a sub-page missing from the build fails even when its product page is there', () => {
+  const sub = pages.find(p => p.children?.length);
+  const address = `/resources/${sub.file}/${sub.children[0].file}/`;
+  const f = fixture(['/'], true, [address]);
+  const r = runCheck(f.dist, f.list);
+  assert.equal(r.status, 1);
+  assert.ok(r.stderr.includes(`${address} (from the page registry`), r.stderr);
+  assert.ok(!r.stderr.includes(`/resources/${sub.file}/ (from`), 'the product page itself is not reported');
+});
+
+test('a sub-page built with the wrong capitals fails', () => {
+  const sub = pages.find(p => p.file === 'nightShifts');
+  const address = `/resources/nightShifts/${sub.children[0].file}/`;
+  // The whole product is left out: on a case-insensitive disk a lower-case folder would merge into an existing one.
+  const f = fixture(['/'], true, ['nightShifts']);
+  mkdirSync(join(f.dist, 'resources', 'nightshifts', sub.children[0].file), { recursive: true });
+  writeFileSync(join(f.dist, 'resources', 'nightshifts', sub.children[0].file, 'index.html'), '');
+  const r = runCheck(f.dist, f.list);
+  assert.equal(r.status, 1);
+  assert.ok(r.stderr.includes(address), r.stderr);
 });
 
 test('a registry page built with the wrong capitals fails', () => {

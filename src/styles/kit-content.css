@@ -11,6 +11,15 @@
   font-size: 0.86rem;
   color: var(--kit-muted);
 }
+.kit-crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+.kit-crumb a:hover,
+.kit-crumb a:focus-visible {
+  color: var(--kit-text);
+  text-decoration: underline;
+}
 .kit-header h1,
 .kit-plain-title {
   margin: 0;

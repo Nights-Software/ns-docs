@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { pages, groups } from '../tools/pages.mjs';
+import { pages, groups, addressOf, childAddressOf } from '../tools/pages.mjs';
 
 // Counts follow the registry, so adding a page does not break these tests.
 const products = pages.filter(p => p.group !== 'start');
@@ -229,7 +229,8 @@ test('search finds a setting from the middle of a page', async ({ page }) => {
   await expect(dialog.locator('a[href*="/resources/policeTape/"], a[href*="/resources/pedAndPlayerCPR/"]').first()).toBeVisible();
 });
 
-for (const path of ['/', '/resources/policeTape/', '/resources/nightShifts/', '/resources/ers/']) {
+// The wide tables of the MDT page moved to its sub-pages, so those are listed too.
+for (const path of ['/', '/resources/policeTape/', '/resources/nightShifts/', '/resources/nightShifts/integration/', '/resources/nightShifts/exports-reads/', '/resources/ers/']) {
   test(`no sideways scroll on a phone: ${path}`, async ({ browser }) => {
     const page = await (await browser.newContext({ viewport: { width: 390, height: 844 } })).newPage();
     await page.goto(path);
@@ -329,7 +330,8 @@ test('the home catalogue lists Scripts in the sidebar order', async ({ page }) =
   await page.goto('/');
   const cards = await page.locator('.kit-cat').filter({ hasText: /^Scripts/ }).locator('.kit-card b').allTextContents();
   await page.goto('/resources/policeTape/');
-  const side = await page.locator('nav.sidebar details').filter({ has: page.locator('summary', { hasText: 'Scripts' }) }).locator('a').allTextContents();
+  const rows = page.locator('nav.sidebar details').filter({ has: page.locator('summary', { hasText: 'Scripts' }) }).locator(':scope > ul > li');
+  const side = await rows.evaluateAll((items) => items.map((li) => (li.querySelector(':scope > details > summary') ?? li.querySelector(':scope > a')).textContent));
   expect(cards.length).toBe(scripts.length);
   expect(cards.map((t) => t.trim())).toEqual(side.map((t) => t.trim()));
 });
@@ -383,7 +385,7 @@ test('phone: a two-column table fits the screen with both columns readable', asy
 
 test('phone: a wide table scrolls inside its own box and shows the cue on the side with more', async ({ browser }) => {
   const page = await (await browser.newContext({ viewport: phone })).newPage();
-  await page.goto('/resources/nightShifts/');
+  await page.goto('/resources/nightShifts/integration/');
   const table = page.locator('.sl-markdown-content table').filter({ has: page.locator('tr:first-child > :nth-child(5)') }).first();
   await table.scrollIntoViewIfNeeded();
   const m = await table.evaluate((t) => ({ scroll: t.scrollWidth, client: t.clientWidth }));
@@ -403,7 +405,7 @@ test('desktop: code in a table cell does not wrap where there is room', async ({
   expect(await page.locator('.sl-markdown-content td code').first().evaluate((e) => getComputedStyle(e).overflowWrap)).not.toBe('anywhere');
 });
 
-for (const path of ['/resources/nightShifts/', '/resources/ers/']) {
+for (const path of ['/resources/nightShifts/', '/resources/nightShifts/integration/', '/resources/nightShifts/exports-reads/', '/resources/ers/']) {
   test(`phone: tables never push the page sideways and keep column widths: ${path}`, async ({ browser }) => {
     const page = await (await browser.newContext({ viewport: phone })).newPage();
     await page.goto(path);
@@ -489,7 +491,7 @@ test('keyboard focus: links, buttons, summaries and tables take the same ring', 
 
 test('keyboard focus: a table that scrolls sideways can be focused and shows the ring', async ({ browser }) => {
   const page = await (await browser.newContext({ viewport: phone, colorScheme: 'dark' })).newPage();
-  await page.goto('/resources/nightShifts/');
+  await page.goto('/resources/nightShifts/integration/');
   const table = page.locator('.sl-markdown-content table[tabindex]').first();
   await expect(table).toHaveCount(1);
   await table.focus();
@@ -560,3 +562,126 @@ test('dates read day first', async ({ page }) => {
   await page.goto('/resources/policeTape/');
   await expect(page.locator('main footer .meta time')).toHaveText(/^\d{1,2} [A-Z][a-z]{2} \d{4}$/);
 });
+
+// Products whose long page is split into a folder of pages.
+const split = pages.filter(p => p.children);
+const groupLabelOf = (p) => groups.find(g => g.id === p.group).label;
+const sidebarGroup = (page, p) => page.locator('nav.sidebar details').filter({ has: page.locator(':scope > summary', { hasText: new RegExp(`^\\s*${p.label.replace(/[()]/g, '\\$&')}\\s*$`) }) });
+
+for (const p of split) {
+  test(`sidebar: ${p.label} is a sub-group with Overview and its pages in order, and opening a page keeps it open and marks it`, async ({ page }) => {
+    // Away from the product the sub-group is closed.
+    await page.goto('/resources/policeTape/');
+    await expect(sidebarGroup(page, p)).not.toHaveAttribute('open', '');
+    await page.goto(addressOf(p.file));
+    const group = sidebarGroup(page, p);
+    await expect(group).toHaveAttribute('open', '');
+    await expect(group.locator('a')).toHaveText(['Overview', ...p.children.map(c => c.label)]);
+    const hrefs = await group.locator('a').evaluateAll((links) => links.map((a) => new URL(a.href).pathname));
+    expect(hrefs).toEqual([addressOf(p.file), ...p.children.map(c => childAddressOf(p, c))]);
+    await expect(page.locator('nav.sidebar [aria-current="page"]')).toHaveText('Overview');
+    for (const c of p.children) {
+      await page.goto(childAddressOf(p, c));
+      await expect(page.locator('nav.sidebar [aria-current="page"]')).toHaveCount(1);
+      await expect(page.locator('nav.sidebar [aria-current="page"]')).toHaveText(c.label);
+      await expect(sidebarGroup(page, p)).toHaveAttribute('open', '');
+    }
+  });
+
+  test(`${p.label}: a sub-page has the breadcrumb Group / Product / Page, the short label as its heading and a longer tab title`, async ({ page }) => {
+    const c = p.children[0];
+    await page.goto(childAddressOf(p, c));
+    const crumb = page.locator('main').getByRole('navigation', { name: /breadcrumb/i });
+    await expect(crumb).toHaveText(new RegExp(`^\\s*${groupLabelOf(p)}\\s*/\\s*${p.label}\\s*/\\s*${c.label}\\s*$`));
+    await expect(crumb.getByRole('link', { name: p.label })).toHaveAttribute('href', addressOf(p.file));
+    await expect(page.locator('main h1')).toHaveText(c.label);
+    await expect(page).toHaveTitle(`${c.label} \u00b7 ${p.label} | Nights Software Docs`);
+  });
+}
+
+test('the store button stays on the overview of a split product, not on its sub-pages', async ({ page }) => {
+  for (const file of ['ers', 'nightShifts']) {
+    await page.goto(addressOf(file));
+    await expect(page.getByRole('link', { name: 'Buy on the store' })).toHaveCount(1);
+    const row = pages.find(p => p.file === file);
+    for (const c of row.children) {
+      await page.goto(childAddressOf(row, c));
+      await expect(page.getByRole('link', { name: 'Buy on the store' })).toHaveCount(0);
+      await expect(page.locator('img.kit-cover')).toHaveCount(0);
+    }
+  }
+});
+
+test('previous and next at the foot of a page walk through a product in sidebar order', async ({ page }) => {
+  for (const p of split) {
+    const order = [addressOf(p.file), ...p.children.map(c => childAddressOf(p, c))];
+    for (const [i, address] of order.entries()) {
+      await page.goto(address);
+      const next = page.locator('.pagination-links a[rel="next"]');
+      const prev = page.locator('.pagination-links a[rel="prev"]');
+      if (i + 1 < order.length) await expect(next).toHaveAttribute('href', order[i + 1]);
+      else await expect(next).not.toHaveAttribute('href', order[0]);
+      if (i > 0) await expect(prev).toHaveAttribute('href', order[i - 1]);
+    }
+  }
+});
+
+test('old links to anchors of the split pages land on the heading, wherever it is now', async ({ page }) => {
+  await page.goto('/resources/nightShifts/#getversion');
+  await expect(page).toHaveURL(/\/resources\/nightShifts\/exports-reads\/#getversion$/);
+  await expect(page.locator('#getversion')).toBeInViewport();
+  await page.goto('/resources/ers/#exports');
+  await expect(page).toHaveURL(/\/resources\/ers\/exports\/$/);
+  await expect(page.locator('main h1')).toHaveText('Exports');
+  await page.goto('/resources/discordAPI/#troubleshooting');
+  await expect(page).toHaveURL(/\/resources\/discordAPI\/troubleshooting\/#troubleshooting$/);
+  await page.goto('/resources/nightShifts/#exports');
+  await expect(page).toHaveURL(/\/resources\/nightShifts\/exports\/$/);
+});
+
+test('an anchor that stayed on the overview does not redirect', async ({ page }) => {
+  await page.goto('/resources/nightShifts/#support');
+  await expect(page).toHaveURL(/\/resources\/nightShifts\/#support$/);
+  await expect(page.locator('#support')).toBeInViewport();
+  await page.goto('/resources/ers/#support--community');
+  await expect(page).toHaveURL(/\/resources\/ers\/#support--community$/);
+  await expect(page.locator('#support--community')).toBeInViewport();
+});
+
+test('the redirect script is on the three overviews and nowhere else', async ({ request }) => {
+  const has = async (path) => (await (await request.get(path)).text()).includes('location.replace(');
+  for (const p of split) {
+    expect(await has(addressOf(p.file)), p.file).toBe(true);
+    expect(await has(childAddressOf(p, p.children[0])), p.file + ' child').toBe(false);
+  }
+  expect(await has('/resources/policeTape/')).toBe(false);
+  expect(await has('/')).toBe(false);
+});
+
+test('search: pages of a split product are found under their product name, not as a bare "Installation"', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('button[data-open-modal]')).toBeEnabled();
+  await page.keyboard.press('Control+k');
+  const dialog = page.getByRole('dialog');
+  await dialog.getByRole('textbox').fill('Installation');
+  const titles = dialog.locator('.pagefind-ui__result-inner > .pagefind-ui__result-title a');
+  await expect(titles.first()).toBeVisible();
+  const found = await titles.evaluateAll((links) => links.map((a) => ({ text: a.textContent.trim(), path: new URL(a.href).pathname })));
+  for (const text of ['Installation \u00b7 ERS v1', 'Installation \u00b7 Night Shifts MDT', 'Installation & Setup \u00b7 Discord API']) {
+    expect(found.map(f => f.text), text).toContain(text);
+  }
+  // No page-level result of a sub-page may lack its product.
+  for (const f of found.filter(f => /^\/resources\/(ers|nightShifts|discordAPI)\/[^/]+\/$/.test(f.path))) expect(f.text, f.path).toContain(' \u00b7 ');
+});
+
+for (const p of split) {
+  for (const address of [addressOf(p.file), ...p.children.map(c => childAddressOf(p, c))]) {
+    test(`one H1 and no skipped heading level: ${address}`, async ({ page }) => {
+      await page.goto(address);
+      const levels = await page.locator('main :is(h1, h2, h3, h4, h5, h6)').evaluateAll((hs) => hs.map((h) => Number(h.tagName[1])));
+      expect(levels.filter(l => l === 1)).toHaveLength(1);
+      expect(levels[0]).toBe(1);
+      levels.forEach((l, i) => { if (i > 0) expect(l, `heading ${i}`).toBeLessThanOrEqual(levels[i - 1] + 1); });
+    });
+  }
+}

@@ -5,13 +5,13 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from '@playwright/test';
 import { startPreview } from './lib/preview.mjs';
-import { pages, addressOf } from './pages.mjs';
+import { pages, addressesOf } from './pages.mjs';
 
 const UNKNOWN = '/this-address-does-not-exist/';
 // SWEEP_ONLY=/a/,/b/ narrows the run while a failure is being fixed.
 const only = process.env.SWEEP_ONLY?.split(',');
-// The protected list plus the registry, so pages added later are swept too.
-const addresses = only ?? [...new Set([...JSON.parse(readFileSync('tools/addresses.json', 'utf8')), ...pages.map(p => addressOf(p.file))]), UNKNOWN];
+// The protected list plus the registry (sub-pages included), so pages added later are swept too.
+const addresses = only ?? [...new Set([...JSON.parse(readFileSync('tools/addresses.json', 'utf8')), ...pages.flatMap(addressesOf)]), UNKNOWN];
 const viewports = [{ width: 1280, height: 800 }, { width: 390, height: 844 }];
 const modes = ['dark', 'light'];
 
@@ -126,10 +126,11 @@ function countSource(file) {
   return { asides, fences };
 }
 
-// Source files map one to one onto addresses: / is index.mdx, /resources/<name>/ is resources/<name>.md.
+// Source files map one to one onto addresses: / is index.mdx, /resources/<name>/ is resources/<name>.md,
+// and a sub-page /resources/<name>/<child>/ is resources/<name>/<child>.md.
 function sourceFor(address) {
   if (address === '/') return 'src/content/docs/index.mdx';
-  const m = address.match(/^\/resources\/([^/]+)\/$/);
+  const m = address.match(/^\/resources\/([^/]+(?:\/[^/]+)?)\/$/);
   return m ? `src/content/docs/resources/${m[1]}.md` : null;
 }
 

@@ -104,6 +104,7 @@ export default defineConfig({
       // The docs collection already has a 404 entry, which the catch-all route renders; the built-in route would collide with it.
       disable404Route: true,
       plugins: [starlightLinksValidator()],
+      routeMiddleware: './src/route-data.mjs',
       sidebar: buildSidebar(pages, groups),
       head: [
         { tag: 'script', content: pageScript },

@@ -311,6 +311,30 @@ nav.sidebar {
 .sidebar-content summary {
   padding-block: 0.4em;
 }
+/* A product with sub-pages is a row among its sibling links that opens: link type and padding, no hexagon,
+   no capitals (those belong to the group headings above it). Its children are indented by Starlight's own rule. */
+.sidebar-content ul ul summary {
+  padding: 6px 10px;
+  line-height: 1.4;
+}
+.sidebar-content ul ul summary .group-label::before {
+  content: none;
+}
+.sidebar-content ul ul summary .large {
+  font-family: var(--kit-font-body);
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--kit-muted);
+}
+.sidebar-content ul ul summary:hover .large,
+.sidebar-content ul ul details[open] > summary .large {
+  color: var(--kit-text);
+}
+.sidebar-content ul ul summary:focus-visible {
+  outline-offset: -2px;
+}
 .sidebar-content ul a {
   border-radius: 0;
   padding: 6px 10px;

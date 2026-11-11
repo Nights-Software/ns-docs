@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import HexMark from './HexMark.astro';
-import { pages, groups } from '../../tools/pages.mjs';
+import { pages, groups, addressOf } from '../../tools/pages.mjs';
 
 // Starlight's "Top of page" link targets this id; its constants module is not exported.
 const PAGE_TITLE_ID = '_top';
@@ -13,7 +13,12 @@ const { title, description, group, store, video, cover, showCover } = entry.data
 
 // Pages without a group (home, 404) get the plain title.
 const groupLabel = groups.find((g) => g.id === group)?.label;
-const pageLabel = pages.find((p) => `resources/${p.file}` === entry.id)?.label ?? title;
+// A sub-page (resources/<product>/<child>) shows the product, linked to its overview, between the group and its own label.
+// Its front matter title names the product for the browser tab and the search result; the heading is the short label.
+const product = pages.find((p) => p.children?.some((c) => `resources/${p.file}/${c.file}` === entry.id));
+const child = product?.children.find((c) => `resources/${product.file}/${c.file}` === entry.id);
+const pageLabel = child?.label ?? pages.find((p) => `resources/${p.file}` === entry.id)?.label ?? title;
+const headingText = child?.label ?? title;
 ---
 
 {
@@ -33,9 +38,15 @@ const pageLabel = pages.find((p) => `resources/${p.file}` === entry.id)?.label ?
       <nav aria-label="Breadcrumb" class="kit-crumb">
         <span>{groupLabel}</span>
         <span class="kit-crumb-sep" aria-hidden="true">/</span>
+        {product && (
+          <>
+            <a href={addressOf(product.file)}>{product.label}</a>
+            <span class="kit-crumb-sep" aria-hidden="true">/</span>
+          </>
+        )}
         <span aria-current="page">{pageLabel}</span>
       </nav>
-      <h1 id={PAGE_TITLE_ID}>{title}</h1>
+      <h1 id={PAGE_TITLE_ID} data-pagefind-meta={child ? `title:${title}` : undefined}>{headingText}</h1>
       {description && <p class="kit-lead">{description}</p>}
       {(store || video) && (
         <div class="kit-actions">

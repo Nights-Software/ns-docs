@@ -6,7 +6,9 @@ import { chromium } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { startPreview } from './lib/preview.mjs';
 
-const addresses = ['/', '/resources/policeTape/', '/resources/ers/', '/resources/nightShifts/', '/resources/acePerms/', '/this-address-does-not-exist/'];
+// One sub-page of each split product is covered too: the sidebar sub-group, the three-part breadcrumb and the long reference pages.
+const addresses = ['/', '/resources/policeTape/', '/resources/ers/', '/resources/nightShifts/', '/resources/acePerms/',
+  '/resources/ers/installation/', '/resources/nightShifts/exports-system-writes/', '/resources/discordAPI/exports/', '/this-address-does-not-exist/'];
 const viewports = [{ width: 1280, height: 800 }, { width: 390, height: 844 }];
 
 const { base, stop } = await startPreview(4325);

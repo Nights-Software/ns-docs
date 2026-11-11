@@ -2,10 +2,10 @@
 // DIST_DIR and ADDRESS_LIST exist for the tests; on CI they are ignored so a stray variable
 // cannot point the check at something other than the real build and the real list.
 // Two lists are checked: the protected addresses (every old link must keep working) and the registry
-// (every page the sidebar and the home catalogue link to must exist at exactly that address).
+// (every page the sidebar and the home catalogue link to, and every sub-page of a product, must exist at exactly that address).
 import { readFileSync } from 'node:fs';
 import { missingFromSources } from './check-addresses.mjs';
-import { pages, addressOf } from './pages.mjs';
+import { pages, addressesOf } from './pages.mjs';
 
 const useOverrides = !process.env.CI;
 const distDir = (useOverrides && process.env.DIST_DIR) || 'dist';
@@ -16,11 +16,11 @@ if (!Array.isArray(addresses) || addresses.length === 0) {
   console.error(`${listFile} lists no addresses; an empty list would let every page go missing unnoticed.`);
   process.exit(1);
 }
-const registry = pages.map(p => addressOf(p.file));
+const registry = pages.flatMap(addressesOf);
 const missing = missingFromSources(distDir, [
   { name: `protected list (${listFile})`, addresses },
   { name: 'page registry (tools/pages.mjs)', addresses: registry },
 ]);
 for (const { list, address } of missing) console.error(`Address missing from ${distDir}: ${address} (from the ${list})`);
 if (missing.length) process.exit(1);
-console.log(`All ${addresses.length} protected addresses and all ${registry.length} registry pages are in ${distDir}.`);
+console.log(`All ${addresses.length} protected addresses and all ${registry.length} registry pages (sub-pages included) are in ${distDir}.`);

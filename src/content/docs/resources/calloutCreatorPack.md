@@ -37,7 +37,7 @@ Do these four tasks for each callout you create:
 3. Adjust the config, client and server code in your new file, all of them, to your liking.
 4. Test the callout: restart the script, then spawn the callout.
 
-The functions you can use in a callout are listed in the [ERS documentation](/resources/ers/#creating-custom-callouts).
+The functions you can use in a callout are listed in the [ERS documentation](/resources/ers/configuration/#creating-custom-callouts).
 
 ## The Example Callout
 
