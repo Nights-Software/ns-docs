@@ -105,7 +105,15 @@ export default defineConfig({
       disable404Route: true,
       plugins: [starlightLinksValidator()],
       sidebar: buildSidebar(pages, groups),
-      head: [{ tag: 'script', content: pageScript }],
+      head: [
+        { tag: 'script', content: pageScript },
+        // The picture chat apps show under a shared link. The address must be absolute.
+        { tag: 'meta', attrs: { property: 'og:image', content: 'https://docs.nights-software.com/og.jpg' } },
+        { tag: 'meta', attrs: { property: 'og:image:width', content: '960' } },
+        { tag: 'meta', attrs: { property: 'og:image:height', content: '540' } },
+        { tag: 'meta', attrs: { property: 'og:image:alt', content: 'Nights Software Documentation' } },
+        { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://docs.nights-software.com/og.jpg' } },
+      ],
       expressiveCode: {
         themes: [kitCode],
         useStarlightUiThemeColors: false,

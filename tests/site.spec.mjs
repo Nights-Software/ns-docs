@@ -237,6 +237,19 @@ for (const path of ['/', '/resources/policeTape/', '/resources/nightShifts/', '/
   });
 }
 
+test('a shared link carries the preview picture, and the picture loads', async ({ page }) => {
+  for (const address of ['/', '/resources/policeTape/']) {
+    await page.goto(address);
+    const image = await page.locator('meta[property="og:image"]').getAttribute('content');
+    expect(image).toBe('https://docs.nights-software.com/og.jpg');
+    expect(await page.locator('meta[name="twitter:image"]').getAttribute('content')).toBe(image);
+  }
+  // The tag names the live domain; the file itself is checked on the site under test.
+  const res = await page.request.get('/og.jpg');
+  expect(res.status()).toBe(200);
+  expect(res.headers()['content-type']).toContain('image/jpeg');
+});
+
 test('unknown address shows the Kit 404 with a way home', async ({ page }) => {
   const res = await page.goto('/resources/nothing-here/');
   expect(res.status()).toBe(404);
