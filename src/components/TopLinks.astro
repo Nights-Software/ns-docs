@@ -1,0 +1,8 @@
+---
+// Replaces Starlight's social-icons slot, which renders in the header and again in the mobile menu.
+import { topLinks } from '../top-links.mjs';
+---
+
+<nav class="kit-toplinks" aria-label="Nights Software">
+  {topLinks.map(({ label, href }) => <a href={href}>{label}</a>)}
+</nav>

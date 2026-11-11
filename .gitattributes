@@ -1,0 +1,3 @@
+# Keeps the generated pages at LF on every machine. With automatic line-ending conversion, npm test re-runs the
+# converter and every page would otherwise show as modified with no change in content.
+src/content/docs/resources/*.md text eol=lf

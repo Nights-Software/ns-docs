@@ -1,0 +1,32 @@
+---
+import EditLink from '@astrojs/starlight/components/EditLink.astro';
+import LastUpdated from '@astrojs/starlight/components/LastUpdated.astro';
+import Pagination from '@astrojs/starlight/components/Pagination.astro';
+import { topLinks } from '../top-links.mjs';
+
+// Evaluated at build time, so the year moves with each deployment.
+const year = new Date().getFullYear();
+const { hasSidebar } = Astro.locals.starlightRoute;
+---
+
+{
+  hasSidebar ? (
+    // Starlight's own footer, with the copyright added at the left of the "Last updated" line.
+    <footer class="sl-flex kit-page-footer">
+      <div class="meta sl-flex">
+        <p class="kit-copy">© {year} Nights Software</p>
+        <EditLink />
+        <LastUpdated />
+      </div>
+      <Pagination />
+    </footer>
+  ) : (
+    // No sidebar means no menu panel on a phone, so the links the panel would hold live here.
+    <footer class="kit-footer">
+      <nav aria-label="Footer">
+        {topLinks.map(({ label, href }) => <a href={href}>{label}</a>)}
+      </nav>
+      <p>© {year} Nights Software</p>
+    </footer>
+  )
+}

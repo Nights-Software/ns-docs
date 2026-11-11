@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import HexMark from './HexMark.astro';
+import { pages, groups } from '../../tools/pages.mjs';
+
+// Starlight's "Top of page" link targets this id; its constants module is not exported.
+const PAGE_TITLE_ID = '_top';
+
+const { entry } = Astro.locals.starlightRoute;
+// Starlight and the id generator in src/entry-id.mjs both name the home page; accept either form of its id.
+const isHome = entry.id === '' || entry.id === 'index';
+const { title, description, group, store, video, cover, showCover } = entry.data;
+
+// Pages without a group (home, 404) get the plain title.
+const groupLabel = groups.find((g) => g.id === group)?.label;
+const pageLabel = pages.find((p) => `resources/${p.file}` === entry.id)?.label ?? title;
+---
+
+{
+  isHome ? (
+    <div class="kit-hero">
+      <HexMark />
+      <h1 id={PAGE_TITLE_ID}>{title}</h1>
+      {description && <p class="kit-lead">{description}</p>}
+      <button type="button" class="kit-hero-search" data-kit-open-search disabled>
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.6 10.6 14 14"/></svg>
+        <span>Search resources, settings and exports</span>
+        <kbd aria-hidden="true">Ctrl K</kbd>
+      </button>
+    </div>
+  ) : groupLabel ? (
+    <div class="kit-header">
+      <nav aria-label="Breadcrumb" class="kit-crumb">
+        <span>{groupLabel}</span>
+        <span class="kit-crumb-sep" aria-hidden="true">/</span>
+        <span aria-current="page">{pageLabel}</span>
+      </nav>
+      <h1 id={PAGE_TITLE_ID}>{title}</h1>
+      {description && <p class="kit-lead">{description}</p>}
+      {(store || video) && (
+        <div class="kit-actions">
+          {store && <a class="kit-btn kit-btn--fill" href={store}>Buy on the store</a>}
+          {video && <a class="kit-btn" href={video}>Watch the showcase</a>}
+        </div>
+      )}
+      {showCover && cover && (
+        <Image class="kit-cover" src={cover} alt="" widths={[760, 1520]} sizes="(min-width: 50rem) 760px, 100vw" />
+      )}
+    </div>
+  ) : (
+    <h1 id={PAGE_TITLE_ID} class="kit-plain-title">{title}</h1>
+  )
+}
+
+<script>
+  // Opens Starlight's own dialog through the top bar's button, so there is one search, not two.
+  // The field stays disabled until that button is ready; if it never appears the field stays disabled.
+  const field = document.querySelector<HTMLButtonElement>('[data-kit-open-search]');
+  const bar = document.querySelector<HTMLButtonElement>('button[data-open-modal]');
+  if (field && bar) {
+    const sync = () => { field.disabled = bar.disabled; };
+    sync();
+    new MutationObserver(sync).observe(bar, { attributes: true, attributeFilter: ['disabled'] });
+    // The dialog closes on any click that reaches the window after it opened, so this one must not.
+    field.addEventListener('click', (event) => {
+      event.stopPropagation();
+      bar.click();
+    });
+  }
+</script>

@@ -1,0 +1,14 @@
+---
+import white from '../assets/brand/ns_mark_white.svg';
+import violet from '../assets/brand/ns_mark_violet.svg';
+
+const { siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<a href={siteTitleHref} class="kit-brand">
+  <img class="kit-brand-mark kit-brand-mark--dark" src={white.src} alt="" width="30" height="24" />
+  <img class="kit-brand-mark kit-brand-mark--light" src={violet.src} alt="" width="30" height="24" />
+  <span class="kit-brand-name">Nights Software</span>
+  <i aria-hidden="true">/</i>
+  <em>Docs</em>
+</a>

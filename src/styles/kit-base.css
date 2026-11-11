@@ -1,0 +1,518 @@
+/* Kit chrome: top bar, sidebar, "on this page", previous/next, footer, search, mode button.
+   Colours come from the --kit-* tokens only. Nothing here is rounded. */
+
+body {
+  letter-spacing: 0.012em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* the browser's blue would be a second accent */
+::selection {
+  background: var(--kit-accent-fill);
+  color: var(--kit-on-accent);
+}
+
+/* inside the filled violet button the selection would match the button itself */
+.kit-btn--fill::selection,
+.kit-btn--fill ::selection {
+  background: var(--kit-strong);
+  color: var(--kit-bg);
+}
+
+/* One keyboard focus ring for every control; it is never removed. A shape cut with clip-path would clip an
+   outer ring, so those controls draw it inside (outline-offset: -2px, listed beside each shape). */
+:focus-visible {
+  outline: 2px solid var(--kit-accent);
+  outline-offset: 2px;
+}
+
+h1,
+h2 {
+  font-family: var(--kit-font-head);
+  font-weight: 700;
+}
+
+/* ───────── the light/dark change is a slow cross-fade of the whole page ───────── */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.7s; animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.01s; }
+}
+
+/* ───────── top bar ───────── */
+header.header {
+  background-image: var(--kit-lattice);
+  background-position: right -6px top -8px;
+  background-repeat: repeat;
+}
+header.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--kit-top) 0%, var(--kit-top) 58%, transparent 100%);
+  pointer-events: none;
+}
+header.header > * {
+  position: relative;
+}
+
+.kit-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-family: var(--kit-font-head);
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: 0.07em;
+  color: var(--kit-strong);
+}
+.kit-brand-mark {
+  height: 24px;
+  width: auto;
+  margin-right: 4px;
+}
+.kit-brand-mark--light,
+:root[data-theme='light'] .kit-brand-mark--dark {
+  display: none;
+}
+:root[data-theme='light'] .kit-brand-mark--light {
+  display: block;
+}
+.kit-brand i {
+  font-style: normal;
+  font-weight: 800;
+  color: var(--kit-accent);
+  display: inline-block;
+  transform: skewX(-14deg);
+}
+.kit-brand em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--kit-muted);
+}
+
+.kit-toplinks {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  font-size: 0.92rem;
+}
+.kit-toplinks a {
+  text-decoration: none;
+  color: var(--kit-muted);
+}
+.kit-toplinks a:hover {
+  color: var(--kit-text);
+}
+
+.kit-mode {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--kit-muted);
+  cursor: pointer;
+}
+.kit-mode:hover {
+  color: var(--kit-text);
+}
+.kit-mode svg {
+  width: 18px;
+  height: 18px;
+}
+.kit-mode-moon,
+:root[data-theme='light'] .kit-mode-sun {
+  display: none;
+}
+:root[data-theme='light'] .kit-mode-moon {
+  display: block;
+}
+
+/* ───────── Kit buttons in page content (links and buttons) ───────── */
+a.kit-btn,
+button.kit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--kit-font-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--kit-panel-2);
+  color: var(--kit-text);
+  clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%, 0 9px);
+}
+a.kit-btn:hover,
+button.kit-btn:hover {
+  color: var(--kit-strong);
+  text-decoration: none;
+}
+a.kit-btn:focus-visible,
+button.kit-btn:focus-visible {
+  outline-offset: -2px;
+}
+a.kit-btn--fill,
+button.kit-btn--fill {
+  background: var(--kit-accent-fill);
+  color: var(--kit-on-accent);
+}
+a.kit-btn--fill:hover,
+button.kit-btn--fill:hover {
+  color: var(--kit-on-accent);
+}
+
+/* ───────── Starlight's own markup: if an update breaks the look, check this block ───────── */
+
+/* search control: Starlight's button, in the Kit shape */
+button[data-open-modal] {
+  border: 0;
+  border-radius: 0;
+}
+/* the field is cut with clip-path at every width, so its ring sits inside */
+button[data-open-modal]:focus-visible {
+  outline-offset: -2px;
+}
+/* hidden on a phone, but the corner reset must not depend on the width */
+button[data-open-modal] kbd {
+  border-radius: 0;
+}
+@media (min-width: 50rem) {
+  button[data-open-modal] {
+    height: 36px;
+    max-width: 420px;
+    padding: 0 12px;
+    background-color: var(--kit-panel);
+    color: var(--kit-muted);
+    font-size: 0.9rem;
+    clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%, 0 9px);
+  }
+  button[data-open-modal]:hover {
+    border: 0;
+    color: var(--kit-text);
+  }
+  button[data-open-modal] > kbd {
+    margin-inline-start: auto;
+    border-radius: 0;
+    padding: 3px 8px 3px 11px;
+    background-color: var(--kit-panel-2);
+    color: var(--kit-muted);
+    font-family: var(--kit-font-mono);
+    font-size: 0.72rem;
+    clip-path: polygon(7px 0, 100% 0, 100% 100%, 0 100%);
+  }
+  button[data-open-modal] > kbd > kbd::after {
+    content: attr(data-key);
+  }
+  button[data-open-modal] > kbd > kbd {
+    font-family: inherit;
+    padding: 0;
+    background: none;
+  }
+}
+
+/* phone: the search, menu and mode buttons are one family of 44 px Kit buttons (a touch target) */
+@media (max-width: 49.99rem) {
+  :root {
+    --sl-menu-button-size: 44px;
+  }
+  button[data-open-modal],
+  .sl-menu-button,
+  .kit-mode {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    background: var(--kit-panel-2);
+    color: var(--kit-text);
+    box-shadow: none;
+    clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%, 0 9px);
+  }
+  button[data-open-modal]:focus-visible,
+  .sl-menu-button:focus-visible,
+  .kit-mode:focus-visible {
+    outline-offset: -2px;
+  }
+  button[data-open-modal] svg,
+  .sl-menu-button svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* light mode: the raised panel colour keeps the field visible on the white bar */
+:root[data-theme='light'] button[data-open-modal] {
+  background-color: var(--kit-panel-2);
+}
+
+/* top bar */
+@media (max-width: 49.99rem) {
+  :root {
+    --sl-nav-pad-x: 1rem;
+  }
+}
+@media (max-width: 30rem) {
+  .kit-brand i,
+  .kit-brand em {
+    display: none;
+  }
+}
+header.header .social-icons::after {
+  display: none;
+}
+.sl-skip-link,
+.sl-menu-button,
+site-search dialog,
+site-search #starlight__search * {
+  border-radius: 0;
+}
+#starlight__search {
+  --sl-search-corners: 0px;
+}
+
+/* sidebar */
+nav.sidebar {
+  font-size: 0.93rem;
+}
+.sidebar-pane {
+  border-inline-end: 1px solid var(--kit-line);
+}
+.sidebar-content {
+  padding-top: 30px;
+}
+.sidebar-content summary .large {
+  font-family: var(--kit-font-head);
+  font-weight: 600;
+  font-size: 0.74rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--kit-text);
+}
+.sidebar-content summary .group-label::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 9px;
+  background: var(--kit-accent);
+  clip-path: polygon(35% 0, 100% 0, 65% 100%, 0 100%);
+}
+.sidebar-content summary {
+  padding-block: 0.4em;
+}
+.sidebar-content ul a {
+  border-radius: 0;
+  padding: 6px 10px;
+  line-height: 1.4;
+  color: var(--kit-muted);
+}
+.sidebar-content ul a:hover,
+.sidebar-content ul a:focus-visible {
+  color: var(--kit-text);
+}
+.sidebar-content ul a[aria-current='page'],
+.sidebar-content ul a[aria-current='page']:hover {
+  color: var(--kit-strong);
+  background: var(--kit-panel);
+  font-weight: 600;
+  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%);
+  box-shadow: inset 3px 0 0 var(--kit-accent);
+}
+.sidebar-content ul a[aria-current='page']:focus-visible {
+  outline-offset: -2px;
+}
+
+/* "on this page" */
+.right-sidebar {
+  border-inline-start: 1px solid var(--kit-line);
+}
+.right-sidebar-panel {
+  padding-top: 2rem;
+}
+starlight-toc h2 {
+  font-family: var(--kit-font-head);
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--kit-muted);
+  margin-bottom: 12px;
+}
+starlight-toc a {
+  border-radius: 0;
+  border-inline-start: 1px solid var(--kit-line);
+  padding: 5px 0 5px calc(14px + 14px * var(--depth, 0));
+  font-size: 0.87rem;
+  line-height: 1.4;
+  color: var(--kit-muted);
+  text-decoration: none;
+}
+starlight-toc a:hover {
+  color: var(--kit-text);
+}
+starlight-toc a[aria-current='true'] {
+  color: var(--kit-text);
+  border-inline-start-color: var(--kit-accent);
+}
+mobile-starlight-toc .toggle {
+  border-radius: 0;
+}
+/* The script in astro.config.mjs sets data-fold on the column and data-open on the entry of the section being read;
+   without the script every entry shows. The phone's dropdown is another element and keeps the full list. */
+starlight-toc[data-fold] li > ul {
+  display: none;
+}
+starlight-toc[data-fold] li[data-open] > ul {
+  display: block;
+}
+
+/* previous / next, then the footer line */
+main footer .pagination-links {
+  order: -1;
+  margin-top: 40px;
+  gap: 18px;
+}
+main footer .pagination-links a {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 16px 18px;
+  background: var(--kit-panel);
+  color: var(--kit-muted);
+  font-size: 0.78rem;
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+}
+main footer .pagination-links a:hover {
+  background: var(--kit-panel-2);
+}
+main footer .pagination-links a:focus-visible {
+  outline-offset: -2px;
+}
+main footer .pagination-links .link-title {
+  font-family: var(--kit-font-head);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0;
+  color: var(--kit-strong);
+}
+main footer.kit-page-footer {
+  flex-direction: column;
+  gap: 1.5rem;
+}
+main footer .meta {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 3rem;
+  margin-top: 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--kit-line);
+  font-size: 0.82rem;
+  color: var(--kit-muted);
+}
+main footer .meta a {
+  color: var(--kit-muted);
+}
+main footer .meta a:hover {
+  color: var(--kit-text);
+}
+
+/* search dialog (Pagefind's markup inside Starlight's): a Kit surface */
+#starlight__search {
+  --pagefind-ui-primary: var(--kit-accent);
+  --pagefind-ui-text: var(--kit-text);
+  --pagefind-ui-background: var(--kit-bg);
+  --pagefind-ui-border: var(--kit-line);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 0px;
+  --pagefind-ui-tag: var(--kit-panel-2);
+  --pagefind-ui-font: var(--kit-font-body);
+}
+site-search dialog {
+  background: var(--kit-panel);
+  border: 1px solid var(--kit-line);
+  box-shadow: none;
+}
+#starlight__search input:focus {
+  --pagefind-ui-border: var(--kit-accent);
+}
+#starlight__search .pagefind-ui__search-input {
+  font-size: 1.02rem;
+}
+#starlight__search .pagefind-ui__search-input:focus-visible {
+  outline-offset: -2px;
+}
+#starlight__search .pagefind-ui__search-clear {
+  background: var(--kit-panel-2);
+}
+#starlight__search .pagefind-ui__search-clear:hover::before {
+  background-color: var(--kit-strong);
+}
+#starlight__search .pagefind-ui__search-clear:focus-visible {
+  outline: 2px solid var(--kit-accent);
+  outline-offset: -2px;
+}
+#starlight__search .pagefind-ui__message {
+  color: var(--kit-muted);
+  font-size: 0.86rem;
+}
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)),
+#starlight__search .pagefind-ui__result-nested,
+#starlight__search .pagefind-ui__result-tags {
+  background-color: var(--kit-panel-2);
+}
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):hover,
+#starlight__search .pagefind-ui__result-nested:hover {
+  background-color: var(--kit-line);
+  outline: 0;
+}
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):focus-within,
+#starlight__search .pagefind-ui__result-nested:focus-within {
+  background-color: var(--kit-line);
+  outline: 2px solid var(--kit-accent);
+  outline-offset: -2px;
+}
+#starlight__search .pagefind-ui__result-link,
+#starlight__search .pagefind-ui__result-link:hover {
+  color: var(--kit-strong);
+}
+#starlight__search .pagefind-ui__result-link:focus-visible {
+  outline: 0;
+}
+#starlight__search .pagefind-ui__result-excerpt {
+  color: var(--kit-text);
+}
+#starlight__search mark {
+  color: var(--kit-accent);
+  font-weight: 700;
+}
+#starlight__search .pagefind-ui__button {
+  border: 1px solid var(--kit-line);
+  background: var(--kit-panel-2);
+  color: var(--kit-text);
+  clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%, 0 9px);
+}
+/* the cancel button of the phone layout */
+site-search button[data-close-modal] {
+  padding: 0 14px;
+  background: var(--kit-panel-2);
+  color: var(--kit-text);
+  font-family: var(--kit-font-head);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%, 0 9px);
+}
+site-search button[data-close-modal]:focus-visible {
+  outline-offset: -2px;
+}

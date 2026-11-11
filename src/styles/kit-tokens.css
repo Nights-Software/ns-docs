@@ -1,0 +1,118 @@
+/* The only file that holds literal colours. Dark is the default; light replaces the values. */
+@import '@fontsource-variable/tektur';
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+  --kit-bg: #0b0a15;
+  --kit-top: #0f0d1c;
+  --kit-panel: #151328;
+  --kit-panel-2: #1d1a35;
+  --kit-line: #262343;
+  --kit-text: #e5e3f0;
+  --kit-strong: #ffffff;
+  --kit-muted: #9a96b4;
+  --kit-accent: #a58bff;
+  --kit-accent-fill: #5b21e6;
+  --kit-on-accent: #ffffff;
+  --kit-note: #7fb0f5;
+  --kit-tip: #7fd1a0;
+  --kit-caution: #e9bd6a;
+  --kit-important: #f08a8a;
+  --kit-code-bg: #100e1e;
+  --kit-c-key: #b9a3ff;
+  --kit-c-str: #9fd6a8;
+  /* Comments share the muted text colour so they stay at 4.5:1 or better on the code background in both modes (tools/contrast.test.mjs checks it). */
+  --kit-c-com: var(--kit-muted);
+  --kit-c-num: #f0b77a;
+
+  /* the glowing hexagon of the home page */
+  --kit-tube: #efe6ff;
+  --kit-glow: rgba(124, 58, 237, 0.9);
+  --kit-hexfill: rgba(91, 33, 230, 0.14);
+
+  /* The faint lattice of the top bar; the grey is mid-tone so it reads on both modes. */
+  --kit-lattice: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z' fill='%23808080' fill-opacity='.13'/%3E%3C/svg%3E");
+
+  --kit-font-head: 'Tektur Variable', 'Manrope Variable', sans-serif;
+  --kit-font-body: 'Manrope Variable', system-ui, sans-serif;
+  --kit-font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --kit-cut: 14px;
+  /* the edge cue of a table that scrolls sideways */
+  --kit-cue: color-mix(in srgb, var(--kit-accent) 38%, transparent);
+}
+
+:root[data-theme='light'] {
+  --kit-bg: #f6f5fb;
+  --kit-top: #ffffff;
+  --kit-panel: #ffffff;
+  --kit-panel-2: #ebe9f6;
+  --kit-line: #dbd8ec;
+  --kit-text: #191628;
+  --kit-strong: #0b0916;
+  --kit-muted: #5b5870;
+  --kit-accent: #5b21e6;
+  --kit-note: #1d5fbf;
+  --kit-tip: #17703c;
+  --kit-caution: #8a5a00;
+  --kit-important: #b3261e;
+  --kit-code-bg: #eeecf7;
+  --kit-c-key: #5b21e6;
+  --kit-c-str: #1f6b3a;
+  --kit-c-num: #9a4b00;
+  --kit-tube: #5b21e6;
+  --kit-glow: rgba(91, 33, 230, 0.28);
+  --kit-hexfill: rgba(91, 33, 230, 0.06);
+}
+
+/* Starlight's own variables, pointed at the kit. Unlayered, so they win over Starlight's layers in both modes. */
+:root {
+  --sl-color-white: var(--kit-strong);
+  --sl-color-gray-1: var(--kit-strong);
+  --sl-color-gray-2: var(--kit-text);
+  --sl-color-gray-3: var(--kit-muted);
+  --sl-color-gray-4: var(--kit-muted);
+  --sl-color-gray-5: var(--kit-line);
+  --sl-color-gray-6: var(--kit-panel);
+  --sl-color-gray-7: var(--kit-panel-2);
+  --sl-color-black: var(--kit-bg);
+
+  --sl-color-accent-low: var(--kit-panel-2);
+  --sl-color-accent: var(--kit-accent-fill);
+  --sl-color-accent-high: var(--kit-accent);
+  --sl-color-text: var(--kit-text);
+  --sl-color-text-accent: var(--kit-accent);
+  --sl-color-text-invert: var(--kit-on-accent);
+  --sl-color-bg: var(--kit-bg);
+  --sl-color-bg-nav: var(--kit-top);
+  --sl-color-bg-sidebar: var(--kit-bg);
+  --sl-color-bg-inline-code: var(--kit-code-bg);
+  --sl-color-bg-accent: var(--kit-accent-fill);
+  --sl-color-hairline-light: var(--kit-line);
+  --sl-color-hairline: var(--kit-line);
+  --sl-color-hairline-shade: var(--kit-line);
+
+  --sl-color-blue: var(--kit-note);
+  --sl-color-blue-high: var(--kit-note);
+  --sl-color-blue-low: var(--kit-panel);
+  --sl-color-green: var(--kit-tip);
+  --sl-color-green-high: var(--kit-tip);
+  --sl-color-green-low: var(--kit-panel);
+  --sl-color-orange: var(--kit-caution);
+  --sl-color-orange-high: var(--kit-caution);
+  --sl-color-orange-low: var(--kit-panel);
+  --sl-color-red: var(--kit-important);
+  --sl-color-red-high: var(--kit-important);
+  --sl-color-red-low: var(--kit-panel);
+
+  --sl-font: var(--kit-font-body);
+  --sl-font-mono: var(--kit-font-mono);
+  --sl-text-body: 1.03125rem; /* 16.5px */
+  --sl-line-height: 1.72;
+  --sl-content-width: 47.5rem; /* 760px */
+
+  --sl-nav-height: 3.75rem;
+  --sl-nav-pad-x: 2rem;
+  --sl-nav-pad-y: 0.5rem;
+  --sl-sidebar-width: 18.25rem; /* 292px */
+}

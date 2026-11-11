@@ -1,0 +1,58 @@
+---
+// One button instead of Starlight's three-way select. The label is rendered for dark, the
+// default; the script below corrects it before anyone needs it.
+---
+
+<kit-theme-button>
+  <button type="button" aria-label="Switch to light mode" class="kit-mode">
+    <svg class="kit-mode-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10" cy="10" r="3.6"/><path d="M10 1.8v2.4M10 15.8v2.4M1.8 10h2.4M15.8 10h2.4M4.2 4.2l1.7 1.7M14.1 14.1l1.7 1.7M4.2 15.8l1.7-1.7M14.1 5.9l1.7-1.7"/></svg>
+    <svg class="kit-mode-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M16.5 11.6A6.8 6.8 0 0 1 8.4 3.5a6.8 6.8 0 1 0 8.1 8.1z"/></svg>
+  </button>
+</kit-theme-button>
+
+<script>
+  // Same key and values as Starlight's theme provider, which restores them on load.
+  const storageKey = 'starlight-theme';
+  const shown = () => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+
+  function updateLabels() {
+    const label = shown() === 'light' ? 'Switch to dark mode' : 'Switch to light mode';
+    document.querySelectorAll('kit-theme-button button').forEach((b) => b.setAttribute('aria-label', label));
+  }
+
+  function apply(next: 'light' | 'dark') {
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem(storageKey, next);
+    } catch {
+      // storage blocked: the switch still works for this page
+    }
+    updateLabels();
+  }
+
+  class KitThemeButton extends HTMLElement {
+    constructor() {
+      super();
+      updateLabels();
+      this.querySelector('button')?.addEventListener('click', () => {
+        const next = shown() === 'light' ? 'dark' : 'light';
+        if (document.startViewTransition) document.startViewTransition(() => apply(next));
+        else apply(next);
+      });
+    }
+  }
+  // With nothing stored the page follows the system, as Starlight's provider does on load.
+  matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(storageKey);
+    } catch {
+      // nothing stored
+    }
+    if (stored) return;
+    document.documentElement.dataset.theme = e.matches ? 'light' : 'dark';
+    updateLabels();
+  });
+
+  customElements.define('kit-theme-button', KitThemeButton);
+</script>
