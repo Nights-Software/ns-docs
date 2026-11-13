@@ -2,7 +2,7 @@
 title: Air Raid Sirens
 description: The air raid sirens provides you the ability to alert the nation with the press of a button. Configure multiple siren(s) (areas) and browse through the list before powering the sirens.
 slug: resources/airRaidSirens
-lastUpdated: 2026-11-11
+lastUpdated: 2026-11-13
 group: scripts
 store: https://store.nights-software.com/package/5030134
 video: https://youtu.be/ZxI8tCJNZag
@@ -386,7 +386,7 @@ local areaData = exports['night_air_raid_sirens']:GetSirensInArea(areaName)
 -- Example usage
 local areaData = exports['night_air_raid_sirens']:GetSirensInArea("Fort Zancudo")
 
--- Returns: table with {soundFile, soundReach, soundVolume, enabled, poleCount, poles}
+-- Returns: table with {soundFile, soundReach, soundVolume, enabled, poleCount, poles, poleDetails}
 ```
 
 #### Get Zone For Coords
@@ -449,6 +449,65 @@ end)
 :::tip[Integration tip]
 `GetZoneForCoords` is a read-only utility export — it has no side effects and no permission checks. Pair it with `TriggerAirRaidSirensByAreaExport` and `DeactivateAirRaidSirensByAreaExport` to build fully dynamic, zone-aware siren automation.
 :::
+
+### Editing Export (Server Side)
+
+#### Edit Sirens
+
+`EditSirens` does from another resource what the [Siren Editor](#siren-editor) does in game: it creates, changes and deletes areas and sirens. The change is checked, saved to `sirens.json` and sent to all players at once. It is a server export and has no permission check, so the calling resource decides who may use it.
+
+```lua
+local ok, message, result = exports['night_air_raid_sirens']:EditSirens(action, payload)
+
+-- ok      (boolean) : true when the change was saved
+-- message (string)  : the text the in-game editor would show, also when ok is false
+-- result  (table)   : what the action returns, see the table below
+```
+
+| Action | Payload | Result |
+|--------|---------|--------|
+| `createArea` | `{ name, soundFile?, soundReach?, soundVolume?, enabled? }` | `{ area }` |
+| `updateArea` | `{ area, name?, soundFile?, soundReach?, soundVolume?, enabled? }` | `{ area }` |
+| `deleteArea` | `{ area }` | |
+| `addPole` | `{ area, x, y, z, heading?, name?, soundFile? }` | `{ id }` |
+| `updatePole` | `{ id, area?, x?, y?, z?, heading?, name?, soundFile? }` | `{ id }` |
+| `deletePole` | `{ id }` | |
+
+A field with `?` is optional. In an update, only the fields you send are changed.
+
+- **`area`** is the area's current name. In `updateArea`, `name` renames the area. In `updatePole`, `area` moves the siren to that area.
+- **`soundFile`** must be one of `SirenSoundFileList` in `config/config.lua`. On a siren, `""` clears its own sound, so it plays the area's sound again. `name = ""` clears a siren's name.
+- **`soundReach`** is 1 to `Editor.MaxSoundReach` metres and **`soundVolume`** is 0 to `Editor.MaxSoundVolume`. A new area starts with the first sound of the list, a reach of 1250 metres and `SirenSoundVolume`.
+- **Names** are 1 to `Editor.MaxNameLength` characters.
+- **Disabling an area** that is sounding turns it off.
+- **`id`** is the siren's number. Read it from `poleDetails` of [Get Sirens in Area](#get-sirens-in-area), or keep the one `addPole` returns. The numbers are given out again when the resource starts or `/arsreload` runs, so read them fresh before you use them.
+
+When a value is refused or `sirens.json` cannot be written, nothing changes and `ok` is `false`.
+
+```lua
+-- Server-side: an area with one siren, moved later, then removed
+local ok, message, result = exports['night_air_raid_sirens']:EditSirens("createArea", {
+    name = "Harbour", soundFile = "air-raid-siren", soundReach = 800.0,
+})
+if not ok then return print(message) end
+
+local _, _, pole = exports['night_air_raid_sirens']:EditSirens("addPole", {
+    area = "Harbour", x = 1200.0, y = -3000.0, z = 6.0, heading = 90.0, name = "Dock 4",
+})
+
+exports['night_air_raid_sirens']:EditSirens("updatePole", { id = pole.id, x = 1210.0, y = -3010.0 })
+exports['night_air_raid_sirens']:EditSirens("deleteArea", { area = "Harbour" })
+```
+
+`poleDetails` holds one entry per siren, in the same order as `poles`:
+
+```lua
+local areaData = exports['night_air_raid_sirens']:GetSirensInArea("Fort Zancudo")
+
+for i, details in ipairs(areaData.poleDetails) do
+    -- details.id, details.name, details.soundFile; areaData.poles[i] is the position (vector4)
+end
+```
 
 ### Sound File Examples
 
